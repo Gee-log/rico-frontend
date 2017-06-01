@@ -1,2 +1,9 @@
 *.pyc
 __pycache__
+
+# virtualenv name
+env
+ENV
+
+# django
+migrations

@@ -1,60 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
+
+<head>
       <title>XENOPTICS</title>
-      <meta charset="utf-8" />
-      {% load staticfiles %}
+      <meta charset="utf-8" /> {% load staticfiles %}
+      <!-- Icon -->
+      <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}"/>
       <!-- Header CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/header.css' %}" type= "text/css"/>
+      <link rel="stylesheet" href="{% static 'personal/css/header.css' %}" type="text/css" />
       <!-- Boostrap CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type= "text/css"/>
+      <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css" />
       <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
-      <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <!-- Jquery -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-   </head>
-   <!-- Header -->
-   <body>
+      <link rel="stylesheet" href="{% static 'personal/css/header.css' %}">
+</head>
+<!-- Header -->
+
+<body>
+      <header class="header-line"></header>
       <div class="jumbotron">
-         <div class="container-fluid" align="center">
-            <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
-         </div>
+            <div class="container-fluid" align="center">
+                  <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
+            </div>
       </div>
       <hr>
       <br>
       <br>
       <!-- End Header-->
-      <!-- Port connection button-->  
+      <!-- Port connection button-->
       <div class="container-fluid" align="center">
-            <a href="portconnection/" class="btn btn-primary">Port connection</a>  
+            <a href="portconnection/" class="btn btn-primary">Port connection</a>
       </div>
       <!-- End Port connection button-->
       <br>
       <!-- Data log file button-->
-      <div class="container-fluid" align="center"> 
-            <a href="datalog/" class="btn btn-primary" style="width: 219px;">Data log file</a>  
+      <div class="container-fluid" align="center">
+            <a href="connection/" class="btn btn-primary" style="width: 219px;">Data log file</a>
       </div>
       <br>
       <br>
       <!-- End Data log file button-->
-      <!-- Footer --> 
+      <!-- Footer -->
       <footer class="container-fluid">
-         <div>
-         <a href="setting/">
+            <div>
+                  <a href="setting/">
          <button type="button" class="divbutton btn btn-default btn-lg " aria-label="Left Align">
-         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 
+         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
          </button>
          </a>
-         </div>
-         <div>
-         <a href="alarm/">
+            </div>
+            <div>
+                  <a href="alarm/">
             <button type="button" class="divbutton btn btn-default btn-lg " aria-label="Left Align">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             </button>
          </a>
-         </div>
+            </div>
       </footer>
       <!-- End Footer-->
-   </body>
+</body>
+
 </html>

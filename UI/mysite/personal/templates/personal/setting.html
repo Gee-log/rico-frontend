@@ -4,6 +4,8 @@
 <head>
       <title>Setting - XENOPTICS</title>
       <meta charset="utf-8" /> {% load staticfiles %}
+      <!-- Icon -->
+      <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}"/>
       <!-- Header CSS -->
       <link rel="stylesheet" href="{% static 'personal/css/header.css' %}" type="text/css" />
       <!-- Boostrap CSS -->
@@ -15,6 +17,8 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <!-- Header -->
+<body>
+<header class="header-line"></header>
 <div class="jumbotron">
       <div class="container-fluid" align="center">
             <div class="col-sm-6">
@@ -29,23 +33,25 @@
 <hr>
 <br>
 <br>
-<!-- Parameter button-->
-<div class="container-fluid" align="center">
-      <a href="portconnection/" class="btn btn-primary" style="width: 219px;">Parameter</a>
-</div>
-<!-- End Parameter button-->
-<br>
-<!-- Execution table button-->
-<div class="container-fluid" align="center">
-      <a href="datalog/" class="btn btn-primary">Execution table</a>
-</div>
-<!-- End Execution table button-->
-<br>
-<!-- Back button-->
-<div class="container-fluid" align="center">
-      <a href="/" class="btn btn-primary" style="width: 219px;">Back</a>
-</div>
-<!-- End Back button-->
-<br>
+
+      <!-- Parameter button-->
+      <div class="container-fluid" align="center">
+            <a href="portconnection/" class="btn btn-primary" style="width: 219px;">Parameter</a>
+      </div>
+      <!-- End Parameter button-->
+      <br>
+      <!-- Execution table button-->
+      <div class="container-fluid" align="center">
+            <a href="datalog/" class="btn btn-primary">Execution table</a>
+      </div>
+      <!-- End Execution table button-->
+      <br>
+      <!-- Back button-->
+      <div class="container-fluid" align="center">
+            <a href="/" class="btn btn-primary" style="width: 219px;">Back</a>
+      </div>
+      <!-- End Back button-->
+      <br>
 </body>
+
 </html>
