@@ -1,0 +1,43 @@
+br {
+margin:1.5em 0;/* FF for instance */
+line-height:2.5em;/* chrome for instance */
+}
+
+img {
+margin-top: -10px;
+max-width: 100%;
+height: auto;
+}
+
+.responsive-width {
+font-size: 0.8vw;
+margin-right: 10px;
+margin-top: 10px;
+}      
+
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+tr:nth-child(even){background-color: #}
+th {
+background-color: #555555;
+color: white;
+}
+
+.jumbotron {
+    background-color: #fff !important;
+}
+
+.btn {
+ min-width: 120px !important;
+ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}

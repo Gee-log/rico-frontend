@@ -1,0 +1,125 @@
+br {
+margin:1.5em 0;/* FF for instance */
+line-height:2.5em;/* chrome for instance */
+}
+
+img {
+margin-top: -15px;
+max-width: 100%;
+height: auto;
+}
+
+td {
+cursor: default;
+}
+
+.ghost-button-avaliable:hover {
+cursor:default !important;
+}
+
+.ghost-button-avaliable:focus {
+outline: none;
+}
+
+.ghost-button-unavaliable:hover {
+cursor:default !important;
+}
+
+.ghost-button-unavaliable:focus {
+outline: none;
+}
+
+.ghost-button-selected:hover {
+cursor:default !important;
+}
+
+.ghost-button-selected:focus {
+outline: none;
+}
+
+.ghost-button-unavaliable {
+ color: #fff;
+ text-shadow: 0 0.5px 0 #555555;
+ background: #d9534f;
+ border: 1px solid #d64843;
+ font-size: 17px;
+ padding: 7px 12px;
+ font-weight: normal;
+ margin: 6px 0;
+ margin-right: 12px;
+ display: inline-block;
+ text-decoration: none;
+ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+ min-width: 120px;
+ border-radius: 5px;
+ outline: 0;
+
+}
+
+.ghost-button-avaliable {
+ color: #fff;
+ text-shadow: 0 0.5px 0 #555555;
+ background: #5cb85c;
+ border: 1px solid #4cae4c;
+ font-size: 17px;
+ padding: 7px 12px;
+ font-weight: normal;
+ margin: 6px 0;
+ margin-right: 12px;
+ display: inline-block;
+ text-decoration: none;
+ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+ min-width: 120px;
+ border-radius: 5px;
+}
+
+.ghost-button-selected {
+color: #333;
+text-shadow: 0 1px 0 #fff;
+background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+border: 1px solid #ccc;
+font-size: 17px;
+padding: 7px 12px;
+font-weight: normal;
+margin: 6px 0;
+margin-right: 12px;
+display: inline-block;
+text-decoration: none;
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+min-width: 120px;
+border-radius: 5px;
+}
+
+.btn {
+ min-width: 120px !important;
+ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.responsive-width {
+font-size: 0.8vw;
+margin-right: 10px;
+margin-top: 10px;
+}
+
+.connected{
+background-color: #4CAF50;
+color: white;
+}    
+
+.disconnected{
+background-color: #ac2925;
+color: white;
+}
+
+.selected {
+color: #333;
+background-color: #555555;
+border-color: #ccc;
+text-shadow: 0 1px 0 #fff;
+background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+}
+
+.jumbotron {
+padding-top: 40px !important;
+background-color: #fff !important;
+}
