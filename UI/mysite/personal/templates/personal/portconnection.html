@@ -1,176 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <title>Post Connection - XENOPTICS</title>
-      <meta charset="utf-8" />
-      {% load staticfiles %}
-      <!-- Portconnection CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/portconnection.css' %}" type= "text/css">
-      <!-- Boostrap CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type= "text/css"/>
-      <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
-      <meta name="viewport" content = "width=device-width, initial-scale=1.0">
-      <!-- Jquery -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-   </head>
-   <style>
-      h1 {
-      font-family: 'Open Sans', sans-serif;
-      }
-   </style>
-   <!-- Header -->
-   <div class="jumbotron">
-      <div class="container-fluid text-center">
-         <div class="col-sm-6">
+
+<head>
+    <title>Post Connection - XENOPTICS</title>
+    <meta charset="utf-8" /> {% load staticfiles %}
+    <!-- Portconnection CSS -->
+    <link rel="stylesheet" href="{% static 'personal/css/portconnection.css' %}" type="text/css">
+    <!-- Boostrap CSS -->
+    <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+    h1 {
+        font-family: 'Open Sans', sans-serif;
+    }
+</style>
+<!-- Header -->
+<div class="jumbotron">
+    <div class="container-fluid text-center">
+        <div class="col-sm-6">
             <h1>Port connection</h1>
-         </div>
-         <div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
             <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
-         </div>
-      </div>
-   </div>
-   <hr>
-   <!-- End Header -->
-   <!-- Body -->
-   <div class="container-fluid text-center">
-      <div class="col-sm-6">
-         <h1>East port</h1>
-         <br>
-         <div class="responsive">
+        </div>
+    </div>
+</div>
+<hr>
+<!-- End Header -->
+<!-- Body -->
+<div class="container-fluid text-center">
+    <div class="col-sm-6">
+        <h1>East port</h1>
+        <br>
+        <div class="responsive">
             <table class="table table-bordered">
-               <tbody>
-                  <tr>
-                     {% block content %}
-                     {% for port in data %}   
-                     {% if port.direction == 'E' %} 
-                     <td id="E{{ port.number }}" class="East" onclick="Eport(this.id);">
-                        <div data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
-                           {{ port.number }}
-                        </div>
-                     </td>
-                     {% if forloop.counter|divisibleby:12 %}
-                  </tr>
-                  <tr>
-                     {% endif %}
-                     {% endif %}
-                     {% endfor %}
-                  </tr>
-               </tbody>
+                <tbody>
+                    <tr>
+                        {% block content %} {% for port in data %} {% if port.direction == 'E' %}
+                        <td id="E{{ port.number }}" class="East">
+                            <div data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
+                                {{ port.number }}
+                            </div>
+                        </td>
+                        {% if forloop.counter|divisibleby:12 %}
+                    </tr>
+                    <tr>
+                        {% endif %} {% endif %} {% endfor %}
+                    </tr>
+                </tbody>
             </table>
-         </div>
-      </div>
-      <div class="col-sm-6">
-         <h1>West port</h1>
-         <br>
-         <div class="responsive">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h1>West port</h1>
+        <br>
+        <div class="responsive">
             <table class="table table-bordered">
-               <tbody>
-                  <tr>
-                     {% for port in data %}
-                     {% if port.direction == 'W' %}
-                     <td id="W{{ port.number }}" class="West" onclick="Wport(this.id);">
-                        <div data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
-                           {{ port.number }}
-                        </div>
-                     </td>
-                     {% if forloop.counter|divisibleby:12 %}
-                  </tr>
-                  <tr>
-                     {% endif %}
-                     {% endif %}
-                     {% endfor %}
-                     {% endblock %}
-                  </tr>
-                  <tr>
-               </tbody>
+                <tbody>
+                    <tr>
+                        {% for port in data %} {% if port.direction == 'W' %}
+                        <td id="W{{ port.number }}" class="West">
+                            <div data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
+                                {{ port.number }}
+                            </div>
+                        </td>
+                        {% if forloop.counter|divisibleby:12 %}
+                    </tr>
+                    <tr>
+                        {% endif %} {% endif %} {% endfor %} {% endblock %}
+                    </tr>
+                    <tr>
+                </tbody>
             </table>
-         </div>
-      </div>
-   </div>
-   </div>
-   <!-- End Body -->
-   <!-- Footer -->   
-   <footer class="container text-center">
-      <div class="col-sm-12">
-         <button type="button" class="ghost-button-avaliable nohover responsive-width">Avaliable</button>
-         <button type="button" class="ghost-button-unavaliable nohover responsive-width">Unavaliable</button>
-         <button type="button" class="ghost-button-selected nohover responsive-width">Selected</button>
-      </div>
-   </footer>
-   <footer class="container-fluid text-center">
-      <div class="col-sm-12">
-         <button id="C1" class="btn btn-primary responsive-width">Connect</button>
-         <button id="C2" class="btn btn-primary responsive-width">Disconnect</button>
-         <a href="/" class="btn btn-primary responsive-width">Back</a>
-      </div>
-   </footer>
-   <!-- End Footer -->
-   <br>
-   <!-- Script tooltip -->
-   <script>
-      $(document).ready(function(){
-          $('[data-toggle="tooltip"]').tooltip();   
-      });
-   </script>
-   <!-- End Script tooltip -->
-   <!-- Script Select -->
-   <script>
-      (function togCell(){
-      $('.East').click(function(e){
-      $('.East').removeClass('selected');
-      $(this).addClass('selected');
-      });
-      })();
-   </script>
-   <script>
-      (function togCell(){
-      $('.West').click(function(e){
-      $('.West').removeClass('selected');
-      $(this).addClass('selected');  
-      }); 
-      })();
-   </script>
-   <!-- End Script Select -->
-   <script>
-      function Eport(x)
-      {
-        con(x);
-        discon(x);
-        console.log(x);
-      }
-      function Wport(y){
-        con(y);
-        discon(y); 
-        console.log(y);
-      } 
-   </script>
-   <script>
-      function discon(c, d){
-      $(document).ready(function(){
-      $(C2).click(function(){
-          $("td").removeClass('selected');
-          var element = document.getElementById(c, d);
-          element.classList.add('disconnected');
-      });
-      });
-      }    
-   </script>
-   <script>
-      function con(a, b){
-      $(document).ready(function(){
-      $(C1).click(function(){
-          $("td").removeClass('selected');
-          var element = document.getElementById(a, b);
-          element.classList.add('connected');
-          
-          if ( $(a, b).hasClass('connected')){
-          element.classList.add('disconnected');
-          }
-          
-         });
-      });    
-      }  
-   </script>
-   </body>
+        </div>
+    </div>
+</div>
+</div>
+<!-- End Body -->
+<!-- Footer -->
+<footer class="container text-center">
+    <div class="col-sm-12">
+        <button type="button" class="ghost-button-avaliable nohover responsive-width">Avaliable</button>
+        <button type="button" class="ghost-button-unavaliable nohover responsive-width">Unavaliable</button>
+        <button type="button" class="ghost-button-selected nohover responsive-width">Selected</button>
+    </div>
+</footer>
+<footer class="container-fluid text-center">
+    <div class="col-sm-12">
+        <button id="Connect" class="btn btn-primary responsive-width" disabled>Connect</button>
+        <button id="Disconnect" class="btn btn-primary responsive-width" disabled>Disconnect</button>
+        <a href="/" class="btn btn-primary responsive-width">Back</a>
+    </div>
+</footer>
+<!-- End Footer -->
+<br>
+<!-- Script tooltip -->
+<script>
+    $(document).ready(function () {
+
+        $('[data-toggle="tooltip"]').tooltip();
+        var selectedEastPortId = undefined;
+        var selectedWestPortId = undefined;
+
+
+
+        $('.East').click(function () {
+            $('.East').removeClass('selected');
+            $(this).addClass('selected');
+            selectedEastPortId = $(this).attr('id');
+
+            console.log("Current EastPort value = " + selectedEastPortId);
+
+            // $(this).attr(function (i, text) {
+            //     return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
+            // });
+
+            isSelectBoth(selectedEastPortId, selectedWestPortId);
+        });
+
+        $('.West').click(function () {
+            $('.West').removeClass('selected');
+            $(this).addClass('selected');
+            selectedWestPortId = $(this).attr('id');
+            isSelectBoth(selectedEastPortId, selectedWestPortId);
+
+            console.log("Current WestPort value = " + selectedWestPortId);
+        });
+
+        $("#Connect").click(function () {
+            $("td").removeClass('selected');
+
+            $("#" + selectedEastPortId).addClass('connected');
+            $("#" + selectedWestPortId).addClass('connected');
+            $("#" + selectedEastPortId).removeClass('disconnected');
+            $("#" + selectedWestPortId).removeClass('disconnected');
+
+            console.log("Connecting EastPortID " + selectedEastPortId + " To WestPortID " +
+                selectedWestPortId);
+
+        });
+
+        $("#Disconnect").click(function () {
+            $("td").removeClass('selected');
+
+            $("#" + selectedEastPortId).addClass('disconnected');
+            $("#" + selectedWestPortId).addClass('disconnected');
+            $("#" + selectedEastPortId).removeClass('connected');
+            $("#" + selectedWestPortId).removeClass('connected');
+
+            console.log("Disconnecting EastPortID " + selectedEastPortId + " To WestPortID " +
+                selectedWestPortId);
+        });
+
+        function isSelectBoth(selectedEastPortId, selectedWestPortId) {
+
+            
+
+            if (selectedEastPortId && selectedWestPortId) {
+                $("#Connect").removeAttr('disabled');
+                $("#Disconnect").removeAttr('disabled');
+
+                var alerted = localStorage.getItem('alerted') || '';
+                if (alerted != 'yes') {
+                    alert("EastPort and WestPort were selected. Unlock button!");
+                    localStorage.setItem('alerted', 'yes');
+                }
+            }
+        }
+
+        function isSelected(port) {
+            var isSelectedPort = $("#" + port).hasClass("selected");
+            console.log(isSelectedPort);
+
+            // if (isSelectedPort) {
+            //     $("#" + port).removeClass("selected");
+            // }
+        }
+
+
+    });
+</script>
+</body>
+
 </html>
