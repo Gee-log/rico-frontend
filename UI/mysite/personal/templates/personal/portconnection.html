@@ -99,92 +99,9 @@
 </footer>
 <!-- End Footer -->
 <br>
-<!-- Script tooltip -->
-<script>
-    $(document).ready(function () {
-
-        $('[data-toggle="tooltip"]').tooltip();
-        var selectedEastPortId = undefined;
-        var selectedWestPortId = undefined;
-
-
-
-        $('.East').click(function () {
-            $('.East').removeClass('selected');
-            $(this).addClass('selected');
-            selectedEastPortId = $(this).attr('id');
-
-            console.log("Current EastPort value = " + selectedEastPortId);
-
-            // $(this).attr(function (i, text) {
-            //     return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
-            // });
-
-            isSelectBoth(selectedEastPortId, selectedWestPortId);
-        });
-
-        $('.West').click(function () {
-            $('.West').removeClass('selected');
-            $(this).addClass('selected');
-            selectedWestPortId = $(this).attr('id');
-            isSelectBoth(selectedEastPortId, selectedWestPortId);
-
-            console.log("Current WestPort value = " + selectedWestPortId);
-        });
-
-        $("#Connect").click(function () {
-            $("td").removeClass('selected');
-
-            $("#" + selectedEastPortId).addClass('connected');
-            $("#" + selectedWestPortId).addClass('connected');
-            $("#" + selectedEastPortId).removeClass('disconnected');
-            $("#" + selectedWestPortId).removeClass('disconnected');
-
-            console.log("Connecting EastPortID " + selectedEastPortId + " To WestPortID " +
-                selectedWestPortId);
-
-        });
-
-        $("#Disconnect").click(function () {
-            $("td").removeClass('selected');
-
-            $("#" + selectedEastPortId).addClass('disconnected');
-            $("#" + selectedWestPortId).addClass('disconnected');
-            $("#" + selectedEastPortId).removeClass('connected');
-            $("#" + selectedWestPortId).removeClass('connected');
-
-            console.log("Disconnecting EastPortID " + selectedEastPortId + " To WestPortID " +
-                selectedWestPortId);
-        });
-
-        function isSelectBoth(selectedEastPortId, selectedWestPortId) {
-
-            
-
-            if (selectedEastPortId && selectedWestPortId) {
-                $("#Connect").removeAttr('disabled');
-                $("#Disconnect").removeAttr('disabled');
-
-                var alerted = localStorage.getItem('alerted') || '';
-                if (alerted != 'yes') {
-                    alert("EastPort and WestPort were selected. Unlock button!");
-                    localStorage.setItem('alerted', 'yes');
-                }
-            }
-        }
-
-        function isSelected(port) {
-            var isSelectedPort = $("#" + port).hasClass("selected");
-            console.log(isSelectedPort);
-
-            // if (isSelectedPort) {
-            //     $("#" + port).removeClass("selected");
-            // }
-        }
-
-
-    });
-</script>
+<!-- Script -->
+<script src="{% static 'personal/js/portconnection.js' %}" type="text/javascript"></script>
+<!-- End Script -->
 </body>
 
 </html>
