@@ -3,10 +3,11 @@
 
     $(document).ready(function () {
 
-        var array = [];
-        localStorage.setItem("array", JSON.stringify(array));
-        var storedNames = JSON.parse(localStorage.getItem("array"));
-        console.log(array);
+        if (localStorage.getItem('portValues') == null) {
+            var array = [];
+        } else {
+            array = JSON.parse(localStorage.getItem('portValues'));
+        }
 
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -14,7 +15,7 @@
             $('.East').removeClass('selected');
             $(this).addClass('selected');
             selectedEastPortId = $(this).attr('id');
-            array[0] = selectedEastPortId;
+            isSelectBoth(selectedEastPortId, selectedWestPortId);
 
             console.log("Current EastPort value = " + selectedEastPortId);
 
@@ -22,7 +23,7 @@
             //     return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
             // });
 
-            isSelectBoth(selectedEastPortId, selectedWestPortId);
+
         });
 
         $('.West').click(function () {
@@ -30,11 +31,14 @@
             $(this).addClass('selected');
             selectedWestPortId = $(this).attr('id');
             isSelectBoth(selectedEastPortId, selectedWestPortId);
-            array[1] = selectedWestPortId;
+
             console.log("Current WestPort value = " + selectedWestPortId);
         });
 
         $("#Connect").click(function () {
+
+            array.push(selectedEastPortId, selectedWestPortId);
+            localStorage.setItem('portValues', JSON.stringify(array));
 
             $("td").removeClass('selected');
 
