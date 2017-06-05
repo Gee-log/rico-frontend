@@ -37,7 +37,7 @@
 
         $("#Connect").click(function () {
 
-            array.push(selectedEastPortId, selectedWestPortId);
+            array.push("{"+selectedEastPortId + " " + selectedWestPortId+"}");
             localStorage.setItem('portValues', JSON.stringify(array));
 
             $("td").removeClass('selected');
