@@ -1,13 +1,14 @@
     var selectedEastPortId = undefined;
     var selectedWestPortId = undefined;
+    var array = [];
 
     $(document).ready(function () {
 
-        if (localStorage.getItem('portValues') == null) {
-            var array = [];
-        } else {
-            array = JSON.parse(localStorage.getItem('portValues'));
-        }
+        // if (localStorage.getItem('portValues') == null) {
+        //     var array = [];
+        // } else {
+        //     array = JSON.parse(localStorage.getItem('portValues'));
+        // }
 
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -37,8 +38,8 @@
 
         $("#Connect").click(function () {
 
-            array.push("{"+selectedEastPortId + " " + selectedWestPortId+"}");
-            localStorage.setItem('portValues', JSON.stringify(array));
+            array.push("{" + selectedEastPortId + " " + selectedWestPortId + "}");
+            // localStorage.setItem('portValues', JSON.stringify(array));
 
             $("td").removeClass('selected');
 
@@ -51,7 +52,26 @@
                 selectedWestPortId);
 
             console.log(array);
+
         });
+        //     $.each(array, function(index, value){
+        //         var eventE = new Object();
+        //         eventE.id = value.id;
+        //         array2.push(eventE);
+        //     });
+
+        //     $.ajax
+        //     ({
+        //         type: "GET",
+        //         dataType: 'json',
+        //         async: false,
+        //         url: 'http://127.0.0.1:8000/save_json/',
+        //         data: { data: JSON.stringify(array2) },
+        //         success: function() { console.log("Thanks!"); },
+        //         failure: function() { console.log("Error!") }
+        //     });
+
+
 
         $("#Disconnect").click(function () {
             $("td").removeClass('selected');
