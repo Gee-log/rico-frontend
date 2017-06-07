@@ -3,13 +3,24 @@ from django.db.models import IntegerField
 from django.core.validators import MinValueValidator, MaxValueValidator 
 from django.utils import timezone
 
-class Datalog(models.Model):
-	title = models.CharField(max_length=140) 
-	body = models.TextField()
-	date = models.DateTimeField(default=timezone.now)
 
-	def __str__(self):
-		return self.title
+
+
+class Datalog(models.Model):
+    title = models.CharField(max_length=140) 
+    body = models.TextField()
+    date = models.DateTimeField(default=timezone.now)
+
+    @classmethod
+    def create(cls, title,body):
+        datalog = cls(title=title,body=body)
+        # do something with the book
+        return datalog
+
+    def __str__(self):
+        return self.title
+
+
 
 class Port(models.Model):
 
@@ -38,6 +49,12 @@ class Connection(models.Model):
     connected_date = models.DateTimeField(auto_now_add=True)
     disconnected_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS_TYPE, default='0')
+
+    @classmethod
+    def create(cls, east, west):
+        connect = cls(east=east,west=west)
+        # do something with the book
+        return connect
 
     class Meta:
         ordering = ['east']

@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^portconnection/', views.portconnection, name='portconnection'),
     url(r'^setting/', views.setting, name='setting'),
-    url(r'^datalog/', views.datalog, name='datalog'),
+    url(r'^connection/', views.connection, name='connection'),
     url(r'^alarm/', views.alarm, name='alarm'),
     url(r'^alarm_history/', views.alarm_history, name='alarm_history'),
     url(r'^ports/', views.PortList.as_view()),

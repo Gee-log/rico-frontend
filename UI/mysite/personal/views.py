@@ -20,9 +20,9 @@ def portconnection(request):
     return TemplateResponse(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
 
-def datalog(request):
+def connection(request):
     data = Connection.objects.all()
-    return TemplateResponse(request, 'personal/datalog.html', {"data": data})
+    return TemplateResponse(request, 'personal/connection.html', {"data": data})
 
 
 def setting(request):
@@ -56,7 +56,10 @@ class DatalogList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        datalog = Datalog.create(request.data["title"], request.data["body"])
+        datalog.save()
         return Response(request.data)
+
 
 
 class ConnectionList(APIView):
@@ -67,7 +70,13 @@ class ConnectionList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        return Response(request.data)
+        east, west = None, None
+        ports = Port.objects.all()
+        # for p in ports:
+            # if p.direct = e
+        # connection = Connection.create(request.data["east"], request.data["west"])
+        # connection.save()
+        # return Response(request.data)
 
 
 class AlarmList(APIView):
@@ -79,7 +88,6 @@ class AlarmList(APIView):
 
     def post(self, request):
         return Response(request.data)
-
 
 # class MyView(View):
 
