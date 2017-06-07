@@ -70,13 +70,42 @@ class ConnectionList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+
+        # validate inputs
+        if 'east' not in request.data:
+            return Response('No east', content_type="text/plain")
+
+        if 'west' not in request.data:
+            return Response('No west', content_type="text/plain")
+
+        return self.create_connection(request)
+
+    def create_connection(self, request):
         east, west = None, None
+
+        e = int(request.data['east'])
+        w = int(request.data['west'])
+
+        # find available ports
         ports = Port.objects.all()
-        # for p in ports:
-            # if p.direct = e
-        # connection = Connection.create(request.data["east"], request.data["west"])
-        # connection.save()
-        # return Response(request.data)
+        for p in ports:
+            if p.direction == 'E' and p.number == e:
+                east = p
+                print 'east', east
+            if p.direction == 'W' and p.number == w:
+                west = p
+                print 'west', west
+
+        print 'connection', east, west
+        if east == None:
+            return Response('No east port number ' + str(e), content_type="text/plain")
+        if west == None:
+            return Response('No west port number ' + str(w), content_type="text/plain")
+
+        # create connection
+        connection = Connection.create(east, west)
+        connection.save()
+        return Response(request.data)
 
 
 class AlarmList(APIView):
