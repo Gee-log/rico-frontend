@@ -31,7 +31,8 @@ def setting(request):
 
 
 def alarm(request):
-    return render(request, 'personal/alarm.html')
+    data = Alarm.objects.all()
+    return render(request, 'personal/alarm.html', {"data": data})
 
 
 def alarm_history(request):
@@ -48,7 +49,6 @@ class PortList(APIView):
     def post(self, request):
         return Response(request.data)
 
-
 class DatalogList(APIView):
 
     def get(self, request):
@@ -60,8 +60,6 @@ class DatalogList(APIView):
         datalog = Datalog.create(request.data["title"], request.data["body"])
         datalog.save()
         return Response(request.data)
-
-
 
 class ConnectionList(APIView):
 
@@ -139,8 +137,6 @@ class ConnectionList(APIView):
 
         return east, west
 
-
-
 class AlarmList(APIView):
 
     def get(self, request):
@@ -149,7 +145,12 @@ class AlarmList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        alarm = Alarm.create(request.data["alarm"], request.data["detail"])
+        alarm.save()
         return Response(request.data)
+
+
+
 
 # class MyView(View):
 

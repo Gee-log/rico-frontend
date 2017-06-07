@@ -3,9 +3,6 @@ from django.db.models import IntegerField
 from django.core.validators import MinValueValidator, MaxValueValidator 
 from django.utils import timezone
 
-
-
-
 class Datalog(models.Model):
     title = models.CharField(max_length=140) 
     body = models.TextField()
@@ -20,8 +17,6 @@ class Datalog(models.Model):
     def __str__(self):
         return self.title
 
-
-
 class Port(models.Model):
 
     DIRECTION_TYPE = (
@@ -31,7 +26,6 @@ class Port(models.Model):
 
     direction = models.CharField(max_length=1, choices=DIRECTION_TYPE)
     number = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(144)])
-
 
     def __str__(self):
         return self.direction + str(self.number)
@@ -71,3 +65,15 @@ class Alarm(models.Model):
     alarm = models.CharField(max_length=1, choices=ALARM_TYPE)
     timestamp = models.DateTimeField(auto_now_add=True)
     detail = models.CharField(max_length=64)
+
+    @classmethod
+    def create(cls, alarm, detail):
+        alarms = cls(alarm=alarm,detail=detail)
+        # do something with the book 
+        return alarms
+
+    class Meta:
+        ordering = ['timestamp']
+
+    def __str__(self):
+        return self.alarm 
