@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 from personal.models import Connection, Port, Alarm, Datalog
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer
+from datetime import datetime
 
 
 def index(request):
@@ -72,15 +73,55 @@ class ConnectionList(APIView):
     def post(self, request):
 
         # validate inputs
+        if 'action' not in request.data:
+            return Response('No action', content_type="text/plain")
+
         if 'east' not in request.data:
             return Response('No east', content_type="text/plain")
 
         if 'west' not in request.data:
             return Response('No west', content_type="text/plain")
 
-        return self.create_connection(request)
+        if request.data['action'] == 'disconnect':
+            return self.disconnect(request)
+        else:
+            return self.create_connection(request)
 
     def create_connection(self, request):
+        east, west = self.get_available_ports(request)
+
+        print('connection', east, west)
+        if east == None:
+            return Response('No east port number ' + str(e), content_type="text/plain")
+        if west == None:
+            return Response('No west port number ' + str(w), content_type="text/plain")
+
+        # create connection
+        connection = Connection.create(east, west)
+        connection.save()
+        return Response(request.data)
+
+    def disconnect(self, request):
+        east, west = self.get_available_ports(request)
+
+        print('disconnection', east, west)
+        if east == None:
+            return Response('No east port number ' + str(e), content_type="text/plain")
+        if west == None:
+            return Response('No west port number ' + str(w), content_type="text/plain")
+
+        # create connection
+        conns = Connection.objects.all().filter(disconnected_date=None)
+        for c in conns:
+            print(c)
+            if c.east == east and c.west == west:
+                c.disconnected_date = datetime.now()
+                c.save()
+                print('disconnect', c)
+
+        return Response(request.data)
+
+    def get_available_ports(self, request):
         east, west = None, None
 
         e = int(request.data['east'])
@@ -91,21 +132,13 @@ class ConnectionList(APIView):
         for p in ports:
             if p.direction == 'E' and p.number == e:
                 east = p
-                print 'east', east
+                print('east', east)
             if p.direction == 'W' and p.number == w:
                 west = p
-                print 'west', west
+                print('west', west)
 
-        print 'connection', east, west
-        if east == None:
-            return Response('No east port number ' + str(e), content_type="text/plain")
-        if west == None:
-            return Response('No west port number ' + str(w), content_type="text/plain")
+        return east, west
 
-        # create connection
-        connection = Connection.create(east, west)
-        connection.save()
-        return Response(request.data)
 
 
 class AlarmList(APIView):
