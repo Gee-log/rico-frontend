@@ -20,5 +20,9 @@ class AlarmModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Alarm, AlarmModelAdmin)
 
+class DatalogModelAdmin(admin.ModelAdmin):
+    list_display = []
+    class Meta:
+        model = Datalog
 
 

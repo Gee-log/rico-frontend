@@ -9,35 +9,41 @@ from django.template.response import TemplateResponse
 from personal.models import Connection, Port, Alarm, Datalog
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer
 from datetime import datetime
-
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'personal/header.html')
 
-
+@csrf_exempt
 def portconnection(request):
+    if request.method == 'POST':
+        east = request.POST['east']
+        west = request.POST['west']
+
+        Connection.objects.create(
+            east = east,
+            west = west
+        )
+
+        return HttpResponse('')
+
     data = Port.objects.all()
     data2 = Connection.objects.all()
     return TemplateResponse(request, 'personal/portconnection.html', {"data": data, "data2": data2})
-
 
 def connection(request):
     data = Connection.objects.all()
     return TemplateResponse(request, 'personal/connection.html', {"data": data})
 
-
 def setting(request):
     return render(request, 'personal/setting.html')
-
 
 def alarm(request):
     data = Alarm.objects.all()
     return render(request, 'personal/alarm.html', {"data": data})
 
-
 def alarm_history(request):
     return render(request, 'personal/alarm_history.html')
-
 
 class PortList(APIView):
 
@@ -69,7 +75,7 @@ class ConnectionList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-
+        print(request.data)
         # validate inputs
         if 'action' not in request.data:
             return Response('No action', content_type="text/plain")
@@ -148,9 +154,6 @@ class AlarmList(APIView):
         alarm = Alarm.create(request.data["alarm"], request.data["detail"])
         alarm.save()
         return Response(request.data)
-
-
-
 
 # class MyView(View):
 
