@@ -91,7 +91,7 @@ $(document).ready(function () {
 
 
 
-    $("#Disconnect").click(function () {
+    $("#Disconnect").click(function (e) {
         $("td").removeClass('selected');
 
         $("#" + selectedEastPortId).removeClass('connected');
@@ -101,6 +101,21 @@ $(document).ready(function () {
             selectedWestPortId);
 
         console.log(array);
+
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '/connections/',
+            data: {
+                east: selectedEastPortId.substring(1),
+                west: selectedWestPortId.substring(1),
+                action: "disconnect"
+            },
+            success: function (e) {
+                console.log(e);
+            }
+        });
     });
 
     function isSelectBoth(selectedEastPortId, selectedWestPortId) {
