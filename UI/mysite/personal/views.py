@@ -70,6 +70,13 @@ class DatalogList(APIView):
 class ConnectionList(APIView):
 
     def get(self, request):
+        print('ConnectionList get', request.GET)
+        if 'act' in request.GET and request.GET['act'] == 'connected':
+            conns = Connection.objects.all().filter(disconnected_date=None)
+            obj = dict()
+            for c in conns:
+                obj[str(c.east)] = str(c.west)
+            return Response(obj)
         datas = Connection.objects.all()
         serializer = ConnectionSerializer(datas, many=True)
         return Response(serializer.data)
