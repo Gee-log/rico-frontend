@@ -5,6 +5,7 @@ var array = [];
 
 $(document).ready(function () {
 
+    setConnectedPort();
     // if (localStorage.getItem('portValues') == null) {
     //     var array = [];
     // } else {
@@ -66,6 +67,7 @@ $(document).ready(function () {
             },
             success: function (e) {
                 console.log(e);
+                setConnectedPort();
             }
         });
 
@@ -110,6 +112,7 @@ $(document).ready(function () {
             },
             success: function (e) {
                 console.log(e);
+                setConnectedPort();
             }
         });
     });
@@ -144,21 +147,36 @@ $(document).ready(function () {
     //     }
     // }
 
-    $.ajax({
-        type: 'GET',
-        url: '/connections/?act=connected',
-        data: {
-            east: selectedEastPortId,
-            west: selectedWestPortId,
-        },
-        success: function (data) {
-            connected_port = data;
-            for(i in connected_port){
-                $("#"+i).addClass('connected');
-                $("#"+ connected_port[i]).addClass('connected');
-                console.log(i + " : " + connected_port[i]);
+    function setConnectedPort() {
+        $.ajax({
+            type: 'GET',
+            url: '/connections/',
+            data: {
+                act: "connected"
+            },
+            success: function (data) {
+                connected_port = data;
+
+                for (i=0; i<144; i++) {
+                    $("#E" + i).removeClass('connected');
+                    $("#TE" + i).attr('data-original-title', '')
+                    $("#W" + i).removeClass('connected');
+                    $("#TW" + i).attr('data-original-title', '')
+                }
+
+                for(i in connected_port){
+                    var pre = 'Connected to ';
+                    $("#"+i).addClass('connected');
+                    $("#"+ connected_port[i]).addClass('connected');
+                    $("#T" + i).attr('data-original-title', pre + connected_port[i]);
+                    $("#T" + connected_port[i]).attr('data-original-title', pre + i);
+                    console.log(i + " : " + connected_port[i]);
+                }
             }
-        }
-    });
+        });
+    }
+
+    setConnectedPort();
+
 
 });

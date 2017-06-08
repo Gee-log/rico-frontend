@@ -43,7 +43,7 @@
                     <tr>
                         {% block content %} {% for port in data %} {% if port.direction == 'E' %}
                         <td id="E{{ port.number }}" class="East">
-                            <div data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
+                            <div id="TE{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                 {{ port.number }}
                             </div>
                         </td>
@@ -65,7 +65,7 @@
                     <tr>
                         {% for port in data %} {% if port.direction == 'W' %}
                         <td id="W{{ port.number }}" class="West">
-                            <div data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
+                            <div id="TW{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                 {{ port.number }}
                             </div>
                         </td>
