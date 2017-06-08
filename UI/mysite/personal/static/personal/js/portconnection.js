@@ -3,8 +3,6 @@ var selectedEastPortId = undefined;
 var selectedWestPortId = undefined;
 var array = [];
 
-
-
 $(document).ready(function () {
 
     // if (localStorage.getItem('portValues') == null) {
@@ -27,7 +25,6 @@ $(document).ready(function () {
         //     return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
         // });
 
-
     });
 
     $('.West').click(function () {
@@ -46,8 +43,9 @@ $(document).ready(function () {
 
         $("td").removeClass('selected');
 
-        $("#" + selectedEastPortId).addClass('connected');
-        $("#" + selectedWestPortId).addClass('connected');
+        // Not using right now !
+        // $("#" + selectedEastPortId).addClass('connected');
+        // $("#" + selectedWestPortId).addClass('connected');
         $("#" + selectedEastPortId).removeClass('disconnected');
         $("#" + selectedWestPortId).removeClass('disconnected');
 
@@ -88,8 +86,6 @@ $(document).ready(function () {
     //         success: function() { console.log("Thanks!"); },
     //         failure: function() { console.log("Error!") }
     //     });
-
-
 
     $("#Disconnect").click(function (e) {
         $("td").removeClass('selected');
@@ -141,11 +137,28 @@ $(document).ready(function () {
         // }
     }
 
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            alert(xmlhttp.responseText);
-        }
-    }
+    // Not using right now !
+    // xmlhttp.onreadystatechange = function () {
+    //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    //         alert(xmlhttp.responseText);
+    //     }
+    // }
 
+    $.ajax({
+        type: 'GET',
+        url: '/connections/?act=connected',
+        data: {
+            east: selectedEastPortId,
+            west: selectedWestPortId,
+        },
+        success: function (data) {
+            connected_port = data;
+            for(i in connected_port){
+                $("#"+i).addClass('connected');
+                $("#"+ connected_port[i]).addClass('connected');
+                console.log(i + " : " + connected_port[i]);
+            }
+        }
+    });
 
 });

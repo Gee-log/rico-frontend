@@ -43,7 +43,8 @@ def alarm(request):
     return render(request, 'personal/alarm.html', {"data": data})
 
 def alarm_history(request):
-    return render(request, 'personal/alarm_history.html')
+    data = Alarm.objects.all()
+    return render(request, 'personal/alarm_history.html', {"data": data})
 
 class PortList(APIView):
 
