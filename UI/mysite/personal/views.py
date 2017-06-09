@@ -154,7 +154,15 @@ class ConnectionList(APIView):
 class AlarmList(APIView):
 
     def get(self, request):
-        alarms = Alarm.objects.all()
+        print request.GET
+        if 'since' in request.GET:
+            s = datetime.fromtimestamp(float(request.GET['since']))
+            now = datetime.now()
+            alarms = Alarm.objects.filter(timestamp__range=(s,now)).order_by('-timestamp')
+            print('alarms', len(alarms))
+        else:
+            alarms = Alarm.objects.all()
+
         serializer = AlarmSerializer(alarms, many=True)
         return Response(serializer.data)
 
