@@ -39,19 +39,17 @@
     </thead>
     <tbody>
       {% block content %}
-      {% for alarm in data %}
           <tr>
             <td>
-              {{ alarm.alarm }}
+              {{ data.alarm }}
             </td>
             <td>
-              {{ alarm.detail }}
+              {{ data.detail }}
             </td>
             <td>
-              {{ alarm.timestamp }}
+              {{ data.timestamp }}
             </td>
           </tr>
-      {% endfor %}
       {% endblock %}
     </tbody>
   </table>

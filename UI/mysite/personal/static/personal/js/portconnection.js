@@ -157,17 +157,17 @@ $(document).ready(function () {
             success: function (data) {
                 connected_port = data;
 
-                for (i=0; i<144; i++) {
+                for (i = 0; i < 144; i++) {
                     $("#E" + i).removeClass('connected');
                     $("#TE" + i).attr('data-original-title', '')
                     $("#W" + i).removeClass('connected');
                     $("#TW" + i).attr('data-original-title', '')
                 }
 
-                for(i in connected_port){
+                for (i in connected_port) {
                     var pre = 'Connected to ';
-                    $("#"+i).addClass('connected');
-                    $("#"+ connected_port[i]).addClass('connected');
+                    $("#" + i).addClass('connected');
+                    $("#" + connected_port[i]).addClass('connected');
                     $("#T" + i).attr('data-original-title', pre + connected_port[i]);
                     $("#T" + connected_port[i]).attr('data-original-title', pre + i);
                     console.log(i + " : " + connected_port[i]);
@@ -177,6 +177,5 @@ $(document).ready(function () {
     }
 
     setConnectedPort();
-
 
 });

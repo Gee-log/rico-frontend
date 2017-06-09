@@ -39,7 +39,7 @@ def setting(request):
     return render(request, 'personal/setting.html')
 
 def alarm(request):
-    data = Alarm.objects.all()
+    data = Alarm.objects.latest('timestamp')
     return render(request, 'personal/alarm.html', {"data": data})
 
 def alarm_history(request):

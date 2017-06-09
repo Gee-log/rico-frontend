@@ -41,7 +41,7 @@
             </thead>
             <tbody>
                   {% block content %}
-                  {% for connection in data %}
+                  {% for connection in data|dictsort:"connected_date" %}
                   {% if connection.connected_date is not null %}
                   <tr>
                      <td>
