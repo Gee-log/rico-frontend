@@ -1,82 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+   <head>
       <title>Connection - XENOPTICS</title>
-      <meta charset="utf-8" /> {% load staticfiles %}
+      <meta charset="utf-8" />
+      {% load staticfiles %}
       <!-- Datalog CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/datalog.css' %}" type="text/css" />
+      <link rel="stylesheet" href="{% static 'personal/css/datalog.css' %}" type="text/css"/>
       <!-- Boostrap CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css" />
+      <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css"/>
       <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content = "width=device-width, initial-scale=1.0">
       <!-- Jquery -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<!-- Header -->
-<div class="jumbotron" align="center">
+   </head>
+   <!-- Header -->
+   <div class="jumbotron" align="center">
       <div class="container-fluid">
-            <div class="col-sm-6">
-                  <h1>Connection</h1>
-            </div>
-            <div class="col-sm-6">
-                  <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
-            </div>
+         <div class="col-sm-6">
+            <h1>Connection</h1>
+         </div>
+         <div class="col-sm-6">
+            <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
+         </div>
       </div>
-</div>
-<hr>
-<!-- End Header -->
-<!-- Table -->
-<div class="container-fluid">
-      <table class="table">
+   </div>
+   <hr>
+   <!-- End Header -->
+   <!-- Table -->
+   <div class="container-fluid">
+         <table class="table">
             <thead>
-                  <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Type</th>
-                        <th>West Port</th>
-                        <th>East Port</th>
-                  </tr>
+               <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Type</th>
+                  <th>West Port</th>
+                  <th>East Port</th>
+               </tr>
             </thead>
             <tbody>
-                  {% block content %} {% for connection in data|dictsort:"connected_date" %}
+                  {% block content %}
+                  {% for connection in data|dictsort:"connected_date" %}
+                  {% if connection.connected_date is not null %}
                   <tr>
-                        <td>
-                              {{ connection.connected_date|date:'d/m/Y' }}
-                        </td>
-                        <td>
-                              {{ connection.connected_date|time:'H:i:s A' }}
-                        </td>
-                        <td>
-                              {{ "connected" }}
-                        </td>
-                        <td>
-                              {{ connection.west }}
-                        </td>
-                        <td>
-                              {{ connection.east }}
-                        </td>
+                     <td>
+                        {{ connection.connected_date|date:'d/m/Y' }}
+                     </td>
+                     <td>
+                        {{ connection.connected_date|time:'H:i:s A' }}
+                     </td>
+                     <td>
+                        {{ "Connected" }}
+                     </td>
+                     <td> 
+                        {{ connection.east }} 
+                     </td>
+                      <td> 
+                        {{ connection.west }} 
+                     </td>
                   </tr>
-                  {% endfor %} {% endblock %}
+                  {% if connection.disconnected_date is not null %}
+                   <tr>
+                     <td>
+                        {{ connection.disconnected_date|date:'d/m/Y' }}
+                     </td>
+                     <td>
+                        {{ connection.disconnected_date|time:'H:i:s A' }}
+                     </td>
+                     <td>
+                        {{ "Disconnected" }}
+                     </td>
+                     <td> 
+                        {{ connection.east }} 
+                     </td>
+                      <td> 
+                        {{ connection.west }} 
+                     </td>
+                  </tr>
+                   {% endif %}
+                   {% endif %}             
+                  {% endfor %}
+                  {% endblock %} 
             </tbody>
-      </table>
-</div>
-<!-- End Table -->
-<br>
-<!-- Footer -->
-<footer class="container-fluid">
+         </table>
+   </div>
+   <!-- End Table -->
+   <br>
+   <!-- Footer -->   
+   <footer class="container-fluid">
       <div class="col-sm-12" align="center">
-            <a href=# class="btn btn-primary responsive-width">Clear</a>
-            <a href=# class="btn btn-primary responsive-width">Save</a>
-            <a href="/" class="btn btn-primary responsive-width">Back</a>
+         <a href=# class="btn btn-primary responsive-width">Clear</a>
+         <a href="\save" class="btn btn-primary responsive-width">Save</a>
+         <a href="/" class="btn btn-primary responsive-width">Back</a>           
       </div>
-</footer>
-<!-- End Footer-->
-<br>
-<!-- Script -->
-<script src="{% static 'personal/js/connection.js' %}" type="text/javascript"></script>
-<!-- End Script -->
-</body>
-
+   </footer>      
+   <!-- End Footer-->
+   <br>
+   </body>
 </html>
