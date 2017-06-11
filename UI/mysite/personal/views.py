@@ -46,33 +46,6 @@ def alarm_history(request):
     data = Alarm.objects.all()
     return render(request, 'personal/alarm_history.html', {"data": data})
 
-def save(request):
-    import os
-    from django.core.files import File
-    from django.conf import settings
-    import mimetypes
-    import MySQLdb as mysql
-    import sys
-    import StringIO
-
-    #connect database
-    con = mysql.connect('localhost', 'root', 'root', 'project_rico')
-    cur = con.cursor()
-    cur.execute("select * from personal_connection")
-
-    #write file
-    data = StringIO.StringIO()
-    for row in cur:
-        print>>data, row[1], ',', row[2], ',', row[4], ',', row[5]
-    con.close()
-
-    #load file
-    data.seek(0)
-    download_name = 'connection.csv'
-    response     = HttpResponse(data,content_type='text/csv')    
-    response['Content-Disposition'] = "attachment; filename=%s"%download_name
-    return response
-
 class PortList(APIView):
 
     def get(self, request):
@@ -82,7 +55,6 @@ class PortList(APIView):
 
     def post(self, request):
         return Response(request.data)
-
 
 class DatalogList(APIView):
 
@@ -182,15 +154,7 @@ class ConnectionList(APIView):
 class AlarmList(APIView):
 
     def get(self, request):
-        print request.GET
-        if 'since' in request.GET:
-            s = datetime.fromtimestamp(float(request.GET['since']))
-            now = datetime.now()
-            alarms = Alarm.objects.filter(timestamp__range=(s,now)).order_by('-timestamp')
-            print('alarms', len(alarms))
-        else:
-            alarms = Alarm.objects.all()
-
+        alarms = Alarm.objects.all()
         serializer = AlarmSerializer(alarms, many=True)
         return Response(serializer.data)
 

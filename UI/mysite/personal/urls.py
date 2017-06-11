@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^connections/', views.ConnectionList.as_view()),
     url(r'^alarms/', views.AlarmList.as_view()),
     url(r'^datalogs/', views.DatalogList.as_view()),
-    url(r'^save/', views.save, name='connection_log'),
     # url(r'^mine/$', MyView.as_view(), name='my-view'),
     ]
 
