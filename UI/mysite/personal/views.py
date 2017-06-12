@@ -32,14 +32,14 @@ def portconnection(request):
     return TemplateResponse(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
 def connection(request):
-    data = Connection.objects.all()
+    data = ConnectionHistory.objects.all()
     return render(request, 'personal/connection.html', {"data": data})
 
 def setting(request):
     return render(request, 'personal/setting.html')
 
 def alarm(request):
-    data = Alarm.objects.latest('timestamp')
+    data = Alarm.objects.all()
     return render(request, 'personal/alarm.html', {"data": data})
 
 def alarm_history(request):
@@ -111,7 +111,10 @@ class ConnectionList(APIView):
         # create connection
         connection = Connection.create(east, west)
         connection.save()
+        connection_history = ConnectionHistory.create(east, west, 'C')
+        connection_history.save()
         return Response(request.data)
+
 
     def disconnect(self, request):
         east, west = self.get_available_ports(request)
@@ -129,6 +132,8 @@ class ConnectionList(APIView):
             if c.east == east and c.west == west:
                 c.disconnected_date = datetime.now()
                 c.save()
+                connection_history = ConnectionHistory.create(east, west, 'D')
+                connection_history.save()
                 print('disconnect', c)
 
         return Response(request.data)
@@ -158,19 +163,14 @@ class ConnectionHistoryList(APIView):
         serializer = ConnectionHistorySerializer(connHistory, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
-        connectHistory = ConnectionHistory.create(request.data["east"], request.data["west"], request["switching_type"])
-        connectHistory.save()
-        return Response(request.data)
-
 class AlarmList(APIView):
 
     def get(self, request):
-        print request.GET
+        print (request.GET)
         if 'since' in request.GET:
             s = datetime.fromtimestamp(float(request.GET['since']))
             now = datetime.now()
-            alarms = Alarm.objects.filter(timestamp__range=(s,now)).order_by('-timestamp')
+            alarms = Alarm.objects.filter(timestamp__range=(s,now))
             print('alarms', len(alarms))
         else:
             alarms = Alarm.objects.all()
@@ -182,11 +182,3 @@ class AlarmList(APIView):
         alarm = Alarm.create(request.data["alarm"], request.data["detail"])
         alarm.save()
         return Response(request.data)
-
-# class MyView(View):
-
-#     def get(self, request, *args, **kwargs):
-#         return HttpResponse('This is GET request')
-
-#     def post(self, request, *args, **kwargs):
-#         return HttpResponse('This is POST request')

@@ -74,7 +74,7 @@ class ConnectionHistory(models.Model):
         return connecthistory
 
     class Meta:
-        ordering = ['east']
+        ordering = ['-timestamp']
 
     def __str__(self):
         return 'Swiching Type:' + self.switching_type + ' East ' + str(self.east.number) + ' -> West ' + str(self.west.number) + ': ' + str(self.timestamp) 
@@ -96,7 +96,7 @@ class Alarm(models.Model):
         return alarms
 
     class Meta:
-        ordering = ['timestamp']
+        ordering = ['-timestamp']
 
     def __str__(self):
         return self.alarm 

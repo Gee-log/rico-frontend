@@ -3,9 +3,10 @@ var selectedEastPortId = undefined;
 var selectedWestPortId = undefined;
 var array = [];
 
-$(document).ready(function() {
+$(document).ready(function () {
 
   setConnectedPort();
+
   // if (localStorage.getItem('portValues') == null) {
   //     var array = [];
   // } else {
@@ -14,7 +15,7 @@ $(document).ready(function() {
 
   $('[data-toggle="tooltip"]').tooltip();
 
-  $('.East').click(function() {
+  $('.East').click(function () {
     $('.East').removeClass('selected');
     $(this).addClass('selected');
     selectedEastPortId = $(this).attr('id');
@@ -28,7 +29,7 @@ $(document).ready(function() {
 
   });
 
-  $('.West').click(function() {
+  $('.West').click(function () {
     $('.West').removeClass('selected');
     $(this).addClass('selected');
     selectedWestPortId = $(this).attr('id');
@@ -37,7 +38,7 @@ $(document).ready(function() {
     console.log("Current WestPort value = " + selectedWestPortId);
   });
 
-  $("#Connect").click(function(e) {
+  $("#Connect").click(function (e) {
 
     array.push("{" + selectedEastPortId + " " + selectedWestPortId + "}");
     // localStorage.setItem('portValues', JSON.stringify(array));
@@ -65,11 +66,13 @@ $(document).ready(function() {
         west: selectedWestPortId.substring(1),
         action: "connect"
       },
-      success: function(e) {
+      success: function (e) {
         console.log(e);
         setConnectedPort();
+
       }
     });
+
 
   });
   //     $.each(array, function(index, value){
@@ -89,7 +92,7 @@ $(document).ready(function() {
   //         failure: function() { console.log("Error!") }
   //     });
 
-  $("#Disconnect").click(function(e) {
+  $("#Disconnect").click(function (e) {
     $("td").removeClass('selected');
 
     $("#" + selectedEastPortId).removeClass('connected');
@@ -101,32 +104,23 @@ $(document).ready(function() {
     console.log(array);
 
     e.preventDefault();
+    var urls = ['/connections/'];
 
-    $.ajax({
-      type: 'POST',
-      url: '/connections/',
-      data: {
-        east: selectedEastPortId.substring(1),
-        west: selectedWestPortId.substring(1),
-        action: "disconnect"
-      },
-      success: function(e) {
-        console.log(e);
-        setConnectedPort();
-      }
-    });
-
-    $.ajax({
-      type: 'POST',
-      url: '/connectionhistorys/',
-      data: {
-        east: selectedEastPortId.substring(1),
-        west: selectedWestPortId.substring(1),
-      },
-      success: function(e) {
-        console.log("Hello world!");
-      }
-    });
+    $.each(urls, function (i, u) {
+      $.ajax(u,
+        {
+        type: 'POST',
+        data: {
+          east: selectedEastPortId.substring(1),
+          west: selectedWestPortId.substring(1),
+          action: "disconnect"
+        },
+        success: function (e) {
+          console.log(e);
+          setConnectedPort();
+        }
+      });
+    })
   });
 
   function isSelectBoth(selectedEastPortId, selectedWestPortId) {
@@ -166,7 +160,7 @@ $(document).ready(function() {
       data: {
         act: "connected"
       },
-      success: function(data) {
+      success: function (data) {
         connected_port = data;
 
         for (i = 0; i < 144; i++) {
@@ -189,5 +183,6 @@ $(document).ready(function() {
   }
 
   setConnectedPort();
+
 
 });
