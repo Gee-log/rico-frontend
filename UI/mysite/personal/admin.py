@@ -1,8 +1,9 @@
 from django.contrib import admin
-from personal.models import Datalog, Port, Connection, Alarm
+from personal.models import Datalog, Port, Connection, Alarm, ConnectionHistory
 
 admin.site.register(Datalog)
 admin.site.register(Port)
+admin.site.register(ConnectionHistory)
 
 
 class ConnectionModelAdmin(admin.ModelAdmin):

@@ -115,6 +115,18 @@ $(document).ready(function() {
         setConnectedPort();
       }
     });
+
+    $.ajax({
+      type: 'POST',
+      url: '/connectionhistorys/',
+      data: {
+        east: selectedEastPortId.substring(1),
+        west: selectedWestPortId.substring(1),
+      },
+      success: function(e) {
+        console.log("Hello world!");
+      }
+    });
   });
 
   function isSelectBoth(selectedEastPortId, selectedWestPortId) {

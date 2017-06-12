@@ -6,8 +6,8 @@ from django.views.generic import View
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.template.response import TemplateResponse
-from personal.models import Connection, Port, Alarm, Datalog
-from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer
+from personal.models import Connection, Port, Alarm, Datalog, ConnectionHistory
+from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer, ConnectionHistorySerializer
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 
@@ -33,7 +33,7 @@ def portconnection(request):
 
 def connection(request):
     data = Connection.objects.all()
-    return TemplateResponse(request, 'personal/connection.html', {"data": data})
+    return render(request, 'personal/connection.html', {"data": data})
 
 def setting(request):
     return render(request, 'personal/setting.html')
@@ -150,6 +150,18 @@ class ConnectionList(APIView):
                 print('west', west)
 
         return east, west
+
+class ConnectionHistoryList(APIView):
+
+    def get(self, request):
+        connHistory = ConnectionHistory.objects.all()
+        serializer = ConnectionHistorySerializer(connHistory, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        connectHistory = ConnectionHistory.create(request.data["east"], request.data["west"], request["switching_type"])
+        connectHistory.save()
+        return Response(request.data)
 
 class AlarmList(APIView):
 

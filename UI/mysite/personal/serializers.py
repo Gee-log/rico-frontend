@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from personal.models import Port, Connection, Alarm, Datalog
+from personal.models import Port, Connection, Alarm, Datalog, ConnectionHistory
 
 class PortSerializer(serializers.ModelSerializer):
 
@@ -24,3 +24,9 @@ class DatalogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Datalog
         fields = ('title', 'date', 'body')
+
+class ConnectionHistorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ConnectionHistory
+        fields = ('east', 'west', 'switching_type', 'timestamp')
