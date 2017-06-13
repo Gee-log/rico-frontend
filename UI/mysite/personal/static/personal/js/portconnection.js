@@ -280,6 +280,9 @@ $(document).ready(function () {
     });
   }
 
+<<<<<<< HEAD
+>>>>>>> 761ae02... Add "note" into import data
+=======
 >>>>>>> 761ae02... Add "note" into import data
   setConnectedPort();
 
