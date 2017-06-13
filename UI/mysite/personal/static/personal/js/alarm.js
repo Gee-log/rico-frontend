@@ -30,6 +30,11 @@ function randomTime() {
   return Math.floor((Math.random() * 10000) + 10000);
 }
 
+$('#clear').click(function () {
+  $('#clear').attr('disabled', 'disabled');
+  $('#save').attr('disabled', 'disabled');
+});
+
 function createTable(data) {
   $('#records').empty();
 
@@ -65,6 +70,9 @@ function createTable(data) {
 
     //row added to end of table body
     tblBody.appendChild(row);
+
+    $("#clear").removeAttr('disabled');
+    $("#save").removeAttr('disabled');
   }
 }
 
@@ -88,7 +96,6 @@ function randomAlert() {
     randomAlert();
   }, randomTime());
 }
-
 
 //
 // init

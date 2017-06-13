@@ -121,5 +121,18 @@ background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
 
 .jumbotron {
 padding-top: 40px !important;
+padding-bottom: 47px !important;
 background-color: #fff !important;
+}
+
+.header-line {
+    border-top: 3px solid #f42424;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: 1090px;
+    z-index: 1050;
+    transition: box-shadow cubic-bezier(.165, .84, .44, 1) .25s;
+    box-sizing: border-box;
 }
