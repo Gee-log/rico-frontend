@@ -84,8 +84,11 @@ $(document).ready(function () {
   });
 
   $("#Disconnect").click(function (e) {
+
+    $("td").removeClass('selected');
     $("#" + selectedEastPortId).removeClass('connected');
     $("#" + selectedWestPortId).removeClass('connected');
+    $("#Disconnect").attr('disabled', 'disabled');
 
     console.log("Disconnecting EastPortID " + selectedEastPortId + " To WestPortID " +
       selectedWestPortId);
