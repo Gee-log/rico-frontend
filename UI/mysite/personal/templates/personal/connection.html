@@ -1,85 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-      <title>Connection History - XENOPTICS</title>
-      <meta charset="utf-8" /> {% load staticfiles %}
-      <!-- Datalog CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/datalog.css' %}" type="text/css" />
-      <!-- Boostrap CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css" />
-      <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- Jquery -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<!-- Header -->
-<body>
-      <header class="header-line"></header>
-<div class="jumbotron" align="center">
+  <head>
+    <title>Connection History - XENOPTICS</title>
+    <meta charset="utf-8" />
+    {% load staticfiles %}
+    <!-- Icon -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}"/>
+    <!-- Datalog CSS -->
+    <link rel="stylesheet" href="{% static 'personal/css/datalog.css' %}" type="text/css" />
+    <!-- Boostrap CSS -->
+    <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <!-- Header -->
+  <body>
+    <header class="header-line"></header>
+    <div class="jumbotron" align="center">
       <div class="container-fluid">
-            <div class="col-sm-6">
-                  <h1>Connection History</h1>
-            </div>
-            <div class="col-sm-6">
-                  <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
-            </div>
+        <div class="col-sm-6">
+          <h1>Connection History</h1>
+        </div>
+        <div class="col-sm-6">
+          <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
+        </div>
       </div>
-</div>
-<hr>
-<!-- End Header -->
-<!-- Table -->
-<div class="container-fluid">
+    </div>
+    <hr>
+    <!-- End Header -->
+    <!-- Table -->
+    <div class="container-fluid">
       <table class="table">
-            <thead>
-                  <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Type</th>
-                        <th>West Port</th>
-                        <th>East Port</th>
-                  </tr>
-            </thead>
-            <tbody>
-                  {% block content %} {% for connectionhistory in data %}
-                  <tr>
-                        <td>
-                              {{ connectionhistory.timestamp|date:'d/m/Y' }}
-                        </td>
-                        <td>
-                              {{ connectionhistory.timestamp|time:'H:i:s A' }}
-                        </td>
-                        <td>
-                              {% if connectionhistory.switching_type == 'C' %}
-                              {{ "connected" }}
-                              {% endif %}
-                              {% if connectionhistory.switching_type == 'D' %}
-                              {{ "disconnected" }}
-                              {% endif %}
-                        </td>
-                        <td>
-                              {{ connectionhistory.west }}
-                        </td>
-                        <td>
-                              {{ connectionhistory.east }}
-                        </td>
-                  </tr>
-                  {% endfor %} {% endblock %}
-            </tbody>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Type</th>
+            <th>West Port</th>
+            <th>East Port</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% block content %} {% for connectionhistory in data %}
+          <tr>
+            <td>
+              {{ connectionhistory.timestamp|date:'d/m/Y' }}
+            </td>
+            <td>
+              {{ connectionhistory.timestamp|time:'H:i:s A' }}
+            </td>
+            <td>
+              {% if connectionhistory.switching_type == 'C' %}
+              {{ "connected" }}
+              {% endif %}
+              {% if connectionhistory.switching_type == 'D' %}
+              {{ "disconnected" }}
+              {% endif %}
+            </td>
+            <td>
+              {{ connectionhistory.west }}
+            </td>
+            <td>
+              {{ connectionhistory.east }}
+            </td>
+          </tr>
+          {% endfor %} {% endblock %}
+        </tbody>
       </table>
-</div>
-<!-- End Table -->
-<br>
-<!-- Footer -->
-<footer class="container-fluid">
+    </div>
+    <!-- End Table -->
+    <br>
+    <!-- Footer -->
+    <footer class="container-fluid">
       <div class="col-sm-12" align="center">
-            <a href=# class="btn btn-primary responsive-width">Save</a>
-            <a href="/" class="btn btn-primary responsive-width">Back</a>
+        <a href=# class="btn btn-primary responsive-width">Save</a>
+        <a href="/" class="btn btn-primary responsive-width">Back</a>
       </div>
-</footer>
-<!-- End Footer-->
-<br>
-</body>
-
+    </footer>
+    <!-- End Footer-->
+    <br>
+  </body>
 </html>
