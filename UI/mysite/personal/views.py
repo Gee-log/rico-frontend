@@ -46,6 +46,45 @@ def alarm_history(request):
     data = Alarm.objects.all()
     return render(request, 'personal/alarm_history.html', {"data": data})
 
+<<<<<<< HEAD
+=======
+def save(request, question_id):
+    import StringIO
+    import csv
+
+    qus = question_id
+
+    #write file
+    data = StringIO.StringIO()
+    #load file
+    data.seek(0)
+    if qus == '1': #connection_log
+        download_name = 'connection_log.csv'
+        response = HttpResponse(data,content_type='text/csv')
+        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        writer = csv.writer(response)
+        connection = ConnectionHistory.objects.all()
+        writer.writerow(['Time', 'Type','West Port', 'East Port'])
+        for con in connection:
+            if con.switching_type == 'C':
+                writer.writerow([timezone.localtime(con.timestamp), 'connected', con.west, con.east])
+
+            else:
+                writer.writerow([timezone.localtime(con.timestamp), 'disconnected', con.west, con.east])
+
+    elif qus == '3': #alarmHistory_log
+        download_name = 'alarmHistory_log.csv'
+        response = HttpResponse(data,content_type='text/csv')
+        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        writer = csv.writer(response)
+        connection = Alarm.objects.all()
+        writer.writerow(['Alarm', 'Detail','Time'])
+        for con in connection:
+             writer.writerow([con.alarm, con.detail, timezone.localtime(con.timestamp)])
+
+    return response
+
+>>>>>>> fbe9f4e... add alarmHistory_log
 class PortList(APIView):
 
     def get(self, request):
