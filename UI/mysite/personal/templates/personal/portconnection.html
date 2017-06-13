@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Post Connection - XENOPTICS</title>
+    <title>Port Connection - XENOPTICS</title>
     <meta charset="utf-8" /> {% load staticfiles %}
     <!-- Icon -->
     <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}"/>
@@ -48,7 +48,7 @@
                         <tr>
                             {% block content %} {% for port in data %} {% if port.direction == 'E' %}
                             <td id="E{{ port.number }}" class="East">
-                                <div data-toggle="tooltip" data-placement="right" title="{{ port.note }}">
+                                <div data-toggle="tooltip" data-placement="left" title="{{ port.note }}">
                                     <div id="TE{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                         {{ port.number }}
                                     </div>

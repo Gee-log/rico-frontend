@@ -39,8 +39,8 @@
             <th>Date</th>
             <th>Time</th>
             <th>Type</th>
-            <th>West Port</th>
             <th>East Port</th>
+            <th>West Port</th>
           </tr>
         </thead>
         <tbody>
@@ -61,10 +61,10 @@
               {% endif %}
             </td>
             <td>
-              {{ connectionhistory.west }}
+              {{ connectionhistory.east }}
             </td>
             <td>
-              {{ connectionhistory.east }}
+              {{ connectionhistory.west }}
             </td>
           </tr>
           {% endfor %} {% endblock %}
