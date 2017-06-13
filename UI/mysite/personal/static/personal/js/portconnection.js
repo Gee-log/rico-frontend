@@ -196,6 +196,7 @@ $(document).ready(function () {
       data: {
         act: "connected"
       },
+<<<<<<< HEAD
       success: function (data) {
         connected_port = data;
 
@@ -218,6 +219,68 @@ $(document).ready(function () {
     });
   }
 
+=======
+      success: function(e) {
+        console.log(e);
+        setConnectedPort();
+      }
+    });
+
+  }
+
+  function isSelectBoth(selectedEastPortId, selectedWestPortId) {
+
+    if (selectedEastPortId && selectedWestPortId) {
+      $("#Connect").removeAttr('disabled');
+      $("#Disconnect").removeAttr('disabled');
+
+      // var alerted = localStorage.getItem('alerted') || '';
+      // if (alerted != 'yes') {
+      //   alert("EastPort and WestPort were selected. Unlock button!");
+      //   localStorage.setItem('alerted', 'yes');
+      // }
+    }
+  }
+
+  function isSelected(port) {
+    var isSelectedPort = $("#" + port).hasClass("selected");
+    console.log(isSelectedPort);
+
+    // if (isSelectedPort) {
+    //   $("#" + port).removeClass("selected");
+    // }
+  }
+
+  function setConnectedPort() {
+    $.ajax({
+      type: 'GET',
+      url: '/connections/',
+      data: {
+        act: "connected"
+      },
+      success: function (data) {
+        connected_port = data;
+
+        for (i = 0; i < 144; i++) {
+          $("#E" + i).removeClass('connected');
+          $("#TE" + i).attr('data-original-title', '')
+          $("#W" + i).removeClass('connected');
+          $("#TW" + i).attr('data-original-title', '')
+        }
+
+        for (i in connected_port) {
+          var pre = 'Connected to ';
+          $("#" + i).addClass('connected');
+          $("#" + connected_port[i]).addClass('connected');
+          $("#T" + i).attr('data-original-title', pre + connected_port[i]);
+          $("#T" + connected_port[i]).attr('data-original-title', pre + i);
+          console.log(i + " : " + connected_port[i]);
+        }
+      }
+    });
+  }
+
+>>>>>>> 761ae02... Add "note" into import data
   setConnectedPort();
 
 });
