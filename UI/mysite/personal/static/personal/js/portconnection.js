@@ -2,6 +2,7 @@ var xmlhttp = new XMLHttpRequest();
 var selectedEastPortId = undefined;
 var selectedWestPortId = undefined;
 var array = [];
+var eValue, wValue;
 
 $(document).ready(function () {
 
@@ -19,27 +20,38 @@ $(document).ready(function () {
     $('.East').removeClass('selected');
     $(this).addClass('selected');
     selectedEastPortId = $(this).attr('id');
-    isSelectBoth(selectedEastPortId, selectedWestPortId);
 
     console.log("Current EastPort value = " + selectedEastPortId);
 
     // $(this).attr(function (i, text) {
     //     return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
     // });
-
+    if (!$(this).hasClass('connected')) {
+      eValue = 0;
+      isSelectEast(eValue);
+    } else if ($(this).hasClass('connected')) {
+      eValue = 1;
+      isSelectEast(eValue);
+    }
   });
 
   $('.West').click(function () {
     $('.West').removeClass('selected');
     $(this).addClass('selected');
     selectedWestPortId = $(this).attr('id');
-    isSelectBoth(selectedEastPortId, selectedWestPortId);
 
     console.log("Current WestPort value = " + selectedWestPortId);
+
+    if (!$(this).hasClass('connected')) {
+      wValue = 0;
+      isSelectWest(wValue);
+    } else if ($(this).hasClass('connected')) {
+      wValue = 1;
+      isSelectWest(wValue);
+    }
   });
 
   $("#Connect").click(function (e) {
-
     array.push("{" + selectedEastPortId + " " + selectedWestPortId + "}");
     // localStorage.setItem('portValues', JSON.stringify(array));
 
@@ -72,8 +84,6 @@ $(document).ready(function () {
 
       }
     });
-
-
   });
   //     $.each(array, function(index, value){
   //         var eventE = new Object();
@@ -93,8 +103,6 @@ $(document).ready(function () {
   //     });
 
   $("#Disconnect").click(function (e) {
-    $("td").removeClass('selected');
-
     $("#" + selectedEastPortId).removeClass('connected');
     $("#" + selectedWestPortId).removeClass('connected');
 
@@ -109,33 +117,61 @@ $(document).ready(function () {
     $.each(urls, function (i, u) {
       $.ajax(u,
         {
-        type: 'POST',
-        data: {
-          east: selectedEastPortId.substring(1),
-          west: selectedWestPortId.substring(1),
-          action: "disconnect"
-        },
-        success: function (e) {
-          console.log(e);
-          setConnectedPort();
-        }
-      });
+          type: 'POST',
+          data: {
+            east: selectedEastPortId.substring(1),
+            west: selectedWestPortId.substring(1),
+            action: "disconnect"
+          },
+          success: function (e) {
+            console.log(e);
+            setConnectedPort();
+          }
+        });
     })
   });
 
-  function isSelectBoth(selectedEastPortId, selectedWestPortId) {
+  function isSelectEast(eValue) {
+    console.log("East Value : " + eValue);
+    unlockButton(eValue, wValue);
+    // if (selectedEastPortId + selectedWestPortId == 0) {
+    //   $("#Connect").removeAttr('disabled');
+    //   console.log("Number ja : " + (selectedEastPortId + selectedWestPortId));
+    // } else if (selectedEastPortId + selectedWestPortId == 1) {
+    //     $("#Disconnect").attr('disabled');
+    //     $("#Connect").attr('disabled');
+    //   } else if (selectedEastPortId + selectedWestPortId == 2) {
+    //       $("#Disconnect").removeAttr('disabled');
+    //     }
+  }
 
-    if (selectedEastPortId && selectedWestPortId) {
+  function isSelectWest(wValue) {
+    console.log("West Value : " + wValue);
+    unlockButton(eValue, wValue);
+  }
+
+  function unlockButton(eValue, wValue) {
+    var sumValue;
+    sumValue = eValue + wValue;
+
+    if (sumValue == 0) {
       $("#Connect").removeAttr('disabled');
+      console.log("Unlock connect");
+    } else if (sumValue == 1) {
+      $("#Connect").attr('disabled', 'disabled');
+      $("#Disconnect").attr('disabled', 'disabled');
+      console.log("Lock connect & disconnect");
+    } else if (sumValue == 2) {
       $("#Disconnect").removeAttr('disabled');
-
-      // var alerted = localStorage.getItem('alerted') || '';
-      // if (alerted != 'yes') {
-      //     alert("EastPort and WestPort were selected. Unlock button!");
-      //     localStorage.setItem('alerted', 'yes');
-      // }
+      console.log("Unlock disconnect & lock connect");
     }
   }
+
+  // var alerted = localStorage.getItem('alerted') || '';
+  // if (alerted != 'yes') {
+  //     alert("EastPort and WestPort were selected. Unlock button!");
+  //     localStorage.setItem('alerted', 'yes');
+  // }
 
   function isSelected(port) {
     var isSelectedPort = $("#" + port).hasClass("selected");
@@ -183,6 +219,5 @@ $(document).ready(function () {
   }
 
   setConnectedPort();
-
 
 });
