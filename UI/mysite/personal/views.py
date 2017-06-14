@@ -3,13 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse
 from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.template.response import TemplateResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from personal.models import Connection, Port, Alarm, Datalog, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer, ConnectionHistorySerializer
 from datetime import datetime
-from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'personal/header.html')
@@ -32,8 +33,22 @@ def portconnection(request):
     return TemplateResponse(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
 def connection(request):
-    data = ConnectionHistory.objects.all()
-    return render(request, 'personal/connection.html', {"data": data})
+    data_list = ConnectionHistory.objects.all()
+    paginator = Paginator(data_list, 15)
+
+    page = request.GET.get('page')
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+
+    context = {
+        "object_list": data,
+    }
+    return render(request, 'personal/connection.html', context)
+    # return render(request, 'personal/connection.html', {"data": data})
 
 def setting(request):
     return render(request, 'personal/setting.html')
@@ -43,8 +58,22 @@ def alarm(request):
     return render(request, 'personal/alarm.html', {"data": data})
 
 def alarm_history(request):
-    data = Alarm.objects.all()
-    return render(request, 'personal/alarm_history.html', {"data": data})
+    data_list = Alarm.objects.all()
+    paginator = Paginator(data_list, 15)
+
+    page = request.GET.get('page')
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+
+    context = {
+        "object_list": data,
+    }
+    return render(request, 'personal/alarm_history.html', context)
+    # return render(request, 'personal/alarm_history.html', {"data": data})
 
 class PortList(APIView):
 

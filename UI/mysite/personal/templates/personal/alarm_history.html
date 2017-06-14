@@ -42,7 +42,7 @@
       </tr>
     </thead>
     <tbody>
-      {% block content %} {% for alarm in data %}
+      {% block content %} {% for alarm in object_list %}
       <tr>
         <td>
           {{ alarm.alarm }}
@@ -54,9 +54,25 @@
           {{ alarm.timestamp }}
         </td>
       </tr>
-      {% endfor %} {% endblock %}
+      {% endfor %} 
     </tbody>
   </table>
+</div>
+<div class="container-fluid" align="center">
+  <div class="pagination">
+    <span class="step-links">
+      {% if object_list.has_previous %}
+        <a href="?page={{ object_list.previous_page_number }}">previous</a>
+      {% endif %}
+        <span class="current">
+      Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
+        </span>
+      {% if object_list.has_next %}
+        <a href="?page={{ object_list.next_page_number }}">next</a>
+      {% endif %}
+      {% endblock %}
+    </span>
+  </div>
 </div>
 <!-- End Body -->
 <br>
