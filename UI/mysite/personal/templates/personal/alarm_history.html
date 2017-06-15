@@ -18,7 +18,7 @@
 </head>
 <!-- Header -->
 
-<body>
+<body >
   <header class="header-line"></header>
   <div class="jumbotron" align="center">
     <div class="container-fluid">
@@ -38,16 +38,18 @@
       <div class="col-sm-8 col-sm-offset-2">
         <div class="input-group">
           <div class="input-group-btn search-panel">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="test">
                     	<span id="search_concept">Filter by</span> <span class="caret"></span>
                     </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#contains">Alarm</a></li>
-              <li><a href="#its_equal">Severity</a></li>
+            <ul class="dropdown-menu" role="menu" id="uItem">
+              <li value="0"><a href="#contains" >Alarm</a></li>
+              <li value="1"><a href="#contains" >Detail</a></li>
+              <li value="2"><a href="#contains" >Time</a></li>
+              <li value="3"><a href="#its_equal" >Severity</a></li>
             </ul>
           </div>
           <input type="hidden" name="search_param" value="all" id="search_param">
-          <input type="text" class="form-control" name="x" placeholder="Search term...">
+          <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" name="x" placeholder="Search term...">
           <span class="input-group-btn">
                     <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
           </span>
@@ -59,7 +61,7 @@
   <br>
   <!-- Table -->
   <div class="container-fluid">
-    <table class="table">
+    <table class="table" id="myTable">
       <thead>
         <tr>
           <th>Alarm</th>
@@ -69,6 +71,7 @@
         </tr>
       </thead>
       <tbody>
+        <!--{% block content %} {% for alarm_full in object_list|slice:":20" %}-->
         {% block content %} {% for alarm in object_list %}
         <tr>
           <td>
