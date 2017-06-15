@@ -262,6 +262,6 @@ class AlarmList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        alarm = Alarm.create(request.data["alarm"], request.data["detail"])
+        alarm = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
         alarm.save()
         return Response(request.data)

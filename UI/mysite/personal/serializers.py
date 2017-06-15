@@ -17,7 +17,7 @@ class AlarmSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Alarm
-        fields = ('alarm', 'timestamp', 'detail')
+        fields = ('alarm', 'timestamp', 'detail', 'severity')
 
 class DatalogSerializer(serializers.ModelSerializer):
 

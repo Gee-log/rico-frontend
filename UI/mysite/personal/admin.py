@@ -15,7 +15,7 @@ admin.site.register(Connection, ConnectionModelAdmin)
 
 
 class AlarmModelAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "detail" , "timestamp"]
+    list_display = ["__str__", "detail" , "timestamp", "severity"]
     class Meta:
         model = Alarm
 

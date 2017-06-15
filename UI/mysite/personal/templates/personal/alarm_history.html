@@ -6,7 +6,7 @@
   <meta charset="utf-8" /> {% load staticfiles %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Icon -->
-  <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}"/>
+  <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}" />
   <!-- Alarm CSS -->
   <link rel="stylesheet" href="{% static 'personal/css/alarm.css' %}" type="text/css" />
   <!-- Boostrap CSS -->
@@ -17,76 +17,106 @@
   <script src="{% static 'personal/js/bootstrap.min.js' %}" type="text/javascript"></script>
 </head>
 <!-- Header -->
+
 <body>
-<header class="header-line"></header>
-<div class="jumbotron" align="center">
-  <div class="container-fluid">
-    <div class="col-sm-6">
-      <h1>Alarm History</h1>
-    </div>
-    <div class="col-sm-6">
-      <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
+  <header class="header-line"></header>
+  <div class="jumbotron" align="center">
+    <div class="container-fluid">
+      <div class="col-sm-6">
+        <h1>Alarm History</h1>
+      </div>
+      <div class="col-sm-6">
+        <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
+      </div>
     </div>
   </div>
-</div>
-<hr>
-<!-- End Header -->
-<!-- Table -->
-<div class="container-fluid">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Alarm</th>
-        <th>Detail</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% block content %} {% for alarm in object_list %}
-      <tr>
-        <td>
-          {{ alarm.alarm }}
-        </td>
-        <td>
-          {{ alarm.detail }}
-        </td>
-        <td>
-          {{ alarm.timestamp }}
-        </td>
-      </tr>
-      {% endfor %} 
-    </tbody>
-  </table>
-</div>
-<div class="container-fluid" align="center">
-  <div class="pagination">
-    <span class="step-links">
+  <hr>
+  <!-- End Header -->
+  <!-- Filter -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <div class="input-group">
+          <div class="input-group-btn search-panel">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    	<span id="search_concept">Filter by</span> <span class="caret"></span>
+                    </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#contains">Alarm</a></li>
+              <li><a href="#its_equal">Severity</a></li>
+            </ul>
+          </div>
+          <input type="hidden" name="search_param" value="all" id="search_param">
+          <input type="text" class="form-control" name="x" placeholder="Search term...">
+          <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Filter -->
+  <br>
+  <!-- Table -->
+  <div class="container-fluid">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Alarm</th>
+          <th>Detail</th>
+          <th>Time</th>
+          <th>Sererity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% block content %} {% for alarm in object_list %}
+        <tr>
+          <td>
+            {{ alarm.alarm }}
+          </td>
+          <td>
+            {{ alarm.detail }}
+          </td>
+          <td>
+            {{ alarm.timestamp }}
+          </td>
+          <td>
+            {{ alarm.severity }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container-fluid" align="center">
+    <div class="pagination">
+      <span class="step-links">
       {% if object_list.has_previous %}
         <a href="?page={{ object_list.previous_page_number }}">previous</a>
       {% endif %}
         <span class="current">
       Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
-        </span>
-      {% if object_list.has_next %}
-        <a href="?page={{ object_list.next_page_number }}">next</a>
-      {% endif %}
-      {% endblock %}
-    </span>
+        </span> {% if object_list.has_next %}
+      <a href="?page={{ object_list.next_page_number }}">next</a> {% endif %} {% endblock %}
+      </span>
+    </div>
   </div>
-</div>
-<!-- End Body -->
-<br>
-<!-- Footer -->
-<br>
-<br>
-<footer class="container-fluid">
-  <div class="col-sm-12" align="center">
-    <a href="/3" class="btn btn-primary responsive-width">Save</a>
-    <a href="/" class="btn btn-primary responsive-width">Back</a>
-  </div>
-</footer>
-<br>
-<!-- End Footer-->
+  <!-- End Body -->
+  <br>
+  <!-- Footer -->
+  <br>
+  <br>
+  <footer class="container-fluid">
+    <div class="col-sm-12" align="center">
+      <a href="/3" class="btn btn-primary responsive-width">Save</a>
+      <a href="/" class="btn btn-primary responsive-width">Back</a>
+    </div>
+  </footer>
+  <br>
+  <!-- End Footer-->
+  <!-- Script -->
+  <script src="{% static 'personal/js/alarm_history.js' %}" type="text/javascript"></script>
+  <!-- End Script -->
 </body>
 
 </html>

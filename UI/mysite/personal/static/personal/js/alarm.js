@@ -1,18 +1,18 @@
 var currentAlarmTime = new Date();
 
 var patterns = [
-  ['I', 'Robot standby'],
-  ['I', 'E1 connect to W7'],
-  ['I', 'E144 connect to W144'],
-  ['I', 'E20 connect to W50'],
-  ['I', 'E20 disconnect from W50'],
-  ['W', 'Arm slips 1 pulse'],
-  ['S', 'Arm slips 2 pulses'],
-  ['W', 'Rollback slips 2 pulses'],
-  ['S', 'Rollback slips 3 pulses'],
-  ['E', 'Gripper torque alarm'],
-  ['E', 'Power down'],
-  ['H', 'Missing connector'],
+  ['I', 'Robot standby', '1'],
+  ['I', 'E1 connect to W7', '1'],
+  ['I', 'E144 connect to W144', '1'],
+  ['I', 'E20 connect to W50', '2'],
+  ['I', 'E20 disconnect from W50', '2'],
+  ['W', 'Arm slips 1 pulse', '2'],
+  ['S', 'Arm slips 2 pulses', '3'],
+  ['W', 'Rollback slips 2 pulses', '3'],
+  ['S', 'Rollback slips 3 pulses', '3'],
+  ['E', 'Gripper torque alarm', '4'],
+  ['E', 'Power down', '4'],
+  ['H', 'Missing connector', '4'],
 ];
 
 function updateSaveUrl(time) {
@@ -68,6 +68,11 @@ function createTable(data) {
     cell.appendChild(cellText);
     row.appendChild(cell);
 
+    cell = document.createElement("td");    
+    cellText = document.createTextNode(alarm['severity']);
+    cell.appendChild(cellText);
+    row.appendChild(cell);
+
     //row added to end of table body
     tblBody.appendChild(row);
 
@@ -85,9 +90,11 @@ function randomAlert() {
         data: {
             alarm: p[0],
             detail: p[1],
+            severity: p[2],
         },
         success: function (e) {
             console.log('randomAlert success', e);
+
         }
     });
 
