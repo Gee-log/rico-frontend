@@ -88,6 +88,7 @@ class Alarm(models.Model):
     alarm = models.CharField(max_length=1, choices=ALARM_TYPE)
     timestamp = models.DateTimeField(auto_now_add=True)
     detail = models.CharField(max_length=64)
+    sererity = models.CharField(max_length=1,null=True)
 
     @classmethod
     def create(cls, alarm, detail):
