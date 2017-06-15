@@ -11,6 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from personal.models import Connection, Port, Alarm, Datalog, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer, ConnectionHistorySerializer
 from datetime import datetime
+from django.utils import timezone
 
 def index(request):
     return render(request, 'personal/header.html')
@@ -54,7 +55,8 @@ def setting(request):
     return render(request, 'personal/setting.html')
 
 def alarm(request):
-    data = Alarm.objects.all()
+    now = datetime.now()
+    data = Alarm.objects.filter(timestamp__range=(now, now))
     return render(request, 'personal/alarm.html', {"data": data})
 
 def alarm_history(request):
@@ -74,6 +76,54 @@ def alarm_history(request):
     }
     return render(request, 'personal/alarm_history.html', context)
     # return render(request, 'personal/alarm_history.html', {"data": data})
+
+def save(request, question_id, timestamp=0):
+    import StringIO
+    import csv
+
+    qus = question_id
+
+    print('question_id', question_id, 'timestamp', timestamp)
+
+    #write file
+    data = StringIO.StringIO()
+    #load file
+    data.seek(0)
+    response = HttpResponse(data,content_type='text/csv')
+    if qus == '1': #connection_log
+        download_name = 'connection_log.csv'
+        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        writer = csv.writer(response)
+        connection = ConnectionHistory.objects.all()
+        writer.writerow(['Time', 'Type','East Port', 'West Port'])
+        for con in connection:
+            if con.switching_type == 'C':
+                writer.writerow([timezone.localtime(con.timestamp), 'connected', con.east, con.west])
+
+            else:
+                writer.writerow([timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
+
+    elif qus == '2': #current_alarm_log
+        download_name = 'current_alarm_log.csv'
+        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        writer = csv.writer(response)
+        s = datetime.fromtimestamp(float(timestamp)/1000)
+        now = datetime.now()
+        connection = Alarm.objects.filter(timestamp__range=(s,now))
+        writer.writerow(['Alarm', 'Detail','Time'])
+        for con in connection:
+            writer.writerow([con.alarm, con.detail, timezone.localtime(con.timestamp)])
+
+    elif qus == '3': #alarmHistory_log
+        download_name = 'alarmHistory_log.csv'
+        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        writer = csv.writer(response)
+        connection = Alarm.objects.all()
+        writer.writerow(['Alarm', 'Detail','Time'])
+        for con in connection:
+             writer.writerow([con.alarm, con.detail, timezone.localtime(con.timestamp)])
+
+    return response
 
 class PortList(APIView):
 
@@ -142,6 +192,8 @@ class ConnectionList(APIView):
         connection.save()
         connection_history = ConnectionHistory.create(east, west, 'C')
         connection_history.save()
+        print('connection_history', east, west)
+
         return Response(request.data)
 
 

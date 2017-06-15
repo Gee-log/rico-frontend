@@ -25,5 +25,3 @@ class DatalogModelAdmin(admin.ModelAdmin):
     list_display = []
     class Meta:
         model = Datalog
-
-
