@@ -89,11 +89,8 @@ function randomAlert() {
         },
         success: function (e) {
             console.log('randomAlert success', e);
-<<<<<<< HEAD
-=======
             createTable(e);
 
->>>>>>> a396d05... Current Alarm / Alarm History : UTC date
         }
     });
 
