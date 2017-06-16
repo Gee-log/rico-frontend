@@ -70,23 +70,23 @@
           <th>Sererity</th>
         </tr>
       </thead>
-      <tbody>
-        {% block content %} {% for alarm in object_list %}
+      <tbody id="records">
+        {% block content %} 
         <tr>
           <td>
-            {{ alarm.alarm }}
+            
           </td>
           <td>
-            {{ alarm.detail }}
+            
           </td>
           <td>
-            {{ alarm.timestamp }}
+            
           </td>
           <td>
-            {{ alarm.severity }}
+            
           </td>
         </tr>
-        {% endfor %}
+        
       </tbody>
     </table>
   </div>

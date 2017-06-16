@@ -16,6 +16,7 @@ var patterns = [
 ];
 
 function updateSaveUrl(time) {
+
   console.log('updateSaveUrl', time);
   $("#save").prop("href", "/2/" + time);
 }
@@ -94,6 +95,7 @@ function randomAlert() {
         },
         success: function (e) {
             console.log('randomAlert success', e);
+            createTable(e);
 
         }
     });
