@@ -28,6 +28,7 @@
       <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
     </div>
   </div>
+<<<<<<< HEAD
 </div>
 <hr>
 <!-- End Header -->
@@ -61,6 +62,44 @@
 <div class="container-fluid" align="center">
   <div class="pagination">
     <span class="step-links">
+=======
+  <!-- End Filter -->
+  <br>
+  <!-- Table -->
+  <div class="container-fluid">
+    <table class="table" id="myTable">
+      <thead>
+        <tr>
+          <th>Alarm</th>
+          <th>Detail</th>
+          <th>Time</th>
+          <th>Sererity</th>
+        </tr>
+      </thead>
+      <tbody id="records">
+        {% block content %} 
+        <tr>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  <div class="container-fluid" align="center">
+    <div class="pagination">
+      <span class="step-links">
+>>>>>>> a396d05... Current Alarm / Alarm History : UTC date
       {% if object_list.has_previous %}
         <a href="?page={{ object_list.previous_page_number }}">previous</a>
       {% endif %}

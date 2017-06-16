@@ -16,6 +16,7 @@ var patterns = [
 ];
 
 function updateSaveUrl(time) {
+
   console.log('updateSaveUrl', time);
   $("#save").prop("href", "/2/" + time);
 }
@@ -88,6 +89,11 @@ function randomAlert() {
         },
         success: function (e) {
             console.log('randomAlert success', e);
+<<<<<<< HEAD
+=======
+            createTable(e);
+
+>>>>>>> a396d05... Current Alarm / Alarm History : UTC date
         }
     });
 
