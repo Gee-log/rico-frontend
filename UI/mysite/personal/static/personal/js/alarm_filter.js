@@ -1,6 +1,3 @@
-var obj = [];
-var value1;
-
 $(document).ready(function(e) {
     $('.search-panel .dropdown-menu').find('a').click(function(e) {
         e.preventDefault();
@@ -26,7 +23,7 @@ $(document).ready(function(e) {
 
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
+        table = document.getElementById("alarm_records");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[value1];
@@ -39,12 +36,3 @@ $(document).ready(function(e) {
             }
         }
     }
-
-    $.ajax({
-        type: 'GET',
-        url: '/alarms/',
-        success: function(data) {
-            onj = data;
-            console.log(obj);
-        },
-    });
