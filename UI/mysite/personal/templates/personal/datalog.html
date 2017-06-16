@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                   {% block content %}
-                  {% for connection in object_list %}
+                  {% for connection in data %}
                   {% if connection.connected_date is not null %}
                   <tr>
                      <td>
@@ -82,20 +82,7 @@
                   </tr>
                    {% endif %}
                    {% endif %}             
-                   {% endfor %}
-                  <div class="pagination">
-                      <span class="step-links">
-                          {% if object_list.has_previous %}
-                              <a href="?page={{ object_list.previous_page_number }}">previous</a>
-                          {% endif %}
-                          <span class="current">
-                                Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
-                          </span>
-                          {% if object_list.has_next %}
-                              <a href="?page={{ object_list.next_page_number }}">next</a>
-                          {% endif %}
-                      </span>
-                  </div>
+                  {% endfor %}
                   {% endblock %} 
             </tbody>
          </table>

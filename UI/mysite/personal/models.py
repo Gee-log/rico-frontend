@@ -4,13 +4,15 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
 class Datalog(models.Model):
+
     title = models.CharField(max_length=140) 
     body = models.TextField()
     date = models.DateTimeField(default=timezone.now)
 
     @classmethod
-    def create(cls, title,body):
-        datalog = cls(title=title,body=body)
+    def create(cls, title, body):
+
+        datalog = cls(title=title, body=body)
         # do something with the book
         return datalog
 
@@ -47,7 +49,7 @@ class Connection(models.Model):
 
     @classmethod
     def create(cls, east, west):
-        connect = cls(east=east,west=west)
+        connect = cls(east=east, west=west)
         # do something with the book
         return connect
 
@@ -58,10 +60,12 @@ class Connection(models.Model):
         return 'East ' + str(self.east.number) + ' -> West ' + str(self.west.number) + ': ' + str(self.connected_date)
 
 class ConnectionHistory(models.Model):
+
     SWITCHING_TYPES = (
         ('C', 'Connected'),
         ('D', 'Disconnected'),
     )
+
     east = models.ForeignKey(Port, related_name='eastH')
     west = models.ForeignKey(Port, related_name='westH')
     switching_type = models.CharField(max_length=1, choices=SWITCHING_TYPES)
@@ -69,7 +73,8 @@ class ConnectionHistory(models.Model):
 
     @classmethod
     def create(cls, east, west, switching_type):
-        connecthistory = cls(east=east,west=west, switching_type=switching_type)
+
+        connecthistory = cls(east=east, west=west, switching_type=switching_type)
         # do something with the book
         return connecthistory
 
@@ -80,19 +85,31 @@ class ConnectionHistory(models.Model):
         return 'Swiching Type:' + self.switching_type + ' East ' + str(self.east.number) + ' -> West ' + str(self.west.number) + ': ' + str(self.timestamp) 
 
 class Alarm(models.Model):
+
     ALARM_TYPE = (
-            ('S', 'Soft Alarm'),
-            ('H', 'Hard Alarm'),
-            ('W', 'Warning'),
-            )
+        ('S', 'Soft Alarm'),
+        ('H', 'Hard Alarm'),
+        ('W', 'Warning'),
+        ('E', 'Error'),
+        ('I', 'Information'),
+        )
+
+    SEVERITY_TYPE = (
+        ('1', 'Critical'),
+        ('2', 'Major'),
+        ('3', 'Minor'),
+        ('4', 'Information'),
+        )
+
     alarm = models.CharField(max_length=1, choices=ALARM_TYPE)
     timestamp = models.DateTimeField(auto_now_add=True)
     detail = models.CharField(max_length=64)
-    sererity = models.CharField(max_length=1,null=True)
+    severity = models.CharField(max_length=1, choices=SEVERITY_TYPE, default='1')
 
     @classmethod
-    def create(cls, alarm, detail):
-        alarms = cls(alarm=alarm,detail=detail)
+    def create(cls, alarm, detail, severity):
+
+        alarms = cls(alarm=alarm, detail=detail, severity=severity)
         # do something with the book 
         return alarms
 

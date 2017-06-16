@@ -14,14 +14,14 @@ $(document).ready(function () {
   //     array = JSON.parse(localStorage.getItem('portValues'));
   // }
 
-  $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();
 
   $('.East').click(function () {
     $('.East').removeClass('selected');
     $(this).addClass('selected');
     selectedEastPortId = $(this).attr('id');
 
-    console.log("Current EastPort value = " + selectedEastPortId);
+        console.log("Current EastPort value = " + selectedEastPortId);
 
     if (!$(this).hasClass('connected')) {
       eValue = 0;
@@ -52,8 +52,8 @@ $(document).ready(function () {
     array.push("{" + selectedEastPortId + " " + selectedWestPortId + "}");
     // localStorage.setItem('portValues', JSON.stringify(array));
 
-    $("td").removeClass('selected');
-
+        $("td").removeClass('selected');
+        $("#Connect").attr('disabled', 'disabled');
     // Not using right now !
     // $("#" + selectedEastPortId).addClass('connected');
     // $("#" + selectedWestPortId).addClass('connected');
@@ -172,6 +172,46 @@ $(document).ready(function () {
   //         alert(xmlhttp.responseText);
   //     }
   // }
+
+  function setConnectedPort() {
+    $.ajax({
+      type: 'POST',
+      url: '/connections/',
+      data: {
+        east: selectedEastPortId.substring(1),
+        west: selectedWestPortId.substring(1),
+        action: "disconnect"
+      },
+      success: function(e) {
+        console.log(e);
+        setConnectedPort();
+      }
+    });
+
+  }
+
+  function isSelectBoth(selectedEastPortId, selectedWestPortId) {
+
+    if (selectedEastPortId && selectedWestPortId) {
+      $("#Connect").removeAttr('disabled');
+      $("#Disconnect").removeAttr('disabled');
+
+      // var alerted = localStorage.getItem('alerted') || '';
+      // if (alerted != 'yes') {
+      //   alert("EastPort and WestPort were selected. Unlock button!");
+      //   localStorage.setItem('alerted', 'yes');
+      // }
+    }
+  }
+
+  function isSelected(port) {
+    var isSelectedPort = $("#" + port).hasClass("selected");
+    console.log(isSelectedPort);
+
+    // if (isSelectedPort) {
+    //   $("#" + port).removeClass("selected");
+    // }
+  }
 
   function setConnectedPort() {
     $.ajax({

@@ -38,6 +38,7 @@
         <th>Alarm</th>
         <th>Detail</th>
         <th>Time</th>
+        <th>Severity</th>
       </tr>
     </thead>
     <tbody id="records">
@@ -51,6 +52,9 @@
             </td>
             <td>
               {{ alarm.timestamp }}
+            </td>
+            <td>
+              {{ alarm.severity }}
             </td>
           </tr>
       {% endfor %} {% endblock %}

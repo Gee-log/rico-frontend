@@ -12,12 +12,15 @@ from personal.models import Connection, Port, Alarm, Datalog, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer, ConnectionHistorySerializer
 from datetime import datetime
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
+
     return render(request, 'personal/header.html')
 
 @csrf_exempt
 def portconnection(request):
+
     if request.method == 'POST':
         east = request.POST['east']
         west = request.POST['west']
@@ -34,6 +37,7 @@ def portconnection(request):
     return TemplateResponse(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
 def connection(request):
+
     data_list = ConnectionHistory.objects.all()
     paginator = Paginator(data_list, 15)
 
@@ -52,14 +56,17 @@ def connection(request):
     # return render(request, 'personal/connection.html', {"data": data})
 
 def setting(request):
+
     return render(request, 'personal/setting.html')
 
 def alarm(request):
+
     now = datetime.now()
     data = Alarm.objects.filter(timestamp__range=(now, now))
     return render(request, 'personal/alarm.html', {"data": data})
 
 def alarm_history(request):
+
     data_list = Alarm.objects.all()
     paginator = Paginator(data_list, 15)
 
@@ -75,9 +82,11 @@ def alarm_history(request):
         "object_list": data,
     }
     return render(request, 'personal/alarm_history.html', context)
+    
     # return render(request, 'personal/alarm_history.html', {"data": data})
 
 def save(request, question_id, timestamp=0):
+
     import StringIO
     import csv
 
@@ -128,21 +137,26 @@ def save(request, question_id, timestamp=0):
 class PortList(APIView):
 
     def get(self, request):
+
         ports = Port.objects.all()
         serializer = PortSerializer(ports, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+
         return Response(request.data)
+
 
 class DatalogList(APIView):
 
     def get(self, request):
+
         logs = Datalog.objects.all()
         serializer = DatalogSerializer(logs, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+
         datalog = Datalog.create(request.data["title"], request.data["body"])
         datalog.save()
         return Response(request.data)
@@ -162,6 +176,7 @@ class ConnectionList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+
         print(request.data)
         # validate inputs
         if 'action' not in request.data:
@@ -179,6 +194,7 @@ class ConnectionList(APIView):
             return self.create_connection(request)
 
     def create_connection(self, request):
+
         east, west = self.get_available_ports(request)
 
         print('connection', east, west)
@@ -198,6 +214,7 @@ class ConnectionList(APIView):
 
 
     def disconnect(self, request):
+
         east, west = self.get_available_ports(request)
 
         print('disconnection', east, west)
@@ -206,7 +223,7 @@ class ConnectionList(APIView):
         if west == None:
             return Response('No west port number ' + str(w), content_type="text/plain")
 
-        # create connection
+        # create disconnection
         conns = Connection.objects.all().filter(disconnected_date=None)
         for c in conns:
             print(c)
@@ -220,6 +237,7 @@ class ConnectionList(APIView):
         return Response(request.data)
 
     def get_available_ports(self, request):
+
         east, west = None, None
 
         e = int(request.data['east'])
@@ -240,6 +258,7 @@ class ConnectionList(APIView):
 class ConnectionHistoryList(APIView):
 
     def get(self, request):
+
         connHistory = ConnectionHistory.objects.all()
         serializer = ConnectionHistorySerializer(connHistory, many=True)
         return Response(serializer.data)
@@ -247,6 +266,7 @@ class ConnectionHistoryList(APIView):
 class AlarmList(APIView):
 
     def get(self, request):
+
         print (request.GET)
         if 'since' in request.GET:
             s = datetime.fromtimestamp(float(request.GET['since']))
@@ -260,6 +280,7 @@ class AlarmList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        alarm = Alarm.create(request.data["alarm"], request.data["detail"])
+
+        alarm = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
         alarm.save()
         return Response(request.data)

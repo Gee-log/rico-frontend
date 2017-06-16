@@ -1,23 +1,29 @@
 var currentAlarmTime = new Date();
 
 var patterns = [
-  ['I', 'Robot standby'],
-  ['I', 'E1 connect to W7'],
-  ['I', 'E144 connect to W144'],
-  ['I', 'E20 connect to W50'],
-  ['I', 'E20 disconnect from W50'],
-  ['W', 'Arm slips 1 pulse'],
-  ['W', 'Arm slips 2 pulses'],
-  ['W', 'Rollback slips 2 pulses'],
-  ['W', 'Rollback slips 3 pulses'],
-  ['E', 'Gripper torque alarm'],
-  ['E', 'Power down'],
-  ['E', 'Missing connector'],
+  ['I', 'Robot standby', '1'],
+  ['I', 'E1 connect to W7', '1'],
+  ['I', 'E144 connect to W144', '1'],
+  ['I', 'E20 connect to W50', '2'],
+  ['I', 'E20 disconnect from W50', '2'],
+  ['W', 'Arm slips 1 pulse', '2'],
+  ['S', 'Arm slips 2 pulses', '3'],
+  ['W', 'Rollback slips 2 pulses', '3'],
+  ['S', 'Rollback slips 3 pulses', '3'],
+  ['E', 'Gripper torque alarm', '4'],
+  ['E', 'Power down', '4'],
+  ['H', 'Missing connector', '4'],
 ];
+
+function updateSaveUrl(time) {
+  console.log('updateSaveUrl', time);
+  $("#save").prop("href", "/2/" + time);
+}
 
 function clear() {
   $('#records').empty();
   currentAlarmTime = new Date();
+  updateSaveUrl(currentAlarmTime.getTime());
 }
 
 function randomPattern() {
@@ -38,13 +44,6 @@ $('#clear').click(function () {
 function createTable(data) {
   $('#records').empty();
 
-  for (i in data) {
-    console.log(data[i]);
-  }
-
-  //body reference 
-  var tbl = document.getElementById("alarm_records");
-
   var tblBody = document.getElementById("records");
 
   // cells creation
@@ -63,8 +62,14 @@ function createTable(data) {
     cell.appendChild(cellText);
     row.appendChild(cell);
 
+    var t = new Date(alarm['timestamp']);
     cell = document.createElement("td");    
-    cellText = document.createTextNode(alarm['timestamp']);
+    cellText = document.createTextNode(t.toString());
+    cell.appendChild(cellText);
+    row.appendChild(cell);
+
+    cell = document.createElement("td");    
+    cellText = document.createTextNode(alarm['severity']);
     cell.appendChild(cellText);
     row.appendChild(cell);
 
@@ -85,9 +90,11 @@ function randomAlert() {
         data: {
             alarm: p[0],
             detail: p[1],
+            severity: p[2],
         },
         success: function (e) {
-            console.log(e);
+            console.log('randomAlert success', e);
+
         }
     });
 
@@ -107,10 +114,10 @@ function randomAlert() {
     clear();
   });
 
-  currentAlarmTime.setMinutes(currentAlarmTime.getMinutes() - 10);
+  currentAlarmTime.setMinutes(currentAlarmTime.getMinutes() - 1);
 
   setInterval(function() {
-    console.log('polling');
+    console.log('polling', new Date());
     $.ajax({
       type: 'GET',
       url: '/alarms/',
@@ -120,6 +127,8 @@ function randomAlert() {
       success: createTable,
     });
   }, 4000);
+
+  updateSaveUrl(currentAlarmTime.getTime());
 
   randomAlert();
 })();
