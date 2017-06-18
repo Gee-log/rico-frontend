@@ -55,3 +55,34 @@ margin-top: 10px;
     box-sizing: border-box;
 }
 
+.bottom-line {
+    border-top: 3px solid #f42424;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 1050;
+    transition: box-shadow cubic-bezier(.165, .84, .44, 1) .25s;
+    box-sizing: border-box;
+}
+
+
+.navbar {
+    background: #2C2C2C;
+    color: white;
+    border: none;
+    border-top: 5px solid #A30000;
+    border-radius: 0px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+ .footers { 
+    position: absolute;
+    bottom:0;
+    width: 100%;
+}
+.remove-margin{
+    margin: 0 !important;
+}

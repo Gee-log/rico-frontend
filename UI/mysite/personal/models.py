@@ -3,22 +3,6 @@ from django.db.models import IntegerField
 from django.core.validators import MinValueValidator, MaxValueValidator 
 from django.utils import timezone
 
-class Datalog(models.Model):
-
-    title = models.CharField(max_length=140) 
-    body = models.TextField()
-    date = models.DateTimeField(default=timezone.now)
-
-    @classmethod
-    def create(cls, title, body):
-
-        datalog = cls(title=title, body=body)
-        # do something with the book
-        return datalog
-
-    def __str__(self):
-        return self.title + str(self.body) + str(self.date)
-
 class Port(models.Model):
 
     DIRECTION_TYPE = (

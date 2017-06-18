@@ -48,7 +48,7 @@
                         <tr>
                             {% block content %} {% for port in data %} {% if port.direction == 'E' %}
                             <td id="E{{ port.number }}" class="East">
-                                <div data-toggle="tooltip" data-placement="left" title="{{ port.note }}">
+                                <div data-toggle="tooltip" data-placement="right" title="{{ port.note }}">
                                     <div id="TE{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                         {{ port.number }}
                                     </div>
@@ -70,7 +70,7 @@
                         <tr>
                             {% for port in data %} {% if port.direction == 'W' %}
                             <td id="W{{ port.number }}" class="West">
-                                <div data-toggle="tooltip" data-placement="button" title="{{ port.note }}">
+                                <div data-toggle="tooltip" data-placement="left" title="{{ port.note }}">
                                     <div id="TW{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                         {{ port.number }}
                                     </div>
@@ -88,8 +88,8 @@
     <!-- Footer -->
     <footer class="container-fluid text-center">
         <div class="col-sm-12">
-            <button type="button" class="ghost-button-avaliable nohover responsive-width">Connection</button>
-            <button type="button" class="ghost-button-selected nohover responsive-width">Selected</button>
+            <button type="button" class="ghost-button-avaliable responsive-width">Connection</button>
+            <button type="button" class="ghost-button-selected responsive-width">Selected</button>
         </div>
     </footer>
     <footer class="container-fluid text-center">

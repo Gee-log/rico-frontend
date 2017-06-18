@@ -1,7 +1,6 @@
 from django.contrib import admin
-from personal.models import Datalog, Port, Connection, Alarm, ConnectionHistory
+from personal.models import Port, Connection, Alarm, ConnectionHistory
 
-admin.site.register(Datalog)
 admin.site.register(Port)
 admin.site.register(ConnectionHistory)
 
@@ -20,10 +19,5 @@ class AlarmModelAdmin(admin.ModelAdmin):
         model = Alarm
 
 admin.site.register(Alarm, AlarmModelAdmin)
-
-class DatalogModelAdmin(admin.ModelAdmin):
-    list_display = []
-    class Meta:
-        model = Datalog
 
 

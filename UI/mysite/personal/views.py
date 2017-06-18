@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from personal.models import Connection, Port, Alarm, Datalog, ConnectionHistory
-from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, DatalogSerializer, ConnectionHistorySerializer
+from personal.models import Connection, Port, Alarm, ConnectionHistory
+from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer
 from datetime import datetime
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -53,7 +53,6 @@ def connection(request):
         "object_list": data,
     }
     return render(request, 'personal/connection.html', context)
-    # return render(request, 'personal/connection.html', {"data": data})
 
 def setting(request):
 
@@ -61,9 +60,7 @@ def setting(request):
 
 def alarm(request):
 
-    now = datetime.now()
-    data = Alarm.objects.filter(timestamp__range=(now, now))
-    return render(request, 'personal/alarm.html', {"data": data})
+    return render(request, 'personal/alarm.html')
 
 def alarm_history(request):
 
@@ -144,21 +141,6 @@ class PortList(APIView):
 
     def post(self, request):
 
-        return Response(request.data)
-
-
-class DatalogList(APIView):
-
-    def get(self, request):
-
-        logs = Datalog.objects.all()
-        serializer = DatalogSerializer(logs, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-
-        datalog = Datalog.create(request.data["title"], request.data["body"])
-        datalog.save()
         return Response(request.data)
 
 class ConnectionList(APIView):
