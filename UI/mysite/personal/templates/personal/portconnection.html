@@ -6,7 +6,7 @@
     <meta charset="utf-8" /> {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Icon -->
-    <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}" />
     <!-- Portconnection CSS -->
     <link rel="stylesheet" href="{% static 'personal/css/portconnection.css' %}" type="text/css">
     <!-- Boostrap CSS -->
@@ -25,6 +25,7 @@
 
 <body>
     <header class="header-line"></header>
+    <div class="navbar navbar-static-top navbar-inverse"></div>
     <div class="jumbotron">
         <div class="container-fluid text-center">
             <div class="col-sm-6">
@@ -48,7 +49,7 @@
                         <tr>
                             {% block content %} {% for port in data %} {% if port.direction == 'E' %}
                             <td id="E{{ port.number }}" class="East">
-                                <div data-toggle="tooltip" data-placement="left" title="{{ port.note }}">
+                                <div data-toggle="tooltip" data-placement="right" title="{{ port.note }}">
                                     <div id="TE{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                         {{ port.number }}
                                     </div>
@@ -70,7 +71,7 @@
                         <tr>
                             {% for port in data %} {% if port.direction == 'W' %}
                             <td id="W{{ port.number }}" class="West">
-                                <div data-toggle="tooltip" data-placement="button" title="{{ port.note }}">
+                                <div data-toggle="tooltip" data-placement="left" title="{{ port.note }}">
                                     <div id="TW{{ port.number }}" data-toggle="tooltip" data-placement="top" title="Port {{ port.number }}">
                                         {{ port.number }}
                                     </div>
@@ -88,8 +89,9 @@
     <!-- Footer -->
     <footer class="container-fluid text-center">
         <div class="col-sm-12">
-            <button type="button" class="ghost-button-avaliable nohover responsive-width">Connection</button>
-            <button type="button" class="ghost-button-selected nohover responsive-width">Selected</button>
+            <button type="button" class="ghost-button-avaliable responsive-width">Connection</button>
+            <button type="button" class="ghost-button-pair responsive-width">Show Pair</button>
+            <button type="button" class="ghost-button-selected responsive-width">Selected</button>
         </div>
     </footer>
     <footer class="container-fluid text-center">

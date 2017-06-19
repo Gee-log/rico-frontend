@@ -37,6 +37,14 @@ cursor:default !important;
 outline: none;
 }
 
+.ghost-button-pair:hover {
+cursor:default !important;
+}
+
+.ghost-button-pair:focus {
+outline: none;
+}
+
 .ghost-button-unavaliable {
  color: #fff;
  text-shadow: 0 0.5px 0 #555555;
@@ -73,11 +81,28 @@ outline: none;
  border-radius: 5px;
 }
 
+.ghost-button-pair {
+ color: #fff;
+ text-shadow: 0 0.5px 0 #555555;
+ background: #03719C;
+ border: 1px solid #03719C;
+ font-size: 17px;
+ padding: 7px 12px;
+ font-weight: normal;
+ margin: 6px 0;
+ margin-right: 12px;
+ display: inline-block;
+ text-decoration: none;
+ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+ min-width: 120px;
+ border-radius: 5px;
+}
+
 .ghost-button-selected {
-color: #333;
-text-shadow: 0 1px 0 #fff;
-background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
-border: 1px solid #ccc;
+color: #fff;
+text-shadow: 0 0.5px 0 #555555;
+background: #555555;
+border: 1px solid #555555;
 font-size: 17px;
 padding: 7px 12px;
 font-weight: normal;
@@ -111,17 +136,21 @@ background-color: #ac2925;
 color: white;
 }
 
+.connectedpair{
+background-color: #03719C;
+color: white;
+}
+
 .selected {
-color: #333;
+color: white;
 background-color: #555555;
 border-color: #ccc;
-text-shadow: 0 1px 0 #fff;
-background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
 }
 
 .jumbotron {
-padding-top: 40px !important;
-padding-bottom: 47px !important;
+margin-bottom: 0px !important;
+padding-top: 25px !important;
+padding-bottom: 20px !important;
 background-color: #fff !important;
 }
 
@@ -135,4 +164,8 @@ background-color: #fff !important;
     z-index: 1050;
     transition: box-shadow cubic-bezier(.165, .84, .44, 1) .25s;
     box-sizing: border-box;
+}
+
+.navbar {
+    margin-bottom: 0px !important;
 }
