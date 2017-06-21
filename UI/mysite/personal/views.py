@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from personal.models import Connection, Port, Alarm, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer
 from datetime import datetime
@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     print(request.user.is_authenticated())
+    next = request.GET.get('next')
     title = "Login"
     form = UserLoginForm(request.POST or None)
     if form.is_valid():
@@ -26,6 +27,8 @@ def login_view(request):
         password = form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         login(request, user)
+        if next:
+            return redirect(next)
         return render(request, 'personal/header.html')
     return render(request, "personal/login.html", {"form": form, "title": title})
 
