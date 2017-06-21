@@ -1,23 +1,40 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from django.http import HttpResponse
-from django.views.generic import View
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.template.response import TemplateResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from personal.models import Connection, Port, Alarm, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer
 from datetime import datetime
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import (
+    authenticate,
+    get_user_model,
+    login,
+    logout,
+)
+from personal.forms import UserLoginForm
+from django.contrib.auth.decorators import login_required
 
+
+def login_view(request):
+    print(request.user.is_authenticated())
+    title = "Login"
+    form = UserLoginForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return render(request, 'personal/header.html')
+    return render(request, "personal/login.html", {"form": form, "title": title})
+
+@login_required(login_url='/login/')
 def index(request):
 
     return render(request, 'personal/header.html')
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def portconnection(request):
 
@@ -26,61 +43,34 @@ def portconnection(request):
         west = request.POST['west']
 
         Connection.objects.create(
-            east = east,
-            west = west
+            east=east,
+            west=west
         )
-
-        return HttpResponse('')
 
     data = Port.objects.all()
     data2 = Connection.objects.all()
-    return TemplateResponse(request, 'personal/portconnection.html', {"data": data, "data2": data2})
+    return render(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
+@login_required(login_url='/login/')
 def connection(request):
 
-    data_list = ConnectionHistory.objects.all()
-    paginator = Paginator(data_list, 15)
+    return render(request, 'personal/connection.html')
 
-    page = request.GET.get('page')
-    try:
-        data = paginator.page(page)
-    except PageNotAnInteger:
-        data = paginator.page(1)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
-
-    context = {
-        "object_list": data,
-    }
-    return render(request, 'personal/connection.html', context)
-
+@login_required(login_url='/login/')
 def setting(request):
 
     return render(request, 'personal/setting.html')
 
+@login_required(login_url='/login/')
 def alarm(request):
 
     return render(request, 'personal/alarm.html')
 
+@login_required(login_url='/login/')
 def alarm_history(request):
 
-    data_list = Alarm.objects.all()
-    paginator = Paginator(data_list, 15)
+    return render(request, 'personal/alarm_history.html')
 
-    page = request.GET.get('page')
-    try:
-        data = paginator.page(page)
-    except PageNotAnInteger:
-        data = paginator.page(1)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
-
-    context = {
-        "object_list": data,
-    }
-    return render(request, 'personal/alarm_history.html', context)
-    
-    # return render(request, 'personal/alarm_history.html', {"data": data})
 
 def save(request, question_id, timestamp=0):
 
@@ -91,45 +81,50 @@ def save(request, question_id, timestamp=0):
 
     print('question_id', question_id, 'timestamp', timestamp)
 
-    #write file
+    # write file
     data = StringIO.StringIO()
-    #load file
+    # load file
     data.seek(0)
-    response = HttpResponse(data,content_type='text/csv')
-    if qus == '1': #connection_log
+    response = HttpResponse(data, content_type='text/csv')
+    if qus == '1':  # connection_log
         download_name = 'connection_log.csv'
-        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        response['Content-Disposition'] = "attachment; filename=%s" % download_name
         writer = csv.writer(response)
         connection = ConnectionHistory.objects.all()
-        writer.writerow(['Time', 'Type','East Port', 'West Port'])
+        writer.writerow(['Time', 'Type', 'East Port', 'West Port'])
         for con in connection:
             if con.switching_type == 'C':
-                writer.writerow([timezone.localtime(con.timestamp), 'connected', con.east, con.west])
+                writer.writerow(
+                    [timezone.localtime(con.timestamp), 'connected', con.east, con.west])
 
             else:
-                writer.writerow([timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
+                writer.writerow(
+                    [timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
 
-    elif qus == '2': #current_alarm_log
+    elif qus == '2':  # current_alarm_log
         download_name = 'current_alarm_log.csv'
-        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        response['Content-Disposition'] = "attachment; filename=%s" % download_name
         writer = csv.writer(response)
-        s = datetime.fromtimestamp(float(timestamp)/1000)
+        s = datetime.fromtimestamp(float(timestamp) / 1000)
         now = datetime.now()
-        connection = Alarm.objects.filter(timestamp__range=(s,now))
-        writer.writerow(['Alarm', 'Detail','Time'])
+        connection = Alarm.objects.filter(timestamp__range=(s, now))
+        writer.writerow(['Alarm', 'Detail', 'Time'])
         for con in connection:
-            writer.writerow([con.alarm, con.detail, timezone.localtime(con.timestamp)])
+            writer.writerow(
+                [con.alarm, con.detail, timezone.localtime(con.timestamp)])
 
-    elif qus == '3': #alarmHistory_log
+    elif qus == '3':  # alarmHistory_log
         download_name = 'alarmHistory_log.csv'
-        response['Content-Disposition'] = "attachment; filename=%s"%download_name
+        response['Content-Disposition'] = "attachment; filename=%s" % download_name
         writer = csv.writer(response)
         connection = Alarm.objects.all()
-        writer.writerow(['Alarm', 'Detail','Time'])
+        writer.writerow(['Alarm', 'Detail', 'Time'])
         for con in connection:
-             writer.writerow([con.alarm, con.detail, timezone.localtime(con.timestamp)])
+            writer.writerow(
+                [con.alarm, con.detail, timezone.localtime(con.timestamp)])
 
     return response
+
 
 class PortList(APIView):
 
@@ -142,6 +137,7 @@ class PortList(APIView):
     def post(self, request):
 
         return Response(request.data)
+
 
 class ConnectionList(APIView):
 
@@ -194,7 +190,6 @@ class ConnectionList(APIView):
 
         return Response(request.data)
 
-
     def disconnect(self, request):
 
         east, west = self.get_available_ports(request)
@@ -237,6 +232,7 @@ class ConnectionList(APIView):
 
         return east, west
 
+
 class ConnectionHistoryList(APIView):
 
     def get(self, request):
@@ -245,15 +241,16 @@ class ConnectionHistoryList(APIView):
         serializer = ConnectionHistorySerializer(connHistory, many=True)
         return Response(serializer.data)
 
+
 class AlarmList(APIView):
 
     def get(self, request):
 
-        print (request.GET)
+        print(request.GET)
         if 'since' in request.GET:
             s = datetime.fromtimestamp(float(request.GET['since']))
             now = datetime.now()
-            alarms = Alarm.objects.filter(timestamp__range=(s,now))
+            alarms = Alarm.objects.filter(timestamp__range=(s, now))
             print('alarms', len(alarms))
         else:
             alarms = Alarm.objects.all()
@@ -263,6 +260,7 @@ class AlarmList(APIView):
 
     def post(self, request):
 
-        alarm = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
+        alarm = Alarm.create(
+            request.data["alarm"], request.data["detail"], request.data["severity"])
         alarm.save()
         return Response(request.data)

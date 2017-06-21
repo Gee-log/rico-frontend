@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^alarms/', views.AlarmList.as_view()),
     url(r'^(?P<question_id>[0-9]+)/$', views.save, name='connection_log'),
     url(r'^(?P<question_id>[0-9]+)/(?P<timestamp>[0-9]+)/$', views.save, name='alarm_log'),
+    url(r'^login/', views.login_view, name='login'),
     ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

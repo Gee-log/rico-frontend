@@ -1,7 +1,6 @@
 from django.db import models
-from django.db.models import IntegerField
 from django.core.validators import MinValueValidator, MaxValueValidator 
-from django.utils import timezone
+
 
 class Port(models.Model):
 
@@ -20,8 +19,8 @@ class Port(models.Model):
 class Connection(models.Model):
 
     STATUS_TYPE = (
-        ('0', 'Avaliable'),
-        ('1', 'Unavaliable'),
+        ('0', 'Available'),
+        ('1', 'Unavailable'),
         ('2', 'Selected'),
         )
 
@@ -66,7 +65,7 @@ class ConnectionHistory(models.Model):
         ordering = ['-timestamp']
 
     def __str__(self):
-        return 'Swiching Type:' + self.switching_type + ' East ' + str(self.east.number) + ' -> West ' + str(self.west.number) + ': ' + str(self.timestamp) 
+        return 'Switching Type:' + str(self.switching_type) + ' East ' + str(self.east.number) + ' -> West ' + str(self.west.number) + ': ' + str(self.timestamp)
 
 class Alarm(models.Model):
 
