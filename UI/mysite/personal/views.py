@@ -37,8 +37,9 @@ def index(request):
 
     return render(request, 'personal/index.html')
 
-@login_required(login_url='/login/')
+
 @csrf_exempt
+@login_required(login_url='/login/')
 def portconnection(request):
 
     if request.method == 'POST':
