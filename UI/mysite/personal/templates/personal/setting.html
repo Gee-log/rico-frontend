@@ -8,7 +8,7 @@
       <!-- Icon -->
       <link rel="shortcut icon" type="image/png" href="{% static 'personal/icon/icon.png' %}" />
       <!-- Header CSS -->
-      <link rel="stylesheet" href="{% static 'personal/css/header.css' %}" type="text/css" />
+      <link rel="stylesheet" href="{% static 'personal/css/setting.css' %}" type="text/css" />
       <!-- Boostrap CSS -->
       <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type="text/css" />
       <link rel="stylesheet" href="{% static 'personal/css/bootstrap-theme.min.css' %}" type="text/css">
@@ -17,7 +17,13 @@
 
 <body>
       <header class="header-line"></header>
-      <div class="navbar navbar-static-top navbar-inverse"></div>
+      <div class="navbar navbar-static-top navbar-inverse">
+            <div class="container">
+                  <ul class="nav navbar-nav pull-right">
+                        <li class="navbar-text">Username: {{ user.username }}</li>
+                  </ul>
+            </div>
+      </div>
       <div class="jumbotron">
             <div class="container-fluid" align="center">
                   <div class="col-sm-6">
@@ -30,8 +36,6 @@
       </div>
       <!-- End Header -->
       <hr>
-      <br>
-      <br>
 
       <!-- Parameter button-->
       <div class="container-fluid" align="center">

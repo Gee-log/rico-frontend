@@ -29,13 +29,13 @@ def login_view(request):
         login(request, user)
         if next:
             return redirect(next)
-        return render(request, 'personal/header.html')
+        return render(request, 'personal/index.html')
     return render(request, "personal/login.html", {"form": form, "title": title})
 
 @login_required(login_url='/login/')
 def index(request):
 
-    return render(request, 'personal/header.html')
+    return render(request, 'personal/index.html')
 
 @login_required(login_url='/login/')
 @csrf_exempt
