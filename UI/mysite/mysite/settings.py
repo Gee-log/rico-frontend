@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [ 
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'personal',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -47,8 +48,9 @@ REST_FRAMEWORK = {
     ],
     'PAGE_SIZE': 10
 }
- 
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,7 +60,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 ROOT_URLCONF = 'mysite.urls'
+
+CORS_ORIGIN_WHITELIST = (
+    'http://192.168.60.73:8000/'
+)
+
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+)
+
 
 TEMPLATES = [
     {
@@ -118,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Bangkok' 
+TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
 
@@ -148,8 +162,6 @@ USE_TZ = True
 TEMPLATE_CONTEXT_PROCESSOR = (
     'django.core.context.processor.csrf',
 )
-
-
 
 
 # Static files (CSS, JavaScript, Images)

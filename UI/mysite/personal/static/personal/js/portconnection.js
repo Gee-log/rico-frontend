@@ -134,6 +134,46 @@ $(document).ready(function () {
         setConnectedPort();
       }
     });
+
+    // $(function () {
+    //   function callback(res) {
+    //     console.log(res);
+    //     test(res)
+    //   }
+    //   $.ajax({
+    //     type: 'GET',
+    //     url: 'http://192.168.60.73:8000/app1/target?axis=arm_up&position=555',
+    //     success: callback,
+    //     complete: callback,
+    //     crossDomain: true,
+    //     async: true,
+    //     success: test,
+    //   });
+    // })
+
+    // function test(obj) {
+    //   var parts = [];
+    //   for (var i in obj) {
+    //     if (obj.hasOwnProperty(i)) {
+    //       parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+    //     }
+    //   }
+    //   console.log("http://192.168.60.73:8000/app1/result?id=" + obj);
+    // }
+
+    $.ajax({
+      url: "http://192.168.60.73:8000/app1/target?axis=arm_up&position=555",
+      type: "GET",
+      crossDomain: true,
+      dataType: "json",
+      success: function (result) {
+        alert(JSON.stringify(result));
+      },
+      error: function (xhr, status, error) {
+        alert(status);
+      }
+    });
+
   });
 
   $("#Disconnect").click(function (e) {
