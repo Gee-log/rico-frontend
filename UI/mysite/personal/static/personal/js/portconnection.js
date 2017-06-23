@@ -1,18 +1,37 @@
-var xmlhttp = new XMLHttpRequest();
 var selectedEastPortId = undefined;
 var selectedWestPortId = undefined;
-var array = [];
 var eValue, wValue;
 var pair = [];
+var array = [];
 
 $(document).ready(function () {
+
+  function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+      c_start = document.cookie.indexOf(c_name + "=");
+      if (c_start != -1) {
+        c_start = c_start + c_name.length + 1;
+        c_end = document.cookie.indexOf(";", c_start);
+        if (c_end == -1) c_end = document.cookie.length;
+        return unescape(document.cookie.substring(c_start, c_end));
+      }
+    }
+    return "";
+  }
+
+  $(function () {
+    $.ajaxSetup({
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      }
+    });
+  });
 
   setConnectedPort();
 
   $('[data-toggle="tooltip"]').tooltip();
 
   $('.East').click(function () {
-
     $('.East').removeClass('selected');
     $(this).addClass('selected');
     selectedEastPortId = $(this).attr('id');
@@ -28,7 +47,6 @@ $(document).ready(function () {
       $(".East, .West").removeClass("connectedpair selected");
 
       pair.forEach(function (element) {
-
         if (selectedEastPortId == element[0]) {
           $('#' + element[0]).addClass('connectedpair');
           $('#' + element[1]).addClass('connectedpair');
@@ -53,7 +71,6 @@ $(document).ready(function () {
   });
 
   $('.West').click(function () {
-
     $('.West').removeClass('selected');
     $(this).addClass('selected');
     selectedWestPortId = $(this).attr('id');
@@ -69,7 +86,6 @@ $(document).ready(function () {
       $(".East, .West").removeClass("connectedpair selected");
 
       pair.forEach(function (element) {
-
         if (selectedWestPortId == element[1]) {
           $('#' + element[0]).addClass('connectedpair');
           $('#' + element[1]).addClass('connectedpair');
@@ -94,7 +110,6 @@ $(document).ready(function () {
   });
 
   $("#Connect").click(function (e) {
-
     array.push("{" + selectedEastPortId + " " + selectedWestPortId + "}");
     $("td").removeClass('selected');
     $("#Connect").attr('disabled', 'disabled');
@@ -112,7 +127,7 @@ $(document).ready(function () {
       data: {
         east: selectedEastPortId.substring(1),
         west: selectedWestPortId.substring(1),
-        action: "connect"
+        action: "connect",
       },
       success: function (e) {
         console.log(e);
@@ -122,7 +137,6 @@ $(document).ready(function () {
   });
 
   $("#Disconnect").click(function (e) {
-
     $("td").removeClass('selected');
     $("#" + selectedEastPortId).removeClass('connected');
     $("#" + selectedWestPortId).removeClass('connected');
@@ -139,7 +153,7 @@ $(document).ready(function () {
       data: {
         east: selectedEastPortId.substring(1),
         west: selectedWestPortId.substring(1),
-        action: "disconnect"
+        action: "disconnect",
       },
       success: function (e) {
         console.log(e);

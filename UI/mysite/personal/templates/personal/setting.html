@@ -20,50 +20,52 @@
       <div class="navbar navbar-static-top navbar-inverse">
             <div class="container">
                   <ul class="nav navbar-nav pull-right">
-                        <li class="navbar-text">Username: {{ user.username }}</li>
+                        <li class="navbar-text">
+                              <div>User {{ user }} <a href="{% url 'logout' %}?next={{ '/' }}">log out</a>
+                        </li>
                   </ul>
-            </div>
-      </div>
-      <div class="jumbotron">
-            <div class="container-fluid" align="center">
-                  <div class="col-sm-6">
-                        <h1>Setting</h1>
-                  </div>
-                  <div class="col-sm-6">
-                        <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
                   </div>
             </div>
-      </div>
-      <!-- End Header -->
-      <hr>
+            <div class="jumbotron">
+                  <div class="container-fluid" align="center">
+                        <div class="col-sm-6">
+                              <h1>Setting</h1>
+                        </div>
+                        <div class="col-sm-6">
+                              <img src="{% static 'personal/img/logo.jpg' %}" style='max-height:150px;' alt="XENOPTICS_Logo">
+                        </div>
+                  </div>
+            </div>
+            <!-- End Header -->
+            <hr>
 
-      <!-- Parameter button-->
-      <div class="container-fluid" align="center">
-            <a href="portconnection/" class="btn btn-primary" style="width: 219px;">Parameter</a>
-      </div>
-      <!-- End Parameter button-->
-      <br>
-      <!-- Execution table button-->
-      <div class="container-fluid" align="center">
-            <a href="datalog/" class="btn btn-primary">Execution table</a>
-      </div>
-      <!-- End Execution table button-->
-      <br>
-      <!-- Back button-->
-      <div class="container-fluid" align="center">
-            <a href="/" class="btn btn-primary" style="width: 219px;">Back</a>
-      </div>
-      <!-- End Back button-->
-      <div class="footers">
-            <div class="navbar navbar-static-top navbar-inverse remove-margin">
-                  <div class="container">
-                        <span>
+            <!-- Parameter button-->
+            <div class="container-fluid" align="center">
+                  <a href="portconnection/" class="btn btn-primary" style="width: 219px;">Parameter</a>
+            </div>
+            <!-- End Parameter button-->
+            <br>
+            <!-- Execution table button-->
+            <div class="container-fluid" align="center">
+                  <a href="datalog/" class="btn btn-primary">Execution table</a>
+            </div>
+            <!-- End Execution table button-->
+            <br>
+            <!-- Back button-->
+            <div class="container-fluid" align="center">
+                  <a href="/" class="btn btn-primary" style="width: 219px;">Back</a>
+            </div>
+            <!-- End Back button-->
+            <div class="footers">
+                  <div class="navbar navbar-static-top navbar-inverse remove-margin">
+                        <div class="container">
+                              <span>
                           <a class="navbar-brand" rel="nofollow" href="https://www.xenoptics.com/">Powered by XENOPTICS</a>
                         </span>
+                        </div>
                   </div>
             </div>
-      </div>
-      <div class="bottom-line"></div>
+            <div class="bottom-line"></div>
 </body>
 
 </html>

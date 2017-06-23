@@ -6,7 +6,6 @@ from personal.models import Connection, Port, Alarm, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer
 from datetime import datetime
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import (
     authenticate,
     get_user_model,
@@ -15,6 +14,7 @@ from django.contrib.auth import (
 )
 from personal.forms import UserLoginForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 
 
 def login_view(request):
@@ -30,7 +30,8 @@ def login_view(request):
         if next:
             return redirect(next)
         return render(request, 'personal/index.html')
-    return render(request, "personal/login.html", {"form": form, "title": title})
+    return render(request, 'personal/login.html', {"form": form, "title": title})
+
 
 @login_required(login_url='/login/')
 def index(request):
@@ -38,8 +39,8 @@ def index(request):
     return render(request, 'personal/index.html')
 
 
-@csrf_exempt
 @login_required(login_url='/login/')
+@csrf_protect
 def portconnection(request):
 
     if request.method == 'POST':
@@ -55,20 +56,24 @@ def portconnection(request):
     data2 = Connection.objects.all()
     return render(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
+
 @login_required(login_url='/login/')
 def connection(request):
 
     return render(request, 'personal/connection.html')
+
 
 @login_required(login_url='/login/')
 def setting(request):
 
     return render(request, 'personal/setting.html')
 
+
 @login_required(login_url='/login/')
 def alarm(request):
 
     return render(request, 'personal/alarm.html')
+
 
 @login_required(login_url='/login/')
 def alarm_history(request):

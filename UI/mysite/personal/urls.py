@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url,include
 from personal import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^(?P<question_id>[0-9]+)/$', views.save, name='connection_log'),
     url(r'^(?P<question_id>[0-9]+)/(?P<timestamp>[0-9]+)/$', views.save, name='alarm_log'),
     url(r'^login/', views.login_view, name='login'),
+    url(r'', include('django.contrib.auth.urls')),
     ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

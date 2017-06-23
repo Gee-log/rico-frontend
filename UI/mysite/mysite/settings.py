@@ -145,6 +145,13 @@ USE_TZ = True
 #     },
 # }
 
+TEMPLATE_CONTEXT_PROCESSOR = (
+    'django.core.context.processor.csrf',
+)
+
+
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
