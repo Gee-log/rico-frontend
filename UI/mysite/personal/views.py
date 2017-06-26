@@ -137,7 +137,7 @@ def save(request, question_id, timestamp=0):
 
 class PortList(APIView):
 
-    def get(self):
+    def get(self, request):
 
         ports = Port.objects.all()
         serializer = PortSerializer(ports, many=True)
@@ -244,7 +244,7 @@ class ConnectionList(APIView):
 
 class ConnectionHistoryList(APIView):
 
-    def get(self):
+    def get(self, request):
 
         connHistory = ConnectionHistory.objects.all()
         serializer = ConnectionHistorySerializer(connHistory, many=True)
