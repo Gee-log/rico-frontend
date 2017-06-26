@@ -161,18 +161,18 @@ $(document).ready(function () {
     //   console.log("http://192.168.60.73:8000/app1/result?id=" + obj);
     // }
 
-    $.ajax({
-      url: "http://192.168.60.73:8000/app1/target?axis=arm_up&position=555",
-      type: "GET",
-      crossDomain: true,
-      dataType: "json",
-      success: function (result) {
-        alert(JSON.stringify(result));
-      },
-      error: function (xhr, status, error) {
-        alert(status);
-      }
-    });
+    // $.ajax({
+    //   url: "http://192.168.60.73:8000/app1/target?axis=arm_up&position=555",
+    //   type: "GET",
+    //   crossDomain: true,
+    //   dataType: "json",
+    //   success: function (result) {
+    //     alert(JSON.stringify(result));
+    //   },
+    //   error: function (xhr, status, error) {
+    //     alert(status);
+    //   }
+    // });
 
   });
 
