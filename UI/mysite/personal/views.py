@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from personal.models import Connection, Port, Alarm, ConnectionHistory
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer
@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_protect
 
 
 def login_view(request):
+
     print(request.user.is_authenticated())
     next = request.GET.get('next')
     title = "Login"
@@ -151,6 +152,7 @@ class PortList(APIView):
 class ConnectionList(APIView):
 
     def get(self, request):
+
         print('ConnectionList get', request.GET)
         if 'act' in request.GET and request.GET['act'] == 'connected':
             conns = Connection.objects.all().filter(disconnected_date=None)
@@ -164,21 +166,22 @@ class ConnectionList(APIView):
 
     def post(self, request):
 
-        print(request.data)
-        # validate inputs
-        if 'action' not in request.data:
-            return Response('No action', content_type="text/plain")
+        if request.user.is_superuser or request.user.is_staff:
+            print(request.data)
+            # validate inputs
+            if 'action' not in request.data:
+                return Response('No action', content_type="text/plain")
 
-        if 'east' not in request.data:
-            return Response('No east', content_type="text/plain")
+            if 'east' not in request.data:
+                return Response('No east', content_type="text/plain")
 
-        if 'west' not in request.data:
-            return Response('No west', content_type="text/plain")
+            if 'west' not in request.data:
+                return Response('No west', content_type="text/plain")
 
-        if request.data['action'] == 'disconnect':
-            return self.disconnect(request)
-        else:
-            return self.create_connection(request)
+            if request.data['action'] == 'disconnect':
+                return self.disconnect(request)
+            else:
+                return self.create_connection(request)
 
     def create_connection(self, request):
 
@@ -200,27 +203,27 @@ class ConnectionList(APIView):
         return Response(request.data)
 
     def disconnect(self, request):
+        if request.user.is_superuser or request.user.is_staff:
+            east, west = self.get_available_ports(request)
 
-        east, west = self.get_available_ports(request)
+            print('disconnection', east, west)
+            if east == None:
+                return Response('No east port number ' + str(e), content_type="text/plain")
+            if west == None:
+                return Response('No west port number ' + str(w), content_type="text/plain")
 
-        print('disconnection', east, west)
-        if east == None:
-            return Response('No east port number ' + str(e), content_type="text/plain")
-        if west == None:
-            return Response('No west port number ' + str(w), content_type="text/plain")
+            # create disconnection
+            conns = Connection.objects.all().filter(disconnected_date=None)
+            for c in conns:
+                print(c)
+                if c.east == east and c.west == west:
+                    c.disconnected_date = datetime.now()
+                    c.save()
+                    connection_history = ConnectionHistory.create(east, west, 'D')
+                    connection_history.save()
+                    print('disconnect', c)
 
-        # create disconnection
-        conns = Connection.objects.all().filter(disconnected_date=None)
-        for c in conns:
-            print(c)
-            if c.east == east and c.west == west:
-                c.disconnected_date = datetime.now()
-                c.save()
-                connection_history = ConnectionHistory.create(east, west, 'D')
-                connection_history.save()
-                print('disconnect', c)
-
-        return Response(request.data)
+            return Response(request.data)
 
     def get_available_ports(self, request):
 

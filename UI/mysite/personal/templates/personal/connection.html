@@ -17,7 +17,6 @@
   <script src="{% static 'personal/js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
   <script src="{% static 'personal/js/bootstrap.min.js' %}" type="text/javascript"></script>
   <script src="{% static 'personal/js/connection.js' %}" type="text/javascript"></script>
-
 </head>
 <!-- Header -->
 
@@ -58,16 +57,17 @@
                 <li value="0"><a href="#contains">Date</a></li>
                 <li value="1"><a href="#contains">Time</a></li>
                 <li value="2"><a href="#contains">Type</a></li>
-                <li value="3"><a href="#its_equal">Status</a></li>
-                <li value="4"><a href="#its_equal">East Port</a></li>
-                <li value="5"><a href="#its_equal">West Port</a></li>
+                <li value="3"><a href="#contains">Status</a></li>
+                <li value="4"><a href="#contains">East Port</a></li>
+                <li value="5"><a href="#contains">West Port</a></li>
+                <!-- <li value="6"><a href="#its_equal">Test</a></li> -->
               </ul>
             </div>
             <input type="hidden" name="search_param" value="all" id="search_param">
             <input type="text" id="myInput" onkeyup="searchTable()" class="form-control" name="x" placeholder="Search term...">
-            <span class="input-group-btn">
+            <!--<span class="input-group-btn">
             <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-            </span>
+            </span>-->
           </div>
         </div>
       </div>

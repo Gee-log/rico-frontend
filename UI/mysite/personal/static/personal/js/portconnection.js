@@ -41,16 +41,27 @@ $(document).ready(function () {
       eValue = 0;
       isSelectEast(eValue);
       $(".East, .West").removeClass("connectedpair");
+      $("#Disconnect").attr('disabled', 'disabled');
     } else if ($(this).hasClass('connected')) {
       eValue = 1;
       isSelectEast(eValue);
       $(".East, .West").removeClass("connectedpair selected");
-
+      $("#Disconnect").attr('disabled', 'disabled');
       pair.forEach(function (element) {
         if (selectedEastPortId == element[0]) {
+          $('#' + element[0]).removeClass("connectedpair selected");
+          $('#' + element[1]).removeClass("connectedpair selected");
           $('#' + element[0]).addClass('connectedpair');
           $('#' + element[1]).addClass('connectedpair');
           console.log("his pair: " + element[1]);
+          $('#' + element[1]).click(function () {
+            $('#' + element[0]).addClass('selected');
+            $('#' + element[1]).addClass('selected');
+            if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
+              $("#Disconnect").removeAttr('disabled');
+              console.log("Congratulation");
+            }
+          });
         }
       });
     }
@@ -75,7 +86,7 @@ $(document).ready(function () {
     $(this).addClass('selected');
     selectedWestPortId = $(this).attr('id');
     console.log("Current WestPort value = " + selectedWestPortId);
-
+    $("#Disconnect").attr('disabled', 'disabled');
     if (!$(this).hasClass('connected')) {
       wValue = 0;
       isSelectWest(wValue);
@@ -84,12 +95,16 @@ $(document).ready(function () {
       wValue = 1;
       isSelectWest(wValue);
       $(".East, .West").removeClass("connectedpair selected");
-
+      $("#Disconnect").attr('disabled', 'disabled');
       pair.forEach(function (element) {
         if (selectedWestPortId == element[1]) {
           $('#' + element[0]).addClass('connectedpair');
           $('#' + element[1]).addClass('connectedpair');
           console.log("his pair:" + element[0]);
+          // $('#' + element[0]).click(function () {
+          //   $('#' + element[0]).addClass('selected');
+          //   $('#' + element[1]).addClass('selected');
+          // });
         }
       });
     }
@@ -178,8 +193,8 @@ $(document).ready(function () {
 
   $("#Disconnect").click(function (e) {
     $("td").removeClass('selected');
-    $("#" + selectedEastPortId).removeClass('connected');
-    $("#" + selectedWestPortId).removeClass('connected');
+    // $("#" + selectedEastPortId).removeClass('connected');
+    // $("#" + selectedWestPortId).removeClass('connected');
     $(".East, .West").removeClass('connectedpair');
     $("#Disconnect").attr('disabled', 'disabled');
 
@@ -223,10 +238,11 @@ $(document).ready(function () {
     } else if (sumValue == 1) {
       $("#Connect, #Disconnect").attr('disabled', 'disabled');
       console.log("Lock connect & disconnect");
-    } else if (sumValue == 2) {
-      $("#Disconnect").removeAttr('disabled');
-      console.log("Unlock disconnect & lock connect");
     }
+    // else if (sumValue == 2) {
+    //   $("#Disconnect").removeAttr('disabled');
+    //   console.log("Unlock disconnect & lock connect");
+    // }
   }
 
   function setConnectedPort() {

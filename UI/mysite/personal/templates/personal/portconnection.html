@@ -105,8 +105,10 @@
     </footer>
     <footer class="container-fluid text-center">
         <div class="col-sm-12">
+            {% if request.user.is_superuser or request.user.is_staff %}
             <button id="Connect" class="btn btn-primary responsive-width" disabled>Connect</button>
             <button id="Disconnect" class="btn btn-primary responsive-width" disabled>Disconnect</button>
+            {% endif %}
             <a href="/" class="btn btn-primary responsive-width">Back</a>
         </div>
     </footer>
