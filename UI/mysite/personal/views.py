@@ -39,6 +39,10 @@ def index(request):
 
     return render(request, 'personal/index.html')
 
+@login_required(login_url='/login/')
+def robot(request):
+
+    return render(request, 'personal/robot_debug.html')
 
 @login_required(login_url='/login/')
 @csrf_protect

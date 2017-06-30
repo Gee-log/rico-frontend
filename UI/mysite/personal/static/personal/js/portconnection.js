@@ -3,6 +3,7 @@ var selectedWestPortId = undefined;
 var eValue, wValue;
 var pair = [];
 var array = [];
+var i = 0;
 
 $(document).ready(function () {
 
@@ -41,22 +42,34 @@ $(document).ready(function () {
 
       if (selectedEastPortId == element[0]) {
         $(".East, .West").removeClass("selected");
+        $('#' + element[0]).addClass('selected');
         $('#' + element[0]).removeClass("connectedpair selected");
         $('#' + element[1]).removeClass("connectedpair selected");
         $('#' + element[0]).addClass('connectedpair');
         $('#' + element[1]).addClass('connectedpair');
+
         console.log("his pair: " + element[1]);
+
+        // $('.West').click(function () {
+        //   if ($(this).hasClass('connectedpair')) {
+        //     $(this).addClass('selected');
+        //     $('#' + element[0]).addClass('selected');
+        //   }
+        // });
       }
 
-      $('#' + element[1]).click(function () {
-        $('#' + element[0]).addClass('selected');
-        $('#' + element[1]).addClass('selected');
 
-        if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
-          $("#Disconnect").removeAttr('disabled');
-          console.log("Congratulation");
-        }
-      });
+
+
+      // $('#' + element[1]).click(function () {
+      //   // $('#' + element[0]).addClass('selected');
+      //   // $('#' + element[1]).addClass('selected');
+
+      //   if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
+      //     $("#Disconnect").removeAttr('disabled');
+      //     console.log("Congratulation");
+      //   }
+      // });
     });
   }
 
@@ -70,12 +83,12 @@ $(document).ready(function () {
         $('#' + element[1]).removeClass("connectedpair selected");
         $('#' + element[0]).addClass('connectedpair');
         $('#' + element[1]).addClass('connectedpair');
-        console.log("his pair: " + element[1]);
+        console.log("his pair: " + element[0]);
       }
 
       $('#' + element[0]).click(function () {
-        $('#' + element[0]).addClass('selected');
-        $('#' + element[1]).addClass('selected');
+        // $('#' + element[0]).addClass('selected');
+        // $('#' + element[1]).addClass('selected');
 
         if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
           $("#Disconnect").removeAttr('disabled');
@@ -107,22 +120,21 @@ $(document).ready(function () {
       $("#Disconnect").attr('disabled', 'disabled');
       eastPair();
     }
-
-
-    // $('.West').click(function () {
-
-    //   if ($(this).hasClass('connectedpair')) {
-
-    //     pair.forEach(function (element) {
-
-    //       if (selectedEastPortId == element[0]) {
-    //         $('#' + element[0]).addClass('selected');
-    //         $('#' + element[1]).addClass('selected');
-    //       }
-    //     });
-    //   }
-    // });
   });
+  // $('.West').click(function () {
+
+  //   if ($(this).hasClass('connectedpair')) {
+
+  //     pair.forEach(function (element) {
+
+  //       if (selectedEastPortId == element[0]) {
+  //         $('#' + element[0]).addClass('selected');
+  //         $('#' + element[1]).addClass('selected');
+  //       }
+  //     });
+  //   }
+  // });
+
 
   $('.West').click(function () {
 
@@ -246,7 +258,6 @@ $(document).ready(function () {
     // $("#" + selectedWestPortId).removeClass('connected');
     $(".East, .West").removeClass('connectedpair');
     $("#Disconnect").attr('disabled', 'disabled');
-
     console.log("Disconnecting EastPortID " + selectedEastPortId + " To WestPortID " +
       selectedWestPortId);
     console.log(array);
@@ -262,6 +273,7 @@ $(document).ready(function () {
       success: function (e) {
         console.log(e);
         setConnectedPort();
+        debugRobot();
       }
     });
   });
@@ -296,6 +308,8 @@ $(document).ready(function () {
     // }
   }
 
+
+
   function setConnectedPort() {
 
     $.ajax({
@@ -329,3 +343,23 @@ $(document).ready(function () {
   setConnectedPort();
 
 });
+
+
+
+$("#reset").click(function () {
+  $(':input', '#attachmentModal').val("");
+  $("#pbarmain").hide();
+  $("#pbar").hide();
+  $(".progress-bar").css("width", "0%");
+  i = 0;
+});
+
+function makeProgress() {
+  $("#pbarmain").show();
+  $("#pbar").show();
+  if (i < 100) {
+    i = i + 2;
+    $(".progress-bar").css("width", i + "%").text(i + " %");
+    setTimeout("makeProgress()", 100);
+  }
+}

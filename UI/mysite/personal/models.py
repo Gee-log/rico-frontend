@@ -1,5 +1,7 @@
+import uuid
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 
 class Port(models.Model):
@@ -96,3 +98,20 @@ class Alarm(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
+
+class Operation(models.Model):
+    STATUS_TYPES = (
+        ('S', 'Success'),
+        ('Pr', 'Progressing'),
+        ('Pe', 'Pending'),
+    )
+
+    robotnumber = models.CharField(max_length=64)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.CharField(max_length=2, choices=STATUS_TYPES)
+    request = models.CharField(max_length=64)
+
+    def __str__(self):
+        return str(self.robotnumber) + str(self.uuid) + str(self.status) + str(self.request)
+
