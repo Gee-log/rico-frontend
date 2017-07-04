@@ -39,13 +39,12 @@ INSTALLED_APPS = [
     # local-app
     'personal.apps.PersonalConfig',
     # third-party
-    'corsheaders',
     'rest_framework',
+    'requests',
 ]
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,18 +66,6 @@ REST_FRAMEWORK = {
 }
 
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-
-CORS_ALLOW_METHODS = (
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-)
-
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -94,6 +81,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
@@ -145,6 +133,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+# log-linux
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,

@@ -101,16 +101,16 @@ class Alarm(models.Model):
 
 
 class Operation(models.Model):
-    STATUS_TYPES = (
-        ('S', 'Success'),
-        ('Pr', 'Progressing'),
-        ('Pe', 'Pending'),
-    )
 
-    robotnumber = models.CharField(max_length=64)
+    robotnumber = models.CharField(max_length=1, default=1)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.CharField(max_length=2, choices=STATUS_TYPES)
+    status = models.CharField(max_length=64)
     request = models.CharField(max_length=64)
+
+    @classmethod
+    def create(cls, robotnumber, uuid, status, request):
+        operations = cls(robotnumber=robotnumber, uuid=uuid, status=status, request=request)
+        return operations
 
     def __str__(self):
         return str(self.robotnumber) + str(self.uuid) + str(self.status) + str(self.request)

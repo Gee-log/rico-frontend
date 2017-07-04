@@ -2,19 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
-from personal.models import Connection, Port, Alarm, ConnectionHistory
-from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer
+from personal.models import Connection, Port, Alarm, ConnectionHistory, Operation
+from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer, OperationSerializer
 from datetime import datetime
 from django.utils import timezone
-from django.contrib.auth import (
-    authenticate,
-    get_user_model,
-    login,
-    logout,
-)
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from personal.forms import UserLoginForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+import requests
 
 
 def login_view(request):
@@ -86,6 +82,15 @@ def alarm_history(request):
     return render(request, 'personal/alarm_history.html')
 
 
+@login_required(login_url='/login/')
+def test(request):
+
+    r = requests.get('http://192.168.60.73:5555')
+    r.text
+    return HttpResponse(r)
+
+
+@login_required(login_url='/login/')
 def save(request, question_id, timestamp=0):
 
     import StringIO
@@ -203,7 +208,16 @@ class ConnectionList(APIView):
         connection_history = ConnectionHistory.create(east, west, 'C')
         connection_history.save()
         print('connection_history', east, west)
-
+        payload = {'east': east.number, 'west': west.number, 'action': "connect"}
+        req = requests.post('http://192.168.60.73:8000/app1/connect', data=payload)
+        print('payload', east.number, west.number, 'action : connect')
+        uuid = req.text
+        print('UUID:', uuid)
+        req2 = requests.get('http://192.168.60.73:8000/app1/result?id=' + uuid)
+        status = req2.text
+        print(status)
+        operation_conn = Operation.create('1', uuid, status, 'JSON')
+        operation_conn.save()
         return Response(request.data)
 
     def disconnect(self, request):
@@ -226,7 +240,17 @@ class ConnectionList(APIView):
                     connection_history = ConnectionHistory.create(east, west, 'D')
                     connection_history.save()
                     print('disconnect', c)
-
+                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect"}
+                    req = requests.post('http://192.168.60.73:8000/app1/disconnect', data=payload)
+                    print('payload', east.number, west.number, 'action : disconnect')
+                    uuid = req.text
+                    print('UUID:', uuid)
+                    while True:
+                        req2 = requests.get('http://192.168.60.73:8000/app1/result?id=' + uuid)
+                        status = req2.text
+                        print(status)
+                        operation_disconn = Operation.create('1', uuid, status, 'JSON')
+                        operation_disconn.save()
             return Response(request.data)
 
     def get_available_ports(self, request):
@@ -280,3 +304,12 @@ class AlarmList(APIView):
             request.data["alarm"], request.data["detail"], request.data["severity"])
         alarm.save()
         return Response(request.data)
+
+class OperationList(APIView):
+
+    def get(self, request):
+
+        operations = Operation.objects.all()
+        serializer = OperationSerializer(operations, many=True)
+        return Response(serializer.data)
+
