@@ -102,8 +102,8 @@ class Alarm(models.Model):
 
 class Operation(models.Model):
 
-    robotnumber = models.CharField(max_length=1, default=1)
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    robotnumber = models.CharField(primary_key=True, max_length=1)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=True)
     status = models.CharField(max_length=64)
     request = models.CharField(max_length=64)
 
@@ -115,3 +115,13 @@ class Operation(models.Model):
     def __str__(self):
         return str(self.robotnumber) + str(self.uuid) + str(self.status) + str(self.request)
 
+class OperationTask(models.Model):
+
+    uuid = models.UUIDField(primary_key=True, editable=False)
+    robotnumber = models.CharField(max_length=1)
+    created_time = models.DateTimeField(auto_now_add=True)
+    finished_time = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.uuid

@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
-from personal.models import Connection, Port, Alarm, ConnectionHistory, Operation
+from personal.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationTask
 from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer, OperationSerializer
 from datetime import datetime
 from django.utils import timezone
@@ -10,7 +10,12 @@ from django.contrib.auth import authenticate, get_user_model, login, logout
 from personal.forms import UserLoginForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+from time import sleep, time
+import ast
 import requests
+import time
+
+
 
 
 def login_view(request):
@@ -39,6 +44,7 @@ def index(request):
 def robot(request):
 
     return render(request, 'personal/robot_debug.html')
+
 
 @login_required(login_url='/login/')
 @csrf_protect
@@ -83,11 +89,22 @@ def alarm_history(request):
 
 
 @login_required(login_url='/login/')
-def test(request):
-
-    r = requests.get('http://192.168.60.73:5555')
-    r.text
-    return HttpResponse(r)
+def checktask(request):
+    status = ""
+    operations = Operation.objects.filter(robotnumber='1')
+    for i in operations:
+        uuid = str(i.uuid)
+        resp = requests.get('http://192.168.60.73:8000/app1/result?id=' + uuid)
+        data = str(resp.json())
+        data_dict = ast.literal_eval(data)
+        status = data_dict['status']
+        print('Status:', data_dict['status'])
+        Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=data_dict['status'])
+        if data_dict['status'] == 'success':
+            OperationTask.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=data_dict['status'])
+        else:
+            OperationTask.objects.filter(uuid=uuid).update(status=data_dict['status'])
+    return JsonResponse({'status': status})
 
 
 @login_required(login_url='/login/')
@@ -171,6 +188,8 @@ class ConnectionList(APIView):
             return Response(obj)
         datas = Connection.objects.all()
         serializer = ConnectionSerializer(datas, many=True)
+        if 'checktask' in request.GET:
+            self.checktask(request)
         return Response(serializer.data)
 
     def post(self, request):
@@ -213,11 +232,13 @@ class ConnectionList(APIView):
         print('payload', east.number, west.number, 'action : connect')
         uuid = req.text
         print('UUID:', uuid)
-        req2 = requests.get('http://192.168.60.73:8000/app1/result?id=' + uuid)
-        status = req2.text
-        print(status)
-        operation_conn = Operation.create('1', uuid, status, 'JSON')
-        operation_conn.save()
+        
+        operations = Operation.objects.filter(robotnumber='1')
+        if len(operations) == 1:
+            operations.update(uuid=uuid, status='Pending', request=str(payload))
+        else:
+            Operation.objects.create(robotnumber='1', uuid=uuid, status='Pending', request=str(payload))
+        OperationTask.objects.create(robotnumber='1', uuid=uuid, status='Pending')
         return Response(request.data)
 
     def disconnect(self, request):
@@ -240,17 +261,7 @@ class ConnectionList(APIView):
                     connection_history = ConnectionHistory.create(east, west, 'D')
                     connection_history.save()
                     print('disconnect', c)
-                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect"}
-                    req = requests.post('http://192.168.60.73:8000/app1/disconnect', data=payload)
-                    print('payload', east.number, west.number, 'action : disconnect')
-                    uuid = req.text
-                    print('UUID:', uuid)
-                    while True:
-                        req2 = requests.get('http://192.168.60.73:8000/app1/result?id=' + uuid)
-                        status = req2.text
-                        print(status)
-                        operation_disconn = Operation.create('1', uuid, status, 'JSON')
-                        operation_disconn.save()
+
             return Response(request.data)
 
     def get_available_ports(self, request):

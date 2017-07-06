@@ -1,8 +1,9 @@
 from django.contrib import admin
-from personal.models import Port, Connection, Alarm, ConnectionHistory, Operation
+from personal.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationTask
 
 admin.site.register(Port)
 admin.site.register(ConnectionHistory)
+
 
 
 class ConnectionModelAdmin(admin.ModelAdmin):
@@ -27,3 +28,9 @@ class OperationModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Operation, OperationModelAdmin)
 
+class OperationTaskModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "uuid", "robotnumber", "created_time", "finished_time", "status"]
+    class Meta:
+        model = OperationTask
+
+admin.site.register(OperationTask, OperationTaskModelAdmin)

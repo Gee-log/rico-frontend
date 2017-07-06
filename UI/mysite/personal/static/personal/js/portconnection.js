@@ -47,31 +47,21 @@ $(document).ready(function () {
         $('#' + element[1]).removeClass("connectedpair selected");
         $('#' + element[0]).addClass('connectedpair');
         $('#' + element[1]).addClass('connectedpair');
-
         console.log("his pair: " + element[1]);
-
-        // $('.West').click(function () {
-        //   if ($(this).hasClass('connectedpair')) {
-        //     $(this).addClass('selected');
-        //     $('#' + element[0]).addClass('selected');
-        //   }
-        // });
       }
 
+      $('#' + element[1]).click(function () {
+        // $('#' + element[0]).addClass('selected');
+        // $('#' + element[1]).addClass('selected');
 
-
-
-      // $('#' + element[1]).click(function () {
-      //   // $('#' + element[0]).addClass('selected');
-      //   // $('#' + element[1]).addClass('selected');
-
-      //   if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
-      //     $("#Disconnect").removeAttr('disabled');
-      //     console.log("Congratulation");
-      //   }
-      // });
+        if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
+          $("#Disconnect").removeAttr('disabled');
+          console.log("Congratulation");
+        }
+      });
     });
   }
+
 
   function westPair() {
 
@@ -109,10 +99,6 @@ $(document).ready(function () {
       eValue = 0;
       isSelectEast(eValue);
       $(".East, .West").removeClass("connectedpair");
-
-      if ($('.West').hasClass("selected")) {
-        $('.West').removeClass("selected");
-      }
     } else if ($(this).hasClass('connected')) {
       eValue = 1;
       isSelectEast(eValue);

@@ -20,7 +20,8 @@ urlpatterns = [
     url(r'^(?P<question_id>[0-9]+)/(?P<timestamp>[0-9]+)/$', views.save, name='alarm_log'),
     url(r'^login/', views.login_view, name='login'),
     url(r'', include('django.contrib.auth.urls')),
-    url(r'^test/', views.test, name='test'),
+    url(r'^checktask/', views.checktask, name='checktask'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'html'])
