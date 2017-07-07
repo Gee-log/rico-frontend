@@ -4,8 +4,12 @@ var eValue, wValue;
 var pair = [];
 var array = [];
 var i = 0;
+var data;
 
 $(document).ready(function () {
+
+  $("#Connect").attr('disabled', 'disabled');
+  $("#Disconnect").attr('disabled', 'disabled');
 
   function getCookie(c_name) {
 
@@ -56,12 +60,11 @@ $(document).ready(function () {
 
         if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
           $("#Disconnect").removeAttr('disabled');
-          console.log("Congratulation");
+          console.log("Correct Pair !");
         }
       });
     });
   }
-
 
   function westPair() {
 
@@ -82,7 +85,7 @@ $(document).ready(function () {
 
         if (selectedEastPortId == element[0] && selectedWestPortId == element[1]) {
           $("#Disconnect").removeAttr('disabled');
-          console.log("Congratulation");
+          console.log("Correct Pair !");
         }
       });
     });
@@ -120,7 +123,6 @@ $(document).ready(function () {
   //     });
   //   }
   // });
-
 
   $('.West').click(function () {
 
@@ -168,7 +170,6 @@ $(document).ready(function () {
   //   }
   // });
 
-
   $("#Connect").click(function (e) {
 
     array.push("{" + selectedEastPortId + " " + selectedWestPortId + "}");
@@ -181,6 +182,7 @@ $(document).ready(function () {
       selectedWestPortId);
     console.log(array);
     e.preventDefault();
+
 
     $.ajax({
       type: 'POST',
@@ -259,7 +261,6 @@ $(document).ready(function () {
       success: function (e) {
         console.log(e);
         setConnectedPort();
-        debugRobot();
       }
     });
   });
@@ -276,24 +277,26 @@ $(document).ready(function () {
     unlockButton(eValue, wValue);
   }
 
-  function unlockButton(eValue, wValue) {
+  function unlockButton(eValue, wValue, data) {
 
     var sumValue;
     sumValue = eValue + wValue;
 
-    if (sumValue == 0) {
+    if (sumValue == 0 && data == 'success' || data == 'error') {
       $("#Connect").removeAttr('disabled');
-      console.log("Unlock connect");
+      console.log("Unlock connect button | status: ", data);
     } else if (sumValue == 1) {
       $("#Connect, #Disconnect").attr('disabled', 'disabled');
       console.log("Lock connect & disconnect");
+    } else if (data == 'started' || data == 'progressing') {
+      $("#Connect, #Disconnect").attr('disabled', 'disabled');
+      console.log("Lock connect & disconnect | status", data);
     }
     // else if (sumValue == 2) {
     //   $("#Disconnect").removeAttr('disabled');
     //   console.log("Unlock disconnect & lock connect");
     // }
   }
-
 
 
   function setConnectedPort() {
@@ -328,9 +331,38 @@ $(document).ready(function () {
   }
   setConnectedPort();
 
+  function checkStatus(data) {
+    if (data == 'success') {
+      data = 'success'
+      unlockButton(eValue, wValue, data);
+    } else if (data == 'started') {
+      data = 'started'
+      unlockButton(eValue, wValue, data);
+    } else if (data == 'progressing') {
+      data = 'progressing'
+      unlockButton(eValue, wValue, data);
+    }
+    else {
+      data = 'error'
+      unlockButton(eValue, wValue, data);
+    }
+  }
+
+
+  window.setInterval(function () {
+    $.ajax({
+      url: '/checktask/',
+      type: 'GET',
+      success: function (data) {
+        checkStatus(data.status);
+      },
+      failure: function (data) {
+        alert('Got an error dude');
+      }
+    });
+  }, 5000);
+
 });
-
-
 
 $("#reset").click(function () {
   $(':input', '#attachmentModal').val("");
@@ -349,3 +381,4 @@ function makeProgress() {
     setTimeout("makeProgress()", 100);
   }
 }
+

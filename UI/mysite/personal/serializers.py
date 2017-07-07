@@ -11,7 +11,7 @@ class ConnectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Connection
-        fields = ('east', 'west', 'connected_date', 'disconnected_date')
+        fields = ('east', 'west', 'connected_date', 'disconnected_date', 'status')
 
 class AlarmSerializer(serializers.ModelSerializer):
 

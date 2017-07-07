@@ -2,17 +2,21 @@ from django.contrib import admin
 from personal.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationTask
 
 admin.site.register(Port)
-admin.site.register(ConnectionHistory)
-
 
 
 class ConnectionModelAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "east" , "west" , "connected_date", "disconnected_date"]
+    list_display = ["__str__", "east" , "west" , "connected_date", "disconnected_date", "status"]
     class Meta:
         model = Connection
 
 admin.site.register(Connection, ConnectionModelAdmin)
 
+class ConnectionHistoryModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "east", "west", "switching_type", "timestamp"]
+    class Meta:
+        model = ConnectionHistory
+
+admin.site.register(ConnectionHistory, ConnectionHistoryModelAdmin)
 
 class AlarmModelAdmin(admin.ModelAdmin):
     list_display = ["__str__", "detail" , "timestamp", "severity"]
@@ -34,3 +38,4 @@ class OperationTaskModelAdmin(admin.ModelAdmin):
         model = OperationTask
 
 admin.site.register(OperationTask, OperationTaskModelAdmin)
+

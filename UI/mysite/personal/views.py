@@ -11,11 +11,7 @@ from personal.forms import UserLoginForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from time import sleep, time
-import ast
-import requests
-import time
-
-
+import ast, requests, time
 
 
 def login_view(request):
@@ -94,7 +90,7 @@ def checktask(request):
     operations = Operation.objects.filter(robotnumber='1')
     for i in operations:
         uuid = str(i.uuid)
-        resp = requests.get('http://192.168.60.73:8000/app1/result?id=' + uuid)
+        resp = requests.get('http://192.168.60.73/app1/result?id=' + uuid)
         data = str(resp.json())
         data_dict = ast.literal_eval(data)
         status = data_dict['status']
@@ -189,7 +185,7 @@ class ConnectionList(APIView):
         datas = Connection.objects.all()
         serializer = ConnectionSerializer(datas, many=True)
         if 'checktask' in request.GET:
-            self.checktask(request)
+            checktask(request)
         return Response(serializer.data)
 
     def post(self, request):
@@ -213,8 +209,8 @@ class ConnectionList(APIView):
 
     def create_connection(self, request):
 
+        
         east, west = self.get_available_ports(request)
-
         print('connection', east, west)
         if east == None:
             return Response('No east port number ' + str(e), content_type="text/plain")
@@ -222,23 +218,23 @@ class ConnectionList(APIView):
             return Response('No west port number ' + str(w), content_type="text/plain")
 
         # create connection
-        connection = Connection.create(east, west)
+        connection = Connection.create(east, west, status='pending')
         connection.save()
         connection_history = ConnectionHistory.create(east, west, 'C')
         connection_history.save()
         print('connection_history', east, west)
         payload = {'east': east.number, 'west': west.number, 'action': "connect"}
-        req = requests.post('http://192.168.60.73:8000/app1/connect', data=payload)
+        resp = requests.post('http://192.168.60.73/app1/connect', data=payload)
         print('payload', east.number, west.number, 'action : connect')
-        uuid = req.text
+        uuid = resp.text
         print('UUID:', uuid)
         
         operations = Operation.objects.filter(robotnumber='1')
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='Pending', request=str(payload))
+            operations.update(uuid=uuid, status='pending', request=str(payload))
         else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='Pending', request=str(payload))
-        OperationTask.objects.create(robotnumber='1', uuid=uuid, status='Pending')
+            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        OperationTask.objects.create(robotnumber='1', uuid=uuid, status='pending')
         return Response(request.data)
 
     def disconnect(self, request):

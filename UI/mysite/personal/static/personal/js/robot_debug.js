@@ -54,6 +54,7 @@ window.setInterval(function () {
             console.log(data);
             console.log("call round: " + n);
             n++;
+            test(data);
         },
         failure: function (data) {
             alert('Got an error dude');
@@ -61,5 +62,20 @@ window.setInterval(function () {
     });
 }, 3000);
 
+
+
+function test(data) {
+    if (data == 'success') {
+
+        console.log(data);
+        console.log("call round: " + n);
+        n++;
+
+    } else if (data == 'started'){
+        console.log(data);
+        console.log("call round: " + n);
+        n++;
+    }
+}
 
 

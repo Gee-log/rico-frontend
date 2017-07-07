@@ -19,25 +19,20 @@ class Port(models.Model):
 
 
 class Connection(models.Model):
-    STATUS_TYPE = (
-        ('0', 'Available'),
-        ('1', 'Unavailable'),
-        ('2', 'Selected'),
-    )
 
     east = models.ForeignKey(Port, related_name='east')
     west = models.ForeignKey(Port, related_name='west')
     connected_date = models.DateTimeField(auto_now_add=True)
     disconnected_date = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=1, choices=STATUS_TYPE, default='0')
+    status = models.CharField(max_length=64)
 
     @classmethod
-    def create(cls, east, west):
-        connect = cls(east=east, west=west)
+    def create(cls, east, west, status):
+        connect = cls(east=east, west=west, status=status)
         return connect
 
     def __str__(self):
-        return 'East ' + str(self.east.number) + ' -> West ' + str(self.west.number) + ': ' + str(self.connected_date)
+        return 'East ' + str(self.east.number) + ' -> ' + 'West ' + str(self.west.number)
 
     class Meta:
         ordering = ['east']
@@ -60,8 +55,7 @@ class ConnectionHistory(models.Model):
         return connecthistory
 
     def __str__(self):
-        return 'Switching Type:' + str(self.switching_type) + ' East ' + str(self.east.number) + ' -> West ' + str(
-            self.west.number) + ': ' + str(self.timestamp)
+        return 'East ' + str(self.east.number) + ' -> ' + 'West ' + str(self.west.number)
 
     class Meta:
         ordering = ['-timestamp']
@@ -113,7 +107,7 @@ class Operation(models.Model):
         return operations
 
     def __str__(self):
-        return str(self.robotnumber) + str(self.uuid) + str(self.status) + str(self.request)
+        return str(self.uuid)
 
 class OperationTask(models.Model):
 
@@ -124,4 +118,7 @@ class OperationTask(models.Model):
     status = models.CharField(max_length=64)
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
+
+    class Meta:
+        ordering = ['-created_time']
