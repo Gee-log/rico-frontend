@@ -88,6 +88,7 @@ def alarm_history(request):
 def checktask(request):
     status = ""
     operations = Operation.objects.filter(robotnumber='1')
+    timex = datetime.now()
     for i in operations:
         uuid = str(i.uuid)
         resp = requests.get('http://192.168.60.73/app1/result?id=' + uuid)
@@ -96,10 +97,14 @@ def checktask(request):
         status = data_dict['status']
         print('Status:', data_dict['status'])
         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=data_dict['status'])
+        Connection.objects.all().update(status=data_dict['status'])
         if data_dict['status'] == 'success':
             OperationTask.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=data_dict['status'])
+            Connection.objects.all().update(status=data_dict['status'])
         else:
             OperationTask.objects.filter(uuid=uuid).update(status=data_dict['status'])
+            Connection.objects.all().update(status=data_dict['status'])
+
     return JsonResponse({'status': status})
 
 
@@ -178,9 +183,10 @@ class ConnectionList(APIView):
         print('ConnectionList get', request.GET)
         if 'act' in request.GET and request.GET['act'] == 'connected':
             conns = Connection.objects.all().filter(disconnected_date=None)
+            statuses = OperationTask.objects.all()
             obj = dict()
             for c in conns:
-                obj[str(c.east)] = str(c.west)
+                obj[str(c.east)] = str(c.west), str(c.status)
             return Response(obj)
         datas = Connection.objects.all()
         serializer = ConnectionSerializer(datas, many=True)
@@ -218,6 +224,7 @@ class ConnectionList(APIView):
             return Response('No west port number ' + str(w), content_type="text/plain")
 
         # create connection
+        self.time = datetime.now()
         connection = Connection.create(east, west, status='pending')
         connection.save()
         connection_history = ConnectionHistory.create(east, west, 'C')

@@ -36,8 +36,6 @@ $(document).ready(function () {
     });
   });
 
-  setConnectedPort();
-
   $('[data-toggle="tooltip"]').tooltip();
 
   function eastPair() {
@@ -281,7 +279,7 @@ $(document).ready(function () {
 
     var sumValue;
     sumValue = eValue + wValue;
-
+    status = "fuck";
     if (sumValue == 0 && data == 'success' || data == 'error') {
       $("#Connect").removeAttr('disabled');
       console.log("Unlock connect button | status: ", data);
@@ -298,6 +296,25 @@ $(document).ready(function () {
     // }
   }
 
+  // function setColor() {
+
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: '/connections/',
+  //     success: function (data) {
+  //       for (i = 0; i < data.length; i++) {
+  //         var status = data[i];
+  //         var x = [status['east'], status['west'], status['status']];
+  //           if (status['status'] == 'pending') {
+  //             $("#E" + status['east']).addClass('connected');
+  //             $("#W" + status['west']).addClass('connected');
+  //             console.log('East ' + status['east'], 'West ' + status['west'], 'status:' + status['status']);
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+  // setColor();
 
   function setConnectedPort() {
 
@@ -305,11 +322,10 @@ $(document).ready(function () {
       type: 'GET',
       url: '/connections/',
       data: {
-        act: "connected"
+        act: "connected",
       },
       success: function (data) {
         connected_port = data;
-
         for (i = 0; i < 144; i++) {
           $("#E" + i).removeClass('connected');
           $("#TE" + i).attr('data-original-title', '')
@@ -318,13 +334,21 @@ $(document).ready(function () {
         }
 
         for (i in connected_port) {
-          var pre = 'Connected to ';
-          $("#" + i).addClass('connected');
-          $("#" + connected_port[i]).addClass('connected');
-          $("#T" + i).attr('data-original-title', pre + connected_port[i]);
-          $("#T" + connected_port[i]).attr('data-original-title', pre + i);
-          console.log(i + " : " + connected_port[i]);
-          pair.push([i, connected_port[i]]);
+          if (connected_port[i][1] == 'success') {
+            var pre = 'Connected to ';
+            $("#" + i).removeClass('disconnected');
+            $("#" + connected_port[i]).removeClass('disconnected');
+            $("#" + i).addClass('connected');
+            $("#" + connected_port[i]).addClass('connected');
+            $("#T" + i).attr('data-original-title', pre + connected_port[i]);
+            $("#T" + connected_port[i]).attr('data-original-title', pre + i);
+            console.log(i + " : " + connected_port[i][0], "Status : " + connected_port[i][1]);
+            pair.push([i, connected_port[i][0]]);
+          }
+          if (connected_port[i][1] == 'started' || connected_port[i][1] == 'pending') {
+            $("#" + i).addClass('disconnected');
+            $("#" + connected_port[i]).addClass('disconnected');
+          }
         }
       }
     });
@@ -332,6 +356,7 @@ $(document).ready(function () {
   setConnectedPort();
 
   function checkStatus(data) {
+
     if (data == 'success') {
       data = 'success'
       unlockButton(eValue, wValue, data);
@@ -355,6 +380,7 @@ $(document).ready(function () {
       type: 'GET',
       success: function (data) {
         checkStatus(data.status);
+        setConnectedPort();
       },
       failure: function (data) {
         alert('Got an error dude');

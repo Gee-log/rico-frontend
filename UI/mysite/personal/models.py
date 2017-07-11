@@ -32,7 +32,7 @@ class Connection(models.Model):
         return connect
 
     def __str__(self):
-        return 'East ' + str(self.east.number) + ' -> ' + 'West ' + str(self.west.number)
+        return 'East ' + str(self.east.number) + ' -> ' + 'West ' + str(self.west.number) + ' Status : ' + str(self.status)
 
     class Meta:
         ordering = ['east']
