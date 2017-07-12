@@ -24,7 +24,7 @@ class Connection(models.Model):
     west = models.ForeignKey(Port, related_name='west')
     connected_date = models.DateTimeField(auto_now_add=True)
     disconnected_date = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=64)
+    status = models.CharField(max_length=64, null=True)
 
     @classmethod
     def create(cls, east, west, status):
@@ -48,10 +48,11 @@ class ConnectionHistory(models.Model):
     west = models.ForeignKey(Port, related_name='westH')
     switching_type = models.CharField(max_length=1, choices=SWITCHING_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=64, null=True)
 
     @classmethod
-    def create(cls, east, west, switching_type):
-        connecthistory = cls(east=east, west=west, switching_type=switching_type)
+    def create(cls, east, west, switching_type, status):
+        connecthistory = cls(east=east, west=west, switching_type=switching_type, status=status)
         return connecthistory
 
     def __str__(self):

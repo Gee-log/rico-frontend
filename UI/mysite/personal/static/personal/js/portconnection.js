@@ -279,7 +279,6 @@ $(document).ready(function () {
 
     var sumValue;
     sumValue = eValue + wValue;
-    status = "fuck";
     if (sumValue == 0 && data == 'success' || data == 'error') {
       $("#Connect").removeAttr('disabled');
       console.log("Unlock connect button | status: ", data);
@@ -342,13 +341,16 @@ $(document).ready(function () {
             $("#" + connected_port[i]).addClass('connected');
             $("#T" + i).attr('data-original-title', pre + connected_port[i]);
             $("#T" + connected_port[i]).attr('data-original-title', pre + i);
-            console.log(i + " : " + connected_port[i][0], "Status : " + connected_port[i][1]);
+            console.log(i + " : " + connected_port[i][0] + " | " + "Status : " + connected_port[i][1]);
             pair.push([i, connected_port[i][0]]);
           }
           if (connected_port[i][1] == 'started' || connected_port[i][1] == 'pending') {
             $("#" + i).addClass('disconnected');
             $("#" + connected_port[i]).addClass('disconnected');
           }
+        }
+        if (connected_port[i][1] == 'success' || connected_port[i][1] !== 'started' || connected_port[i][1] !== 'pending') {
+          console.log("---------------------------------------------------------------------------");
         }
       }
     });
@@ -372,7 +374,6 @@ $(document).ready(function () {
       unlockButton(eValue, wValue, data);
     }
   }
-
 
   window.setInterval(function () {
     $.ajax({

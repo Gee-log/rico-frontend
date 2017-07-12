@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from personal.models import Port, Connection, Alarm, ConnectionHistory, Operation
+from personal.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationTask
 
 class PortSerializer(serializers.ModelSerializer):
 
@@ -23,10 +23,16 @@ class ConnectionHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConnectionHistory
-        fields = ('east', 'west', 'switching_type', 'timestamp')
+        fields = ('id', 'east', 'west', 'switching_type', 'timestamp', 'status')
 
 class OperationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Operation
         fields = ('robotnumber', 'uuid', 'status', 'request')
+
+class OperationTaskSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OperationTask
+        fields = ('uuid', 'robotnumber', 'created_time', 'finished_time', 'status')
