@@ -101,22 +101,25 @@ class Operation(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
     status = models.CharField(max_length=64)
     request = models.CharField(max_length=64)
+    response = models.CharField(max_length=64, null=True)
 
     @classmethod
-    def create(cls, robotnumber, uuid, status, request):
-        operations = cls(robotnumber=robotnumber, uuid=uuid, status=status, request=request)
+    def create(cls, robotnumber, uuid, status, request, response):
+        operations = cls(robotnumber=robotnumber, uuid=uuid, status=status, request=request, response=response)
         return operations
 
     def __str__(self):
         return str(self.uuid)
 
-class OperationTask(models.Model):
+class OperationHistory(models.Model):
 
     uuid = models.UUIDField(primary_key=True, editable=False)
     robotnumber = models.CharField(max_length=1)
     created_time = models.DateTimeField(auto_now_add=True)
     finished_time = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=64)
+    request = models.CharField(max_length=64)
+    response = models.CharField(max_length=64, null=True)
 
     def __str__(self):
         return str(self.uuid)

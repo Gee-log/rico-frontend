@@ -391,21 +391,22 @@ $(document).ready(function () {
 
 });
 
-$("#reset").click(function () {
-  $(':input', '#attachmentModal').val("");
-  $("#pbarmain").hide();
-  $("#pbar").hide();
-  $(".progress-bar").css("width", "0%");
-  i = 0;
-});
+// Progress bar !!
+// $("#reset").click(function () {
+//   $(':input', '#attachmentModal').val("");
+//   $("#pbarmain").hide();
+//   $("#pbar").hide();
+//   $(".progress-bar").css("width", "0%");
+//   i = 0;
+// });
 
-function makeProgress() {
-  $("#pbarmain").show();
-  $("#pbar").show();
-  if (i < 100) {
-    i = i + 2;
-    $(".progress-bar").css("width", i + "%").text(i + " %");
-    setTimeout("makeProgress()", 100);
-  }
-}
+// function makeProgress() {
+//   $("#pbarmain").show();
+//   $("#pbar").show();
+//   if (i < 100) {
+//     i = i + 2;
+//     $(".progress-bar").css("width", i + "%").text(i + " %");
+//     setTimeout("makeProgress()", 100);
+//   }
+// }
 

@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
-from personal.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationTask
-from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer, OperationSerializer, OperationTaskSerializer
+from personal.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory
+from personal.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer, OperationSerializer, OperationHistorySerializer
 from datetime import datetime
 from django.utils import timezone
 from django.contrib.auth import authenticate, get_user_model, login, logout
@@ -15,6 +15,7 @@ import ast, requests, time
 
 
 def login_view(request):
+
     print(request.user.is_authenticated())
     next = request.GET.get('next')
     title = "Login"
@@ -84,33 +85,54 @@ def alarm_history(request):
 
 
 @login_required(login_url='/login/')
+def checkstatus(request, uuid, historyid=None):
+
+    status = ""
+    resp = requests.get('http://192.168.60.73/app1/result?id=' + uuid)
+    data = str(resp.json())
+    data_dict = ast.literal_eval(data)
+    status = data_dict['status']
+
+    print('Status:', status)
+
+    #if 'response' in data_dict :
+    if status == 'success':
+        response = data_dict['response']
+        #east = data_dict['east']
+        #west = data_dict['west']
+        if response == None:
+            #conns = Connection.objects.all().
+            #for i in conns:
+                #if i.status == 'pending' and i.east == east and i.west == west:
+                    #Connection.objects.filter(east=i.east, west=i.west, status=i.status).update(status=status)
+            Connection.objects.filter(east=data_dict['request']['east'], west=data_dict['request']['west'], status='pending').update(status=status)
+            ConnectionHistory.objects.all().update(status=status)
+            Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status, response=response)
+            OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
+        if historyid:
+            ConnectionHistory.objects.filter(id=historyid).update(status=status)
+
+    return status
+
+
+@login_required(login_url='/login/')
 def checktask(request):
+
     status = ""
     operations = Operation.objects.filter(robotnumber='1')
     for i in operations:
         uuid = str(i.uuid)
-        resp = requests.get('http://192.168.60.73/app1/result?id=' + uuid)
-        data = str(resp.json())
-        data_dict = ast.literal_eval(data)
-        status = data_dict['status']
-        print('Status:', data_dict['status'])
-        Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=data_dict['status'])
-        Connection.objects.all().update(status=data_dict['status'])
-        ConnectionHistory.objects.all().update(status=data_dict['status'])
-        if data_dict['status'] == 'success':
-            OperationTask.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=data_dict['status'])
-            Connection.objects.all().update(status=data_dict['status'])
-            ConnectionHistory.objects.all().update(status=data_dict['status'])
-        else:
-            OperationTask.objects.filter(uuid=uuid).update(status=data_dict['status'])
-            Connection.objects.all().update(status=data_dict['status'])
-            ConnectionHistory.objects.all().update(status=data_dict['status'])
+        if 'historyid' in request.GET:
+            status = checkstatus(request, uuid, request.GET['historyid'])
+        else: 
+            status = checkstatus(request, uuid)
 
     return JsonResponse({'status': status})
 
 
 @login_required(login_url='/login/')
-def test(request):
+def pendingtask(request):
+
     if 'id' in request.POST:
         historyid = request.POST['id']
         conns = ConnectionHistory.objects.all().filter(id=historyid)
@@ -125,8 +147,18 @@ def test(request):
             if len(operations) == 1:
                 operations.update(uuid=uuid, status='pending', request=str(payload))
 
-    return HttpResponse('hi')
+    return JsonResponse({'historyid': historyid})
 
+
+@login_required(login_url='/login/')
+def canceltask(request):
+
+    if 'id' in request.POST and 'action' in request.POST and request.POST['action'] == 'canceled':
+        historyid = request.POST['id']
+        status = request.POST['action']
+        conns = ConnectionHistory.objects.all().filter(id=historyid).update(status=status)
+
+    return JsonResponse({'historyid': historyid, 'action': status})
 
 @login_required(login_url='/login/')
 def save(request, question_id, timestamp=0):
@@ -203,7 +235,7 @@ class ConnectionList(APIView):
         print('ConnectionList get', request.GET)
         if 'act' in request.GET and request.GET['act'] == 'connected':
             conns = Connection.objects.all().filter(disconnected_date=None)
-            statuses = OperationTask.objects.all()
+            statuses = OperationHistory.objects.all()
             obj = dict()
             for c in conns:
                 obj[str(c.east)] = str(c.west), str(c.status)
@@ -235,7 +267,6 @@ class ConnectionList(APIView):
 
     def create_connection(self, request):
 
-        
         east, west = self.get_available_ports(request)
         print('connection', east, west)
         if east == None:
@@ -260,10 +291,11 @@ class ConnectionList(APIView):
             operations.update(uuid=uuid, status='pending', request=str(payload))
         else:
             Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationTask.objects.create(robotnumber='1', uuid=uuid, status='pending')
+        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
         return Response(request.data)
 
     def disconnect(self, request):
+
         if request.user.is_superuser or request.user.is_staff:
             east, west = self.get_available_ports(request)
 
@@ -338,6 +370,7 @@ class AlarmList(APIView):
         alarm.save()
         return Response(request.data)
 
+
 class OperationList(APIView):
 
     def get(self, request):
@@ -346,10 +379,11 @@ class OperationList(APIView):
         serializer = OperationSerializer(operations, many=True)
         return Response(serializer.data)
 
-class OperationTaskList(APIView):
+
+class OperationHistoryList(APIView):
 
     def get(self, request):
 
-        operationtasks = OperationTask.objects.all()
-        serializer = OperationTaskSerializer(operationtasks, many=True)
+        OperationHistorys = OperationHistory.objects.all()
+        serializer = OperationHistorySerializer(OperationHistorys, many=True)
         return Response(serializer.data)

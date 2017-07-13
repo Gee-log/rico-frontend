@@ -16,13 +16,14 @@ urlpatterns = [
     url(r'^connectionhistorys/', views.ConnectionHistoryList.as_view()),
     url(r'^alarms/', views.AlarmList.as_view()),
     url(r'^operations/', views.OperationList.as_view()),
-    url(r'^operationtasks/', views.OperationTaskList.as_view()),
+    url(r'^operationhistorys/', views.OperationHistoryList.as_view()),
     url(r'^(?P<question_id>[0-9]+)/$', views.save, name='connection_log'),
     url(r'^(?P<question_id>[0-9]+)/(?P<timestamp>[0-9]+)/$', views.save, name='alarm_log'),
     url(r'^login/', views.login_view, name='login'),
     url(r'', include('django.contrib.auth.urls')),
     url(r'^checktask/', views.checktask, name='checktask'),
-    url(r'^test/', views.test, name='test'),
+    url(r'^pendingtask/', views.pendingtask, name='pendingtask'),
+    url(r'^canceltask/', views.canceltask, name='canceltask'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'html'])
