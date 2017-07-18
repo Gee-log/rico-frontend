@@ -48,7 +48,7 @@ class ConnectionHistory(models.Model):
     west = models.ForeignKey(Port, related_name='westH')
     switching_type = models.CharField(max_length=1, choices=SWITCHING_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=64, null=True)
+    status = models.CharField(max_length=256, null=True)
 
     @classmethod
     def create(cls, east, west, switching_type, status):
@@ -80,7 +80,7 @@ class Alarm(models.Model):
 
     alarm = models.CharField(max_length=1, choices=ALARM_TYPE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    detail = models.CharField(max_length=64)
+    detail = models.CharField(max_length=256)
     severity = models.CharField(max_length=1, choices=SEVERITY_TYPE, default='1')
 
     @classmethod
@@ -100,8 +100,8 @@ class Operation(models.Model):
     robotnumber = models.CharField(primary_key=True, max_length=1)
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
     status = models.CharField(max_length=64)
-    request = models.CharField(max_length=64)
-    response = models.CharField(max_length=64, null=True)
+    request = models.CharField(max_length=256)
+    response = models.CharField(max_length=256, null=True)
 
     @classmethod
     def create(cls, robotnumber, uuid, status, request, response):
@@ -118,8 +118,8 @@ class OperationHistory(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     finished_time = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=64)
-    request = models.CharField(max_length=64)
-    response = models.CharField(max_length=64, null=True)
+    request = models.CharField(max_length=256)
+    response = models.CharField(max_length=256, null=True)
 
     def __str__(self):
         return str(self.uuid)

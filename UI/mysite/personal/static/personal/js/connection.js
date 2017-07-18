@@ -78,7 +78,7 @@ $(document).ready(function (e) {
                     action: 'canceled',
                 },
                 success: function () {
-                    console.log('Sending Cacel ID:', element);
+                    console.log('Sending Cancel ID:', element);
                     location.reload();
                 }
             });
@@ -90,10 +90,10 @@ $(document).ready(function (e) {
             url: '/checktask/',
             type: 'GET',
             success: function (data) {
-                console.log('Last task status:', data.status);
+                console.log('Last task status:', data.status[0]);
                 console.log('Value :', round);
                 console.log('------------------------------');
-                if (round == 1 && data.status == 'success') {
+                if (round == 1 && data.status[0] == 'success') {
                     location.reload();
                     round--;
                 }
@@ -102,7 +102,7 @@ $(document).ready(function (e) {
                 alert('Got an error dude');
             }
         });
-    }, 10000);
+    }, 3000);
 
     // Waiting for improve !!
 
@@ -281,7 +281,7 @@ function createTable(data) {
             if (status == 'pending') {
                 var cellText = document.createElement("BUTTON");
                 cellText.className = "btn btn-default"
-                var text = document.createTextNode("Canel");
+                var text = document.createTextNode("Cancel");
                 cellText.id = 'C' + conn['id'];
                 cellText.appendChild(text);
             }

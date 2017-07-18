@@ -136,6 +136,11 @@ background-color: #ac2925;
 color: white;
 }
 
+.break{
+background-color: #f0ad4e;
+color: white;
+}
+
 .connectedpair{
 background-color: #03719C;
 color: white;
@@ -168,4 +173,9 @@ background-color: #fff !important;
 
 .navbar {
     margin-bottom: 0px !important;
+}
+
+.removehover {
+    text-decoration:none !important;
+    cursor: default;
 }
