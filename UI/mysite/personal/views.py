@@ -181,23 +181,22 @@ def pendingtask(request):
         historyid = request.POST['id']
         conns = ConnectionHistory.objects.all().filter(id=historyid)
         for i in conns:
-            payload = {'east': i.east.number, 'west': i.west.number, 'action':'connect'}
-            resp = requests.post('http://192.168.60.73/app1/connect', data=payload)
+            if i.switching_type == 'C':
+                payload = {'east': i.east.number, 'west': i.west.number, 'action':'connect'}
+                resp = requests.post('http://192.168.60.73/app1/connect', data=payload)
+            if i.switching_type == 'D':
+                payload = {'east': i.east.number, 'west': i.west.number, 'action':'disconnect'}
+                resp = requests.post('http://192.168.60.73/app1/disconnect', data=payload)
             print('payload', payload)
             uuid = resp.text
             print('UUID:', uuid)
 
             operations = Operation.objects.filter(robotnumber='1')
             conn = Connection.objects.all()
-            for c in conn:
-                if i.east == c.east and i.west == c.west and c.status == 'pending':
-                    Connection.objects.filter(east=c.east, west=c.west, status='pending').update(status='pending')
-                else:
-                    Connection.objects.create(east=i.east, west=i.west, status='pending')
             if len(operations) == 1:
                 operations.update(uuid=uuid, status='pending', request=str(payload))
             else:
-                Operation.objects.create(robotnumber='1', uuid=uuid, status='pending')
+                Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
             OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
     return JsonResponse({'historyid': historyid})

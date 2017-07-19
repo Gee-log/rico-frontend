@@ -240,6 +240,7 @@ function createTable(data) {
             var type = conn['switching_type'];
             var typeCheck = type.toString();
             var cell = document.createElement("td");
+
             if (typeCheck == 'C') {
                 var cellText = document.createTextNode('Connected');
             } else if (typeCheck == 'D') {
