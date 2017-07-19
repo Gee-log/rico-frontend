@@ -147,7 +147,7 @@ $(document).ready(function () {
   });
 
   $("#Continue").click(function () {
-    if ((stops && number) !== undefined || number !== null) {
+    if ((stops && number) !== undefined || number !== null || action !== undefined) {
       $.ajax({
         type: 'POST',
         url: '/connections/',
@@ -423,6 +423,7 @@ $(document).ready(function () {
       $('#Continue').attr('disabled', 'disabled');
     }
     console.log('Sequence:', sequence, '||', 'Stops:', stops);
+
 
     if (data == 'success') {
       data = 'success'

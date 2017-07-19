@@ -317,17 +317,18 @@ class ConnectionList(APIView):
             if 'west' not in request.data:
                 return Response('No west', content_type="text/plain")
 
-            if request.data['action'] == 'disconnect':
-                return self.disconnect(request)
+
             if 'number' in request.data and 'stops' in request.data:
                 return self.debug(request)
+            elif request.data['action'] == 'disconnect':
+                return self.disconnect(request)
             else:
                 return self.create_connection(request)
     
     def debug(self, request):
 
         east, west = self.get_available_ports(request)
-        print('connection', east, west)
+        print('debug', east, west)
         if east == None:
             return Response('No east port number ' + str(e), content_type="text/plain")
         if west == None:
@@ -337,15 +338,16 @@ class ConnectionList(APIView):
         if 'number' in request.data and 'stops' in request.data:
             number = request.data['number']
             stops = request.data['stops']
+            action = request.data['action']
         else:
             stops = None
             number = None
         if stops and number:
-            payload = {'east': east.number, 'west': west.number, 'action': "connect", 'stops': str(stops), 'no':str(number)}
+            payload = {'east': east.number, 'west': west.number, 'action': str(action), 'stops': str(stops), 'no':str(number)}
         else:
             return False
         resp = requests.post('http://192.168.60.73/app1/debug', data=payload)
-        print('payload', east.number, west.number, 'action : connect', 'stops :' + str(stops), 'no :', str(number))
+        print('payload', east.number, west.number, 'action :' + str(action), 'stops :' + str(stops), 'no :', str(number))
         uuid = resp.text
         print('UUID:', uuid)
 
