@@ -147,6 +147,7 @@ $(document).ready(function () {
   });
 
   $("#Continue").click(function () {
+    $('#Continue').attr('disabled', 'disabled');
     if ((stops && number) !== undefined || number !== null || action !== undefined) {
       $.ajax({
         type: 'POST',
@@ -161,6 +162,7 @@ $(document).ready(function () {
         success: function (e) {
           console.log(e);
           setConnectedPort();
+          $('#Continue').attr('disabled', 'disabled');
         }
       });
     }
@@ -365,7 +367,7 @@ $(document).ready(function () {
       type: 'GET',
       url: '/connections/',
       data: {
-        act: "connected",
+        action: "connected",
       },
       success: function (data) {
         connected_port = data;
