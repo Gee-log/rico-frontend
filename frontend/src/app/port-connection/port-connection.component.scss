@@ -1,0 +1,91 @@
+// MAIN CONTAINER
+.flex-container {
+  display: flex;
+  justify-content: space-around; // SUB CONTAINER
+  .flex-item {
+    padding: 20px;
+    flex-grow: 1;
+  } // FLEX FOOTER
+  .flex-footer {
+    padding-top: 15px;
+    flex-grow: 1; // BUTTON WIDTH
+    .button-width {
+      min-width: 110px;
+    } // CONTINUE BUTTON COLOR
+    .btn-container {
+      max-width: 110px;
+      padding: 0 16px;
+      background-color: #00C853;
+      line-height: 36px;
+      border-radius: 2px;
+      .btn-continue {
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+    .continue {
+      background: #00C853;
+      cursor: default;
+      color: white;
+      &:hover {
+        background: #00C853;
+        color: white;
+      }
+    } // BREAK STATUS COLOR
+    .break {
+      background: #FBC02D;
+      cursor: default;
+      color: white;
+    } // PENDING STATUS COLOR
+    .pending {
+      background: #D61515;
+      cursor: default;
+      color: white;
+    } // PAIR STATUS COLOR
+    .pair {
+      background: #3f51b5;
+      cursor: default;
+      color: white;
+    } // PAIR STATUS COLOR
+    .selected {
+      background: #555555;
+      cursor: default;
+      color: white;
+    }
+  } // FLEX FIXED PADDING
+  .flex-fix-padding {
+    padding: 10px;
+    flex-grow: 1;
+  } // TABLE CONTAINER
+  .table-container {
+    margin: 15px auto 0 auto;
+    box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.12), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 0, 0, 0.12);
+  } // TR STYLE
+  .tr-style {
+    // box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.12);
+  } // TD STYLE
+  .td-style {
+    //box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.12);
+    padding: 4px;
+    border: 1px solid rgba(#555555, 0.2);
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+  } // SELECTED PORT
+  .selected {
+    color: white;
+    background: #555555;
+  } //  TD HOVER
+  td:hover {
+    cursor: pointer; // color: rgba(#FFF, 1);
+    background-color: rgba(#555555, 0.15);
+  }
+}
+
+button {
+  min-width: 110px;
+}
+
+input {
+  font-family: 'Open Sans', sans-serif;
+}

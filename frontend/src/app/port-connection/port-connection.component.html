@@ -1,0 +1,74 @@
+<!-- ฺBEGIN FLEX-CONTAINER -->
+<div class="flex-container">
+  <!-- BEGIN FLEX-ITEM -->
+  <div class="flex-item">
+    <!-- BEGIN EASTPORT-TABLE-CONTAINER -->
+    <table class="table-container">
+      <tbody>
+        <tr class="tr-style" *ngFor="let row of eportschunk">
+          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectEast(column)} " (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- END EASTPORT-TABLE-CONTAINER -->
+  </div>
+  <!-- END FLEX-ITEM -->
+  <!-- BEGIN FLEX-ITEM -->
+  <div class="flex-item">
+    <!-- BEGIN WESTPORT-TABLE-CONTAINER -->
+    <table class="table-container">
+      <tbody>
+        <tr class="tr-style" *ngFor="let row of wportschunk">
+          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectWest(column)} " (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- END WESTPORT-TABLE-CONTAINER -->
+  </div>
+  <!-- END FLEX-ITEM -->
+</div>
+<!-- END FLEX-CONTAINER -->
+<!-- BEGIN FLEX-CONTAINER -->
+<div class="flex-container">
+  <!-- BEGIN FLEX-FOOTER -->
+  <div class="flex-footer" align="center">
+    <!-- BEGIN INPUT -->
+    <md-input-container>
+      <input mdInput placeholder="Stops :" value="stops" [(ngModel)]="stops">
+    </md-input-container>
+    <md-input-container>
+      <input mdInput placeholder="Sequence :" value="sequence" [(ngModel)]="sequence">
+    </md-input-container>
+    <!-- END INPUT -->
+  </div>
+  <!-- END FLEX-FOOTER -->
+</div>
+<!-- END FLEX-CONTAINER -->
+<!-- BEGIN FLEX-CONTAINER -->
+<div class="flex-container">
+  <!-- BEGIN FLEX-FOOTER -->
+  <div class="flex-footer" align="center">
+    <div class="btn-container">
+      <a class="btn-continue">Continue</a>
+    </div>
+    <button md-button class="continue">Continue</button>
+    <button md-button class="break">Break</button>
+    <button md-button class="pending">Pending</button>
+    <button md-button class="pair">Pair</button>
+    <button md-button class="selected">Selected</button>
+  </div>
+  <!-- END FLEX-FOOTER -->
+</div>
+<!-- END FLEX-CONTAINER -->
+<!-- BEGIN FLEX-CONTAINER -->
+<div class="flex-container">
+  <!-- BEGIN FLEX-FOOTER -->
+  <div class="flex-fix-padding" align="center">
+    <button md-raised-button class="button-width" (click)="postDebug()" color="primary">Continue</button>
+    <button md-raised-button class="button-width" (click)="postConnection()" color="primary">Connect</button>
+    <button md-raised-button class="button-width" (click)="postDisconnection()" color="primary">Disconnect</button>
+    <button md-raised-button class="button-width" (click)="checkStatus()" color="primary">Check status</button>  
+  </div>
+  <!-- END FLEX-FOOTER -->
+</div>
+<!-- END FLEX-CONTAINER -->
