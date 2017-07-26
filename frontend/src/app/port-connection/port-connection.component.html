@@ -6,10 +6,14 @@
     <table class="table-container">
       <tbody>
         <tr class="tr-style" *ngFor="let row of eportschunk">
-          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectEast(column)} " (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</td>
+          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectEast(column)} " (click)="setEastID(column)" *ngFor="let column of row">
+            <span id="T{{ column }}" mdTooltip="T{{ column }}" mdTooltipPosition="above">{{ column }}</span></td>
         </tr>
       </tbody>
     </table>
+    <!-- <md-input-container>
+      <input mdInput placeholder="Stops :" value="stops" [(ngModel)]="stops">
+    </md-input-container> -->
     <!-- END EASTPORT-TABLE-CONTAINER -->
   </div>
   <!-- END FLEX-ITEM -->
@@ -19,7 +23,8 @@
     <table class="table-container">
       <tbody>
         <tr class="tr-style" *ngFor="let row of wportschunk">
-          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectWest(column)} " (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</td>
+          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectWest(column)} " (click)="setWestID(column)" *ngFor="let column of row">
+            <span id="T{{ column }}" mdTooltip="T{{ column }}" mdTooltipPosition="above">{{ column }}</span></td>
         </tr>
       </tbody>
     </table>
@@ -48,10 +53,7 @@
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->
   <div class="flex-footer" align="center">
-    <div class="btn-container">
-      <a class="btn-continue">Continue</a>
-    </div>
-    <button md-button class="continue">Continue</button>
+    <button md-button class="connected">Connected</button>
     <button md-button class="break">Break</button>
     <button md-button class="pending">Pending</button>
     <button md-button class="pair">Pair</button>
@@ -67,7 +69,7 @@
     <button md-raised-button class="button-width" (click)="postDebug()" color="primary">Continue</button>
     <button md-raised-button class="button-width" (click)="postConnection()" color="primary">Connect</button>
     <button md-raised-button class="button-width" (click)="postDisconnection()" color="primary">Disconnect</button>
-    <button md-raised-button class="button-width" (click)="checkStatus()" color="primary">Check status</button>  
+    <!-- <button md-raised-button class="button-width" (click)="setConnectedPort()" color="primary">Testfunc</button> -->
   </div>
   <!-- END FLEX-FOOTER -->
 </div>

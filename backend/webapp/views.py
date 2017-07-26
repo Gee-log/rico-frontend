@@ -166,7 +166,7 @@ def checkstatus(request, uuid):
                     Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status, response=response)
                     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
-    return status, sequence, action
+    return {'status': status, 'sequence': sequence, 'action': action}
 
 
 # @login_required(login_url='/login/')

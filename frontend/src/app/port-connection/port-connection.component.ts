@@ -22,100 +22,148 @@ export class PortConnectionComponent implements OnInit {
   wportschunk = []; // 144 to [12,12,...]
   selectedEastPortID = ""; // CURRENT SELECTED EAST PORT
   selectedWestPortID = ""; // CURRENT SELECTED WEST PORT
-  stops; // STOPS POINT ROBOT
-  sequence; // SEQUENCE ROBOT
+  stops; // CURRENT STOPS POINT ROBOT IN DEBUG MODE
+  sequence; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
+  status; // CURRENT STATUS TASK OF ROBOT
+  action; // CURRENT ACTION IN DEBUG MODE
+
 
   constructor(private portService: PortService, private http: Http, private ApiService: ApiService) { }
 
   ngOnInit() {
-    //  OLD VERSION GET ALL PORT
-    this.portService.getPort().subscribe(
-      (data) => {
-        data.forEach((obj) => {
-          if (obj.direction === 'E') {
-            this.eports.push(obj.direction + obj.number)
-            this.eportschunk = _.chunk(this.eports, 12)
-          } else if (obj.direction === 'W') {
-            this.wports.push(obj.direction + obj.number)
-            this.wportschunk = _.chunk(this.wports, 12)
-          }
-        })
-      }
-    );
-    // let allPort = this.ApiService.getAllPort();
-    // let connects = this.ApiService.connectPort("33", "33", "connect");
+
+    // FETCH DATA
+    this.fetchData();
+    // SET COLOR OF PORT CONNECTION
+    this.setConnectedPort();
+    // CHECK STATUS EVERY 5 SEC.
+    setInterval(() => {
+      this.checkStatus();
+    }, 5000);
+
   }
 
-  // GET EASTPORT ID
+  // FETCH DATA
+  fetchData() {
+
+    this.ApiService.getAllPort().then((data) => {
+      this.eports = data.eports;
+      this.eportschunk = data.eportschunk;
+      this.wports = data.wports;
+      this.wportschunk = data.wportschunk;
+    });
+
+  }
+  // CHECK CURRENT ROBOT STATUS
+  checkStatus() {
+
+    this.ApiService.checkStatus().then((data) => {
+      this.sequence = data.sequence;
+      this.status = data.status;
+      this.action = data.action;
+      console.log('Cuurent sequence :', this.sequence, 'Current status :', this.status, 'Current action :', this.action);
+      this.setConnectedPort();
+    });
+
+  }
+  // GET EASTPORT ID ON CLICK
   setEastID(eastID) {
+
     this.selectedEastPortID = eastID;
     console.log('Current East Port :', this.selectedEastPortID);
+
   }
-  // GET WESTPORT ID
+  // GET WESTPORT ID ON CLICK
   setWestID(westID) {
+
     this.selectedWestPortID = westID;
     console.log('Current West Port :', this.selectedWestPortID);
+
   }
   // SELECTED EAST PORT AND CHANGE COLOR WHEN CLICK
   isSelectEast(Eport) {
+
     return this.selectedEastPortID === Eport;
+
   }
   // SELECTED WEST PORT AND CHANGE COLOR WHEN CLICK
   isSelectWest(Wport) {
+
     return this.selectedWestPortID === Wport;
+
   }
   // POST CONNECTION
   postConnection() {
+
+    // PAYLOAD { east, west, action, stops }
     if (this.stops) {
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), "connect", this.stops);
+
+      // PAYLOAD { east, west, action }
     } else {
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), "connect");
     }
   }
   // POST DISCONNECTION
   postDisconnection() {
+
+    // PAYLOAD { east, west, action, stops }
     if (this.stops) {
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), "disconnect", this.stops);
+
+      // PAYLOAD { east, west, action }
     } else {
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), "disconnect");
     }
-    // console.log('Disconnect : Port ', this.selectedEastPortID, ' : ', this.selectedWestPortID)
-    // var link = 'http://127.0.0.1:8000/connections/';
-    // var data = JSON.stringify({ east: this.selectedEastPortID.substring(1), west: this.selectedWestPortID.substring(1), action: "disconnect" });
-
-    // var headers = new Headers();
-    // headers.append('Content-Type', 'application/json');
-
-    // this.http.post(link, data, { headers: headers })
-    //   .map((res: Response) => res.json()).subscribe(res => {
-    //     this.result = res;
-    //     console.log(this.result);
-    //   });
   }
+  // POST DEBUG
   postDebug() {
+
+    //  PAYLOAD { east, west, action, stops, number }
     if (this.stops && this.sequence) {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), "connect", this.stops, this.sequence);
+      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), this.action, this.stops, this.sequence);
+
+      // stops and sequence are undefined or null 
     } else {
       console.log("No stops or sequence value !")
     }
   }
-
-  checkStatus() {
-    this.portService.checkStatus().subscribe(
-      (data) => {
-        console.log(data);
+  // SET COLOR OF PORT CONNECTION
+  setConnectedPort() {
+    this.ApiService.setConnectedPort().then((data) => {
+      let connected_port = data;
+      console.log(data);
+      for (let i = 0; i < 144; i++) {
+        $("TE" + i).attr('data-original-title', '')
+        $("TW" + i).attr('data-original-title', '')
       }
-      // (data) => {
-      //   data.forEach((obj) => {
-      //     if (obj.direction === 'E') {
-      //       this.eports.push(obj.direction + obj.number)
-      //       this.eportschunk = _.chunk(this.eports, 12)
-      //     } else if (obj.direction === 'W') {
-      //       this.wports.push(obj.direction + obj.number)
-      //       this.wportschunk = _.chunk(this.wports, 12)
-      //     }
-      //   })
-      // }
-    );
+
+      for (let i in connected_port) {
+
+        // IF STATUS IF SUCCESS
+        if (connected_port[i][1] === 'success') {
+          $('#' + i).removeClass('pending');
+          $('#' + i).removeClass('break');
+          $('#' + i).addClass('connected');
+          $('#' + connected_port[i]).removeClass('pending');
+          $('#' + connected_port[i]).removeClass('break');
+          $('#' + connected_port[i]).addClass('connected');
+
+          // IF STATUS IS STARTED OR PENDING
+        } else if (connected_port[i][1] === 'started' || connected_port[i][1] === 'pending') {
+          $('#' + i).addClass('pending');
+          $('#' + connected_port[i]).addClass('pending');
+
+          // IF STATUS IS BREAK
+        } else if (connected_port[i][1] === 'break') {
+          $('#' + i).removeClass('pending');
+          $('#' + connected_port[i][0]).removeClass('pending');
+          $('#' + i).addClass('break');
+          $('#' + connected_port[i][0]).addClass('break');
+        }
+      }
+    });
   }
+
+
 }
