@@ -6,8 +6,8 @@
     <table class="table-container">
       <tbody>
         <tr class="tr-style" *ngFor="let row of eportschunk">
-          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectEast(column)} " (click)="setEastID(column)" *ngFor="let column of row">
-            <span id="T{{ column }}" mdTooltip="T{{ column }}" mdTooltipPosition="above">{{ column }}</span></td>
+          <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">
+            <span id="T{{ column }}" mdTooltip="PORT {{ column }}" mdTooltipPosition="above">{{ column }}</span></td>
         </tr>
       </tbody>
     </table>
@@ -23,8 +23,8 @@
     <table class="table-container">
       <tbody>
         <tr class="tr-style" *ngFor="let row of wportschunk">
-          <td id="{{ column }}" class="td-style" [ngClass]=" {'selected': isSelectWest(column)} " (click)="setWestID(column)" *ngFor="let column of row">
-            <span id="T{{ column }}" mdTooltip="T{{ column }}" mdTooltipPosition="above">{{ column }}</span></td>
+          <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">
+            <span id="T{{ column }}" mdTooltip="PORT {{ column }}" mdTooltipPosition="above">{{ column }}</span></td>
         </tr>
       </tbody>
     </table>
@@ -39,10 +39,10 @@
   <div class="flex-footer" align="center">
     <!-- BEGIN INPUT -->
     <md-input-container>
-      <input mdInput placeholder="Stops :" value="stops" [(ngModel)]="stops">
+      <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops">
     </md-input-container>
     <md-input-container>
-      <input mdInput placeholder="Sequence :" value="sequence" [(ngModel)]="sequence">
+      <input mdInput placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" disabled>
     </md-input-container>
     <!-- END INPUT -->
   </div>
@@ -66,10 +66,9 @@
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->
   <div class="flex-fix-padding" align="center">
-    <button md-raised-button class="button-width" (click)="postDebug()" color="primary">Continue</button>
-    <button md-raised-button class="button-width" (click)="postConnection()" color="primary">Connect</button>
-    <button md-raised-button class="button-width" (click)="postDisconnection()" color="primary">Disconnect</button>
-    <!-- <button md-raised-button class="button-width" (click)="setConnectedPort()" color="primary">Testfunc</button> -->
+    <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" disabled>Continue</button>
+    <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" disabled>Connect</button>
+    <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" disabled>Disconnect</button>
   </div>
   <!-- END FLEX-FOOTER -->
 </div>

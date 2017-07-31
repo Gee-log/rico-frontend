@@ -1,0 +1,16 @@
+// MAIN CONTAINER
+.flex-container {
+  display: flex;
+  justify-content: space-around; // SUB CONTAINER
+  .flex-item {
+    padding: 10px;
+    flex-grow: 1;
+  } // BUTTON WIDTH
+  .button-width {
+    min-width: 110px;
+  } // FLEX FIXED PADDING
+  .flex-fix-padding {
+    padding: 5px;
+    flex-grow: 1;
+  }
+}

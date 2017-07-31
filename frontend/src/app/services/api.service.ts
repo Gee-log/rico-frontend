@@ -36,6 +36,7 @@ export class ApiService {
         }
       });
       return ({ allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk, wportschunk: wportschunk });
+
     })
   }
   // POST CONNECTION, DISCONNECTION, DEBUG API TO SERVER
@@ -56,7 +57,6 @@ export class ApiService {
       }).catch(() => {
         console.log('error')
       });
-
       // DEBUG MODE
       // PAYLOAD { east, west, action, stops, number }
     } else if (stops && number) {
@@ -66,7 +66,6 @@ export class ApiService {
       }).catch(() => {
         console.log('error')
       });
-
       // NORMAL MODE
       // PAYLOAD { east, west, action }
     } else {
@@ -93,6 +92,7 @@ export class ApiService {
         action = obj.action;
       });
       return ({ status: status, sequence: sequence, action: action });
+
     })
   }
   // CHECK CONNECTION STATUS ALL PORT
@@ -101,8 +101,16 @@ export class ApiService {
     return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
       return (response)
+
     })
   }
+  // GET CONNECTION HISTORYS
+  getConnectionHistory() {
 
+    return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then((response: any) => {
+      response = JSON.parse(response._body);
+      return (response)
+    })
+  }
 }
 

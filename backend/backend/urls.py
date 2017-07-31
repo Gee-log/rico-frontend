@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^connections/', views.ConnectionList.as_view()),
     url(r'^ports/', views.PortList.as_view()),
     url(r'^checktask/', views.checktask, name='checktask'),
+    url(r'^connectionhistorys/', views.ConnectionHistoryList.as_view()),
     url(r'^admin/', admin.site.urls),
 ]

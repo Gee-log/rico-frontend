@@ -12,7 +12,7 @@ export const appRoutes: Routes = [
     component: PortConnectionComponent
   },
   {
-    path: 'porthistory',
+    path: 'port_history',
     component: PortHistoryComponent
   },
   {
@@ -20,7 +20,7 @@ export const appRoutes: Routes = [
     component: AlarmComponent
   },
   {
-    path: 'alarmhistory',
+    path: 'alarm_history',
     component: AlarmHistoryComponent
   }
 ];

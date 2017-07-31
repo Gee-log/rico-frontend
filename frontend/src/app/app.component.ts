@@ -17,7 +17,7 @@ export class AppComponent {
     {
       icon: 'history',
       name: 'Port History',
-      path: '/porthistory'
+      path: '/port_history'
     },
     {
       icon: 'error_outline',
@@ -27,7 +27,7 @@ export class AppComponent {
     {
       icon: 'history',
       name: 'Alarm History',
-      path: '/alarmhistory'
+      path: '/alarm_history'
     }
   ]
 
