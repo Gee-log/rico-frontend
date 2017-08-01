@@ -7,39 +7,6 @@ import 'hammerjs';
 import * as _ from 'lodash';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import {
-  MdAutocompleteModule,
-  MdButtonModule,
-  MdButtonToggleModule,
-  MdCardModule,
-  MdCheckboxModule,
-  MdChipsModule,
-  MdCoreModule,
-  MdDatepickerModule,
-  MdDialogModule,
-  MdExpansionModule,
-  MdGridListModule,
-  MdIconModule,
-  MdInputModule,
-  MdListModule,
-  MdMenuModule,
-  MdNativeDateModule,
-  MdPaginatorModule,
-  MdProgressBarModule,
-  MdProgressSpinnerModule,
-  MdRadioModule,
-  MdRippleModule,
-  MdSelectModule,
-  MdSidenavModule,
-  MdSliderModule,
-  MdSlideToggleModule,
-  MdSnackBarModule,
-  MdSortModule,
-  MdTableModule,
-  MdTabsModule,
-  MdToolbarModule,
-  MdTooltipModule,
-} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk';
 
 // Component

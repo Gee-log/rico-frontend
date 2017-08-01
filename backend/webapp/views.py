@@ -6,38 +6,39 @@ from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation,
 from webapp.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer, OperationSerializer, OperationHistorySerializer
 from datetime import datetime
 from django.utils import timezone
-from django.contrib.auth import authenticate, get_user_model, login, logout
+# from django.contrib.auth import authenticate, get_user_model, login, logout
 # from personal.forms import UserLoginForm
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 import ast
 import requests
 
 
-def login_view(request):
+# def login_view(request):
+#
+#     print(request.user.is_authenticated())
+#     next = request.GET.get('next')
+#     title = "Login"
+#     form = UserLoginForm(request.POST or None)
+#     if form.is_valid():
+#         username = form.cleaned_data.get("username")
+#         password = form.cleaned_data.get('password')
+#         user = authenticate(username=username, password=password)
+#         login(request, user)
+#         if next:
+#             return redirect(next)
+#         return render(request, 'personal/index.html')
+#
+#     return render(request, 'personal/login.html', {"form": form, "title": title})
 
-    print(request.user.is_authenticated())
-    next = request.GET.get('next')
-    title = "Login"
-    form = UserLoginForm(request.POST or None)
-    if form.is_valid():
-        username = form.cleaned_data.get("username")
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        if next:
-            return redirect(next)
-        return render(request, 'personal/index.html')
 
-    return render(request, 'personal/login.html', {"form": form, "title": title})
-
-
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 def index(request):
 
     return render(request, 'personal/index.html')
 
-@login_required(login_url='/login/')
+
+# @login_required(login_url='/login/')
 def robot(request):
 
     return render(request, 'personal/robot_debug.html')
@@ -329,7 +330,7 @@ class ConnectionList(APIView):
     def post(self, request):
 
     # Angular2 cannot access database if request superuser
-    #if request.user.is_superuser or request.user.is_staff:
+    # if request.user.is_superuser or request.user.is_staff:
         print(request.data)
         # validate inputs
         if 'action' not in request.data:

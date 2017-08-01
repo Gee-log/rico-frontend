@@ -78,31 +78,35 @@
     font-size: 16px;
   } // SELECTED PORT
   .selected {
-    color: white;
-    background: #555555;
+    color: white !important;
+    background: #555555 !important;
   } // CONNECTED STATUS PORT
   .connected {
-    color: white;
-    background: #00C853;
+    color: white !important;
+    background: #00C853 !important;
   } // PENDING STATUS PORT
   .pending {
-    color: white;
-    background: #D61515;
+    color: white !important;
+    background: #D61515 !important;
   } // BREAK STATUS PORT
   .break {
-    color: white;
-    background: #FBC02D;
+    color: white !important;
+    background: #FBC02D !important;
   } // PAIR PORT
   .pair {
-    color: white;
-    background: #3f51b5;
+    color: white !important;
+    background: #3f51b5 !important;
+  } // DISABLED TD
+  .unselectable {
+    color: #9E9E9E;
+    background: #E0E0E0;
+    pointer-events: none;
   } //  TD HOVER
   td:hover {
     cursor: pointer; // color: rgba(#FFF, 1);
     background-color: rgba(#555555, 0.15);
   }
 }
-
 // FIXED BUTTON MIN-WIDTH
 button {
   min-width: 110px;
