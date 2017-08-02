@@ -322,6 +322,7 @@ export class PortConnectionComponent implements OnInit {
 
     this.ApiService.setConnectedPort().then((data) => {
       let connected_port = data;
+      var no_data = true;
       console.log('ALL PORT CONNECTION :', data);
 
       // LOCAL STORAGE VARIABLE
@@ -335,9 +336,10 @@ export class PortConnectionComponent implements OnInit {
         if (this.selectedEastPortID === i || this.selectedWestPortID === data[i][0]) {
           $('#Connect').attr('disabled', 'disabled');
         }
-
+        no_data = false;
       }
-      // TO DO POPUP STATUS EACH PORT
+
+      // // TO DO POPUP STATUS EACH PORT
       for (let i = 0; i < 144; i++) {
 
         $('#E' + i).removeClass("connected pending");
@@ -345,6 +347,13 @@ export class PortConnectionComponent implements OnInit {
         // $("TE" + i).attr('data-original-title', '')
         // $("TW" + i).attr('data-original-title', '')
 
+      }
+
+      // No connected port at all
+      if (no_data) {
+          $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN STATUS SUCCESS
+          $('.East, .West').removeClass("unselectable"); // UNLOCK TABLE WHEN STATUS SUCCESS
+          $('.East, .West').removeClass("break");
       }
 
       console.log("------------------------------- All Port Status -------------------------------");
