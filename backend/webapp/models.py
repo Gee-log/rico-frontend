@@ -122,6 +122,9 @@ class OperationHistory(models.Model):
 
     def __str__(self):
         return str(self.uuid)
+        #return str(self.uuid) + ' c:' + str(self.created_time) \
+            #+ ' f:' + str(self.finished_time) + ' s:' + self.status \
+            #+ ' req:' + str(self.request) + ' resp:' + str(self.response)
 
     class Meta:
         ordering = ['-created_time']

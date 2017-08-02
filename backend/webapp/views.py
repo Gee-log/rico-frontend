@@ -12,7 +12,12 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_protect
 import ast
 import requests
+from white import Walker
 
+
+CELERY_APP = 'http://192.168.60.73/app1'
+
+walk = Walker()
 
 # def login_view(request):
 #
@@ -90,11 +95,15 @@ def alarm_history(request):
 # @login_required(login_url='/login/')
 def checkstatus(request, uuid):
 
+
     action = ""
     sequence = None
-    resp = requests.get('http://192.168.60.73/app1/result?id=' + uuid)
-    data = str(resp.json())
-    data_dict = ast.literal_eval(data)
+    if walk.is_dummy():
+        data_dict = walk.checkstatus(uuid)
+    else:
+        resp = requests.get(CELERY_APP + '/result?id=' + uuid)
+        data = str(resp.json())
+        data_dict = ast.literal_eval(data)
     status = data_dict['status']
     print('Status:', status)
 
@@ -167,7 +176,9 @@ def checkstatus(request, uuid):
                     Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status, response=response)
                     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
-    return {'status': status, 'sequence': sequence, 'action': action}
+    out = {'status': status, 'sequence': sequence, 'action': action}
+    print('checktask', out)
+    return out
 
 
 # @login_required(login_url='/login/')
@@ -200,10 +211,16 @@ def pendingtask(request):
             for c in conn:
                 if i.switching_type == 'C' and c.disconnected_date is None:
                     payload = {'east': i.east.number, 'west': i.west.number, 'action': 'connect'}
-                    resp = requests.post('http://192.168.60.73/app1/connect', data=payload)
+                    if walk.is_dummy():
+                        resp = walk.connect(payload)
+                    else:
+                        resp = requests.post(CELERY_APP + '/connect', data=payload)
                 if i.switching_type == 'D' and c.disconnected_date is None:
                     payload = {'east': i.east.number, 'west': i.west.number, 'action': 'disconnect'}
-                    resp = requests.post('http://192.168.60.73/app1/disconnect', data=payload)
+                    if walk.is_dummy():
+                        resp = walk.disconnect(payload)
+                    else:
+                        resp = requests.post(CELERY_APP + '/disconnect', data=payload)
             print('payload', payload)
             uuid = resp.text
             print('UUID:', uuid)
@@ -370,7 +387,10 @@ class ConnectionList(APIView):
             payload = {'east': east.number, 'west': west.number, 'action': str(action), 'stops': str(stops), 'no':str(number)}
         else:
             return False
-        resp = requests.post('http://192.168.60.73/app1/debug', data=payload)
+        if walk.is_dummy():
+            resp = walk.debug(payload)
+        else:
+            resp = requests.post(CELERY_APP + '/debug', data=payload)
         print('payload', 'E' + str(east.number), 'W' + str(west.number), 'action :' + str(action), 'stops :' + str(stops), 'no :', str(number))
         uuid = resp.text
         print('UUID:', uuid)
@@ -407,7 +427,12 @@ class ConnectionList(APIView):
             payload = {'east': east.number, 'west': west.number, 'action': "connect", 'stops': stops}
         else:
             payload = {'east': east.number, 'west': west.number, 'action': "connect"}
-        resp = requests.post('http://192.168.60.73/app1/connect', data=payload)
+
+        if walk.is_dummy():
+            resp = walk.connect(payload)
+        else:
+            resp = requests.post(CELERY_APP + '/connect', data=payload)
+
         print('payload', 'E' + str(east.number), 'W' + str(west.number), 'action : connect')
         uuid = resp.text
         print('UUID :', uuid)
@@ -448,7 +473,12 @@ class ConnectionList(APIView):
                     payload = {'east': east.number, 'west': west.number, 'action': "disconnect", 'stops': stops}
                 else:
                     payload = {'east': east.number, 'west': west.number, 'action': "disconnect"}
-                resp = requests.post('http://192.168.60.73/app1/disconnect', data=payload)
+
+                if walk.is_dummy():
+                    resp = walk.disconnect(payload)
+                else:
+                    resp = requests.post(CELERY_APP + '/disconnect', data=payload)
+
                 print('payload', 'E' + str(east.number), 'W' + str(west.number), 'action : disconnection')
                 uuid = resp.text
                 print('UUID:', uuid)
