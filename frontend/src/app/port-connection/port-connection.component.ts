@@ -30,7 +30,6 @@ export class PortConnectionComponent implements OnInit {
   eValue = 1; // VALUE OF EPORT
   wValue = 1; // VALUE OF WPORT
   pair = []; // PAIR OF CONNECTED PORT {[east, west]}
-  lastDebug = []; // TODO ?
 
 
   constructor(private http: Http, private ApiService: ApiService) { }
@@ -69,8 +68,9 @@ export class PortConnectionComponent implements OnInit {
       this.setConnectedPort(); // SET PORT COLOR BY STATUS
       this.unlockButton(this.eValue, this.wValue, this.status); // UNLOCK OR LOCK BUTTON BY CURRENT STATUS
 
+      // UNLOCK TABLE WHEN CURRENT STATUS SUCCESS
       if (this.sequence === 'success') {
-        $('.East, .West').removeClass("unselectable"); // UNLOCK TABLE WHEN CURRENT STATUS SUCCESS
+        $('.East, .West').removeClass("unselectable");
       }
     });
 
@@ -79,8 +79,8 @@ export class PortConnectionComponent implements OnInit {
   setEastID(eastID) {
 
     this.selectedEastPortID = eastID;
-    // SET LOCALSTORAGE VALUE OF selectedEastPortID
-    localStorage.setItem('selectedEastPortID', JSON.stringify(eastID));
+
+    localStorage.setItem('selectedEastPortID', JSON.stringify(eastID)); // SET LOCALSTORAGE VALUE OF selectedEastPortID
     console.log('Current East Port :', this.selectedEastPortID);
 
     // WHEN NOT CLICK ON CONNECTED PORT
@@ -201,7 +201,7 @@ export class PortConnectionComponent implements OnInit {
       $("#Connect, #Disconnect, #Continue").attr('disabled', 'disabled');
       console.log("LOCK CONNECT & DISCONNECT & CONTINUE BUTTONS | STATUS: ", status);
       // STATUS = BREAK
-    } else if (status === 'break') {
+    } else if (status === 'break' && this.sequence !== null && this.sequence !== undefined) {
       $("#Continue").removeAttr('disabled');
       $("#Connect, #Disconnect").attr('disabled', 'disabled');
       console.log("LOCK CONNECT & DISCONNECT | STATUS: ", status);
@@ -238,6 +238,8 @@ export class PortConnectionComponent implements OnInit {
   }
   // POST CONNECTION
   postConnection() {
+    // LOCK TABLE AFTER POST
+    $('.East, .West').addClass("unselectable");
     // LOCK CONNECT BUTTON AFTER POST
     $('#Connect').attr('disabled', 'disabled');
     // REMOVE PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
@@ -262,6 +264,8 @@ export class PortConnectionComponent implements OnInit {
   }
   // POST DISCONNECTION
   postDisconnection() {
+    // LOCK TABLE AFTER POST
+    $('.East, .West').addClass("unselectable");
     // LOCK DISCONNECT BUTTON AFTER POST
     $('#Disconnect').attr('disabled', 'disabled');
     // REMOVE PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
@@ -286,6 +290,8 @@ export class PortConnectionComponent implements OnInit {
   }
   // POST DEBUG
   postDebug() {
+    // LOCK TABLE AFTER POST
+    $('.East, .West').addClass("unselectable");
     // LOCK CONTINUE BUTTON AFTER POST
     $("#Continue").attr('disabled', 'disabled');
     // LOCK STOPS INPUT AFTER POST
@@ -306,7 +312,6 @@ export class PortConnectionComponent implements OnInit {
       $("#Continue").attr('disabled', 'disabled');
       // STOPS AND SEQUNCE ARE UNDEFINED OR NULL
       $('#stops').attr('disabled', 'disabled');
-      this.lastDebug.push(this.selectedEastPortID, this.selectedWestPortID);
     } else {
       console.log("No stops or sequence value !")
     }
@@ -319,19 +324,27 @@ export class PortConnectionComponent implements OnInit {
       let connected_port = data;
       console.log('ALL PORT CONNECTION :', data);
 
-      // CHECK IF CURRENT SELECTED HAVE CONNECTED 
+      // LOCAL STORAGE VARIABLE
+      let selectedEastPortID = JSON.parse(localStorage.getItem('selectedEastPortID'));
+      let selectedWestPortID = JSON.parse(localStorage.getItem('selectedWestPortID'));
+
+      // CHECK IF CURRENT SELECTED PORT HAVE CONNECTED ON CLICK
       // LOCK CONNECTION BUTTON
       for (let i in data) {
+
         if (this.selectedEastPortID === i || this.selectedWestPortID === data[i][0]) {
           $('#Connect').attr('disabled', 'disabled');
         }
+
       }
-      // // TO DO POPUP STATUS EACH PORT
+      // TO DO POPUP STATUS EACH PORT
       for (let i = 0; i < 144; i++) {
+
         $('#E' + i).removeClass("connected pending");
         $('#W' + i).removeClass("connected pending");
         // $("TE" + i).attr('data-original-title', '')
         // $("TW" + i).attr('data-original-title', '')
+
       }
 
       console.log("------------------------------- All Port Status -------------------------------");
@@ -342,7 +355,8 @@ export class PortConnectionComponent implements OnInit {
         if (connected_port[i][1] === 'success') {
           $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN STATUS SUCCESS
           $('.East, .West').removeClass("unselectable"); // UNLOCK TABLE WHEN STATUS SUCCESS
-          $('.East, .West').removeClass("break");
+          $('#' + selectedEastPortID).removeClass('break'); // REMOVE CLASS 'BREAK' FROM LAST PORT VALUE
+          $('#' + selectedWestPortID).removeClass('break'); // REMOVE CLASS 'BREAK' FROM LAST PORT VALUE
           $('#' + i).removeClass("pending break");
           $('#' + i).addClass('connected');
           $('#' + connected_port[i]).removeClass("pending break");
@@ -375,20 +389,25 @@ export class PortConnectionComponent implements OnInit {
       }
       console.log("-------------------------------------------------------------------------------");
     });
-  }
 
+  }
+  // CLEAR LOCAL STORAGE STOPS VALUE
   clearValue(stops) {
+
     if (stops === undefined || stops === null || stops === "") {
       stops = null;
       localStorage.setItem('stops', JSON.stringify(stops));
     }
-  }
 
+  }
+  // TEST CONSOLE.LOG LOCAL STORAGE VALUE
   clear() {
+
     let selectedEastPortID = localStorage.getItem('selectedEastPortID');
     let selectedWestPortID = localStorage.getItem('selectedWestPortID');
     console.log(selectedEastPortID, selectedWestPortID, this.stops);
   }
+
 }
 
 

@@ -1,51 +1,92 @@
+<!-- BEGIN FLEX-CONTAINER -->
 <div class="flex-container">
+  <!-- BEGIN FLEX-ITEM -->
   <div class="flex-item">
-    <div class="example-container mat-elevation-z8">
-
-      <md-table #table [dataSource]="dataSource">
-
-        <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-        <!-- ID Column -->
-        <ng-container cdkColumnDef="userId">
-          <md-header-cell *cdkHeaderCellDef style="color:orange"> Alarm </md-header-cell>
-          <md-cell *cdkCellDef="let row"> {{ row.id }} </md-cell>
-        </ng-container>
-
-        <!-- Progress Column -->
-        <ng-container cdkColumnDef="userName">
-          <md-header-cell *cdkHeaderCellDef style="color:red"> Detail </md-header-cell>
-          <md-cell *cdkCellDef="let row"> {{row.progress}}% </md-cell>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container cdkColumnDef="progress">
-          <md-header-cell *cdkHeaderCellDef style="color:red"> Time </md-header-cell>
-          <md-cell *cdkCellDef="let row"> {{row.name}} </md-cell>
-        </ng-container>
-
-        <!-- Color Column -->
-        <ng-container cdkColumnDef="color">
-          <md-header-cell *cdkHeaderCellDef style="color:blue"> Severity </md-header-cell>
-          <md-cell *cdkCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
-        </ng-container>
-
-        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
-      </md-table>
-
-      <md-paginator #paginator [length]="exampleDatabase.data.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-      </md-paginator>
+    <!-- TODO  -->
+    <!-- BEGIN SEARCH FILTER -->
+    <div>
+      <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...' (keyup)='updateFilter($event)'
+      />
+      <!-- BEGIN TABLE -->
+      <!-- CONFIG TABLE -->
+      <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        <!-- BEGIN ALARM COLUMN -->
+        <ngx-datatable-column name="Alarm">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="orange">{{column.name}}</span>
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <strong>{{value}}</strong>
+            </ng-template>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END ALARM COLUMN -->
+        <!-- BEGIN DETAIL COLUMN -->
+        <ngx-datatable-column name="Detail">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="blue">{{column.name}}</span>
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <strong>{{value}}</strong>
+            </ng-template>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END DETAIL COLUMN -->
+        <!-- BEGIN TIME COLUMN -->
+        <ngx-datatable-column name="Time">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="red">{{column.name}}</span>
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <strong>{{value}}</strong>
+            </ng-template>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END TIME COLUMN -->
+        <!-- BEGIN SEVERITY COLUMN -->
+        <ngx-datatable-column name="Severity">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="red">{{column.name}}</span>
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <strong>{{value}}</strong>
+            </ng-template>
+            <!-- ! TODO BUTTON  -->
+            <!-- <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="row.company== 'KFC'" (click)="clickme(row)">Continue </button>        :{{row['company']}} -->
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END SEVERITY COLUMN -->
+      </ngx-datatable>
+      <!-- END TABLE -->
     </div>
+    <!-- END SEARCH FILTER -->
   </div>
+  <!-- END FLEX-ITEM -->
 </div>
+<!-- END FLEX-CONTAINER -->
 <!-- BEGIN FLEX-CONTAINER -->
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->
   <div class="flex-fix-padding" align="center">
-    <button md-raised-button id="Continue" class="button-width" color="primary">Save</button>
+    <button md-raised-button id="#" class="button-width" color="primary">Save</button>
   </div>
   <!-- END FLEX-FOOTER -->
 </div>
 <!-- END FLEX-CONTAINER -->
+
+
+<!-- EXAMPLE -->
+<!-- <ngx-datatable-column name="Gender" headerClass="is-gender">
+  <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+    <span (click)="sort()">{{column.name}}</span>
+  </ng-template>
+  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+    My name is: <i [innerHTML]="row['name']"></i> and <i>{{value}}</i>
+    <div>{{joke}}</div>
+  </ng-template>
+</ngx-datatable-column> -->

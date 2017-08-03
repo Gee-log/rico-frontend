@@ -54,6 +54,7 @@ export class ApiService {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops }, this.options).toPromise().then((response: any) => {
         console.log(response._body);
         return response;
+
       }).catch(() => {
         console.log('error')
       });
@@ -63,6 +64,7 @@ export class ApiService {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, number }, this.options).toPromise().then((response: any) => {
         console.log(response._body);
         return response;
+
       }).catch(() => {
         console.log('error')
       });
@@ -72,6 +74,7 @@ export class ApiService {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
         console.log(response._body);
         return response;
+
       }).catch(() => {
         console.log('error')
       });
@@ -110,7 +113,47 @@ export class ApiService {
     return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
       return (response)
+
     })
   }
-}
+  // GET ALARM HISTORY
+  getAlarmHistory() {
 
+
+
+    // } else if () {?
+    return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then((response: any) => {
+      response = JSON.parse(response._body);
+      return (response)
+
+    })
+    // }
+  }
+  // POST ALARM
+  postAlarm(alarm, detail, severity) {
+
+    return this.http.post(this.ROOT_URL + 'alarms/', { alarm, detail, severity }, this.options).toPromise().then((response: any) => {
+      console.log(response._body);
+      return response;
+
+    }).catch(() => {
+      console.log('error')
+    })
+  }
+  // POST PENDING TASK
+  pendingTask(id) {
+
+    return this.http.post(this.ROOT_URL + 'pendingtask/', { id }, this.options).toPromise().then((response: any) => {
+      console.log(response._body);
+      return response;
+
+    }).catch(() => {
+      console.log('error')
+    })
+  }
+
+}
+    // if (stops && number === undefined) {
+    //   return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops }, this.options).toPromise().then((response: any) => {
+    //     console.log(response._body);
+    //     return response;

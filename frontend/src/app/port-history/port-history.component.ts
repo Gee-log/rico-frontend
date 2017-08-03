@@ -9,6 +9,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-port-history',
@@ -18,102 +19,198 @@ import * as _ from 'lodash';
 
 export class PortHistoryComponent implements OnInit {
 
-  displayedColumns = ['userId', 'userName', 'progress', 'color', 'eastPort', 'westPort', 'robotStatus'];
-  exampleDatabase = new ExampleDatabase();
-  dataSource: ExampleDataSource | null;
+  public pendingID = [];
 
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  constructor(private http: Http, private ApiService: ApiService) {
 
-  constructor(private http: Http, private ApiService: ApiService) { }
+  }
 
 
   ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator);
     this.fetchData();
+
   }
+
+  ngAfterViewInit() {
+    console.log(this.pendingID);
+    $(document).ready(function () {
+
+      $('#P' + 129).click(function () {
+
+        let id = $(this).attr('id');
+        let formatID = id.substring(1);
+
+        // for (let i = 0; i < element.length; i++) {
+        //   $('#P' + element[i]).attr('disabled', 'disabled');
+        //   $('#C' + element[i]).attr('disabled', 'disabled');
+        // }
+
+        // $.ajax({
+        //   type: 'POST',
+        //   url: 'http://127.0.0.1:8000/pendingtask/',
+        //   data: {
+        //     id: formatID
+        //   },
+        //   success: function (data) {
+        //     console.log('Sending PendingID :', data);
+        //   }
+        // });
+      });
+    })
+
+  }
+
+  // test() {
+  //   this.pendingID.forEach(function (element) {
+
+  //     // PENDING BUTTON CLICKED
+  //     $('#P' + element).click(function () {
+
+  //       let id = $(this).attr('id');
+  //       let formatID = id.substring(1);
+
+  //       for (let i = 0; i < element.length; i++) {
+  //         $('#P' + element[i]).attr('disabled', 'disabled');
+  //         $('#C' + element[i]).attr('disabled', 'disabled');
+  //       }
+
+  //       $.ajax({
+  //         type: 'POST',
+  //         url: 'http://127.0.0.1:8000/pendingtask/',
+  //         data: {
+  //           id: formatID
+  //         },
+  //         success: function (data) {
+  //           console.log('Sending PendingID :', data);
+  //         }
+  //       });
+  //     });
+  //     // CANCEL BUTTON CLICKED
+  //     $('#C' + element).click(function () {
+
+  //       let id = $(this).attr('id');
+  //       let formatID = id.substring(1);
+
+  //       $.ajax({
+  //         type: 'POST',
+  //         url: 'http://127.0.0.1:8000/canceltask/',
+  //         data: {
+  //           id: formatID,
+  //           action: 'canceled'
+  //         },
+  //         success: function (data) {
+  //           console.log('Sending PendingID :', data);
+  //           location.reload();
+  //         }
+  //       });
+  //     })
+  //   });
+  // }
 
   fetchData() {
+
+    let storage = [];
+
     this.ApiService.getConnectionHistory().then((data) => {
-      _.each(data, (obj) => {
-        console.log(obj);
-      })
+
+      var tblBody = document.getElementById("records");
+
+      for (var i = 0; i < data.length; i++) {
+        var row = document.createElement("tr");
+        var objs = data[i];
+
+        if (objs['status'] == 'pending') {
+          storage.push(objs['id']);
+          console.log(objs['id']);
+        }
+
+        // this.pendingID.push(storage);
+        // DAY ROW
+        var day = new Date(objs['timestamp']);
+        var formatday = day.toString().substring(0, 15);
+        var cell = document.createElement("td")
+        cell.style.cssText = 'padding: 10px;';
+        var cellText = document.createTextNode(formatday)
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        // TIME ROW 
+        var time = new Date(objs['timestamp']);
+        var formattime = time.toString().substring(15);
+        cell = document.createElement("td")
+        cellText = document.createTextNode(formattime)
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        // STATUS ROW
+        var type = objs['switching_type'];
+        var typeCheck = type.toString();
+        cell = document.createElement("td")
+        // IF switching_type == C
+        if (typeCheck === 'C') {
+          cellText = document.createTextNode('Connected');
+          cell.style.cssText = 'color: #00C853;';
+          // IF switching_type == D
+        } else {
+          cellText = document.createTextNode('Disconnected');
+          cell.style.cssText = 'color: red;';
+        }
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        // EAST PORT ROW
+        cell = document.createElement("td");
+        cellText = document.createTextNode("E" + objs['east']);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        // WEST PORT ROW
+        cell = document.createElement("td");
+        cellText = document.createTextNode("W" + objs['west']);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        // TASK STATUS ROW
+        var status = objs['status'];
+        var formatstatus = status.charAt(0).toUpperCase() + status.slice(1);
+        // IF STATUS == BREAK
+        // CREATE BREAK BUTTON
+        if (status == 'break') {
+          var button = document.createElement("BUTTON");
+          button.className = "button-width mat-raised-button"
+          button.style.cssText = 'background: #ffee58; margin: 3px;';
+          cellText = document.createTextNode(formatstatus);
+          button.appendChild(cellText);
+          row.appendChild(button);
+          // IF STATUS == SUCCESS
+        } else if (status == 'success') {
+          cell = document.createElement("td");
+          cellText = document.createTextNode(formatstatus);
+          cell.appendChild(cellText);
+          row.appendChild(cell);
+          // IF STATUS == PENDING
+          // CREATE PENDING BUTTON
+        } else if (status == 'pending') {
+          var button = document.createElement("BUTTON");
+          button.className = "button-width mat-raised-button"
+          button.style.cssText = 'background: red; color: white; margin: 3px;';
+          button.id = 'P' + objs['id'];
+          cellText = document.createTextNode("Continue");
+          button.appendChild(cellText);
+          row.appendChild(button);
+        }
+        // IF STATUS == PENDING
+        // CREATE CANCEL BUTTON
+        cell = document.createElement("td");
+        if (status == 'pending') {
+          var button = document.createElement("BUTTON");
+          button.className = "button-width mat-raised-button mat-primary"
+          button.style.cssText = 'margin: 3px;';
+          button.id = 'C' + objs['id'];
+          cellText = document.createTextNode("Cancel");
+          button.appendChild(cellText);
+          row.appendChild(button);
+        }
+
+        tblBody.appendChild(row);
+
+      }
     });
   }
-}
 
-/** Constants used to fill up our data base. */
-const COLORS = [];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-}
-
-/** An example database that the data source uses to retrieve data for the table. */
-export class ExampleDatabase {
-  /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<UserData[]> = new BehaviorSubject<UserData[]>([]);
-  get data(): UserData[] { return this.dataChange.value; }
-
-  constructor() {
-    // Fill up the database with 100 users.
-    for (let i = 0; i < 100; i++) { this.addUser(); }
-  }
-
-  /** Adds a new user to the database. */
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewUser());
-    this.dataChange.next(copiedData);
-  }
-
-  /** Builds and returns a new User. */
-  private createNewUser() {
-    const name =
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-    return {
-      id: (this.data.length + 1).toString(),
-      name: name,
-      progress: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-    };
-  }
-}
-
-/**
- * Data source to provide what data should be rendered in the table. Note that the data source
- * can retrieve its data in any way. In this case, the data source is provided a reference
- * to a common data base, ExampleDatabase. It is not the data source's responsibility to manage
- * the underlying data. Instead, it only needs to take the data and send the table exactly what
- * should be rendered.
- */
-export class ExampleDataSource extends DataSource<any> {
-  constructor(private _exampleDatabase: ExampleDatabase, private _paginator: MdPaginator) {
-    super();
-  }
-
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<UserData[]> {
-    const displayDataChanges = [
-      this._exampleDatabase.dataChange,
-      this._paginator.page,
-    ];
-
-    return Observable.merge(...displayDataChanges).map(() => {
-      const data = this._exampleDatabase.data.slice();
-
-      // Grab the page's slice of data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      return data.splice(startIndex, this._paginator.pageSize);
-    });
-  }
-
-  disconnect() { }
 }

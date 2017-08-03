@@ -1,66 +1,18 @@
-<div class="flex-container">
+<div class="flex-container" align="center">
   <div class="flex-item">
-    <div class="example-container mat-elevation-z8">
-
-      <md-table #table [dataSource]="dataSource">
-
-        <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-        <!-- ID Column -->
-        <ng-container cdkColumnDef="userId">
-          <md-header-cell *cdkHeaderCellDef style="color:red"> Date </md-header-cell>
-          <md-cell *cdkCellDef="let row"> {{ row.id }} </md-cell>
-        </ng-container>
-
-        <!-- Progress Column -->
-        <ng-container cdkColumnDef="userName">userName
-          <md-header-cell *cdkHeaderCellDef style="color:red"> Time </md-header-cell>
-          <md-cell *cdkCellDef="let row"> {{row.progress}}% </md-cell>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container cdkColumnDef="progress">
-          <md-header-cell *cdkHeaderCellDef style="color:blue"> Type </md-header-cell>
-          <md-cell *cdkCellDef="let row"> {{row.name}} </md-cell>
-        </ng-container>
-
-        <!-- Color Column -->
-        <ng-container cdkColumnDef="color">
-          <md-header-cell *cdkHeaderCellDef style="color:blue"> Status </md-header-cell>
-          <md-cell *cdkCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
-        </ng-container>
-
-        <ng-container cdkColumnDef="eastPort">
-          <md-header-cell *cdkHeaderCellDef style="color:blue"> East Port </md-header-cell>
-          <md-cell *cdkCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
-        </ng-container>
-
-        <ng-container cdkColumnDef="westPort">
-          <md-header-cell *cdkHeaderCellDef style="color:blue"> West Port </md-header-cell>
-          <md-cell *cdkCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
-        </ng-container>
-
-        <ng-container cdkColumnDef="robotStatus">
-          <md-header-cell *cdkHeaderCellDef style="color:orange"> Robot Status </md-header-cell>
-          <md-cell *cdkCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
-        </ng-container>
-
-        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
-      </md-table>
-
-      <md-paginator #paginator [length]="exampleDatabase.data.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-      </md-paginator>
-    </div>
+    <table>
+      <thead class="line">
+        <tr>
+          <th class="red">Date</th>
+          <th class="red">Time</th>
+          <th class="green">Status</th>
+          <th class="orange">East Port</th>
+          <th class="orange">West Port</th>
+          <th class="blue">Robot Status</th>
+        </tr>
+      </thead>
+      <tbody id="records">
+      </tbody>
+    </table>
   </div>
 </div>
-<!-- BEGIN FLEX-CONTAINER -->
-<div class="flex-container">
-  <!-- BEGIN FLEX-FOOTER -->
-  <div class="flex-fix-padding" align="center">
-    <button md-raised-button id="Continue" class="button-width" color="primary">Save</button>
-  </div>
-  <!-- END FLEX-FOOTER -->
-</div>
-<!-- END FLEX-CONTAINER -->

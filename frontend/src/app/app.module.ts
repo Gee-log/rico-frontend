@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CdkTableModule } from '@angular/cdk';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 // Component
 import { AppComponent } from './app.component';
@@ -42,7 +43,8 @@ import { ApiService } from './services/api.service';
     AppRoutingModule,
     HttpModule,
     FormsModule,
-    CdkTableModule
+    CdkTableModule,
+    NgxDatatableModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
