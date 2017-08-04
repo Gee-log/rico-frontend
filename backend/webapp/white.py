@@ -1,17 +1,14 @@
 import os
 import uuid
-from StringIO import StringIO
 import ast
 import json
 import datetime
 
 from rest_framework.response import Response
-from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory
-from webapp.serializers import PortSerializer, ConnectionSerializer, AlarmSerializer, ConnectionHistorySerializer, OperationSerializer, OperationHistorySerializer
+from webapp.models import OperationHistory
 
 CONNECT_STEPS = 17
 DISCONNECT_STEPS = 21
-
 
 
 class Walker(object):
@@ -47,8 +44,7 @@ class Walker(object):
         request = None
         response = None
 
-        now = datetime.datetime.now()
-        OperationHistorys = OperationHistory.objects.all()
+        now = datetime.datetime.utcnow()
         objs = OperationHistory.objects.filter(uuid=uuid)
         for o in objs:
             created_time = o.created_time.replace(tzinfo=None)
@@ -58,8 +54,9 @@ class Walker(object):
             request = ast.literal_eval(o.request)
             if 'stops' in request:
                 return self._get_break(request, seconds)
-                
-            print 'OperationHistory', request
+            print('Now', now)
+            print('CreateTime', created_time)
+            print('SecondTime', seconds)
             if request['action'] == 'disconnect':
                 time_limit = DISCONNECT_STEPS / 2
             else:
@@ -85,8 +82,8 @@ class Walker(object):
         # request {'action': 'disconnect', 'west': 2L, 'east': 2L, 'stops': '8,16', 'no': '7'} 
         # response {'breakpoints': [8, 16], 'sequence': 15}}
 
-        response =  {'breakpoints': stops, 'sequence': -1}
-        diff_time = 2
+        response = {'breakpoints': stops, 'sequence': -1}
+        diff_time = 8
 
         if 'no' not in request:
             no = stops[0] - 1
@@ -108,11 +105,11 @@ class Walker(object):
                     previous_s = s
                 status = 'break'
 
-        #self._log(no, seconds)
-        if seconds < (diff_time / 2):
+        self._log(seconds, diff_time)
+        if seconds < diff_time:
             status = 'started'
             response = None
-        elif response != None:
+        elif response is not None:
             response['sequence'] = no
 
 

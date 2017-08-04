@@ -151,6 +151,15 @@ export class ApiService {
       console.log('error')
     })
   }
+  // SAVE CRF FILES
+  saveData() {
+
+    return this.http.get(this.ROOT_URL + '3').toPromise().then((response: any) => {
+      response = JSON.parse(response._body);
+      return (response)
+
+    })
+  }
 
 }
     // if (stops && number === undefined) {

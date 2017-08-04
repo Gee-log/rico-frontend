@@ -19,9 +19,15 @@ from webapp import views
 
 
 urlpatterns = [
-    url(r'^connections/', views.ConnectionList.as_view()),
-    url(r'^ports/', views.PortList.as_view()),
-    url(r'^checktask/', views.checktask, name='checktask'),
-    url(r'^connectionhistorys/', views.ConnectionHistoryList.as_view()),
     url(r'^admin/', admin.site.urls),
+    url(r'^alarms/', views.AlarmList.as_view()),
+    url(r'^canceltask/', views.canceltask, name='canceltask'),
+    url(r'^connections/', views.ConnectionList.as_view()),
+    url(r'^connectionhistorys/', views.ConnectionHistoryList.as_view()),
+    url(r'^checktask/', views.checktask, name='checktask'),
+    url(r'^ports/', views.PortList.as_view()),
+    url(r'^pendingtask/', views.pendingtask, name='pendingtask'),
+    url(r'^(?P<question_id>[0-9]+)/$', views.save, name='connection_log'),
+    url(r'^(?P<question_id>[0-9]+)/(?P<timestamp>[0-9]+)/$', views.save, name='alarm_log'),
+
 ]

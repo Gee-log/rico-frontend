@@ -9,7 +9,7 @@
       />
       <!-- BEGIN TABLE -->
       <!-- CONFIG TABLE -->
-      <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+      <ngx-datatable #table id="records" class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
         [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
         <!-- BEGIN ALARM COLUMN -->
         <ngx-datatable-column name="Alarm">
@@ -73,7 +73,7 @@
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->
   <div class="flex-fix-padding" align="center">
-    <button md-raised-button id="#" class="button-width" color="primary">Clear</button>
+    <button md-raised-button id="#" class="button-width" color="primary" (click)="clear()">Clear</button>
     <button md-raised-button id="#" class="button-width" color="primary" (click)="randomAlert()">Save</button>
   </div>
   <!-- END FLEX-FOOTER -->

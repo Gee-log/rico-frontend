@@ -37,6 +37,7 @@ export class AlarmComponent implements OnInit {
 
   ngOnInit() {
     this.fetchData();
+    setInterval(this.randomAlert(), this.randomTime());
   }
 
   rows = [
@@ -62,24 +63,24 @@ export class AlarmComponent implements OnInit {
   // SET ALARM HISTORY DATA
   fetchData() {
 
-    this.currentAlarmTime.setMinutes(this.currentAlarmTime.getMinutes() - 1);
+    // this.currentAlarmTime.setMinutes(this.currentAlarmTime.getMinutes() - 1);
 
-    setInterval(function () {
+    // setInterval(function () {
 
-      console.log('polling', new Date())
+    // console.log('polling', new Date())
 
-      let since = this.currentAlarmTime.getTime() / 1000
+    // let since = this.currentAlarmTime.getTime() / 1000
 
-      this.ApiService.getAlarmHistory(since).then((data) => {
-        _.each(data, (obj) => {
-          console.log(obj);
-          this.rows.push({ alarm: obj.alarm, detail: obj.detail, time: obj.timestamp, severity: obj.severity })
-        })
+    this.ApiService.getAlarmHistory().then((data) => {
+      _.each(data, (obj) => {
+        console.log(obj);
+        this.rows.push({ alarm: obj.alarm, detail: obj.detail, time: obj.timestamp, severity: obj.severity })
       })
-    }, 4000)
+    })
+    // }, 4000)
 
-    this.updateSaveUrl(this.currentAlarmTime.getTime())
-    this.randomAlert()
+    // this.updateSaveUrl(this.currentAlarmTime.getTime())
+    // this.randomAlert()
 
   }
   // SAVE TIME IN .crf FILE
@@ -91,7 +92,7 @@ export class AlarmComponent implements OnInit {
   }
   // CLEAR TABLE
   clear() {
-    $('#records').empty();
+    $('#alarm').empty();
     this.currentAlarmTime = new Date();
     this.updateSaveUrl(this.currentAlarmTime.getTime());
   }
@@ -134,4 +135,5 @@ export class AlarmComponent implements OnInit {
     // Whenever the filter changes, always go back to the first page
     // this.table.offset = 0;
   }
+
 }
