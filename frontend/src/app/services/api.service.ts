@@ -15,8 +15,8 @@ export class ApiService {
   // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
   getAllPort() {
 
-    let eports = []; // 144 EAST PORTS
-    let wports = []; // 144 WEST PORTS
+    const eports = []; // 144 EAST PORTS
+    const wports = []; // 144 WEST PORTS
     let eportschunk = []; // 144 to [12,12,...]
     let wportschunk = []; // 144 to [12,12,...]
     let allPort = []; // ALL PORTS, 288 PORTS
@@ -99,7 +99,7 @@ export class ApiService {
     })
   }
   // CHECK CONNECTION STATUS ALL PORT
-  setConnectedPort() {
+  getConnectedPort() {
 
     return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then((response: any) => {
       response = JSON.parse(response._body);

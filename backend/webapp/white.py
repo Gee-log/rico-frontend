@@ -65,7 +65,6 @@ class Walker(object):
             if seconds > time_limit:
                 status = 'success'
 
-
         out = {'status': status, 'request': request, 'response': response, 'Walker': True}
         self._log('checkstatus', out)
 
@@ -73,7 +72,7 @@ class Walker(object):
 
     def _get_break(self, request, seconds):
         arr = request['stops'].split(',')
-        stops = sorted([ int(a) for a in arr ])
+        stops = sorted([int(a) for a in arr])
         if 1 in stops:
             stops = stops[1:]
 
@@ -112,12 +111,10 @@ class Walker(object):
         elif response is not None:
             response['sequence'] = no
 
-
         out = {'status': status, 'request': request, 'response': response, 'Walker': True}
         self._log('_get_break', out)
 
         return out
-
 
     def connect(self, payload):
         self._log('connect', payload)
@@ -140,10 +137,9 @@ class Walker(object):
         resp.text = str(uuid.uuid4())
         return resp
 
-
     def _log(self, p1, p2=None):
 
-        if p2 != None:
+        if p2 is not None:
             print('Walker', str(p1), str(p2))
         else:
             print('Walker', str(p1))

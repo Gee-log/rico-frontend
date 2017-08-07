@@ -51,8 +51,13 @@
       background: #3f51b5;
       cursor: default;
       color: white;
-    } // PAIR STATUS COLOR
+    } // SELECTED STATUS COLOR
     .selected {
+      background: #555555;
+      cursor: default;
+      color: white;
+    } // SELECTED PAIR COLOR
+    .selected-pair {
       background: #555555;
       cursor: default;
       color: white;
@@ -66,9 +71,9 @@
     margin: 15px auto 0 auto;
     box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.12), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 0, 0, 0.12);
   } // TR STYLE
-  .tr-style {
-    // box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.12);
-  } // TD STYLE
+  // .tr-style {
+  // box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.12);
+  //}  TD STYLE
   .td-style {
     //box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.12);
     padding: 4px;
@@ -96,6 +101,11 @@
   .pair {
     color: white !important;
     background: #3f51b5 !important;
+  } // SELECTED PAIR COLOR
+  .selected-pair {
+    background: #555555 !important;
+    cursor: default;
+    color: white;
   } // DISABLED TD
   .unselectable {
     color: #9E9E9E;
@@ -107,6 +117,7 @@
     background-color: rgba(#555555, 0.15);
   }
 }
+
 // FIXED BUTTON MIN-WIDTH
 button {
   min-width: 110px;

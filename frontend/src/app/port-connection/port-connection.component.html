@@ -42,7 +42,7 @@
       <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)">
     </md-input-container>
     <md-input-container>
-      <input mdInput placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" disabled>
+      <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence">
     </md-input-container>
     <!-- END INPUT -->
   </div>
@@ -69,7 +69,6 @@
     <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" disabled>Continue</button>
     <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" disabled>Connect</button>
     <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" disabled>Disconnect</button>
-    <button md-raised-button id="test" class="button-width" (click)="clear()" color="primary">test</button>
   </div>
   <!-- END FLEX-FOOTER -->
 </div>
