@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import * as $ from 'jquery';
 import 'rxjs/Rx';
 
-
 @Component({
   selector: 'app-port-connection',
   templateUrl: './port-connection.component.html',
@@ -49,7 +48,6 @@ export class PortConnectionComponent implements OnInit {
     //   this.test();
     // });
   }
-
   // FETCH DATA
   fetchData() {
 
@@ -88,10 +86,23 @@ export class PortConnectionComponent implements OnInit {
     });
 
   }
+  // CHECK CURRENT SELECTED FOR ADD RED BORDER
+  checkCurrentSelected() {
+
+    const east = this.selectedEastPortID;
+    const west = this.selectedWestPortID;
+
+    if (((east && west) !== '') && (!$('#' + east).hasClass('selected') || (!$('#' + west).hasClass('selected')))) {
+      $('.East, .West').removeClass('current-selected');
+      $('#' + east).addClass('current-selected');
+      $('#' + west).addClass('current-selected');
+    }
+  }
   // GET EASTPORT ID ON CLICK
   setEastID(eastID) {
 
     this.selectedEastPortID = eastID; // SET EASTPORT ID
+    this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED EAST PORT
     localStorage.setItem('selectedEastPortID', JSON.stringify(eastID)); // SET LOCALSTORAGE VALUE OF selectedEastPortID
 
     console.log('Current East Port :', this.selectedEastPortID);
@@ -121,6 +132,7 @@ export class PortConnectionComponent implements OnInit {
   setWestID(westID) {
 
     this.selectedWestPortID = westID; // SET WESTPORT ID
+    this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED WEST PORT
     localStorage.setItem('selectedWestPortID', JSON.stringify(westID)); // SET LOCALSTORAGE VALUE OF selectedWestPortID
 
     console.log('Current West Port :', this.selectedWestPortID);
@@ -147,13 +159,15 @@ export class PortConnectionComponent implements OnInit {
 
   }
   // UNLOCK CONNECT BUTTON
-  unlockConnection(x, y) {
+  unlockConnection(availableEastPort, availableWestPort) {
 
-    if ((x && y) === true) {
+    // IF TWO AVAILABLE PORTS ARE SELECTED
+    if ((availableEastPort && availableWestPort) === true) {
       console.log('You are select available port!');
       $('#Connect').removeAttr('disabled');
 
-    } else if ((x && y) === false) {
+      // IF TWO AVAILABLE PORTS ARE NOT SELECTED
+    } else if ((availableEastPort && availableWestPort) === false) {
       console.log('You are not select available port!');
       $('#Connect').attr('disabled disabled');
     }
@@ -178,22 +192,6 @@ export class PortConnectionComponent implements OnInit {
       }
     }
 
-    // QUERY VALUE IN PAIR AND WHEN CLICK SHOW HIS PAIR
-    // _.each(this.pair, (obj) => {
-    //   console.log(this.pair[obj]);
-    //   if (this.selectedEastPortID === obj[0]['E']) {
-    //     $('.East, .West').removeClass('selected');
-    //     $('#' + obj[0]).addClass('pair');
-    //     $('#' + obj[1]).addClass('pair');
-    //     console.log('His pair : ' + obj[1]);
-    //   }
-    //   // IF CLICKED ON HIS PAIR UNLOCK DISCONNECT BUTTON
-    //   if (this.selectedEastPortID === obj[0] && this.selectedWestPortID === obj[1]) {
-    //     console.log('Correct pair');
-    //     $('#Disconnect').removeAttr('disabled');
-    //   }
-    // });
-
   }
   // SHOW HIS PAIR WHEN CLICK WEST PORT
   westPair() {
@@ -214,44 +212,31 @@ export class PortConnectionComponent implements OnInit {
       }
     }
 
-    // QUERY VALUE IN PAIR AND WHEN CLICK SHOW HIS PAIR
-    // _.each(this.pair, (obj) => {
-    //   if (this.selectedWestPortID === obj[1]) {
-    //     $('.East, .West').removeClass('selected');
-    //     $('#' + obj[0]).addClass('pair');
-    //     $('#' + obj[1]).addClass('pair');
-    //     console.log('His pair : ' + obj[0]);
-    //   }
-    //   // IF CLICKED ON HIS PAIR UNLOCK DISCONNECT BUTTON
-    //   if (this.selectedEastPortID === obj[0] && this.selectedWestPortID === obj[1]) {
-    //     console.log('Correct pair');
-    //     $('#Disconnect').removeAttr('disabled');
-    //   }
-    // });
-
   }
   // LOCK AND UNLOCK BUTTONS BY CHECKING CURRENT STATUS
   unlockButton(eValue, wValue, status) {
 
-    let sumValue; // SUM OF wValue AND eValue
+    let sumValue; // SUM OF wValue & eValue
     sumValue = eValue + wValue;
 
     /* SUM = 0, STATUS = SUCCESS OR SUM = 0, STATUS = 0 OR SUM = 0, STATUS = UNDEFINED
      UNLOCK CONNECT BUTTON
      LOCK CONTINUE */
     if (sumValue === 0 && status === 'success' || sumValue === 0 && status === 'error' || sumValue === 0 && status === undefined) {
-      // $('#Connect').removeAttr('disabled');
       $('#stops').removeAttr('disabled');
       $('#Continue').attr('disabled', 'disabled');
       console.log('UNLOCK CONNECT BUTTON | STATUS: ', status);
+
       // SUM = 1 LOCK ALL BUTTONS
     } else if (sumValue === 1) {
       $('#Connect, #Disconnect, #Continue').attr('disabled', 'disabled');
       console.log('LOCK CONNECT & DISCONNECT & CONTINUE BUTTONS');
+
       // STATUS = STARTED OR STATUS = PENDING OR STATUS = UNDEFINED
     } else if (status === 'started' || status === 'pending' || status === undefined) {
       $('#Connect, #Disconnect, #Continue').attr('disabled', 'disabled');
       console.log('LOCK CONNECT & DISCONNECT & CONTINUE BUTTONS | STATUS: ', status);
+
       // STATUS = BREAK
     } else if (status === 'break' && this.sequence !== null && this.sequence !== undefined) {
       $('#Continue').removeAttr('disabled');
@@ -268,9 +253,11 @@ export class PortConnectionComponent implements OnInit {
     // return (this.selectedEastPortID === Eport) ? 'selected' : '';
     if (this.selectedEastPortID === Eport) {
       classString = 'selected';
+
     } else {
       classString = '';
     }
+
     return classString;
 
   }
@@ -282,14 +269,17 @@ export class PortConnectionComponent implements OnInit {
     // return (this.selectedEastPortID === Eport) ? 'selected' : '';
     if (this.selectedWestPortID === Wport) {
       classString = 'selected';
+
     } else {
       classString = '';
     }
+
     return classString;
 
   }
   // POST CONNECTION
   postConnection() {
+
     // LOCK TABLE AFTER POST
     $('.East, .West').addClass('unselectable');
     // LOCK STOPS INPUT AFTER POST
@@ -298,6 +288,7 @@ export class PortConnectionComponent implements OnInit {
     $('#Connect').attr('disabled', 'disabled');
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
     $('.East, .West').removeClass('selected pair selected-pair');
+
     // PAYLOAD { east, west, action, stops }
     if (this.stops) {
       // SET LOCALSTORAGE VALUE OF stops
@@ -319,6 +310,7 @@ export class PortConnectionComponent implements OnInit {
   }
   // POST DISCONNECTION
   postDisconnection() {
+
     // LOCK TABLE AFTER POST
     $('.East, .West').addClass('unselectable');
     // LOCK STOPS INPUT AFTER POST
@@ -327,6 +319,7 @@ export class PortConnectionComponent implements OnInit {
     $('#Disconnect').attr('disabled', 'disabled');
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
     $('.East, .West').removeClass('selected pair selected-pair');
+
     // PAYLOAD { east, west, action, stops }
     if (this.stops) {
       // SET LOCALSTORAGE VALUE OF stops
@@ -348,6 +341,7 @@ export class PortConnectionComponent implements OnInit {
   }
   // POST DEBUG
   postDebug() {
+
     // LOCK TABLE AFTER POST
     $('.East, .West').addClass('unselectable');
     // LOCK CONTINUE BUTTON AFTER POST
@@ -356,6 +350,7 @@ export class PortConnectionComponent implements OnInit {
     $('#stops').attr('disabled', 'disabled');
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
     $('.East, .West').removeClass('selected pair selected-pair');
+
     //  PAYLOAD { east, west, action, stops, number }
     if (this.stops && this.sequence) {
       // GET LOCALSTORAGE VALUE OF stops
@@ -469,48 +464,3 @@ export class PortConnectionComponent implements OnInit {
   }
 
 }
-
-
-  // setEastID(eastID) {
-
-  //   let sumValue = this.eValue + this.wValue // FOR CHECK VALUE OF EACH PORT TABLE
-
-  //   this.selectedEastPortID = eastID;
-  //   console.log('Current East Port :', this.selectedEastPortID);
-  //   console.log(sumValue);
-  //   /* LOCK CONNECT, CONTINUE BUTTON
-  //     UNLOCK DISCONNECT BUTTON
-  //     WHEN CLICK ON CONNECTED PORT */
-  //   if (!$('#' + eastID).hasClass('connected')) {
-  //     $("#Connect").attr('disabled', 'disabled');
-  //     $("#Continue").attr('disabled', 'disabled');
-  //     $("#Disconnect").removeAttr('disabled');
-  //     this.eValue = 2;
-  //     /* LOCK CONNECT, DISCONNECT, CONTINUE BUTTON
-  //       WHEN CLICK ON PENDING PORT */
-  //   } else if ($('#' + eastID).hasClass('pending')) {
-  //     $("#Connect").attr('disabled', 'disabled');
-  //     $("#Continue").attr('disabled', 'disabled');
-  //     $("#Disconnect").attr('disabled', 'disabled');
-  //     this.eValue = 2;
-  //     /* LOCK CONNECT BUTTON, DISCONNECT BUTTON
-  //       UNLOCK CONTINUE BUTTON
-  //       WHEN CLICK ON BREAK PORT */
-  //   } else if ($('#' + eastID).hasClass('break')) {
-  //     $("#Connect").attr('disabled', 'disabled');
-  //     $("#Disconnect").attr('disabled', 'disabled');
-  //     $("#Continue").removeAttr('disabled');
-  //     this.eValue = 2;
-  //     /* LOCK DISCONNECT, CONTINUE BUTTON
-  //       UNLOCK CONNECT BUTTON
-  //       WHEN CLICK ON AVALIABLE PORT */
-  //   } else if (!$('#' + eastID).hasClass("'break', 'connected', 'pending'")) {
-  //     $("#Disconnect").attr('disabled', 'disabled');
-  //     $("#Continue").attr('disabled', 'disabled');
-  //     $("#Connect").removeAttr('disabled');
-
-  //   } else {
-  //     $("#Disconnect").attr('disabled', 'disabled');
-  //     $("#Continue").attr('disabled', 'disabled');
-  //     $("#Connect").attr('disabled', 'disabled');
-  //   }

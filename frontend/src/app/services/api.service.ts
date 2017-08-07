@@ -37,7 +37,7 @@ export class ApiService {
       });
       return ({ allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk, wportschunk: wportschunk });
 
-    })
+    });
   }
   // POST CONNECTION, DISCONNECTION, DEBUG API TO SERVER
   connectPort(east, west, action, stops?, number?) {

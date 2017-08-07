@@ -106,6 +106,13 @@
     background: #555555 !important;
     cursor: default;
     color: white;
+  }
+  .current-selected {
+    border-style: solid;
+    border-width: 2px;
+    border-color: orange;
+    // color: orange !important;
+    font-weight: 500;
   } // DISABLED TD
   .unselectable {
     color: #9E9E9E;

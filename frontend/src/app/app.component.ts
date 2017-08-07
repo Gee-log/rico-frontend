@@ -29,7 +29,6 @@ export class AppComponent {
       name: 'Alarm History',
       path: '/alarm_history'
     }
-  ]
+  ];
 
 }
-
