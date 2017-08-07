@@ -7,3 +7,9 @@ ENV
 
 # django
 migrations
+
+# vscode
+.vscode
+
+# node
+node_modules

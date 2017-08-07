@@ -1,0 +1,74 @@
+// MAIN CONTAINER
+.flex-container {
+  display: flex;
+  justify-content: space-around; // SUB CONTAINER
+  .flex-item {
+    padding: 20px;
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: default;
+  } // BUTTON WIDTH
+  .button-width {
+    min-width: 110px;
+  } // FLEX FIXED PADDING
+  .flex-fix-padding {
+    padding: 5px;
+    flex-grow: 1;
+  } // RED FONT COLOR
+  .red {
+    color: red;
+  } // ORANGE FONT COLOR
+  .orange {
+    color: orange;
+  } // BLUE FONT COLOR
+  .blue {
+    color: blue;
+  } // GREEN FONT COLOR
+  .green {
+    color: #00C853;
+  } // ADD SHADOW
+  .shadow {
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+  }
+}
+
+.table-container {
+  background: #fff!important;
+  input.fliter {
+    margin-left: 10px !important;
+    outline: none;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    transition: border-color 0.05s ease-in-out;
+    &:focus {
+      border-color: #1985A1;
+    }
+  }
+}
+
+:host /deep/ {
+  ngx-datatable {
+    background: #fff!important;
+    font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif; // margin: 0 10px;
+    font-size: 14px;
+    font-weight: 500; // border-radius: 0px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12); // box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12) !important;
+  }
+  datatable-header {
+    font-weight: 600;
+    &:hover {
+      span {
+        cursor: pointer;
+      }
+    }
+    datatable-header-cell {
+      width: 100%;
+      text-align: center !important;
+    }
+  }
+  datatable-body-cell {
+    text-align: center !important;
+  }
+}
