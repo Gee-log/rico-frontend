@@ -8,7 +8,7 @@ export class ApiService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://192.168.60.73/`;
+  private ROOT_URL = `http://192.168.60.114/`;
 
   constructor(private http: Http) { }
 

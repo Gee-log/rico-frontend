@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@swimlane/ngx-datatable": "^9.3.1",
-    "@types/lodash": "^4.14.71",
+    "@types/lodash": "^4.14.72",
     "angular-hammer": "^2.2.0",
     "core-js": "^2.4.1",
     "jquery": "^3.2.1",
@@ -52,6 +52,6 @@
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3",
-    "webpack": "^3.4.1"
+    "webpack": "^3.5.1"
   }
 }

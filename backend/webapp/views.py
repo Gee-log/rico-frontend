@@ -15,7 +15,7 @@ import ast
 import requests
 from webapp.white import Walker
 
-CELERY_APP = 'http://192.168.60.73/app1'
+CELERY_APP = 'http://192.168.60.114/app1'
 
 walk = Walker()
 
