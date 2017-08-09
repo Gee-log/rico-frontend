@@ -7,9 +7,13 @@ ENV
 
 # django
 migrations
+static
 
 # vscode
 .vscode
+*.swn
+*.swo
+*.swp
 
 # node
 node_modules
