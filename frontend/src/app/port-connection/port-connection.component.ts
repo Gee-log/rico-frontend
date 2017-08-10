@@ -462,5 +462,47 @@ export class PortConnectionComponent implements OnInit {
     const selectedWestPortID = localStorage.getItem('selectedWestPortID');
     console.log(selectedEastPortID, selectedWestPortID, this.stops);
   }
+  // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
+  tooltipEast(eastID) {
+
+    for (const i in this.pair) {
+      if (eastID == i) {
+        return 'Connected to ' + this.pair[i][0]
+      }
+    }
+  }
+  // PUSH CONNECTED PORT OF WEST TO WEST TOOLTIP
+  tooltipWest(WestID) {
+
+    for (const i in this.pair) {
+      if (WestID == this.pair[i][0]) {
+        return 'Connected to ' + i
+      }
+    }
+  }
+  // CHANGE POSITION OF SECOND TOOLTIP
+  etooltipPostion(EastID) {
+
+    // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
+    for (const i in this.pair) {
+      if (EastID === i) {
+        return 'right'
+      }
+    }
+    // ELSE RETURN TOOLTIP POSTION = ABOVE
+    return 'above'
+  }
+  // CHANGE POSITION OF SECOND TOOLTIP
+  wtooltipPostion(WestID) {
+
+    // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
+    for (const i in this.pair) {
+      if (WestID === this.pair[i][0]) {
+        return 'left'
+      }
+    }
+    // ELSE RETURN TOOLTIP POSTION = ABOVE
+    return 'above'
+  }
 
 }
