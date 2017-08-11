@@ -28,6 +28,8 @@ export const appRoutes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(appRoutes)
+    // IF WANT TO USE #
+    // RouterModule.forRoot(appRoutes, { useHash: true }) 
   ],
   exports: [
     RouterModule

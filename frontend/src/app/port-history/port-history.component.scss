@@ -34,7 +34,7 @@
 }
 
 .table-container {
-  background: #fff!important;
+  background-color: transparent;
   input.fliter {
     margin-left: 10px !important;
     outline: none;
@@ -42,6 +42,9 @@
     border-top: none;
     border-right: none;
     transition: border-color 0.05s ease-in-out;
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+    -moz-box-shadow: 0 10px 6px -6px #777;
+    box-shadow: 0 10px 6px -6px #777;
     &:focus {
       border-color: #1985A1;
     }

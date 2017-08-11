@@ -48,46 +48,52 @@ def robot(request):
     return render(request, 'personal/robot_debug.html')
 
 
-# @login_required(login_url='/login/')
-@csrf_protect
-def portconnection(request):
-    if request.method == 'POST':
-        east = request.POST['east']
-        west = request.POST['west']
-
-        Connection.objects.create(
-            east=east,
-            west=west
-        )
-
-    data = Port.objects.all()
-    data2 = Connection.objects.all()
-
-    return render(request, 'personal/portconnection.html', {"data": data, "data2": data2})
+# # @login_required(login_url='/login/')
+# @csrf_protect
+# def portconnection(request):
+#
+#     if request.method == 'POST':
+#         east = request.POST['east']
+#         west = request.POST['west']
+#
+#         Connection.objects.create(
+#             east=east,
+#             west=west
+#         )
+#
+#     data = Port.objects.all()
+#     data2 = Connection.objects.all()
+#
+#     return render(request, 'personal/portconnection.html', {"data": data, "data2": data2})
 
 
 # @login_required(login_url='/login/')
 def connection(request):
+
     return render(request, 'personal/connection.html')
 
 
 # @login_required(login_url='/login/')
 def setting(request):
+
     return render(request, 'personal/setting.html')
 
 
 # @login_required(login_url='/login/')
 def alarm(request):
+
     return render(request, 'personal/alarm.html')
 
 
 # @login_required(login_url='/login/')
 def alarm_history(request):
+
     return render(request, 'personal/alarm_history.html')
 
 
 # @login_required(login_url='/login/')
 def checkstatus(request, uuid):
+
     action = ""
     sequence = None
     if walk.is_dummy():
@@ -120,7 +126,8 @@ def checkstatus(request, uuid):
                     if c.status == 'pending':
                         Connection.objects.filter(east=east, west=west, status='pending',
                                                   disconnected_date=None).update(status=status)
-                        ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
+                        ConnectionHistory.objects.filter(
+                            east=east, west=west, status='pending').update(status=status)
                         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                          response=response)
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -128,7 +135,8 @@ def checkstatus(request, uuid):
                     elif c.status == 'break':
                         Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(
                             status=status)
-                        ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
+                        ConnectionHistory.objects.filter(
+                            east=east, west=west, status='break').update(status=status)
                         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                          response=response)
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -136,7 +144,8 @@ def checkstatus(request, uuid):
                     elif c.status == 'started':
                         Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(
                             status=status)
-                        ConnectionHistory.objects.filter(east=east, west=west, status='started').update(status=status)
+                        ConnectionHistory.objects.filter(
+                            east=east, west=west, status='started').update(status=status)
                         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                          response=response)
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -147,7 +156,8 @@ def checkstatus(request, uuid):
                         Connection.objects.filter(east=east, west=west, status='pending',
                                                   disconnected_date=None).update(status=status,
                                                                                  disconnected_date=datetime.now())
-                        ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
+                        ConnectionHistory.objects.filter(
+                            east=east, west=west, status='pending').update(status=status)
                         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                          response=response)
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -155,7 +165,8 @@ def checkstatus(request, uuid):
                     elif c.status == 'break':
                         Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(
                             status=status, disconnected_date=datetime.now())
-                        ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
+                        ConnectionHistory.objects.filter(
+                            east=east, west=west, status='break').update(status=status)
                         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                          response=response)
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -163,7 +174,8 @@ def checkstatus(request, uuid):
                     elif c.status == 'started':
                         Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(
                             status=status, disconnected_date=datetime.now())
-                        ConnectionHistory.objects.filter(east=east, west=west, status='started').update(status=status)
+                        ConnectionHistory.objects.filter(
+                            east=east, west=west, status='started').update(status=status)
                         Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                          response=response)
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -190,7 +202,8 @@ def checkstatus(request, uuid):
                 if east == c.east and west == c.west and c.status == 'break':
                     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(
                         status=status)
-                    ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
+                    ConnectionHistory.objects.filter(
+                        east=east, west=west, status='break').update(status=status)
                     Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                      response=response)
                     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -198,7 +211,8 @@ def checkstatus(request, uuid):
                 elif east == c.east and west == c.west and c.status == 'pending':
                     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(
                         status=status)
-                    ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
+                    ConnectionHistory.objects.filter(
+                        east=east, west=west, status='pending').update(status=status)
                     Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                      response=response)
                     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -206,7 +220,8 @@ def checkstatus(request, uuid):
                 elif east == c.east and west == c.west and c.status == 'started':
                     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(
                         status=status)
-                    ConnectionHistory.objects.filter(east=east, west=west, status='started').update(status=status)
+                    ConnectionHistory.objects.filter(
+                        east=east, west=west, status='started').update(status=status)
                     Operation.objects.filter(robotnumber='1').update(robotnumber='1', uuid=uuid, status=status,
                                                                      response=response)
                     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
@@ -228,15 +243,19 @@ def checkstatus(request, uuid):
             if east == c.east and west == c.west and c.status == 'break':
                 Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(
                     status=status)
-                ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
+                ConnectionHistory.objects.filter(
+                    east=east, west=west, status='break').update(status=status)
                 Operation.objects.filter(robotnumber='1').update(status=status)
-                OperationHistory.objects.filter(uuid=uuid).update(status=status)
+                OperationHistory.objects.filter(
+                    uuid=uuid).update(status=status)
             elif east == c.east and west == c.west and c.status == 'pending':
                 Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(
                     status=status)
-                ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
+                ConnectionHistory.objects.filter(
+                    east=east, west=west, status='pending').update(status=status)
                 Operation.objects.filter(robotnumber='1').update(status=status)
-                OperationHistory.objects.filter(uuid=uuid).update(status=status)
+                OperationHistory.objects.filter(
+                    uuid=uuid).update(status=status)
 
     out = {'status': status, 'sequence': sequence, 'action': action}
     print('checktask', out)
@@ -245,6 +264,7 @@ def checkstatus(request, uuid):
 
 # @login_required(login_url='/login/')
 def checktask(request):
+
     status = ""
     operations = Operation.objects.filter(robotnumber='1')
     for i in operations:
@@ -256,6 +276,7 @@ def checktask(request):
 
 # @login_required(login_url='/login/')
 def pendingtask(request):
+
     # not sure about this three variables
     uuid = ""
     historyid = ""
@@ -264,20 +285,25 @@ def pendingtask(request):
         historyid = request.POST['id']
         connh = ConnectionHistory.objects.all().filter(id=historyid)
         for i in connh:
-            conn = Connection.objects.all().filter(east=i.east, west=i.west, disconnected_date=None)
+            conn = Connection.objects.all().filter(
+                east=i.east, west=i.west, disconnected_date=None)
             for c in conn:
                 if i.switching_type == 'C' and c.disconnected_date is None:
-                    payload = {'east': i.east.number, 'west': i.west.number, 'action': 'connect'}
+                    payload = {'east': i.east.number,
+                               'west': i.west.number, 'action': 'connect'}
                     if walk.is_dummy():
                         resp = walk.connect(payload)
                     else:
-                        resp = requests.post(CELERY_APP + '/connect', data=payload)
+                        resp = requests.post(
+                            CELERY_APP + '/connect', data=payload)
                 if i.switching_type == 'D' and c.disconnected_date is None:
-                    payload = {'east': i.east.number, 'west': i.west.number, 'action': 'disconnect'}
+                    payload = {'east': i.east.number,
+                               'west': i.west.number, 'action': 'disconnect'}
                     if walk.is_dummy():
                         resp = walk.disconnect(payload)
                     else:
-                        resp = requests.post(CELERY_APP + '/disconnect', data=payload)
+                        resp = requests.post(
+                            CELERY_APP + '/disconnect', data=payload)
             print('payload', payload)
             uuid = resp.text
             print('UUID:', uuid)
@@ -285,16 +311,20 @@ def pendingtask(request):
         operations = Operation.objects.filter(robotnumber='1')
 
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
+            operations.update(uuid=uuid, status='pending',
+                              request=str(payload))
         else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-    OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(
+                robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+    OperationHistory.objects.create(
+        robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
     return JsonResponse({'historyid': historyid})
 
 
 # @login_required(login_url='/login/')
 def canceltask(request):
+
     historyid = ""
     status = ""
     if 'id' in request.POST and 'action' in request.POST and request.POST['action'] == 'canceled':
@@ -305,7 +335,8 @@ def canceltask(request):
         for i in connh:
             for c in conn:
                 if i.switching_type == 'C' and c.disconnected_date is None:
-                    Connection.objects.filter(east=i.east, west=i.west, status='pending').delete()
+                    Connection.objects.filter(
+                        east=i.east, west=i.west, status='pending').delete()
                 elif i.switching_type == 'D' and c.disconnected_date is None:
                     Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success',
                                                                                                  disconnected_date=None)
@@ -316,7 +347,11 @@ def canceltask(request):
 
 # @login_required(login_url='/login/')
 def save(request, question_id, timestamp=0):
+
+    # for Python 3.x use below !
     from io import StringIO
+    # for Python 2.7 or earlier use below !
+    # import StringIO
     import csv
 
     qus = question_id
@@ -324,7 +359,12 @@ def save(request, question_id, timestamp=0):
     print('question_id', question_id, 'timestamp', timestamp)
 
     # write file
-    data = StringIO.StringIO()
+    # for WINDOW OS use below !
+    data = StringIO()
+
+    # for Linux OS use below !
+    # data = StringIO.StringIO()
+
     # load file
     data.seek(0)
     response = HttpResponse(data, content_type='text/csv')
@@ -364,22 +404,28 @@ def save(request, question_id, timestamp=0):
         for con in connection:
             writer.writerow(
                 [con.alarm, con.detail, timezone.localtime(con.timestamp)])
-
+    else:
+        print('Error !')
+        return False
     return response
 
 
 class PortList(APIView):
+
     def get(self, request):
+
         ports = Port.objects.all()
         serializer = PortSerializer(ports, many=True)
 
         return Response(serializer.data)
 
     def post(self, request):
+
         return Response(request.data)
 
 
 class ConnectionList(APIView):
+
     def get(self, request):
 
         print('ConnectionList get', request.GET)
@@ -452,10 +498,13 @@ class ConnectionList(APIView):
 
         operations = Operation.objects.filter(robotnumber='1')
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
+            operations.update(uuid=uuid, status='pending',
+                              request=str(payload))
         else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(
+                robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        OperationHistory.objects.create(
+            robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
         return Response(request.data)
 
@@ -472,38 +521,45 @@ class ConnectionList(APIView):
 
         # create connection
         Connection.objects.create(east=east, west=west, status='pending')
-        ConnectionHistory.objects.create(east=east, west=west, switching_type='C', status='pending')
+        ConnectionHistory.objects.create(
+            east=east, west=west, switching_type='C', status='pending')
         print('connection_history', east, west)
         if 'stops' in request.data:
             stops = request.data['stops']
         else:
             stops = None
         if stops:
-            payload = {'east': east.number, 'west': west.number, 'action': "connect", 'stops': stops}
+            payload = {'east': east.number, 'west': west.number,
+                       'action': "connect", 'stops': stops}
         else:
-            payload = {'east': east.number, 'west': west.number, 'action': "connect"}
+            payload = {'east': east.number,
+                       'west': west.number, 'action': "connect"}
 
         if walk.is_dummy():
             resp = walk.connect(payload)
         else:
             resp = requests.post(CELERY_APP + '/connect', data=payload)
 
-        print('payload', 'E' + str(east.number), 'W' + str(west.number), 'action : connect')
+        print('payload', 'E' + str(east.number), 'W' +
+              str(west.number), 'action : connect')
         uuid = resp.text
         print('UUID :', uuid)
 
         operations = Operation.objects.filter(robotnumber='1')
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
+            operations.update(uuid=uuid, status='pending',
+                              request=str(payload))
         else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(
+                robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        OperationHistory.objects.create(
+            robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
         return Response(request.data)
 
     def disconnect(self, request):
 
-        # Angular2 cannot access database if request superuser
+        # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
         east, west = self.get_available_ports(request)
         print('disconnection', east, west)
@@ -519,32 +575,40 @@ class ConnectionList(APIView):
             if c.east == east and c.west == west:
                 Connection.objects.filter(east=east, west=west, disconnected_date=None, status='success').update(
                     status='pending')
-                ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending')
+                ConnectionHistory.objects.create(
+                    east=east, west=west, switching_type='D', status='pending')
                 print('connection_history', east, west)
                 if 'stops' in request.data:
                     stops = request.data['stops']
                 else:
                     stops = None
                 if stops:
-                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect", 'stops': stops}
+                    payload = {'east': east.number, 'west': west.number,
+                               'action': "disconnect", 'stops': stops}
                 else:
-                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect"}
+                    payload = {'east': east.number,
+                               'west': west.number, 'action': "disconnect"}
 
                 if walk.is_dummy():
                     resp = walk.disconnect(payload)
                 else:
-                    resp = requests.post(CELERY_APP + '/disconnect', data=payload)
+                    resp = requests.post(
+                        CELERY_APP + '/disconnect', data=payload)
 
-                print('payload', 'E' + str(east.number), 'W' + str(west.number), 'action : disconnection')
+                print('payload', 'E' + str(east.number), 'W' +
+                      str(west.number), 'action : disconnection')
                 uuid = resp.text
                 print('UUID:', uuid)
 
                 operations = Operation.objects.filter(robotnumber='1')
                 if len(operations) == 1:
-                    operations.update(uuid=uuid, status='pending', request=str(payload))
+                    operations.update(
+                        uuid=uuid, status='pending', request=str(payload))
                 else:
-                    Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-                OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+                    Operation.objects.create(
+                        robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+                OperationHistory.objects.create(
+                    robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
         return Response(request.data)
 
@@ -569,14 +633,21 @@ class ConnectionList(APIView):
 
 
 class ConnectionHistoryList(APIView):
-    def get(self, request):
-        connh = ConnectionHistory.objects.all()
-        serializer = ConnectionHistorySerializer(connh, many=True)
 
-        return Response(serializer.data)
+    def get(self, request):
+
+        connh = ConnectionHistory.objects.all()
+        data = []
+        for ch in connh:
+            obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
+                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status)}
+            data.append(obj)
+
+        return Response(data)
 
 
 class AlarmList(APIView):
+
     def get(self, request):
 
         print(request.GET)
@@ -593,15 +664,17 @@ class AlarmList(APIView):
 
     def post(self, request):
 
-        alarm = Alarm.create(
+        alarms = Alarm.create(
             request.data["alarm"], request.data["detail"], request.data["severity"])
-        alarm.save()
+        alarms.save()
 
         return Response(request.data)
 
 
 class OperationList(APIView):
+
     def get(self, request):
+
         operations = Operation.objects.all()
         serializer = OperationSerializer(operations, many=True)
 
@@ -609,9 +682,10 @@ class OperationList(APIView):
 
 
 class OperationHistoryList(APIView):
+
     def get(self, request):
-        OperationHistorys = OperationHistory.objects.all()
-        serializer = OperationHistorySerializer(OperationHistorys, many=True)
+
+        operationhistorys = OperationHistory.objects.all()
+        serializer = OperationHistorySerializer(operationhistorys, many=True)
 
         return Response(serializer.data)
-

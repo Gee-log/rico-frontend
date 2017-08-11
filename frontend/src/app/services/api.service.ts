@@ -8,7 +8,7 @@ export class ApiService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://192.168.60.73/`;
+  private ROOT_URL = `http://127.0.0.1:8000/`;
 
   constructor(private http: Http) { }
 
@@ -119,15 +119,11 @@ export class ApiService {
   // GET ALARM HISTORY
   getAlarmHistory() {
 
-
-
-    // } else if () {?
     return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
       return (response)
 
     })
-    // }
   }
   // POST ALARM
   postAlarm(alarm, detail, severity) {
@@ -162,7 +158,3 @@ export class ApiService {
   }
 
 }
-    // if (stops && number === undefined) {
-    //   return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops }, this.options).toPromise().then((response: any) => {
-    //     console.log(response._body);
-    //     return response;

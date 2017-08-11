@@ -2,101 +2,80 @@
 <div class="flex-container">
   <!-- BEGIN FLEX-ITEM -->
   <div class="flex-item">
-    <!-- TODO  -->
-    <!-- BEGIN SEARCH FILTER -->
-    <div>
-      <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...' (keyup)='updateFilter($event)'/>
-      <!-- BEGIN TABLE -->
-      <!-- CONFIG TABLE -->
+    <!-- BEGIN TABLE-CONTAINER  -->
+    <div class="table-container">
+      <input class="fliter" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'
+        (keyup)='updateFilter($event)' />
       <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
         [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
         <!-- BEGIN DATE COLUMN  -->
         <ngx-datatable-column name="Date">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="red">{{column.name}}</span>
+            <span (click)="sort()" class="red"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-            </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
           </ng-template>
         </ngx-datatable-column>
         <!-- END DATE COLUMN -->
         <!-- BEGIN TIME COLUMN  -->
         <ngx-datatable-column name="Time">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="red">{{column.name}}</span>
+            <span (click)="sort()" class="red"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-            </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
           </ng-template>
         </ngx-datatable-column>
         <!-- END TIME COLUMN -->
         <!-- BEGIN TYPE COLUMN -->
         <ngx-datatable-column name="Type">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="orange">{{column.name}}</span>
+            <span (click)="sort()" class="orange"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-              <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="row.name == 'C'" (click)="clickme(row)">Continue </button>              :
-            </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
           </ng-template>
-
         </ngx-datatable-column>
         <!-- END TYPE COLUMN -->
         <!-- BEGIN STATUS COLUMN -->
         <ngx-datatable-column name="Status">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="green">{{column.name}}</span>
+            <span (click)="sort()" class="green"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-              <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="row.name == 'C'" (click)="clickme(row)">Continue </button>              :
-            </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
           </ng-template>
-
         </ngx-datatable-column>
         <!-- END STATUS COLUMN -->
         <!-- BEGIN EAST PORT COLUMN -->
         <ngx-datatable-column name="East">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="blue">{{column.name}}</span>
+            <span (click)="sort()" class="blue"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-            </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
           </ng-template>
         </ngx-datatable-column>
         <!-- END EAST PORT COLUMN -->
         <!-- BEGIN WEST PORT COLUMN -->
         <ngx-datatable-column name="West">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="blue">{{column.name}}</span>
+            <span (click)="sort()" class="blue"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-            </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
           </ng-template>
         </ngx-datatable-column>
         <!-- END WEST PORT COLUMN -->
         <!-- BEGIN SEVERITY COLUMN -->
-        <ngx-datatable-column name="Robot Status">
+        <ngx-datatable-column name="RobotStatus">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-            <span (click)="sort()" class="red">{{column.name}}</span>
+            <span (click)="sort()" class="green"> {{column.name}}</span>
           </ng-template>
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <ng-template let-value="value" ngx-datatable-cell-template>
-              <strong>{{value}}</strong>
-            </ng-template>
-            <!-- ! TODO BUTTON  -->
-            <!-- <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="row.company== 'KFC'" (click)="clickme(row)">Continue </button>        :{{row['company']}} -->
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div *ngIf="value !== 'Pending'">{{value}}</div>
+            <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value== 'Pending'" (click)="clickme(row)">Continue </button>
           </ng-template>
         </ngx-datatable-column>
         <!-- END SEVERITY COLUMN -->
@@ -112,21 +91,8 @@
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->
   <div class="flex-fix-padding" align="center">
-    <button md-raised-button id="#" class="button-width" color="primary">Save</button>
-    <!-- <a href="http://127.0.0.1:8000/3/">Save</a> -->
+    <button md-raised-button id="save" class="button-width" color="primary" onclick="location.href='http://localhost:4200/1'" type="button">Save</button>
   </div>
   <!-- END FLEX-FOOTER -->
 </div>
 <!-- END FLEX-CONTAINER -->
-
-
-<!-- EXAMPLE -->
-<!-- <ngx-datatable-column name="Gender" headerClass="is-gender">
-  <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-    <span (click)="sort()">{{column.name}}</span>
-  </ng-template>
-  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-    My name is: <i [innerHTML]="row['name']"></i> and <i>{{value}}</i>
-    <div>{{joke}}</div>
-  </ng-template>
-</ngx-datatable-column> -->
