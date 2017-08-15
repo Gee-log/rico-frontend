@@ -57,12 +57,12 @@ export class PortHistoryComponent implements OnInit {
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj.switching_type === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: status
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: {'status': status, 'id': obj.id}
           });
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: status
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: {'status': status, 'id': obj.id}
           });
         }
       })
@@ -78,7 +78,7 @@ export class PortHistoryComponent implements OnInit {
     });
   }
 
-  clickme(row) {
+  pending(row) {
 
     console.log(row);
 

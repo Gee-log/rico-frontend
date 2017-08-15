@@ -37,7 +37,7 @@ export class AlarmComponent implements OnInit {
 
   ngOnInit() {
     this.fetchData();
-    setInterval(this.randomAlert(), this.randomTime());
+    //setInterval(this.randomAlert(), this.randomTime());
   }
 
   rows = [

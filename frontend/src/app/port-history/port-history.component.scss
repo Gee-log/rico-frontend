@@ -10,7 +10,12 @@
     cursor: default;
   } // BUTTON WIDTH
   .button-width {
-    min-width: 110px;
+    min-width: 90px;
+    margin-right: 5px;
+  } // RED COLOR BUTTON
+  .button-red {
+    background: red;
+    color: white;
   } // FLEX FIXED PADDING
   .flex-fix-padding {
     padding: 5px;

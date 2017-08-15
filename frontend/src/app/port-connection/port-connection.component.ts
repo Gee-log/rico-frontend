@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, Headers, Response } from '@angular/http';
 import { ApiService } from '../services/api.service';
@@ -32,6 +32,8 @@ export class PortConnectionComponent implements OnInit {
   availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
 
+  public timerInterval: any; // set public variable type any
+
   constructor(private http: Http, private ApiService: ApiService) { }
 
   ngOnInit() {
@@ -41,15 +43,27 @@ export class PortConnectionComponent implements OnInit {
     // SET COLOR OF PORT CONNECTION
     this.setConnectedPort();
     // CHECK STATUS EVERY 5 SEC.
-    setInterval(() => {
+    this.timerInterval = setInterval(() => {
       this.checkStatus();
     }, 5000);
+
+    // OLD VERSION
+    // setInterval(() => {
+    //   this.checkStatus();
+    // }, 5000);
     // setInterval(() => {
     //   this.test();
     // });
+
+  }
+
+  ngOnDestroy() {
+
+    clearInterval(this.timerInterval); // CLEAR INTERVAL
+
   }
   // FETCH DATA
-  fetchData() {
+  fetchData(): void {
 
     this.ApiService.getAllPort().then((data) => {
       this.eports = data.eports;

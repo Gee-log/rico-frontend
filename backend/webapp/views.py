@@ -10,7 +10,7 @@ from django.utils import timezone
 # from django.contrib.auth import authenticate, get_user_model, login, logout
 # from personal.forms import UserLoginForm
 # from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
+# from django.views.decorators.csrf import csrf_protect
 import ast
 import requests
 from webapp.white import Walker

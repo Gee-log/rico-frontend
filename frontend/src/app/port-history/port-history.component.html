@@ -74,8 +74,11 @@
             <span (click)="sort()" class="green"> {{column.name}}</span>
           </ng-template>
           <ng-template let-value="value" ngx-datatable-cell-template>
-            <div *ngIf="value !== 'Pending'">{{value}}</div>
-            <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value== 'Pending'" (click)="clickme(row)">Continue </button>
+            <div *ngIf="value.status !== 'Pending'">{{value.status}}</div>
+            <div class="flex-container">
+            <button md-raised-button id="Continue" class="button-width button-red" color="primary" *ngIf="value.status == 'Pending'" (click)="pending(value.id)">Continue</button>
+            <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status == 'Pending'" (click)="pending(value.id)">Cancel</button>
+          </div>
           </ng-template>
         </ngx-datatable-column>
         <!-- END SEVERITY COLUMN -->
