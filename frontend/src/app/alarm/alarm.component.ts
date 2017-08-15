@@ -50,7 +50,7 @@ export class AlarmComponent implements OnInit {
     { prop: 'Alarm' },
     { name: 'Detail' },
     { name: 'Time' },
-    { name: 'Sererity' }
+    { name: 'Severity' }
   ];
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -99,7 +99,7 @@ export class AlarmComponent implements OnInit {
   // RANDOM MOCKUP DATA
   randomPattern() {
     let i = Math.floor(Math.random() * this.patterns.length);
-    return this.patterns[i];
+    return this.patterns[i]
   }
   // RANDOM TIME
   randomTime() {

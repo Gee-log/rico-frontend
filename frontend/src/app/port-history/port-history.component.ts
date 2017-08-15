@@ -19,12 +19,9 @@ import * as _ from 'lodash';
 
 export class PortHistoryComponent implements OnInit {
 
-  rows = [
-    // { name: obj.alarm, gender: 'Male', company: 'Swimlane' },
-  ];
-
+  rows = [];
   temp = [];
-
+  selected: any[] = [];
   columns = [
     { name: 'Date' },
     { name: 'Time' },
@@ -35,7 +32,7 @@ export class PortHistoryComponent implements OnInit {
     { name: 'RobotStatus' }
   ];
 
-  @ViewChild(DatatableComponent) table: DatatableComponent;
+  @ViewChild('table') table: DatatableComponent;
 
   ngOnInit() {
     this.fetchData();
@@ -50,8 +47,9 @@ export class PortHistoryComponent implements OnInit {
   fetchData() {
 
     this.ApiService.getConnectionHistory().then((data) => {
+
       _.each(data, (obj) => {
-        // CONVERT DATE TIME TO UTC
+        console.log(obj);
         const date = new Date(obj.timestamp);
         const day = date.toString().substring(0, 15);
         const time = date.toString().substring(15);
@@ -59,31 +57,35 @@ export class PortHistoryComponent implements OnInit {
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj.switching_type === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west,
-            status: 'Connected', robotStatus: status
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: status
           });
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west,
-            status: 'Disconnected', robotStatus: status
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: status
           });
         }
-      });
+      })
     });
 
   }
+  // SAVE DATA TO FILES
   saveData() {
-    this.ApiService.getConnectionHistory().then((data) => {
+
+    this.ApiService.saveData().then((data) => {
       console.log(data);
+
     });
   }
 
   clickme(row) {
+
     console.log(row);
+
   }
 
   updateFilter(event) {
+
     const val = event.target.value.toLowerCase();
     // filter our data
     const temp = this.temp.filter(function (d) {
@@ -95,4 +97,5 @@ export class PortHistoryComponent implements OnInit {
     // Whenever the filter changes, always go back to the first page
     this.table.offset = 0;
   }
+
 }

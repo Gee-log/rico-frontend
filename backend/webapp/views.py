@@ -316,7 +316,11 @@ def canceltask(request):
 
 # @login_required(login_url='/login/')
 def save(request, question_id, timestamp=0):
-    from io import StringIO
+   
+    # for Python 3.x use below !
+    # from io import StringIO
+    # for Python 2.7 or earlier use below !
+    import StringIO
     import csv
 
     qus = question_id
@@ -324,7 +328,12 @@ def save(request, question_id, timestamp=0):
     print('question_id', question_id, 'timestamp', timestamp)
 
     # write file
+    # for WINDOW OS use below !
+    # data = StringIO()
+
+    # for Linux OS use below !
     data = StringIO.StringIO()
+
     # load file
     data.seek(0)
     response = HttpResponse(data, content_type='text/csv')
@@ -364,6 +373,8 @@ def save(request, question_id, timestamp=0):
         for con in connection:
             writer.writerow(
                 [con.alarm, con.detail, timezone.localtime(con.timestamp)])
+    else:
+	return False
 
     return response
 
