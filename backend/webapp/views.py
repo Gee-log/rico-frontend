@@ -10,10 +10,12 @@ from django.utils import timezone
 # from django.contrib.auth import authenticate, get_user_model, login, logout
 # from personal.forms import UserLoginForm
 # from django.contrib.auth.decorators import login_required
-# from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.utils.decorators import method_decorator
 import ast
 import requests
 from webapp.white import Walker
+
 
 CELERY_APP = 'http://192.168.60.73/app1'
 
@@ -40,7 +42,7 @@ walk = Walker()
 
 # @login_required(login_url='/login/')
 def index(request):
-    return render(request, 'personal/index.html')
+    return render(request, template_name='webapp/index.html')
 
 
 # @login_required(login_url='/login/')
@@ -275,6 +277,7 @@ def checktask(request):
 
 
 # @login_required(login_url='/login/')
+@csrf_exempt
 def pendingtask(request):
 
     # not sure about this three variables
@@ -323,6 +326,7 @@ def pendingtask(request):
 
 
 # @login_required(login_url='/login/')
+@csrf_exempt
 def canceltask(request):
 
     historyid = ""
