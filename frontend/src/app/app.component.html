@@ -4,7 +4,7 @@
   <md-toolbar class="toolbar-container" color="primary">
     <!-- BEGIN MENU ICON -->
     <div>
-      <button type="button" md-button (click)="sidenav.toggle()">
+      <button type="button" md-button class="div-icon-menu" (click)="sidenav.toggle()">
        <md-icon >menu</md-icon>
     </button>
     </div>
@@ -30,7 +30,10 @@
   <!-- END NAV BAR -->
   <!-- BEGIN SIDE NAV -->
   <md-sidenav-container class="example-sidenav-fab-container">
-    <md-sidenav #sidenav mode="side" opened="false">
+    <!-- OLD VERSION SIDENAV ! -->
+    <!-- <md-sidenav #sidenav mode="side" opened="false"> -->
+    <!-- NEW VERSION SIDENAV ! -->
+    <md-sidenav #sidenav opened="false">
       <!-- BEGIN EXAMPLE-SCROLLING-CONTENT -->
       <div class="example-scrolling-content">
         <header class="user-container">

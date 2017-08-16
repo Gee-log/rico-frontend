@@ -31,6 +31,7 @@ export class PortConnectionComponent implements OnInit {
   pair = []; // PAIR OF CONNECTED PORT {[east, west]}
   availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
+  toggleValue = false;
 
   public timerInterval: any; // set public variable type any
 
@@ -45,7 +46,7 @@ export class PortConnectionComponent implements OnInit {
     // CHECK STATUS EVERY 5 SEC.
     this.timerInterval = setInterval(() => {
       this.checkStatus();
-    }, 5000);
+    }, 3000);
 
     // OLD VERSION
     // setInterval(() => {
@@ -517,6 +518,15 @@ export class PortConnectionComponent implements OnInit {
     }
     // ELSE RETURN TOOLTIP POSTION = ABOVE
     return 'above'
+  }
+
+  toggleDebugMode(value) {
+
+    if ($('#toggleDebugButton').hasClass('mat-checked')) {
+
+      $('#stops, #sequence').toggle();
+
+    }
   }
 
 }

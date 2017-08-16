@@ -61,6 +61,12 @@
       background: #555555;
       cursor: default;
       color: white;
+    } // TOGGLE BUTTON MARGIN RIGHT
+    .bt-margin-right {
+      margin-right: 15px;
+    }
+    .bt-margin-left {
+      margin-left: 15px;
     }
   } // FLEX FIXED PADDING
   .flex-fix-padding {
@@ -110,8 +116,7 @@
   .current-selected {
     border-style: solid;
     border-width: 2px;
-    border-color: orange;
-    // color: orange !important;
+    border-color: orange; // color: orange !important;
     font-weight: 500;
   } // DISABLED TD
   .unselectable {
@@ -128,4 +133,13 @@
 // FIXED BUTTON MIN-WIDTH
 button {
   min-width: 110px;
+}
+
+:host /deep/ {
+  // WHEN HOVER CHANGE FONT COLOR
+  md-slide-toggle {
+    &:hover {
+      color: #e91e63;
+    }
+  }
 }
