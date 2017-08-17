@@ -1,32 +1,48 @@
+// SET CURSOR OF <a> TAG TO DEFAULT
+a {
+  cursor: default;
+}
+
+// SET CURSOR OF <span> TAG TO DEFAULT
+span {
+  cursor: default;
+}
+
+// SET CURSOR OF <p> TAG TO DEFAULT
+p {
+  cursor: default;
+}
+
+// SET <hr>
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .sidenav-container {
-//   display: flex;
-  width: 100%;
+  //   display: flex;
+  width: 100vh;
   height: 100vh;
 }
 
 .example-sidenav-fab-container {
   width: 100%;
   height: 90vh;
-}
-
-  // .example-sidenav-fab-container md-sidenav {
-  //   max-width: 300px;
-  // }
-
+  background-color: transparent;
+} // .example-sidenav-fab-container md-sidenav {
+//   max-width: 300px;
+// }
 .example-sidenav-fab-container .mat-sidenav-content,
 .example-sidenav-fab-container md-sidenav {
   display: flex;
-  overflow: visible;
+  overflow: visible; // box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12); // box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12) !important;
 }
 
 .example-scrolling-content {
   overflow: auto;
-}
-
-.example-fab {
-  position: absolute;
-  right: 20px;
-  bottom: 10px;
 }
 
 .mat-list {
@@ -39,34 +55,186 @@
     opacity: 0.25;
   }
 }
+
 :host /deep/ {
-    md-list-item.mat-list-item {
-        .mat-list-item-content {
-            margin: 12px 24px;
-            border-radius: 5px;
-        }
+  md-list-item.mat-list-item {
+    .mat-list-item-content {
+      margin: 12px 24px;
+      border-radius: 5px;
     }
-    .active .mat-list-item-content {
-        color: rgba(#FFF, 1);
-        background-color: #D61515;
-        box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+  }
+  .active .mat-list-item-content {
+    color: rgba(#FFF, 1);
+    background-color: #D61515;
+    box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+  }
+  a {
+    text-decoration: none;
+    &:not(.active):hover .mat-list-item-content {
+      background-color: rgba(#000, 0.15);
+      color: blue;
+      cursor: pointer;
     }
-    a {
-        text-decoration: none;
-        &:not(.active):hover .mat-list-item-content {
-            background-color: rgba(#000, 0.15);
-        }
-    }
-    a:focus {
+  }
+  a:focus {
     outline: none !important;
+  } // FIXED NAVBAR HEIGHT
+  md-toolbar {
+    min-height: 42px;
+    max-height: 42px; // FIXED NAVBAR-ROW HEIGHT
+    md-toolbar-row {
+      min-height: 40.5px;
+      max-height: 40.5px;
+    }
   }
 }
 
-.router-container {
-    margin-left: 300px;
+// FIXED SIDENAV HEIGHT
+.mat-sidenav {
+  height: 90%;
 }
 
+// MAIN-CONTAINER
 .main-container {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
+}
+
+// MAKE CIRCLE DIV ICON
+.div-icon {
+  border-radius: 50%;
+  font-size: 24px;
+  height: 32px;
+  margin-left: 0;
+  margin-right: 0;
+  min-width: 32px;
+  width: 32px;
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  line-height: normal;
+}
+
+// FIXED HEIGHT ICON
+.mat-icon {
+  height: 27px;
+}
+
+// SET ALIGNMENT ITEM TO RIGHT 
+.warpper-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+// NAV BAR
+.toolbar-container {
+  display: block;
+  padding: 0 10px;
+}
+
+// USER INFO CONTAINER
+.user-container {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 16px;
+  height: 155px; // background-image: url("../assets/rsz_1capture.jpg");
+  background: #303F9F;
+}
+
+// AVATAR 
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 30px;
+}
+
+// NAME AVATAR CONTAINER
+.name-avatar-container {
+  padding-bottom: 0;
+  font-weight: bold;
+  color: white;
+}
+
+// AVATAR CONTAINER
+.avatar-container {
+  padding-bottom: 0;
+}
+
+// DROPDOWN USER
+.user-dropdown-menu {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  color: white;
+  font-size: 13px;
+}
+
+// LAYOUT SPACER
+.mdl-layout-spacer {
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+// FOOTER CONTAINER
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 10px; // FIXED TEXT ALIGN CENTER
+  .text-center {
+    text-align: center;
+    font-size: 14px;
+    span {
+      cursor: pointer;
+    }
+    span:hover {
+      color: #3F51B5;
+    }
+  } // FIXED TEXT ALIGN LEFT
+  .text-left {
+    text-align: left;
+  } // ADD OPACITY TO ICON
+  .icon-opacity {
+    opacity: 0.25;
+    cursor: pointer;
+  }
+}
+
+// SETTINGS LABEL
+.settings {
+  padding: 10px 10px;
+  a {
+    cursor: pointer;
+  }
+  a:hover {
+    color: #3F51B5;
+  }
+}
+
+// DOCUMENT LABEL
+.document {
+  padding: 10px 10px;
+  a {
+    cursor: pointer;
+  }
+  a:hover {
+    color: #3F51B5;
+  }
 }
