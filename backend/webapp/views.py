@@ -46,11 +46,6 @@ def index(request):
 
 
 # @login_required(login_url='/login/')
-def robot(request):
-    return render(request, 'personal/robot_debug.html')
-
-
-# # @login_required(login_url='/login/')
 # @csrf_protect
 # def portconnection(request):
 #
@@ -70,34 +65,11 @@ def robot(request):
 
 
 # @login_required(login_url='/login/')
-def connection(request):
-
-    return render(request, 'personal/connection.html')
-
-
-# @login_required(login_url='/login/')
-def setting(request):
-
-    return render(request, 'personal/setting.html')
-
-
-# @login_required(login_url='/login/')
-def alarm(request):
-
-    return render(request, 'personal/alarm.html')
-
-
-# @login_required(login_url='/login/')
-def alarm_history(request):
-
-    return render(request, 'personal/alarm_history.html')
-
-
-# @login_required(login_url='/login/')
 def checkstatus(request, uuid):
 
     action = ""
     sequence = None
+
     if walk.is_dummy():
         data_dict = walk.checkstatus(uuid)
     else:
@@ -259,9 +231,10 @@ def checkstatus(request, uuid):
                 OperationHistory.objects.filter(
                     uuid=uuid).update(status=status)
 
-    out = {'status': status, 'sequence': sequence, 'action': action}
-    print('checktask', out)
-    return out
+    data = {'status': status, 'sequence': sequence, 'action': action}
+    print('checktask', data)
+
+    return data
 
 
 # @login_required(login_url='/login/')
@@ -277,7 +250,6 @@ def checktask(request):
 
 
 # @login_required(login_url='/login/')
-@csrf_exempt
 def pendingtask(request):
 
     # not sure about this three variables
@@ -411,6 +383,7 @@ def save(request, question_id, timestamp=0):
     else:
         print('Error !')
         return False
+
     return response
 
 
@@ -438,10 +411,12 @@ class ConnectionList(APIView):
             obj = dict()
             for c in conns:
                 obj[str(c.east)] = str(c.west), str(c.status)
+
             return Response(obj)
 
         conn = Connection.objects.all()
         serializer = ConnectionSerializer(conn, many=True)
+
         if 'checktask' in request.GET:
             checktask(request)
 
