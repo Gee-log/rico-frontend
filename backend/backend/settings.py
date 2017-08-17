@@ -10,8 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
+import os, sys
 
+abspath = lambda *p: os.path.abspath(os.path.join(*p))
+
+PROJECT_ROOT = abspath(os.path.dirname(__file__))
+sys.path.insert(0, PROJECT_ROOT)
+
+TEMPLATE_DIRS = (
+        abspath(PROJECT_ROOT, 'templates'),
+)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -77,7 +85,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

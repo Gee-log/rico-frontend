@@ -43,7 +43,7 @@ walk = Walker()
 # @login_required(login_url='/login/')
 def index(request):
     return render(request, template_name='webapp/index.html')
-
+  #  return render(request, "webapp/index.html")
 
 # @login_required(login_url='/login/')
 # @csrf_protect
