@@ -21,7 +21,6 @@ from webapp import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^alarms/', views.AlarmList.as_view()),
-    url(r'^canceltask/', views.canceltask, name='canceltask'),
     url(r'^connections/', views.ConnectionList.as_view()),
     url(r'^connectionhistorys/', views.ConnectionHistoryList.as_view()),
     url(r'^checktask/', views.checktask, name='checktask'),

@@ -147,17 +147,17 @@ export class ApiService {
       console.log('error')
     })
   }
+  // POST CANCEL TASK
   cancelTask(id, action) {
 
-    console.log(id, action);
-
-    return this.http.post(this.ROOT_URL + 'canceltask/', { id, action }, this.options).toPromise().then((response: any) => {
+    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id, action }, this.options).toPromise().then((response: any) => {
       console.log(response._body);
       return response;
 
     }).catch(() => {
       console.log('error')
     })
+
   }
   // SAVE CRF FILES
   saveData() {

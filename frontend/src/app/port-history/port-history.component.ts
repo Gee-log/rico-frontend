@@ -22,6 +22,7 @@ export class PortHistoryComponent implements OnInit {
   rows = [];
   temp = [];
   selected: any[] = [];
+  // COLUMNS VARIABLES
   columns = [
     { name: 'Date' },
     { name: 'Time' },
@@ -57,12 +58,12 @@ export class PortHistoryComponent implements OnInit {
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj.switching_type === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: {'status': status, 'id': obj.id}
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: { 'status': status, 'id': obj.id }
           });
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: {'status': status, 'id': obj.id}
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: { 'status': status, 'id': obj.id }
           });
         }
       })
@@ -81,9 +82,10 @@ export class PortHistoryComponent implements OnInit {
   cancelTask(id) {
 
     this.ApiService.cancelTask(id, 'canceled');
+    window.location.reload();
 
   }
-
+  // FILTER SEARCH
   updateFilter(event) {
 
     const val = event.target.value.toLowerCase();

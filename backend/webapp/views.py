@@ -257,6 +257,7 @@ def pendingtask(request):
     uuid = ""
     historyid = ""
     resp = ""
+    payload = []
     if 'id' in request.POST:
         historyid = request.POST['id']
         connh = ConnectionHistory.objects.all().filter(id=historyid)
@@ -296,31 +297,6 @@ def pendingtask(request):
         robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
     return JsonResponse({'historyid': historyid})
-
-
-# @login_required(login_url='/login/')
-@csrf_exempt
-def canceltask(request):
-
-    historyid = ""
-    status = ""
-    if 'id' in request.POST and 'action' in request.POST and request.POST['action'] == 'canceled':
-
-        historyid = request.POST['id']
-        status = request.POST['action']
-        connh = ConnectionHistory.objects.all().filter(id=historyid)
-        conn = Connection.objects.all()
-        for i in connh:
-            for c in conn:
-                if i.switching_type == 'C' and c.disconnected_date is None:
-                    Connection.objects.filter(
-                        east=i.east, west=i.west, status='pending').delete()
-                elif i.switching_type == 'D' and c.disconnected_date is None:
-                    Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success',
-                                                                                                    disconnected_date=None)
-        ConnectionHistory.objects.filter(id=historyid).update(status=status)
-
-    return JsonResponse({'historyid': historyid, 'action': status})
 
 
 # @login_required(login_url='/login/')
@@ -625,6 +601,27 @@ class ConnectionHistoryList(APIView):
             data.append(obj)
 
         return Response(data)
+
+    def post(self, request):
+
+        historyid = ""
+        status = ""
+        if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
+            historyid = request.data['id']
+            status = request.data['action']
+            connh = ConnectionHistory.objects.all().filter(id=historyid)
+            conn = Connection.objects.all()
+            for i in connh:
+                for c in conn:
+                    if i.switching_type == 'C' and c.disconnected_date is None:
+                        Connection.objects.filter(
+                            east=i.east, west=i.west, status='pending').delete()
+                    elif i.switching_type == 'D' and c.disconnected_date is None:
+                        Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success',
+                                                                                                        disconnected_date=None)
+            ConnectionHistory.objects.filter(id=historyid).update(status=status)
+
+        return JsonResponse({'historyid': historyid, 'action': status})
 
 
 class AlarmList(APIView):
