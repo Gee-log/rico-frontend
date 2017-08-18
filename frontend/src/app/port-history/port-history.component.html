@@ -76,8 +76,9 @@
           <ng-template let-value="value" ngx-datatable-cell-template>
             <div *ngIf="value.status !== 'Pending'">{{value.status}}</div>
             <div class="flex-container">
-            <button md-raised-button id="Continue" class="button-width button-red" color="primary" *ngIf="value.status == 'Pending'" (click)="pending(value.id)">Continue</button>
-            <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status == 'Pending'" (click)="pending(value.id)">Cancel</button>
+              <!-- REMOVE PENDING BUTTON -->
+            <!-- <button md-raised-button id="Continue" class="button-width button-red" color="primary" *ngIf="value.status == 'Pending'" (click)="pending(value.id)">Continue</button> -->
+            <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status == 'Pending'" (click)="cancelTask(value.id)">Cancel</button>
           </div>
           </ng-template>
         </ngx-datatable-column>

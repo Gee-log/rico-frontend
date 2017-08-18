@@ -77,10 +77,10 @@ export class PortHistoryComponent implements OnInit {
 
     });
   }
+  // CANCEL TASK
+  cancelTask(id) {
 
-  pending(row) {
-
-    console.log(row);
+    this.ApiService.cancelTask(id, 'canceled');
 
   }
 

@@ -250,6 +250,7 @@ def checktask(request):
 
 
 # @login_required(login_url='/login/')
+@csrf_exempt
 def pendingtask(request):
 
     # not sure about this three variables
@@ -304,6 +305,7 @@ def canceltask(request):
     historyid = ""
     status = ""
     if 'id' in request.POST and 'action' in request.POST and request.POST['action'] == 'canceled':
+
         historyid = request.POST['id']
         status = request.POST['action']
         connh = ConnectionHistory.objects.all().filter(id=historyid)
@@ -315,7 +317,7 @@ def canceltask(request):
                         east=i.east, west=i.west, status='pending').delete()
                 elif i.switching_type == 'D' and c.disconnected_date is None:
                     Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success',
-                                                                                                 disconnected_date=None)
+                                                                                                    disconnected_date=None)
         ConnectionHistory.objects.filter(id=historyid).update(status=status)
 
     return JsonResponse({'historyid': historyid, 'action': status})
