@@ -1,41 +1,41 @@
 <!-- BEGIN MAIN CONTAINER -->
 <div class="main-container">
-  <!-- BEGIN NAV BAR -->
-  <md-toolbar class="toolbar-container" color="primary">
-    <!-- BEGIN MENU ICON -->
-    <div>
-      <button type="button" md-button class="div-icon-menu" (click)="sidenav.toggle()">
-       <md-icon >menu</md-icon>
-    </button>
-    </div>
-    <!-- END MENU ICON -->
-    <!-- BEGIN MORE-VERT ICON -->
-    <div class="warpper-right">
-      <button md-button class="div-icon" [mdMenuTriggerFor]="menu">
-      <md-icon >more_vert</md-icon>
-   </button>
-      <!-- BEGIN MENU-LIST -->
-      <md-menu #menu="mdMenu">
-        <!-- BEGIN NOTIFICATION ICON -->
-        <button md-menu-item>
-        <md-icon>notifications_off</md-icon>
-        <span>Disable alerts</span>
-        <!-- END NOTIFICATION ICON -->
-      </button>
-        <!-- END MENU-LIST -->
-      </md-menu>
-    </div>
-    <!-- END MORE-VERT ICON -->
-  </md-toolbar>
-  <!-- END NAV BAR -->
-  <!-- BEGIN SIDE NAV -->
-  <md-sidenav-container class="example-sidenav-fab-container">
+  <md-sidenav-container class="sidenav-fab-container">
+    <!-- BEGIN SIDE NAV -->
+    <!-- BEGIN NAV BAR -->
+    <md-toolbar class="toolbar-container" color="primary">
+      <!-- BEGIN MENU ICON -->
+      <div>
+        <button type="button" md-button class="div-icon-menu" (click)="sidenav.toggle()">
+           <md-icon >menu</md-icon>
+        </button>
+      </div>
+      <!-- END MENU ICON -->
+      <!-- BEGIN MORE-VERT ICON -->
+      <div class="warpper-right">
+        <button md-button class="div-icon" [mdMenuTriggerFor]="menu">
+          <md-icon >more_vert</md-icon>
+       </button>
+        <!-- BEGIN MENU-LIST -->
+        <md-menu #menu="mdMenu">
+          <!-- BEGIN NOTIFICATION ICON -->
+          <button md-menu-item>
+            <md-icon>notifications_off</md-icon>
+            <span>Disable alerts</span>
+            <!-- END NOTIFICATION ICON -->
+          </button>
+          <!-- END MENU-LIST -->
+        </md-menu>
+      </div>
+      <!-- END MORE-VERT ICON -->
+    </md-toolbar>
+    <!-- END NAV BAR -->
     <!-- OLD VERSION SIDENAV ! -->
     <!-- <md-sidenav #sidenav mode="side" opened="false"> -->
     <!-- NEW VERSION SIDENAV ! -->
     <md-sidenav #sidenav opened="false">
       <!-- BEGIN EXAMPLE-SCROLLING-CONTENT -->
-      <div class="example-scrolling-content">
+      <div class="scrolling-content">
         <header class="user-container">
           <!-- BEGIN AVATAR -->
           <div class="avatar-container">
@@ -47,7 +47,7 @@
             <p>Aya Stark</p>
           </div>
           <!-- END NAME-AVATAR-CONTAINER -->
-          <!-- BEGIN DROPDOWN MENU -->
+          <!-- BEGIN USER-DROPDOWN-MENU -->
           <div class="user-dropdown-menu">
             <span>aya.stark@xenoptics.com</span>
             <div class="mdl-layout-spacer"></div>
@@ -65,8 +65,22 @@
               </button>
             </md-menu>
           </div>
-          <!-- END DROPDOWN MENU -->
+          <!-- END USER-DROPDOWN-MENU -->
         </header>
+        <!-- BEGIN MENU -->
+        <div id="menu-open" class="menu">
+          <div id="menu-drop-down" (click)="toggleMenu();" hidden>
+            <a>Menu  
+            <button md-button class="div-icon"><md-icon >arrow_drop_down</md-icon></button>
+            </a>
+          </div>
+          <div id="menu-drop-up" (click)="toggleMenu();">
+            <a>Menu  
+            <button md-button class="div-icon"><md-icon>arrow_drop_up</md-icon></button>
+          </a>
+          </div>
+        </div>
+        <div id="menu-list">
         <md-list>
           <!-- <h3 md-subheader>
             <md-icon>home</md-icon> XENO
@@ -77,19 +91,55 @@
               <h4 md-line>{{ link.name }}</h4>
             </md-list-item>
           </a>
+          <!-- BEGIN Horizontal Rules  -->
+          <hr>
+          <!-- END Horizontal Rules  -->
         </md-list>
-        <!-- BEGIN Horizontal Rules  -->
-        <hr>
-        <!-- END Horizontal Rules  -->
-        <!-- BEGIN SETTINGS LABEL -->
-        <div class="settings">
-          <a>Settings</a>
         </div>
-        <!-- END SETTINGS LABEL -->
+        <!-- END MENU -->
+        <!-- BEGIN SETTINGS -->
+        <div id="settings-open" class="settings">
+          <div id="settings-drop-down" (click)="toggleSettings();">
+            <a>Settings  
+              <button md-button class="div-icon"><md-icon >arrow_drop_down</md-icon></button>
+              </a>
+          </div>
+          <div id="settings-drop-up" (click)="toggleSettings();" hidden>
+            <a>Settings  
+              <button md-button class="div-icon"><md-icon>arrow_drop_up</md-icon></button>
+            </a>
+          </div>
+        </div>
+        <div id="settings-list" hidden>
+          <md-list>
+            <!-- <h3 md-subheader>
+              <md-icon>home</md-icon> XENO
+            </h3> -->
+            <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of settinglinks">
+              <md-list-item>
+                <md-icon md-list-icon>{{ link.icon }}</md-icon>
+                <h4 md-line>{{ link.name }}</h4>
+              </md-list-item>
+            </a>
+            <!-- BEGIN Horizontal Rules  -->
+            <hr>
+            <!-- END Horizontal Rules  -->
+          </md-list>
+        </div>
+        <!-- END SETTINGS -->
         <!-- BEGIN DOCUMENT LABEL -->
-        <div class="document">
-          <a>Document</a>
-        </div>
+        <div id="documents-open" class="document">
+            <div id="documents-drop-down" (click)="toggleDocument();">
+              <a>Document  
+                <button md-button class="div-icon"><md-icon >arrow_drop_down</md-icon></button>
+                </a>
+            </div>
+            <div id="documents-drop-up" (click)="toggleDocument();" hidden>
+              <a>Document  
+                <button md-button class="div-icon"><md-icon>arrow_drop_up</md-icon></button>
+              </a>
+            </div>
+          </div>
         <!-- END DOCUMENT LABEL -->
         <!-- BEGIN FOOTER-CONTAINER -->
         <div class="footer-container">

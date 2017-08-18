@@ -5,9 +5,15 @@
   .flex-item {
     padding: 20px;
     flex-grow: 1;
+  } // FLEX FOOTER DEBUG
+  .flex-footer-debug {
+    text-align: center;
+    padding: 15px 20px;
+    flex-grow: 1;
   } // FLEX FOOTER
   .flex-footer {
-    padding-top: 15px;
+    text-align: center;
+    padding: 15px;
     flex-grow: 1; // BUTTON WIDTH
     .button-width {
       min-width: 110px;
@@ -112,7 +118,7 @@
     background: #555555 !important;
     cursor: default;
     color: white;
-  }
+  } // CURRENT SELECTED PORT BORDER
   .current-selected {
     border-style: solid;
     border-width: 2px;

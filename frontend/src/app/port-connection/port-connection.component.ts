@@ -519,7 +519,7 @@ export class PortConnectionComponent implements OnInit {
     // ELSE RETURN TOOLTIP POSTION = ABOVE
     return 'above'
   }
-
+  // TOGGLE DEBUG BUTTON
   toggleDebugMode(value) {
 
     if ($('#toggleDebugButton').hasClass('mat-checked')) {
