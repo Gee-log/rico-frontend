@@ -246,7 +246,7 @@ def checktask(request):
         uuid = str(i.uuid)
         status = checkstatus(request, uuid)
 
-    return JsonResponse({'status': status})
+    return JsonResponse(status)
 
 
 # @login_required(login_url='/login/')
@@ -386,19 +386,13 @@ class ConnectionList(APIView):
         print('ConnectionList get', request.GET)
         if 'action' in request.GET and request.GET['action'] == 'connected':
             conns = Connection.objects.all().filter(disconnected_date=None)
-            obj = dict()
+            data = []
             for c in conns:
-                obj[str(c.east)] = str(c.west), str(c.status)
+                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status}
+                data.append(obj)
+            print(data)
 
-            return Response(obj)
-
-        conn = Connection.objects.all()
-        serializer = ConnectionSerializer(conn, many=True)
-
-        if 'checktask' in request.GET:
-            checktask(request)
-
-        return Response(serializer.data)
+            return Response(data)
 
     def post(self, request):
 
@@ -618,8 +612,9 @@ class ConnectionHistoryList(APIView):
                             east=i.east, west=i.west, status='pending').delete()
                     elif i.switching_type == 'D' and c.disconnected_date is None:
                         Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success',
-                                                                                                        disconnected_date=None)
-            ConnectionHistory.objects.filter(id=historyid).update(status=status)
+                                                                                                     disconnected_date=None)
+            ConnectionHistory.objects.filter(
+                id=historyid).update(status=status)
 
         return JsonResponse({'historyid': historyid, 'action': status})
 

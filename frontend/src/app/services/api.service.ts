@@ -83,17 +83,19 @@ export class ApiService {
   // CHECK STATUS FROM CURRENT TASK
   checkStatus() {
 
-    let status; // CURRENT STATUS
-    let sequence; // CURRENT SEQUENCE
-    let action; // CURRENT ACTION
-
     return this.http.get(this.ROOT_URL + 'checktask/').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
-      _.each(response, (obj) => {
-        status = obj.status;
-        sequence = obj.sequence;
-        action = obj.action;
-      });
+      // OLD VERSION
+      // _.each(response, (obj) => {
+      //   status = obj.status;
+      //   sequence = obj.sequence;
+      //   action = obj.action;
+      // });
+      // NEW VERSION
+      let status = response.status; // CURRENT STATUS
+      let sequence = response.sequence; // CURRENT SEQUENCE
+      let action = response.action; // CURRENT ACTION
+
       return ({ status: status, sequence: sequence, action: action });
 
     })

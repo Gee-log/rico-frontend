@@ -48,7 +48,6 @@ export class PortHistoryComponent implements OnInit {
   fetchData() {
 
     this.ApiService.getConnectionHistory().then((data) => {
-
       _.each(data, (obj) => {
         console.log(obj);
         const date = new Date(obj.timestamp);

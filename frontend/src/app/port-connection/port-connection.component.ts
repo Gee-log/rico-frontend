@@ -73,11 +73,13 @@ export class PortConnectionComponent implements OnInit {
       this.wportschunk = data.wportschunk;
     });
 
+
   }
   // CHECK CURRENT ROBOT STATUS
   checkStatus() {
 
     this.ApiService.checkStatus().then((data) => {
+      console.log(data);
       this.sequence = data.sequence;
       this.status = data.status;
       this.action = data.action;
@@ -191,41 +193,35 @@ export class PortConnectionComponent implements OnInit {
   // SHOW HIS PAIR WHEN CLICK EAST PORT
   eastPair() {
 
-    // QUERY VALUE IN PAIR AND WHEN CLICK SHOW IT'S PAIR
-    for (const i in this.pair) {
-
-      // IF SELECT CORRECT PAIR UNLOCK DISCONNECT BUTTON
-      if (this.pair[i][0] === this.selectedWestPortID && i === this.selectedEastPortID) {
-        $('#' + i).addClass('selected-pair');
-        $('#' + this.pair[i][0]).addClass('selected-pair');
+    _.each(this.pair, (obj) => {
+      let east = 'E' + obj.east;
+      let west = 'W' + obj.west;
+      if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
+        $('#' + east).addClass('selected-pair');
+        $('#' + west).addClass('selected-pair');
         $('#Disconnect').removeAttr('disabled');
-
-        // SHOW IT'S PAIR WHEN CLICK EAST PORT
-      } else if (i === this.selectedEastPortID) {
-        $('#' + i).addClass('pair');
-        $('#' + this.pair[i][0]).addClass('pair');
+      } else if (east === this.selectedEastPortID) {
+        $('#' + east).addClass('pair');
+        $('#' + west).addClass('pair');
       }
-    }
+    })
 
   }
   // SHOW HIS PAIR WHEN CLICK WEST PORT
   westPair() {
 
-    // QUERY VALUE IN PAIR AND WHEN CLICK SHOW IT'S PAIR
-    for (const i in this.pair) {
-
-      // IF SELECT CORRECT PAIR UNLOCK DISCONNECT BUTTON
-      if (this.pair[i][0] === this.selectedWestPortID && i === this.selectedEastPortID) {
-        $('#' + i).addClass('selected-pair');
-        $('#' + this.pair[i][0]).addClass('selected-pair');
+    _.each(this.pair, (obj) => {
+      let east = 'E' + obj.east;
+      let west = 'W' + obj.west;
+      if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
+        $('#' + east).addClass('selected-pair');
+        $('#' + west).addClass('selected-pair');
         $('#Disconnect').removeAttr('disabled');
-
-        // SHOW IT'S PAIR WHEN CLICK EAST PORT
-      } else if (this.pair[i][0] === this.selectedWestPortID) {
-        $('#' + i).addClass('pair');
-        $('#' + this.pair[i][0]).addClass('pair');
+      } else if (west === this.selectedWestPortID) {
+        $('#' + east).addClass('pair');
+        $('#' + west).addClass('pair');
       }
-    }
+    })
 
   }
   // LOCK AND UNLOCK BUTTONS BY CHECKING CURRENT STATUS
@@ -394,68 +390,44 @@ export class PortConnectionComponent implements OnInit {
     $('#sequence').attr('disabled', 'disabled'); // LOCK SEQUENCE INPUT
 
     this.ApiService.getConnectedPort().then((data) => {
-      const connected_port = data;
-      this.pair = data;
-      // var no_data = true; // VARIABLE FOR CHECK WHEN NO DATA IN TABLE
 
       console.log('ALL PORT CONNECTION :', data);
+
+      // SET PORT DATA IN PAIR
+      this.pair = data;
 
       // LOCAL STORAGE VARIABLE
       const selectedEastPortID = JSON.parse(localStorage.getItem('selectedEastPortID'));
       const selectedWestPortID = JSON.parse(localStorage.getItem('selectedWestPortID'));
 
-      // CHECK IF CURRENT SELECTED PORT HAVE CONNECTED ON CLICK
-      // LOCK CONNECTION BUTTON
-      // for (let i in data) {
-
-      //   if (this.selectedEastPortID === i || this.selectedWestPortID === data[i][0]) {
-      //     $('#Connect').attr('disabled', 'disabled');
-      //     no_data = false;
-      //   }
-      // }
-      // QUERY REMOVE ALL COLOR IN TABLE
-      // NEED TO IMPROVE !
-
       $('.East, .West').removeClass('connected pending break');
-
-      // $("TE" + i).attr('data-original-title', '')
-      // $("TW" + i).attr('data-original-title', '')
-
-      // NO CONECTED PORT AT ALL
-      // if (no_data) {
-      //   $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN STATUS SUCCESS
-      //   $('.East, .West').removeClass('unselectable'); // UNLOCK TABLE WHEN STATUS SUCCESS
-      //   $('.East, .West').removeClass('break'); // REMOVE BREAK COLOR IN TABLE
-      // }
 
       console.log('------------------------------- All Port Status -------------------------------');
 
-      for (const i in connected_port) {
-
-        // IF STATUS IS SUCCESS
-        if (connected_port[i][1] === 'success') {
-          // $('#' + selectedEastPortID).removeClass('break'); // REMOVE CLASS 'BREAK' FROM LAST PORT VALUE
-          // $('#' + selectedWestPortID).removeClass('break'); // REMOVE CLASS 'BREAK' FROM LAST PORT VALUE
-          $('#' + i).addClass('connected'); // ADD GREEN COLOR
-          $('#' + connected_port[i]).addClass('connected'); // ADD GREEN COLOR
-          console.log(i + ' : ' + connected_port[i][0] + ' | ' + 'Status : ' + connected_port[i][1]);
-          // this.pair.push([i, connected_port[i][0]]); // PUSH PAIR FOR QUERY IN SHOWING PAIR COLOR
-
-          // IF STATUS IS STARTED OR PENDING
-        } else if (connected_port[i][1] === 'started' || connected_port[i][1] === 'pending') {
-          $('#' + i).addClass('pending'); // ADD RED COLOR
-          $('#' + connected_port[i]).addClass('pending'); // ADD RED COLOR
-          console.log(i + ' : ' + connected_port[i][0] + ' | ' + 'Status : ' + connected_port[i][1]);
-          // this.pair.push([i, connected_port[i][0]]); // PUSH PAIR FOR QUERY IN SHOWING PAIR COLOR
-
-          // IF STATUS IS BREAK
-        } else if (connected_port[i][1] === 'break') {
-          $('#' + i).addClass('break'); // ADD YELLOW COLOR
-          $('#' + connected_port[i][0]).addClass('break'); // ADD YELLOW COLOR
-          console.log(i + ' : ' + connected_port[i][0] + ' | ' + 'Status : ' + connected_port[i][1]);
-          // this.pair.push([i, connected_port[i][0]]); // PUSH PAIR FOR QUERY IN SHOWING PAIR COLOR
+      _.each(data, (obj) => {
+        if (obj.status === 'success') {
+          let east = 'E' + obj.east;
+          let west = 'W' + obj.west;
+          let status = obj.status;
+          $('#' + east).addClass('connected'); // ADD GREEN COLOR
+          $('#' + west).addClass('connected'); // ADD GREEN COLOR
+          console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+        } else if (obj.status === 'started' || obj.status === 'pending') {
+          let east = 'E' + obj.east;
+          let west = 'W' + obj.west;
+          let status = obj.status;
+          $('#' + east).addClass('pending'); // ADD RED COLOR
+          $('#' + west).addClass('pending'); // ADD RED COLOR
+          console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+        } else if (obj.status === 'break') {
+          let east = 'E' + obj.east;
+          let west = 'W' + obj.west;
+          let status = obj.status;
+          $('#' + east).addClass('break'); // ADD YELLOW COLOR
+          $('#' + west).addClass('break'); // ADD YELLOW COLOR
+          console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
         }
-      }
+      })
 
       console.log('-------------------------------------------------------------------------------');
     });
@@ -481,8 +453,10 @@ export class PortConnectionComponent implements OnInit {
   tooltipEast(eastID) {
 
     for (const i in this.pair) {
-      if (eastID == i) {
-        return 'Connected to ' + this.pair[i][0]
+      let east = 'E' + this.pair[i].east
+      let west = 'W' + this.pair[i].west
+      if (eastID == east) {
+        return 'Connected to ' + west
       }
     }
   }
@@ -490,8 +464,10 @@ export class PortConnectionComponent implements OnInit {
   tooltipWest(WestID) {
 
     for (const i in this.pair) {
-      if (WestID == this.pair[i][0]) {
-        return 'Connected to ' + i
+      let east = 'E' + this.pair[i].east
+      let west = 'W' + this.pair[i].west
+      if (WestID == west) {
+        return 'Connected to ' + east
       }
     }
   }
@@ -500,7 +476,8 @@ export class PortConnectionComponent implements OnInit {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
     for (const i in this.pair) {
-      if (EastID === i) {
+      let east = 'E' + this.pair[i].east
+      if (EastID === east) {
         return 'right'
       }
     }
@@ -512,7 +489,8 @@ export class PortConnectionComponent implements OnInit {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
     for (const i in this.pair) {
-      if (WestID === this.pair[i][0]) {
+      let west = 'W' + this.pair[i].west
+      if (WestID === west) {
         return 'left'
       }
     }
@@ -526,6 +504,24 @@ export class PortConnectionComponent implements OnInit {
 
       $('#stops, #sequence').toggle();
 
+    }
+  }
+  // DISABLE NOT AVAILABLE EAST PORT
+  disabledEastPort(id) {
+
+    if (id !== 'E1' && id !== 'E2' && id !== 'E3') {
+      return 'port-unselectable'
+    } else {
+      return ''
+    }
+  }
+  // DISABLE NOT AVAILABLE WEST PORT
+  disabledWestPort(id) {
+
+    if (id !== 'W1' && id !== 'W2' && id !== 'W3') {
+      return 'port-unselectable'
+    } else {
+      return ''
     }
   }
 

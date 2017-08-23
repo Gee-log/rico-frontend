@@ -25,6 +25,8 @@ hr {
 .main-container {
   padding: 0;
   margin: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 // SIDENAV-FAB-CONTAINER
@@ -99,8 +101,13 @@ hr {
   -ms-flex-pack: end;
   justify-content: flex-end;
   padding: 16px;
-  height: 155px; // background-image: url("../assets/rsz_1capture.jpg");
+  height: 170px; // background-image: url("../assets/rsz_1capture.jpg");
   background: #303F9F;
+  // NEW SHADOW
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  // OLD SHADOW
+  // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 // AVATAR CONTAINER
@@ -184,10 +191,20 @@ hr {
   position: fixed;
   bottom: 0;
   width: 100%;
+  height: 2vh;
   padding-bottom: 10px; // FIXED TEXT ALIGN CENTER
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  &:hover {
+    // OLD SHADOW
+    // box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    // NEW SHADOW
+    box-shadow: 0px -5px  5px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
   .text-center {
     text-align: center;
     font-size: 14px;
+    margin-top: 2%;
     span {
       cursor: pointer;
       &:hover {
@@ -223,6 +240,20 @@ hr {
   }
 }
 
+.menu-list-container {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  height: 100%;
+  margin: 0.5vh 0.5vh;
+  // margin-bottom: 0.5vh;
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+  .menu-container-height {
+    height: 300px;
+  }
+}
+
 :host /deep/ {
   md-list-item.mat-list-item {
     .mat-list-item-content {
@@ -247,11 +278,20 @@ hr {
     outline: none !important;
   } // FIXED NAVBAR HEIGHT
   md-toolbar {
+    // min-height: 42px;
+    // max-height: 42px; // FIXED NAVBAR-ROW HEIGHT
     min-height: 42px;
     max-height: 42px; // FIXED NAVBAR-ROW HEIGHT
+    width: 100vw;
+    // OLD SHADOW
+    // box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    // NEW SHADOW
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     md-toolbar-row {
       min-height: 40.5px;
       max-height: 40.5px;
+      width: 100vw;
     }
   }
 }
@@ -264,9 +304,16 @@ hr {
 // FIXED SIDENAV HEIGHT
 .mat-sidenav {
   height: 100vh;
+  width: 26.9vw; // CHANGE px to vw
+  width: 300px;
 }
 
 // FIXED HEIGHT ICON
 .mat-icon {
   height: 27px;
+}
+
+.blank-container {
+  height: 15vh;
+  margin-top: 2vh;
 }
