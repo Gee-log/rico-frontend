@@ -20,22 +20,29 @@ export class ApiService {
     let eportschunk = []; // 144 to [12,12,...]
     let wportschunk = []; // 144 to [12,12,...]
     let allPort = []; // ALL PORTS, 288 PORTS
+    let eportNote = []; // EAST PORT NOTE
+    let wportNote = []; // WEST PORT NOTE
+    let id = []; // OBJECT ID
 
     return this.http.get(this.ROOT_URL + 'ports/').toPromise().then((response: any) => {
       allPort = JSON.parse(response._body);
       _.each(allPort, (obj) => {
+
         // SEPERATE BY DIRECTION 'E'
         if (obj.direction === 'E') {
           eports.push(obj.direction + obj.number);
           eportschunk = _.chunk(eports, 12);
-
+          eportNote.push(obj.note);
+          id.push(obj.id);
           // SEPERATE BY DIRECTION 'W'
         } else if (obj.direction === 'W') {
           wports.push(obj.direction + obj.number);
           wportschunk = _.chunk(wports, 12);
+          wportNote.push(obj.note);
+          id.push(obj.id);
         }
       });
-      return ({ allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk, wportschunk: wportschunk });
+      return ({ allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id });
 
     });
   }

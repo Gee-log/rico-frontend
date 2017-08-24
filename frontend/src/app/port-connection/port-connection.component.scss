@@ -5,6 +5,215 @@
   .flex-item {
     padding: 20px;
     flex-grow: 1;
+  }
+  .flex-item-header {
+    // flex-grow: 1;
+    padding-top: 15px;
+    display: inline-flex;
+    .temperature-container {
+      display: flex;
+      background: #0091ea;
+      border-radius: 2px;
+      height: 80px;
+      margin: 1rem;
+      position: relative;
+      width: 300px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      .flex-item-1 {
+        flex-grow: 4;
+        .temperature-content-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 35%;
+          transform: translateY(-50%);
+          span {
+            font-size: 24px;
+            cursor: default;
+            color: white;
+          }
+          p {
+            margin: 0;
+            cursor: default;
+            color: white;
+          }
+        }
+        .tempature-detail-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 23%;
+          transform: translateY(-50%);
+          span {
+            cursor: default;
+            color: white;
+          }
+        }
+      }
+      .flex-item-2 {
+        flex-grow: 1;
+        overflow: hidden;
+        img {
+          width: 90px;
+          /* you can use % */
+          height: auto;
+        }
+      }
+    }
+    .humidity-container {
+      display: flex;
+      background: #00c652;
+      border-radius: 2px;
+      height: 80px;
+      margin: 1rem;
+      position: relative;
+      width: 300px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      .flex-item-1 {
+        flex-grow: 4;
+        .humidity-content-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 35%;
+          transform: translateY(-50%);
+          span {
+            font-size: 24px;
+            cursor: default;
+            color: white;
+          }
+          p {
+            margin: 0;
+            cursor: default;
+            color: white;
+          }
+        }
+        .humidity-detail-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 46%;
+          transform: translateY(-50%);
+          span {
+            cursor: default;
+            color: white;
+          }
+        }
+      }
+      .flex-item-2 {
+        flex-grow: 1;
+        overflow: hidden;
+        img {
+          width: 60%;
+          /* you can use % */
+          height: auto;
+        }
+      }
+    }
+    .order-container {
+      display: flex;
+      background: #00B294;
+      border-radius: 2px;
+      height: 80px;
+      margin: 1rem;
+      position: relative;
+      width: 300px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      .flex-item-1 {
+        flex-grow: 4;
+        .order-content-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 35%;
+          transform: translateY(-50%);
+          span {
+            font-size: 24px;
+            cursor: default;
+            color: white;
+          }
+          p {
+            margin: 0;
+            cursor: default;
+            color: white;
+          }
+        }
+        .order-detail-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 46%;
+          transform: translateY(-50%);
+          span {
+            cursor: default;
+            color: white;
+          }
+        }
+      }
+      .flex-item-2 {
+        flex-grow: 1;
+        overflow: hidden;
+        img {
+          width: 65%;
+          /* you can use % */
+          height: auto;
+        }
+      }
+    }
+    .time-container {
+      display: flex;
+      background: #E74856;
+      border-radius: 2px;
+      height: 80px;
+      margin: 1rem;
+      position: relative;
+      width: 300px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      .flex-item-1 {
+        flex-grow: 4;
+        .time-content-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 35%;
+          transform: translateY(-50%);
+          span {
+            font-size: 24px;
+            cursor: default;
+            color: white;
+          }
+          p {
+            margin: 0;
+            cursor: default;
+            color: white;
+          }
+        }
+        .time-detail-container {
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
+          top: 46%;
+          transform: translateY(-50%);
+          span {
+            cursor: default;
+            color: white;
+          }
+        }
+      }
+      .flex-item-2 {
+        flex-grow: 1;
+        overflow: hidden;
+        img {
+          width: 60%;
+          /* you can use % */
+          height: auto;
+        }
+      }
+    }
   } // FLEX FOOTER DEBUG
   .flex-footer-debug {
     text-align: center;
@@ -80,12 +289,14 @@
     flex-grow: 1;
   } // TABLE CONTAINER
   .table-container {
-    margin: 15px auto 0 auto;
-    // OLD SHADOW
+    margin: 15px auto 0 auto; // OLD SHADOW
     // box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.12), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 0, 0, 0.12);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24);
-    // NEW SHADOW
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24); // NEW SHADOW
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 4px;
+    td {
+      border-radius: 4px;
+    }
   } // TR STYLE
   // .tr-style {
   // box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.12);

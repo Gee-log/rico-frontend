@@ -1,3 +1,87 @@
+<!-- BEGIN FLEX-CONTAINER -->
+<div class="flex-container" align="center">
+  <!-- BEGIN FLEX-ITEM-HEADER -->
+  <div class="flex-item-header">
+    <!-- BEGIN TEMPERATURE-CONTAINER -->
+    <div class="temperature-container">
+      <!-- BEGIN FLEX-ITEM-1 -->
+      <div class="flex-item-1">
+        <div class="temperature-content-container">
+          <span>26 °C</span>
+          <p>78.8 °F</p>
+        </div>
+        <div class="tempature-detail-container">
+          <span>Temperature</span>
+        </div>
+        <!-- END FLEX-ITEM-1 -->
+      </div>
+      <!-- BEGIN FLEX-ITEM-2 -->
+      <div class="flex-item-2">
+        <img src="../assets/temp-icon.png" alt="Temperature-icon">
+        <!-- END FLEX-ITEM-2 -->
+      </div>
+      <!-- END TEMPERATURE-CONTAINER -->
+    </div>
+    <!-- BEGIN HUMIDITY-CONTAINER -->
+    <div class="humidity-container">
+      <!-- BEGIN FLEX-ITEM-1 -->
+      <div class="flex-item-1">
+        <div class="humidity-content-container">
+          <span>50%</span>
+        </div>
+        <div class="humidity-detail-container">
+          <span>Humidity</span>
+        </div>
+        <!-- END FLEX-ITEM-1 -->
+      </div>
+      <!-- BEGIN FLEX-ITEM-2 -->
+      <div class="flex-item-2">
+        <img src="../assets/humidity-icon.png" alt="Humidity-icon">
+        <!-- END FLEX-ITEM2 -->
+      </div>
+      <!-- END ORDER-CONTAINER -->
+    </div>
+    <div class="order-container">
+      <!-- BEGIN FLEX-ITEM-1 -->
+      <div class="flex-item-1">
+        <div class="order-content-container">
+          <span>65%</span>
+        </div>
+        <div class="order-detail-container">
+          <span>Orders Completed</span>
+        </div>
+        <!-- END FLEX-ITEM-1 -->
+      </div>
+      <!-- BEGIN FLEX-ITEM-2 -->
+      <div class="flex-item-2">
+        <img src="../assets/oder-icon2.png" alt="Timer-icon">
+        <!-- END FLEX-ITEM2 -->
+      </div>
+      <!-- END ORDER-CONTAINER -->
+    </div>
+    <!-- BEGIN TIME-CONTAINER -->
+    <div class="time-container">
+      <!-- BEGIN FLEX-ITEM-1 -->
+      <div class="flex-item-1">
+        <div class="time-content-container">
+          <span>54 sec.</span>
+        </div>
+        <div class="time-detail-container">
+          <span>Avg times</span>
+        </div>
+        <!-- END FLEX-ITEM-1 -->
+      </div>
+      <!-- BEGIN FLEX-ITEM-2 -->
+      <div class="flex-item-2">
+        <img src="../assets/timer-icon.png" alt="Timer-icon">
+        <!-- END FLEX-ITEM2 -->
+      </div>
+      <!-- END TIME-CONTAINER -->
+    </div>
+    <!-- END FLEX-ITEM-HEADER -->
+  </div>
+  <!-- END FLEX-CONTAINER -->
+</div>
 <!-- ฺBEGIN FLEX-CONTAINER -->
 <div class="flex-container">
   <!-- BEGIN FLEX-ITEM -->
@@ -9,7 +93,7 @@
           <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column), disabledEastPort(column)]" (click)="setEastID(column)"
             *ngFor="let column of row">
             <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
-              <span mdTooltip="some note" [mdTooltipPosition]="etooltipPostion(column)">{{ column }}</span>
+              <span [mdTooltip]="pushEastNote(column)" [mdTooltipPosition]="etooltipPostion(column)">{{ column }}</span>
             </span>
           </td>
         </tr>
@@ -30,7 +114,7 @@
           <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column), disabledWestPort(column)]" (click)="setWestID(column)"
             *ngFor="let column of row">
             <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
-              <span mdTooltip="some note" [mdTooltipPosition]="wtooltipPostion(column)">{{ column }}</span>
+              <span [mdTooltip]="pushWestNote(column)" [mdTooltipPosition]="wtooltipPostion(column)">{{ column }}</span>
             </span>
           </td>
         </tr>

@@ -6,7 +6,7 @@ class PortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Port
-        fields = ('direction', 'number')
+        fields = ('direction', 'number', 'note', 'id')
 
 
 class ConnectionSerializer(serializers.ModelSerializer):

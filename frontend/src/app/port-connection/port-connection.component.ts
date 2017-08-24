@@ -32,6 +32,9 @@ export class PortConnectionComponent implements OnInit {
   availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
   toggleValue = false;
+  eportNote = [];
+  wportNote = [];
+  portID = [];
 
   public timerInterval: any; // set public variable type any
 
@@ -47,7 +50,6 @@ export class PortConnectionComponent implements OnInit {
     this.timerInterval = setInterval(() => {
       this.checkStatus();
     }, 3000);
-
     // OLD VERSION
     // setInterval(() => {
     //   this.checkStatus();
@@ -71,9 +73,30 @@ export class PortConnectionComponent implements OnInit {
       this.eportschunk = data.eportschunk;
       this.wports = data.wports;
       this.wportschunk = data.wportschunk;
+      this.eportNote = data.eportNote;
+      this.wportNote = data.wportNote;
+      this.portID = data.id;
     });
 
+  }
+  // PUSH EAST PORT NOTE
+  pushEastNote(id) {
+    let i = id.substring(1);
+    let index = parseInt(i) - 1;
 
+    if (id == 'E' + id.substring(1)) {
+      return this.eportNote[index]
+    }
+
+  }
+  // PUSH WEST PORT NOTE
+  pushWestNote(id) {
+    let i = id.substring(1);
+    let index = parseInt(i) - 1;
+
+    if (id == 'W' + id.substring(1)) {
+      return this.wportNote[index]
+    }
   }
   // CHECK CURRENT ROBOT STATUS
   checkStatus() {
@@ -450,12 +473,12 @@ export class PortConnectionComponent implements OnInit {
     console.log(selectedEastPortID, selectedWestPortID, this.stops);
   }
   // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
-  tooltipEast(eastID) {
+  tooltipEast(EastID) {
 
     for (const i in this.pair) {
       let east = 'E' + this.pair[i].east
       let west = 'W' + this.pair[i].west
-      if (eastID == east) {
+      if (EastID == east) {
         return 'Connected to ' + west
       }
     }
@@ -470,6 +493,7 @@ export class PortConnectionComponent implements OnInit {
         return 'Connected to ' + east
       }
     }
+
   }
   // CHANGE POSITION OF SECOND TOOLTIP
   etooltipPostion(EastID) {

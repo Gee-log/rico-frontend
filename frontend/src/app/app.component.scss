@@ -83,6 +83,34 @@ hr {
   line-height: normal;
 }
 
+.div-icon-notification {
+  border-radius: 50%;
+  font-size: 22px;
+  height: 34px;
+  margin-left: 0;
+  margin-right: 0;
+  min-width: 38px;
+  width: 32px;
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  line-height: normal;
+}
+
+.div-icon-mail {
+  border-radius: 50%;
+  font-size: 22px;
+  height: 34px;
+  margin-left: 0;
+  margin-right: 0;
+  min-width: 38px;
+  width: 32px;
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  line-height: normal;
+}
+
 .scrolling-content {
   overflow: auto;
   width: 100%;
@@ -102,10 +130,8 @@ hr {
   justify-content: flex-end;
   padding: 16px;
   height: 170px; // background-image: url("../assets/rsz_1capture.jpg");
-  background: #303F9F;
-  // NEW SHADOW
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  // OLD SHADOW
+  background: #303F9F; // NEW SHADOW
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); // OLD SHADOW
   // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
@@ -193,13 +219,13 @@ hr {
   width: 100%;
   height: 2vh;
   padding-bottom: 10px; // FIXED TEXT ALIGN CENTER
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
   &:hover {
     // OLD SHADOW
     // box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     // NEW SHADOW
-    box-shadow: 0px -5px  5px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
   .text-center {
     text-align: center;
@@ -241,13 +267,12 @@ hr {
 }
 
 .menu-list-container {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
   height: 100%;
-  margin: 0.5vh 0.5vh;
-  // margin-bottom: 0.5vh;
+  margin: 0.5vh 0.5vh; // margin-bottom: 0.5vh;
   &:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
   .menu-container-height {
     height: 300px;
@@ -278,16 +303,15 @@ hr {
     outline: none !important;
   } // FIXED NAVBAR HEIGHT
   md-toolbar {
-    // min-height: 42px;
+    cursor: default; // min-height: 42px;
     // max-height: 42px; // FIXED NAVBAR-ROW HEIGHT
     min-height: 42px;
     max-height: 42px; // FIXED NAVBAR-ROW HEIGHT
-    width: 100vw;
-    // OLD SHADOW
+    width: 100vw; // OLD SHADOW
     // box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     // NEW SHADOW
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     md-toolbar-row {
       min-height: 40.5px;
       max-height: 40.5px;
