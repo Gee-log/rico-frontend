@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, Headers, Response } from '@angular/http';
 import { ApiService } from '../services/api.service';
+import { ChartsModule } from 'ng2-charts';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import 'rxjs/Rx';
@@ -37,6 +38,10 @@ export class PortConnectionComponent implements OnInit {
   portID = [];
 
   public timerInterval: any; // set public variable type any
+  // Pie
+  public pieChartLabels: string[] = ['connected', 'available', 'unavailable'];
+  public pieChartData: number[] = [2, 4, 282];
+  public pieChartType: string = 'pie';
 
   constructor(private http: Http, private ApiService: ApiService) { }
 
@@ -64,6 +69,14 @@ export class PortConnectionComponent implements OnInit {
 
     clearInterval(this.timerInterval); // CLEAR INTERVAL
 
+  }
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
   }
   // FETCH DATA
   fetchData(): void {
@@ -112,7 +125,7 @@ export class PortConnectionComponent implements OnInit {
 
       // CHECK CURRENT STATUS OF TASK
       // WHEN CURRENT STATUS IS SUCCESS
-      if (this.status === 'success') {
+      if (this.status === 'success' || this.status === 'revoke') {
         $('.East, .West').removeClass('unselectable'); // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         $('#sequence').attr('disabled', 'disabled'); // LOCK SEQUENCE INPUT

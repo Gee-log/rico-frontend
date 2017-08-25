@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CdkTableModule } from '@angular/cdk';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ChartsModule } from 'ng2-charts';
 
 // Component
 import { AppComponent } from './app.component';
@@ -44,7 +45,8 @@ import { ApiService } from './services/api.service';
     HttpModule,
     FormsModule,
     CdkTableModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    ChartsModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

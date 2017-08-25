@@ -80,92 +80,126 @@
     </div>
     <!-- END FLEX-ITEM-HEADER -->
   </div>
+  <div class="flex-item-header-2">
+    <div class="flex-item">
+      <div class="item-content">
+        <span>something here ?</span>
+      </div>
+    </div>
+  </div>
   <!-- END FLEX-CONTAINER -->
 </div>
 <!-- ฺBEGIN FLEX-CONTAINER -->
 <div class="flex-container">
-  <!-- BEGIN FLEX-ITEM -->
-  <div class="flex-item">
-    <!-- BEGIN EASTPORT-TABLE-CONTAINER -->
-    <table class="table-container">
-      <tbody>
-        <tr class="tr-style" *ngFor="let row of eportschunk">
-          <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column), disabledEastPort(column)]" (click)="setEastID(column)"
-            *ngFor="let column of row">
-            <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
+  <!-- BEGIN TABLE-CONTAINER -->
+  <div class="table-container-main">
+    <!-- BEGIN FLEX-ITEM -->
+    <div class="flex-item-1">
+      <!-- BEGIN EASTPORT-TABLE-CONTAINER -->
+      <table class="table-container">
+        <tbody>
+          <tr class="tr-style" *ngFor="let row of eportschunk">
+            <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column), disabledEastPort(column)]" (click)="setEastID(column)"
+              *ngFor="let column of row">
+              <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
               <span [mdTooltip]="pushEastNote(column)" [mdTooltipPosition]="etooltipPostion(column)">{{ column }}</span>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- <md-input-container>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <md-input-container>
       <input mdInput placeholder="Stops :" value="stops" [(ngModel)]="stops">
     </md-input-container> -->
-    <!-- END EASTPORT-TABLE-CONTAINER -->
+      <!-- END EASTPORT-TABLE-CONTAINER -->
+    </div>
+    <!-- END FLEX-ITEM -->
+    <!-- BEGIN FLEX-ITEM -->
+    <div class="flex-item-2">
+      <!-- BEGIN WESTPORT-TABLE-CONTAINER -->
+      <table class="table-container">
+        <tbody>
+          <tr class="tr-style" *ngFor="let row of wportschunk">
+            <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column), disabledWestPort(column)]" (click)="setWestID(column)"
+              *ngFor="let column of row">
+              <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
+              <span [mdTooltip]="pushWestNote(column)" [mdTooltipPosition]="wtooltipPostion(column)">{{ column }}</span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- END WESTPORT-TABLE-CONTAINER -->
+    </div>
+    <!-- END TABLE-CONTAINER -->
   </div>
   <!-- END FLEX-ITEM -->
   <!-- BEGIN FLEX-ITEM -->
-  <div class="flex-item">
-    <!-- BEGIN WESTPORT-TABLE-CONTAINER -->
-    <table class="table-container">
-      <tbody>
-        <tr class="tr-style" *ngFor="let row of wportschunk">
-          <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column), disabledWestPort(column)]" (click)="setWestID(column)"
-            *ngFor="let column of row">
-            <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
-              <span [mdTooltip]="pushWestNote(column)" [mdTooltipPosition]="wtooltipPostion(column)">{{ column }}</span>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- END WESTPORT-TABLE-CONTAINER -->
+  <div class="flex-item-3-container">
+    <div class="flex-item-3">
+      <!-- BEGIN WESTPORT-TABLE-CONTAINER -->
+      <div class="chart-box">
+        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
+      <!-- END WESTPORT-TABLE-CONTAINER -->
+    </div>
   </div>
   <!-- END FLEX-ITEM -->
 </div>
 <!-- END FLEX-CONTAINER -->
-<!-- BEGIN FLEX-CONTAINER -->
 <div class="flex-container">
-  <!-- BEGIN FLEX-FOOTER-DEBUG -->
-  <div class="flex-footer-debug" align="center">
-    <!-- END FLEX-FOOTER-DEBUG -->
-    <!-- BEGIN INPUT -->
-    <md-input-container>
-      <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" hidden>
-    </md-input-container>
-    <md-input-container>
-      <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" hidden>
-    </md-input-container>
-    <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->
-    <md-slide-toggle id="toggleDebugButton" class="bt-margin-left" [ngClass]="toggleDebugMode()">Debug Mode</md-slide-toggle>
-    <!-- END DEBUG MODE TOGGLE BUTTON -->
-    <!-- END INPUT -->
+  <div class="flex-footer-container">
+    <div class="shadow-container">
+      <!-- BEGIN FLEX-CONTAINER -->
+      <div class="flex-container">
+        <!-- BEGIN FLEX-FOOTER-DEBUG -->
+        <div class="flex-footer-debug" align="center">
+          <!-- END FLEX-FOOTER-DEBUG -->
+          <!-- BEGIN INPUT -->
+          <md-input-container>
+            <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" hidden>
+          </md-input-container>
+          <md-input-container>
+            <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" hidden>
+          </md-input-container>
+          <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->
+          <md-slide-toggle id="toggleDebugButton" class="bt-margin-left" [ngClass]="toggleDebugMode()">Debug Mode</md-slide-toggle>
+          <!-- END DEBUG MODE TOGGLE BUTTON -->
+          <!-- END INPUT -->
+        </div>
+        <!-- END FLEX-FOOTER -->
+      </div>
+      <!-- END FLEX-CONTAINER -->
+      <!-- BEGIN FLEX-CONTAINER -->
+      <div class="flex-container">
+        <!-- BEGIN FLEX-FOOTER -->
+        <div class="flex-footer" align="center">
+          <button md-button class="connected" disabled>Connected</button>
+          <button md-button class="break" disabled>Break</button>
+          <button md-button class="pending" disabled>Pending</button>
+          <button md-button class="pair" disabled>Pair</button>
+          <button md-button class="selected" disabled>Selected</button>
+        </div>
+        <!-- END FLEX-FOOTER -->
+      </div>
+      <!-- END FLEX-CONTAINER -->
+      <!-- BEGIN FLEX-CONTAINER -->
+      <div class="flex-container">
+        <!-- BEGIN FLEX-FOOTER -->
+        <div class="flex-fix-padding" align="center">
+          <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" disabled>Continue</button>
+          <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" disabled>Connect</button>
+          <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" disabled>Disconnect</button>
+        </div>
+        <!-- END FLEX-FOOTER -->
+      </div>
+      <!-- END FLEX-CONTAINER -->
+    </div>
   </div>
-  <!-- END FLEX-FOOTER -->
-</div>
-<!-- END FLEX-CONTAINER -->
-<!-- BEGIN FLEX-CONTAINER -->
-<div class="flex-container">
-  <!-- BEGIN FLEX-FOOTER -->
-  <div class="flex-footer" align="center">
-    <button md-button class="connected" disabled>Connected</button>
-    <button md-button class="break" disabled>Break</button>
-    <button md-button class="pending" disabled>Pending</button>
-    <button md-button class="pair" disabled>Pair</button>
-    <button md-button class="selected" disabled>Selected</button>
+  <div class="flex-item-footer-1">
+    <div class="flex-item-footer-content-1">
+      <span>something here ?</span>
+    </div>
   </div>
-  <!-- END FLEX-FOOTER -->
 </div>
-<!-- END FLEX-CONTAINER -->
-<!-- BEGIN FLEX-CONTAINER -->
-<div class="flex-container">
-  <!-- BEGIN FLEX-FOOTER -->
-  <div class="flex-fix-padding" align="center">
-    <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" disabled>Continue</button>
-    <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" disabled>Connect</button>
-    <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" disabled>Disconnect</button>
-  </div>
-  <!-- END FLEX-FOOTER -->
-</div>
-<!-- END FLEX-CONTAINER -->

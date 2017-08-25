@@ -2,9 +2,63 @@
 .flex-container {
   display: flex;
   justify-content: space-around; // SUB CONTAINER
-  .flex-item {
-    padding: 20px;
+  .table-container-main {
+    display: flex;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    margin: 15px 0 15px 0 !important;
+  }
+  .flex-footer-container {
+    margin: auto 40px auto 180px;
+    padding-left: 130px;
+    .shadow-container {
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    }
+  }
+  .flex-item-1 {
+    padding: 10px;
     flex-grow: 1;
+  }
+  .flex-item-2 {
+    padding: 10px;
+    flex-grow: 1;
+  }
+  .flex-item-3 {
+    display: block;
+    background: transparent;
+    border-radius: 2px;
+    height: 400px;
+    margin: 1rem;
+    position: relative;
+    width: 400px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  }
+  .flex-item-footer-1 {
+    display: block;
+    background: transparent;
+    border-radius: 2px;
+    margin-right: 10px;
+    margin-left: 350px; // height: 170px;
+    // margin: 1rem;
+    position: relative;
+    width: 450px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    .flex-item-footer-content-1 {
+      text-align: center;
+      width: 100%;
+      padding-top: 15px;
+      position: relative;
+      top: 45%;
+      transform: translateY(-50%);
+      span {
+        cursor: default;
+      }
+    }
   }
   .flex-item-header {
     // flex-grow: 1;
@@ -20,6 +74,8 @@
       width: 300px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      margin-left: 10px;
+      margin-right: 10px;
       .flex-item-1 {
         flex-grow: 4;
         .temperature-content-container {
@@ -43,7 +99,7 @@
           margin-left: auto;
           margin-right: auto;
           position: relative;
-          top: 23%;
+          top: 15%;
           transform: translateY(-50%);
           span {
             cursor: default;
@@ -55,6 +111,9 @@
         flex-grow: 1;
         overflow: hidden;
         img {
+          position: relative;
+          transform: translateY(-50%);
+          top: 60%;
           width: 90px;
           /* you can use % */
           height: auto;
@@ -71,6 +130,8 @@
       width: 300px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      margin-left: 10px;
+      margin-right: 10px;
       .flex-item-1 {
         flex-grow: 4;
         .humidity-content-container {
@@ -106,6 +167,9 @@
         flex-grow: 1;
         overflow: hidden;
         img {
+          position: relative;
+          transform: translateY(-50%);
+          top: 60%;
           width: 60%;
           /* you can use % */
           height: auto;
@@ -122,6 +186,8 @@
       width: 300px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      margin-left: 10px;
+      margin-right: 10px;
       .flex-item-1 {
         flex-grow: 4;
         .order-content-container {
@@ -157,6 +223,9 @@
         flex-grow: 1;
         overflow: hidden;
         img {
+          position: relative;
+          transform: translateY(-50%);
+          top: 60%;
           width: 65%;
           /* you can use % */
           height: auto;
@@ -173,6 +242,8 @@
       width: 300px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      margin-left: 10px;
+      margin-right: 10px;
       .flex-item-1 {
         flex-grow: 4;
         .time-content-container {
@@ -208,9 +279,33 @@
         flex-grow: 1;
         overflow: hidden;
         img {
+          position: relative;
+          transform: translateY(-50%);
+          top: 60%;
           width: 60%;
           /* you can use % */
           height: auto;
+        }
+      }
+    }
+  }
+  .flex-item-header-2 {
+    width: 450px;
+    padding-top: 15px;
+    display: inline-flex;
+    .flex-item {
+      width: 100%;
+      background: transparent;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      border-radius: 2px;
+      .item-content {
+        position: relative;
+        transform: translateY(-50%);
+        top: 50%;
+        text-align: center;
+        span {
+          cursor: default;
         }
       }
     }
@@ -289,10 +384,13 @@
     flex-grow: 1;
   } // TABLE CONTAINER
   .table-container {
-    margin: 15px auto 0 auto; // OLD SHADOW
+    margin: 3px auto 0 auto; // OLD SHADOW
     // box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.12), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 0, 0, 0.12);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24); // NEW SHADOW
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24); // NEW SHADOW
+    // transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    // NEW SHADOW
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     border-radius: 4px;
     td {
       border-radius: 4px;
