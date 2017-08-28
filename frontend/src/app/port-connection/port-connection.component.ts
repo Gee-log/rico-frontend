@@ -43,6 +43,17 @@ export class PortConnectionComponent implements OnInit {
   public pieChartData: number[] = [2, 4, 282];
   public pieChartType: string = 'pie';
 
+  // Radar
+  public radarChartLabels: string[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
+
+  public radarChartData: any = [
+    { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
+  ];
+  public radarChartType: string = 'radar';
+
+
+
   constructor(private http: Http, private ApiService: ApiService) { }
 
   ngOnInit() {
@@ -125,7 +136,7 @@ export class PortConnectionComponent implements OnInit {
 
       // CHECK CURRENT STATUS OF TASK
       // WHEN CURRENT STATUS IS SUCCESS
-      if (this.status === 'success' || this.status === 'revoke') {
+      if (this.status === 'success' || this.status === 'revoked' || this.status == 'failure' || this.status == 'canceled') {
         $('.East, .West').removeClass('unselectable'); // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         $('#sequence').attr('disabled', 'disabled'); // LOCK SEQUENCE INPUT

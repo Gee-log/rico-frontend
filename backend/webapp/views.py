@@ -17,11 +17,13 @@ import requests
 from webapp.white import Walker
 
 
-CELERY_APP = 'http://192.168.60.73/app1'
+# CELERY_APP = 'http://192.168.60.73/app1'
+CELERY_APP = 'http://192.168.60.135:8000/rico'
 
 walk = Walker()
 
 
+# Login User
 # def login_view(request):
 #
 #     print(request.user.is_authenticated())
@@ -125,7 +127,7 @@ def checkstatus(request, uuid):
                         OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
                                                                           response=response)
 
-                if east == c.east and west == c.west and data_dict['request']['action'] == 'disconnect':
+                elif east == c.east and west == c.west and data_dict['request']['action'] == 'disconnect':
                     if c.status == 'pending':
                         Connection.objects.filter(east=east, west=west, status='pending',
                                                   disconnected_date=None).update(status=status,
@@ -240,13 +242,13 @@ def checkstatus(request, uuid):
 # @login_required(login_url='/login/')
 def checktask(request):
 
-    status = ""
+    data = ""
     operations = Operation.objects.filter(robotnumber='1')
     for i in operations:
         uuid = str(i.uuid)
-        status = checkstatus(request, uuid)
+        data = checkstatus(request, uuid)
 
-    return JsonResponse(status)
+    return JsonResponse(data)
 
 
 # @login_required(login_url='/login/')
@@ -433,7 +435,8 @@ class ConnectionList(APIView):
         else:
             stops = None
             number = None
-        if stops and number:
+            action = None
+        if stops and number and action:
             payload = {'east': east.number, 'west': west.number, 'action': str(action), 'stops': str(stops),
                        'no': str(number)}
         else:
