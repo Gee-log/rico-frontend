@@ -1,6 +1,8 @@
+// ANGULAR MODULE
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
 
+// Third-Party
 import * as _ from 'lodash';
 
 @Injectable()
@@ -45,6 +47,7 @@ export class ApiService {
       return ({ allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id });
 
     });
+
   }
   // POST CONNECTION, DISCONNECTION, DEBUG API TO SERVER
   connectPort(east, west, action, stops?, number?) {
@@ -86,6 +89,7 @@ export class ApiService {
         console.log('error')
       });
     }
+
   }
   // CHECK STATUS FROM CURRENT TASK
   checkStatus() {
@@ -106,6 +110,7 @@ export class ApiService {
       return ({ status: status, sequence: sequence, action: action });
 
     })
+
   }
   // CHECK CONNECTION STATUS ALL PORT
   getConnectedPort() {
@@ -115,6 +120,7 @@ export class ApiService {
       return (response)
 
     })
+
   }
   // GET CONNECTION HISTORYS
   getConnectionHistory() {
@@ -124,6 +130,7 @@ export class ApiService {
       return (response)
 
     })
+
   }
   // GET ALARM HISTORY
   getAlarmHistory() {
@@ -133,6 +140,7 @@ export class ApiService {
       return (response)
 
     })
+
   }
   // POST ALARM
   postAlarm(alarm, detail, severity) {
@@ -144,6 +152,7 @@ export class ApiService {
     }).catch(() => {
       console.log('error')
     })
+
   }
   // POST PENDING TASK
   pendingTask(id) {
@@ -155,6 +164,7 @@ export class ApiService {
     }).catch(() => {
       console.log('error')
     })
+
   }
   // POST CANCEL TASK
   cancelTask(id, action) {
@@ -168,14 +178,29 @@ export class ApiService {
     })
 
   }
-  // SAVE CRF FILES
-  saveData() {
+  // CLEAR DATABASE DATA
+  clearDatabase(action) {
 
-    return this.http.get(this.ROOT_URL + '3').toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return (response)
+    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action }, this.options).toPromise().then((response: any) => {
+      console.log(response._body);
+      return response;
 
+    }).catch(() => {
+      console.log('error')
     })
+
+  }
+  // SAVE DATA (CSV FILE)
+  saveData_Connectionhistory(type) {
+
+    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type }, this.options).toPromise().then((response: any) => {
+      console.log(response._body);
+      return response;
+
+    }).catch(() => {
+      console.log('error')
+    })
+
   }
 
 }

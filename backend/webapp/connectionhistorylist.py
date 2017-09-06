@@ -1,0 +1,99 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import JsonResponse, HttpResponse
+from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
+# from webapp.serializers import ConnectionHistorySerializer
+from celery.task.control import revoke
+from datetime import datetime
+from django.utils import timezone
+from webapp.views import logger
+
+
+class ConnectionHistoryList(APIView):
+
+    def get(self, request):
+
+        connh = ConnectionHistory.objects.all()
+        data = []
+        for ch in connh:
+            obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
+                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status)}
+            data.append(obj)
+
+        return Response(data)
+
+    def post(self, request):
+
+        historyid = ""
+        status = ""
+        if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
+            historyid = request.data['id']
+            status = request.data['action']
+            connh = ConnectionHistory.objects.all().filter(id=historyid)
+            conn = Connection.objects.all()
+            for i in connh:
+                for c in conn:
+                    if i.switching_type == 'C' and c.disconnected_date is None:
+                        Connection.objects.filter(east=i.east, west=i.west, status='pending').delete()
+                    elif i.switching_type == 'D' and c.disconnected_date is None:
+                        Connection.objects.filter(east=i.east, west=i.west, status='pending').update(
+                            status='success', disconnected_date=None)
+            ConnectionHistory.objects.filter(id=historyid).update(status=status)
+
+            operations = Operation.objects.filter(robotnumber='1')
+            for o in operations:
+                revoke(o.uuid, terminate=True)
+
+            return JsonResponse({'historyid': historyid, 'action': status})
+
+        elif 'action' in request.data and request.data['action'] == 'cleardatabase':
+
+            Connection.objects.all().delete()
+            ConnectionHistory.objects.all().delete()
+            Operation.objects.all().delete()
+            OperationHistory.objects.all().delete()
+
+            return HttpResponse('Clear database success !')
+
+        if 'type' in request.data and request.data['type'] == 'connectionhistory':
+
+            return self.savedata(request)
+
+    def savedata(self, request):
+
+        # for Python 3.x use below !
+        from io import StringIO
+        # for Python 2.7 or earlier use below !
+        # import StringIO
+        import csv
+        timestamp = datetime.now()
+        qus = '1'
+
+        logger.info('question_id', '1', 'timestamp', timestamp)
+
+        # write file
+        # for WINDOW OS use below !
+        data = StringIO()
+
+        # for Linux OS use below !
+        # data = StringIO.StringIO()
+
+        # load file
+        data.seek(0)
+        response = HttpResponse(data, content_type='text/csv')
+        if qus == '1':  # connection_log
+            download_name = 'connection_log.csv'
+            response['Content-Disposition'] = "attachment; filename=%s" % download_name
+            writer = csv.writer(response)
+            connection = ConnectionHistory.objects.all()
+            writer.writerow(['Time', 'Type', 'East Port', 'West Port'])
+            for con in connection:
+                if con.switching_type == 'C':
+                    writer.writerow(
+                        [timezone.localtime(con.timestamp), 'connected', con.east, con.west])
+
+                else:
+                    writer.writerow(
+                        [timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
+
+        return response

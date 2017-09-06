@@ -55,11 +55,6 @@ export class AlarmHistoryComponent implements OnInit {
     });
 
   }
-  saveData() {
-    this.ApiService.saveData().then((data) => {
-      console.log(data);
-    })
-  }
 
   clickme(row) {
     console.log(row);

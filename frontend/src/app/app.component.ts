@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import * as $ from 'jquery';
+import { ApiService } from './services/api.service';
+import { Http, Headers, Response } from '@angular/http';
+
 
 @Component({
   selector: 'app-root',
@@ -45,22 +48,30 @@ export class AppComponent {
     }
   ];
 
+  constructor(private http: Http, private ApiService: ApiService) {}
+
+  // TOGGLE SETTINGS MENU
   toggleSettings() {
 
     $('#settings-list, #settings-drop-up, #settings-drop-down').toggle();
 
   }
-
+  // TOGGLE MENU 
   toggleMenu() {
 
     $('#menu-list, #menu-drop-down, #menu-drop-up').toggle();
 
   }
-
+  // TOGGLE DOCUMENT MENU 
   toggleDocument() {
 
     $('#documents-drop-down, #documents-drop-up').toggle();
 
+  }
+  // CLEAR DATABASE DATA
+  clearDatabase() {
+    this.ApiService.clearDatabase('cleardatabase');
+    window.location.reload();
   }
 
 }

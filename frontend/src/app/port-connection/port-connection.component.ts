@@ -32,20 +32,23 @@ export class PortConnectionComponent implements OnInit {
   pair = []; // PAIR OF CONNECTED PORT {[east, west]}
   availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
-  toggleValue = false;
-  eportNote = [];
-  wportNote = [];
-  portID = [];
+  toggleValue = false; // TOGGLE VALUE
+  eportNote = []; // EAST PORT NOTE
+  wportNote = []; // WEST PORT NOTE
+  portID = []; // PORT ID
+  unavailableports = 282; // UNAVAILABLEPORTS
+  availableports = 288 - this.unavailableports; // AVAILABLEPORTS
+  connectedports = 2; // CONNECTEDPORTS
 
   public timerInterval: any; // set public variable type any
+
   // Pie
   public pieChartLabels: string[] = ['connected', 'available', 'unavailable'];
-  public pieChartData: number[] = [2, 4, 282];
+  public pieChartData: number[] = [this.connectedports, this.availableports, this.unavailableports];
   public pieChartType: string = 'pie';
 
   // Radar
   public radarChartLabels: string[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
-
   public radarChartData: any = [
     { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
     { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
@@ -53,8 +56,8 @@ export class PortConnectionComponent implements OnInit {
   public radarChartType: string = 'radar';
 
 
-
   constructor(private http: Http, private ApiService: ApiService) { }
+
 
   ngOnInit() {
 
@@ -81,13 +84,18 @@ export class PortConnectionComponent implements OnInit {
     clearInterval(this.timerInterval); // CLEAR INTERVAL
 
   }
+
   // events
   public chartClicked(e: any): void {
+
     console.log(e);
+
   }
 
   public chartHovered(e: any): void {
+
     console.log(e);
+
   }
   // FETCH DATA
   fetchData(): void {
@@ -105,6 +113,7 @@ export class PortConnectionComponent implements OnInit {
   }
   // PUSH EAST PORT NOTE
   pushEastNote(id) {
+
     let i = id.substring(1);
     let index = parseInt(i) - 1;
 
@@ -115,12 +124,14 @@ export class PortConnectionComponent implements OnInit {
   }
   // PUSH WEST PORT NOTE
   pushWestNote(id) {
+
     let i = id.substring(1);
     let index = parseInt(i) - 1;
 
     if (id == 'W' + id.substring(1)) {
       return this.wportNote[index]
     }
+
   }
   // CHECK CURRENT ROBOT STATUS
   checkStatus() {
@@ -140,7 +151,6 @@ export class PortConnectionComponent implements OnInit {
         $('.East, .West').removeClass('unselectable'); // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         $('#sequence').attr('disabled', 'disabled'); // LOCK SEQUENCE INPUT
-
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
         $('.East, .West').addClass('unselectable'); // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
@@ -161,6 +171,7 @@ export class PortConnectionComponent implements OnInit {
       $('#' + east).addClass('current-selected');
       $('#' + west).addClass('current-selected');
     }
+
   }
   // GET EASTPORT ID ON CLICK
   setEastID(eastID) {
@@ -306,33 +317,35 @@ export class PortConnectionComponent implements OnInit {
   // SELECTED EAST PORT AND CHANGE COLOR WHEN CLICK
   isSelectEast(Eport) {
 
-    let classString = '';
-    // TO DO
-    // return (this.selectedEastPortID === Eport) ? 'selected' : '';
-    if (this.selectedEastPortID === Eport) {
-      classString = 'selected';
+    return (this.selectedEastPortID === Eport) ? 'selected' : '';
 
-    } else {
-      classString = '';
-    }
+    // // TO DO
+    // let classString = '';
+    // if (this.selectedEastPortID === Eport) {
+    //   classString = 'selected';
 
-    return classString;
+    // } else {
+    //   classString = '';
+    // }
+
+    // return classString;
 
   }
   // SELECTED WEST PORT AND CHANGE COLOR WHEN CLICK
   isSelectWest(Wport) {
 
-    let classString = '';
+    return (this.selectedWestPortID === Wport) ? 'selected' : '';
+
     // TO DO
-    // return (this.selectedEastPortID === Eport) ? 'selected' : '';
-    if (this.selectedWestPortID === Wport) {
-      classString = 'selected';
+    // let classString = '';
+    // if (this.selectedWestPortID === Wport) {
+    //   classString = 'selected';
 
-    } else {
-      classString = '';
-    }
+    // } else {
+    //   classString = '';
+    // }
 
-    return classString;
+    // return classString;
 
   }
   // POST CONNECTION
@@ -353,10 +366,6 @@ export class PortConnectionComponent implements OnInit {
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops);
-      // LOCK STOPS INPUT
-      $('#stops').attr('disabled', 'disabled');
-      // LOCK CONTINUE BUTTON AFTER POST
-      $('#Connect').attr('disabled', 'disabled');
 
       // PAYLOAD { east, west, action }
     } else {
@@ -384,10 +393,6 @@ export class PortConnectionComponent implements OnInit {
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops);
-      // LOCK STOPS INPUT
-      $('#stops').attr('disabled', 'disabled');
-      // LOCK DISCONTINUE BUTTON AFTER POST
-      $('#Disconnect').attr('disabled', 'disabled');
 
       // PAYLOAD { east, west, action }
     } else {
@@ -420,10 +425,6 @@ export class PortConnectionComponent implements OnInit {
       // POST DATA
       this.ApiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
         this.action, JSON.parse(stops), this.sequence);
-      // LOCK CONTINUE BUTTON AFTER POST
-      $('#Continue').attr('disabled', 'disabled');
-      // STOPS AND SEQUNCE ARE UNDEFINED OR NULL
-      $('#stops').attr('disabled', 'disabled');
 
       // NO stops, sequence VALUE IN PAYLOAD
     } else {
@@ -483,9 +484,15 @@ export class PortConnectionComponent implements OnInit {
   // CLEAR LOCAL STORAGE STOPS VALUE
   clearValue(stops) {
 
+    // CLEAR STOPS LOCALSTORAGE VALUE
     if (stops === undefined || stops === null || stops === '') {
       stops = null;
       localStorage.setItem('stops', JSON.stringify(stops));
+    }
+
+    // LOCK CONNECT BUTTON WHEN INVALID STOPS INPUT
+    else if ($('#stops').hasClass('ng-invalid')) {
+      $('#Connect').attr('disabled', 'disabled');
     }
 
   }
@@ -546,7 +553,7 @@ export class PortConnectionComponent implements OnInit {
     return 'above'
   }
   // TOGGLE DEBUG BUTTON
-  toggleDebugMode(value) {
+  toggleDebugMode() {
 
     if ($('#toggleDebugButton').hasClass('mat-checked')) {
 
@@ -557,20 +564,25 @@ export class PortConnectionComponent implements OnInit {
   // DISABLE NOT AVAILABLE EAST PORT
   disabledEastPort(id) {
 
-    if (id !== 'E1' && id !== 'E2' && id !== 'E3') {
-      return 'port-unselectable'
-    } else {
-      return ''
-    }
+    return (id !== 'E1' && id !== 'E2' && id != 'E3') ? 'port-unselectable' : '';
+
+    // if (id !== 'E1' && id !== 'E2' && id !== 'E3') {
+    //   return 'port-unselectable'
+    // } else {
+    //   return ''
+    // }
+
   }
   // DISABLE NOT AVAILABLE WEST PORT
   disabledWestPort(id) {
 
-    if (id !== 'W1' && id !== 'W2' && id !== 'W3') {
-      return 'port-unselectable'
-    } else {
-      return ''
-    }
+    return (id !== 'W1' && id !== 'W2' && id != 'W3') ? 'port-unselectable' : '';
+
+    // if (id !== 'W1' && id !== 'W2' && id !== 'W3') {
+    //   return 'port-unselectable'
+    // } else {
+    //   return ''
+    // }
   }
 
 }

@@ -69,19 +69,17 @@ export class PortHistoryComponent implements OnInit {
     });
 
   }
-  // SAVE DATA TO FILES
-  saveData() {
-
-    this.ApiService.saveData().then((data) => {
-      console.log(data);
-
-    });
-  }
   // CANCEL TASK
   cancelTask(id) {
 
     this.ApiService.cancelTask(id, 'canceled');
     window.location.reload();
+
+  }
+  // SAVE DATA
+  saveData() {
+
+    this.ApiService.saveData_Connectionhistory('connectionhistory');
 
   }
   // FILTER SEARCH
