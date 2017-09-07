@@ -151,7 +151,7 @@
             <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" hidden>
           </md-input-container>
           <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->
-          <md-slide-toggle id="toggleDebugButton" class="bt-margin-left" [ngClass]="toggleDebugMode()">Debug Mode</md-slide-toggle>
+          <md-slide-toggle id="toggleDebugButton" class="bt-margin-left" (click)="toggleDebugMode()">Debug Mode</md-slide-toggle>
           <!-- END DEBUG MODE TOGGLE BUTTON -->
           <!-- END INPUT -->
         </div>

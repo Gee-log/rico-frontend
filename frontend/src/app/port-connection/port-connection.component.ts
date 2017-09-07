@@ -39,6 +39,7 @@ export class PortConnectionComponent implements OnInit {
   unavailableports = 282; // UNAVAILABLEPORTS
   availableports = 288 - this.unavailableports; // AVAILABLEPORTS
   connectedports = 2; // CONNECTEDPORTS
+  debugMode = false;
 
   public timerInterval: any; // set public variable type any
 
@@ -361,7 +362,7 @@ export class PortConnectionComponent implements OnInit {
     $('.East, .West').removeClass('selected pair selected-pair');
 
     // PAYLOAD { east, west, action, stops }
-    if (this.stops) {
+    if (this.debugMode && this.stops) {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
@@ -388,7 +389,7 @@ export class PortConnectionComponent implements OnInit {
     $('.East, .West').removeClass('selected pair selected-pair');
 
     // PAYLOAD { east, west, action, stops }
-    if (this.stops) {
+    if (this.debugMode && this.stops) {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
@@ -554,12 +555,9 @@ export class PortConnectionComponent implements OnInit {
   }
   // TOGGLE DEBUG BUTTON
   toggleDebugMode() {
-
-    if ($('#toggleDebugButton').hasClass('mat-checked')) {
-
-      $('#stops, #sequence').toggle();
-
-    }
+    $('#stops, #sequence').toggle();
+    this.debugMode = !this.debugMode;
+    console.log('toggleDebugMode ' + this.debugMode);
   }
   // DISABLE NOT AVAILABLE EAST PORT
   disabledEastPort(id) {
