@@ -7,6 +7,14 @@ from webapp.serializers import PortSerializer
 class PortList(APIView):
 
     def get(self, request):
+        """GET PortList API
+
+        Args:
+            request: request data
+
+        Returns:
+            Json: PortList data
+        """
 
         ports = Port.objects.all()
         serializer = PortSerializer(ports, many=True)

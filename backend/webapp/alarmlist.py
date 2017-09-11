@@ -8,7 +8,14 @@ from datetime import datetime
 class AlarmList(APIView):
 
     def get(self, request):
+        """GET AlarmList API
 
+        Args:
+            request: request data
+
+        Returns:
+            Json: AlarmList data
+        """
         print(request.GET)
         if 'since' in request.GET:
             since = datetime.fromtimestamp(float(request.GET['since']))
@@ -22,7 +29,14 @@ class AlarmList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        """POST AlarmList API
 
+        Args:
+            request: request data
+
+        Returns:
+            Json: AlarmList data
+        """
         alarms = Alarm.create(
             request.data["alarm"], request.data["detail"], request.data["severity"])
         alarms.save()

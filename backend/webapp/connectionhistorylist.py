@@ -12,6 +12,15 @@ from webapp.views import logger
 class ConnectionHistoryList(APIView):
 
     def get(self, request):
+        """GET ConnectionHistoryList API
+
+        Args:
+            request: request data
+
+        Returns:
+            Json: data
+            ({'id': '1', 'east', '1', 'west': '1', 'switching_type': 'C', 'timestamp': '10:42', 'status': 'success')}
+        """
 
         connh = ConnectionHistory.objects.all()
         data = []
@@ -23,9 +32,29 @@ class ConnectionHistoryList(APIView):
         return Response(data)
 
     def post(self, request):
+        """POST ConnectionHistoryList API,
+        If action == 'canceled' check condition then update database,
+        If action == 'cleardatabase' check condition then update database
 
-        historyid = ""
-        status = ""
+        # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
+        IF type == 'connectionhistory' call savedata()
+
+        Args:
+            request: request data
+
+        Returns:
+            IF action == 'canceled'
+            Json: data
+            ({'id': '1', 'east', '1', 'west': '1', 'switching_type': 'C', 'timestamp': '10:42', 'status': 'success')}
+
+            IF action == 'cleardatabase'
+            HttpResponse: ('Clear database success !')
+
+            # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
+            IF type == 'connectionhistory'
+            csv: csv file
+        """
+
         if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
             historyid = request.data['id']
             status = request.data['action']
@@ -35,8 +64,14 @@ class ConnectionHistoryList(APIView):
                 for c in conn:
                     if i.switching_type == 'C' and c.disconnected_date is None:
                         Connection.objects.filter(east=i.east, west=i.west, status='pending').delete()
+                        Connection.objects.filter(east=i.east, west=i.west, status='break').delete()
+                        Connection.objects.filter(east=i.east, west=i.west, status='started').delete()
                     elif i.switching_type == 'D' and c.disconnected_date is None:
                         Connection.objects.filter(east=i.east, west=i.west, status='pending').update(
+                            status='success', disconnected_date=None)
+                        Connection.objects.filter(east=i.east, west=i.west, status='break').update(
+                            status='success', disconnected_date=None)
+                        Connection.objects.filter(east=i.east, west=i.west, status='started').update(
                             status='success', disconnected_date=None)
             ConnectionHistory.objects.filter(id=historyid).update(status=status)
 
@@ -55,11 +90,21 @@ class ConnectionHistoryList(APIView):
 
             return HttpResponse('Clear database success !')
 
+        # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
         if 'type' in request.data and request.data['type'] == 'connectionhistory':
 
             return self.savedata(request)
 
+    # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
     def savedata(self, request):
+        """Save CSV files
+
+        Args:
+            request: request data
+
+        Returns:
+            csv: csv file
+        """
 
         # for Python 3.x use below !
         from io import StringIO

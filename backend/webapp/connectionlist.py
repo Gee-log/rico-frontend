@@ -7,6 +7,8 @@ import logging
 import requests
 
 
+# Log process
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
 
@@ -25,6 +27,19 @@ logger.addHandler(handler)
 class ConnectionList(APIView):
 
     def get(self, request):
+        """GET ConnectionList API
+
+        Args:
+            request: request data
+
+        Returns:
+            If action == 'connected'
+            Json: data
+            ({'east': c.east.number, 'west': c.west.number, 'status': c.status})
+
+            Else
+            Json: ConnectionList data
+        """
 
         # logger.info('ConnectionList get %s', request.GET)
         if 'action' in request.GET and request.GET['action'] == 'connected':
@@ -42,13 +57,20 @@ class ConnectionList(APIView):
             return Response(data)
 
         else:
-
             conns = Connection.objects.all().filter(disconnected_date=None)
             serializer = ConnectionSerializer(conns, many=True)
 
             return Response(serializer.data)
 
     def post(self, request):
+        """POST ConnectionList API
+
+        Args:
+            request: request data
+
+        Returns:
+            Json: request.data
+        """
 
         # Angular2 cannot access database if request superuser
         # if request.user.is_superuser or request.user.is_staff:
@@ -71,6 +93,14 @@ class ConnectionList(APIView):
             return self.connection(request)
 
     def debug(self, request):
+        """Debug Process
+
+        Args:
+            request: request data
+
+        Returns:
+            Json: request.data
+        """
 
         east, west = self.get_available_ports(request)
         logger.info('debug %s - %s', east, west)
@@ -85,6 +115,13 @@ class ConnectionList(APIView):
         return Response(request.data)
 
     def create_debug(self, request, east, west):
+        """Create debug Process in database
+
+        Args:
+            request: request data
+            east(string): east's port from debug()
+            west(string): west's port from debug()
+        """
 
         if 'number' in request.data and 'stops' in request.data:
             number = request.data['number']
@@ -114,6 +151,14 @@ class ConnectionList(APIView):
         OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
     def connection(self, request):
+        """Connection Process
+
+        Args:
+            request: request data
+
+        Returns:
+            Json: request.data
+        """
 
         # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
@@ -130,6 +175,13 @@ class ConnectionList(APIView):
         return Response(request.data)
 
     def create_connect(self, request, east, west):
+        """Create connection in database
+
+        Args:
+            request: request data
+            east(string): east's port from connection()
+            west(string): west's port from connection()
+        """
 
         Connection.objects.create(east=east, west=west, status='pending')
         ConnectionHistory.objects.create(east=east, west=west, switching_type='C', status='pending')
@@ -159,6 +211,14 @@ class ConnectionList(APIView):
         logger.info('%s connect E%s W%s stops:%s', uuid, east.number, west.number, stops)
 
     def disconnect(self, request):
+        """Disconnection Process
+
+        Args:
+            request: request data
+
+        Returns:
+            Json: request.data
+        """
 
         # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
@@ -175,6 +235,13 @@ class ConnectionList(APIView):
         return Response(request.data)
 
     def create_disconnect(self, request, east, west):
+        """Create disconnection in database
+
+        Args:
+            request: request data
+            east(string): east's port from get_available_ports()
+            west(string): west's port from get_available_ports()
+        """
 
         conns = Connection.objects.all().filter(disconnected_date=None)
         for c in conns:
@@ -209,6 +276,15 @@ class ConnectionList(APIView):
                 logger.info('%s disconnection E%s W%s stops:%s', uuid, east.number, west.number, stops)
 
     def get_available_ports(self, request):
+        """Query available port in database
+
+        Args:
+            request: request data
+
+        Returns:
+            east: west port
+            west: east port
+        """
 
         east, west = None, None
 
