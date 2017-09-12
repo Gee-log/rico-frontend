@@ -74,17 +74,18 @@ class ConnectionHistoryList(APIView):
                         Connection.objects.filter(east=i.east, west=i.west, status='started').update(
                             status='success', disconnected_date=None)
             ConnectionHistory.objects.filter(id=historyid).update(status=status)
-
             operations = Operation.objects.filter(robotnumber='1')
             for o in operations:
                 revoke(o.uuid, terminate=True)
+
+            Operation.objects.all().delete()
 
             return JsonResponse({'historyid': historyid, 'action': status})
 
         elif 'action' in request.data and request.data['action'] == 'cleardatabase':
 
             Connection.objects.all().delete()
-            ConnectionHistory.objects.all().delete()
+            # ConnectionHistory.objects.all().delete()
             Operation.objects.all().delete()
             OperationHistory.objects.all().delete()
 
