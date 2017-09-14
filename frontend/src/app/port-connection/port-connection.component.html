@@ -132,7 +132,7 @@
 </div>
 <!-- END HEADER-CONTAINER -->
 
-<!-- TABLE -->
+<!-- BEGIN TABLE -->
 <!-- BEGIN SECTION GROUP -->
 <div class="section group">
   <!-- BEGIN COL SPAN_1_OF_2 -->
@@ -176,91 +176,277 @@
 <!-- END TABLE -->
 
 <!-- BEGIN FOOTER -->
-<!-- BEGIN FLEX-CONTAINER-MAIN-2 -->
-<div class="flex-container-main-2">
-  <!-- BEGIN FLEX-ITEM-3-CONTAINER -->
-  <div class="flex-item-3-container">
-    <!-- BEGIN FLEX-ITEM-3 -->
-    <div class="flex-item-3">
-      <!-- BEGIN CHART-BOX -->
-      <div class="chart-box">
-        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-      </div>
-      <!-- END CHART-BOX -->
+<div class="footer-container">
+  <!-- BEGIN FLEX-CONTAINER-1 -->
+  <div class="flex-container-1">
+    <!-- BEGIN FLEX-ITEM-1 -->
+    <div class="flex-item-1" align="center">
+      <!-- BEGIN ITEM-1 -->
+      <div class="item-1"></div>
+      <!-- END ITEM-1 -->
     </div>
-    <!-- END FLEX-ITEM-3 -->
+    <!-- END FLEX-ITEM-1 -->
   </div>
-  <!-- END FLEX-ITEM-3-CONTAINER -->
-  <!-- BEGIN FLEX-FOOTER-CONTAINER -->
-  <div class="flex-footer-container">
-    <!-- BEGIN SHADOW-CONTAINER -->
-    <div class="shadow-container">
-      <!-- BEGIN FLEX-CONTAINER-2 -->
-      <div class="flex-container-2">
-        <!-- BEGIN FLEX-FOOTER-DEBUG -->
-        <div class="flex-footer-debug" align="center">
-          <!-- BEGIN INPUT -->
-          <md-input-container>
-            <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" pattern="[0-9,]{1,20}"
-              hidden>
-          </md-input-container>
-          <md-input-container>
-            <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" hidden>
-          </md-input-container>
-          <!-- END INPUT -->
-          <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->
-          <md-slide-toggle id="toggleDebugButton" class="bt-margin-left" (click)="toggleDebugMode()">Debug Mode</md-slide-toggle>
-          <!-- END DEBUG MODE TOGGLE BUTTON -->
+  <!-- END FLEX-CONTAINER-1 -->
+  <!-- BEGIN FLEX-CONTAINER-2 -->
+  <div class="flex-container-2">
+    <!-- BEGIN FLEX-ITEM-1 -->
+    <div class="flex-item-1" align="center">
+      <!-- BEGIN ITEM-1 -->
+      <div class="item-1">
+        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->
+        <div class="item-1-container-shadow">
+          <!-- BEGIN BUTTON-CONTAINER -->
+          <div class="button-container">
+            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
+            <div class="button-container-item-1">
+              <!-- BEGIN TOOLTIP -->
+              <div class="tooltip">
+                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->
+                <div class="break-button-circle Blink"></div>
+                <!-- END BREAK-BUTTON-CIRCLE BLINK -->
+                <!-- BEGIN TOOLTIPTEXT -->
+                <span class="tooltiptext">Hint! debug button will available in debug mode.</span>
+                <!-- END TOOLTIPTEXT -->
+              </div>
+              <!-- END TOOLTIP -->
+            </div>
+            <!-- END BUTTON-CONTAINER-ITEM-1 -->
+            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
+            <div class="button-container-item-2">
+              <!-- BEGIN CONTINUE BUTTON -->
+              <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" disabled>Continue</button>
+              <!-- END CONTINUE BUTTON -->
+            </div>
+            <!-- END BUTTON-CONTAINER-ITEM-2 -->
+          </div>
+          <!-- END BUTTON-CONTAINER -->
+          <!-- BEGIN BUTTON-CONTAINER -->
+          <div class="button-container">
+            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
+            <div class="button-container-item-1">
+              <!-- BEGIN TOOLTIP -->
+              <div class="tooltip">
+                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->
+                <div class="connect-button-circle Blink"></div>
+                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->
+                <!-- BEGIN TOOLTIPTEXT -->
+                <span class="tooltiptext">Hint! connect button will available when select two side available ports.</span>
+                <!-- END TOOLTIPTEXT -->
+              </div>
+              <!-- END TOOLTIP -->
+            </div>
+            <!-- END BUTTON-CONTAINER-ITEM-1 -->
+            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
+            <div class="button-container-item-2">
+              <!-- BEGIN CONNECT BUTTON -->
+              <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" disabled>Connect</button>
+              <!-- END CONNECT BUTTON -->
+            </div>
+            <!-- END BUTTON-CONTAINER-ITEM-2 -->
+          </div>
+          <!-- END BUTTON-CONTAINER -->
+          <!-- BEGIN BUTTON-CONTAINER -->
+          <div class="button-container">
+            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
+            <div class="button-container-item-1">
+              <!-- BEGIN TOOLTIP -->
+              <div class="tooltip">
+                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->
+                <div class="disconnect-button-circle Blink"></div>
+                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->
+                <!-- BEGIN TOOLTIPTEXT -->
+                <span class="tooltiptext">Hint! disconnect button will available when select correct pair of connected ports.</span>
+                <!-- END TOOLTIPTEXT -->
+              </div>
+              <!-- END TOOLTIP -->
+            </div>
+            <!-- END BUTTON-CONTAINER-ITEM-1 -->
+            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
+            <div class="button-container-item-2">
+              <!-- BEGIN DISCONNECT BUTTON -->
+              <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" disabled>Disconnect</button>
+              <!-- END DISCONNECT BUTTON -->
+            </div>
+            <!-- END BUTTON-CONTAINER-ITEM-2 -->
+          </div>
+          <!-- END BUTTON-CONTAINER -->
         </div>
-        <!-- END FLEX-FOOTER-DEBUG -->
+        <!-- END ITEM-1-CONTAINER-SHADOW -->
       </div>
-      <!-- END FLEX-CONTAINER-2 -->
-      <!-- BEGIN FLEX-CONTAINER-2 -->
-      <div class="flex-container-2">
-        <!-- BEGIN FLEX-FOOTER -->
-        <div class="flex-footer" align="center">
-          <button md-button class="connected" disabled>Connected</button>
-          <button md-button class="break" disabled>Break</button>
-          <button md-button class="pending" disabled>Pending</button>
-          <button md-button class="pair" disabled>Pair</button>
-          <button md-button class="selected" disabled>Selected</button>
+      <!-- END ITEM-1 -->
+      <!-- BEGIN ITEM-2 -->
+      <div class="item-2">
+        <!-- BEGIN SUB-ITEM -->
+        <div class="sub-item" align="center">
+          <!-- BEGIN INPUT-CONTAINER -->
+          <div id="input-container" class="align-center" hidden>
+            <!-- BEGIN INPUT DIV -->
+            <div style="transform: translateY(-20%);">
+              <!-- BEGIN STOP INPUT -->
+              <md-input-container>
+                <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" pattern="[0-9,]{1,20}"
+                  hidden>
+              </md-input-container>
+              <!-- END STOP INPUT -->
+              <!-- BEGIN SEQUENCE INPUT -->
+              <md-input-container>
+                <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" hidden>
+              </md-input-container>
+              <!-- END SEQUENCE INPUT -->
+            </div>
+            <!-- END INPUT DIV -->
+          </div>
+          <!-- END INPUT CONTAINER -->
         </div>
-        <!-- END FLEX-FOOTER -->
+        <!-- END SUB-ITEM -->
       </div>
-      <!-- END FLEX-CONTAINER-2 -->
-      <!-- BEGIN FLEX-CONTAINER-2 -->
-      <div class="flex-container-2">
-        <!-- BEGIN FLEX-FOOTER -->
-        <div class="flex-fix-padding" align="center">
-          <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" style="margin-top: 2px;"
-            disabled>Continue</button>
-          <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" style="margin-top: 2px;"
-            disabled>Connect</button>
-          <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" style="margin-top: 2px;"
-            disabled>Disconnect</button>
-        </div>
-        <!-- END FLEX-FOOTER -->
-      </div>
-      <!-- END FLEX-CONTAINER-2 -->
+      <!-- END ITEM-2 -->
     </div>
-    <!-- END SHADOW-CONTAINER -->
-  </div>
-  <!-- END FLEX-FOOTER-CONTAINER -->
-  <!-- BEGIN FLEX-ITEM-3-CONTAINER -->
-  <div class="flex-item-3-container">
-    <!-- BEGIN FLEX-ITEM-3 -->
-    <div class="flex-item-3">
-      <!-- BEGIN RADAR CHART -->
-      <div style="display: block">
-        <canvas baseChart [datasets]="radarChartData" [labels]="radarChartLabels" [chartType]="radarChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
+    <!-- END FLEX-ITEM-1 -->
+    <!-- BEGIN FLEX-ITEM-2 -->
+    <div class="flex-item-2">
+      <!-- BEGIN ITEM-1 -->
+      <div class="item-1" align="center">
+        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->
+        <div class="item-1-container-shadow">
+          <md-chip-list>
+            <!-- BEGIN TOOLTIP -->
+            <div class="tooltip">
+              <!-- BEGIN DETAIL-CONTAINER -->
+              <div class="detail-container" style="display: inline-flex;">
+                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->
+                <div class="detail-container-connected-item-1">
+                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->
+                  <div class="connected-circle Blink"></div>
+                  <!-- END CONNECTED-CIRCLE BLINK -->
+                </div>
+                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->
+                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->
+                <div class="detail-container-connected-item-2">
+                  <p>Connected</p>
+                </div>
+                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->
+              </div>
+              <!-- END DETAIL-CONTAINER -->
+              <!-- BEGIN TOOLTIPTEXT -->
+              <span class="tooltiptext">Green color means the port that connected.</span>
+              <!-- END TOOLTIPTEXT -->
+            </div>
+            <!-- END TOOLTIP -->
+            <!-- BEGIN TOOLTIP -->
+            <div class="tooltip">
+              <!-- BEGIN DETAIL-CONTAINER -->
+              <div class="detail-container" style="display: inline-flex;">
+                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->
+                <div class="detail-container-break-item-1">
+                  <!-- BEGIN BREAK-CIRCLE BLINK -->
+                  <div class="break-circle Blink"></div>
+                  <!-- END BREAK-CIRCLE BLINK -->
+                </div>
+                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->
+                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->
+                <div class="detail-container-break-item-2">
+                  <p>Break</p>
+                </div>
+                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->
+              </div>
+              <!-- END DETAIL-CONTAINER -->
+              <span class="tooltiptext">Yellow color means the port that stop in current sequence.</span>
+            </div>
+            <!-- END TOOLTIP -->
+            <!-- BEGIN TOOLTIP -->
+            <div class="tooltip">
+              <!-- BEGIN DETAIL-CONTAINER -->
+              <div class="detail-container" style="display: inline-flex;">
+                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->
+                <div class="detail-container-pending-item-1">
+                  <!-- BEGIN PENDING-CIRCLE BLINK -->
+                  <div class="pending-circle Blink"></div>
+                  <!-- END PENDING-CIRCLE BLINK -->
+                </div>
+                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->
+                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->
+                <div class="detail-container-pending-item-2">
+                  <p>Pending</p>
+                </div>
+                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->
+              </div>
+              <!-- END DETAIL-CONTAINER -->
+              <!-- BEGIN TOOLTIPTEXT -->
+              <span class="tooltiptext">Red color means the port that processing or pending.</span>
+              <!-- END TOOLTIPTEXT -->
+            </div>
+            <!-- END TOOLTIP -->
+            <!-- BEGIN TOOLTIP -->
+            <div class="tooltip">
+              <!-- BEGIN DETAIL-CONTAINER -->
+              <div class="detail-container" style="display: inline-flex;">
+                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->
+                <div class="detail-container-pair-item-1">
+                  <!-- BEGIN PAIR-CIRCLE BLINK -->
+                  <div class="pair-circle Blink"></div>
+                  <!-- END PAIR-CIRCLE BLINK -->
+                </div>
+                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->
+                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->
+                <div class="detail-container-pair-item-2">
+                  <p>Pair</p>
+                </div>
+                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->
+              </div>
+              <!-- END DETAIL-CONTAINER -->
+              <!-- BEGIN TOOLTIPTEXT -->
+              <span class="tooltiptext">Show pairs of ports.</span>
+              <!-- END TOOLTIPTEXT -->
+            </div>
+            <!-- END TOOLTIP -->
+            <!-- BEGIN TOOLTIP -->
+            <div class="tooltip">
+              <!-- BEGIN DETAIL-CONTAINER -->
+              <div class="detail-container" style="display: inline-flex;">
+                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->
+                <div class="detail-container-selected-item-1">
+                  <!-- BEGIN SELECTED-CIRCLE BLINK -->
+                  <div class="selected-circle Blink"></div>
+                  <!-- END SELECTED-CIRCLE BLINK -->
+                </div>
+                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->
+                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->
+                <div class="detail-container-selected-item-2">
+                  <p>Selected</p>
+                </div>
+                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->
+              </div>
+              <!-- END DETAIL-CONTAINER -->
+              <!-- BEGIN TOOLTIPTEXT -->
+              <span class="tooltiptext">Show current selected ports.</span>
+              <!-- END TOOLTIPTEXT -->
+            </div>
+            <!-- END TOOLTIP -->
+          </md-chip-list>
+        </div>
+        <!-- END ITEM-1-CONTAINER-SHADOW -->
       </div>
-      <!-- END RADAR CHART -->
+      <!-- END ITEM-1 -->
     </div>
-    <!-- END FLEX-ITEM-3 -->
+    <!-- END FLEX-ITEM-2 -->
   </div>
-  <!-- END FLEX-ITEM-3-CONTAINER -->
+  <!-- END FLEX-CONTAINER-2 -->
+  <!-- BEGIN FLEX-CONTAINER-3 -->
+  <div class="flex-container-3">
+    <!-- BEGIN FLEX-ITEM-1 -->
+    <div class="flex-item-1" align="center">
+      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->
+      <div class="flex-item-1-container-shadow">
+        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->
+        <md-slide-toggle id="toggleDebugButton" class="bt-margin-left" (click)="toggleDebugMode()">Debug Mode</md-slide-toggle>
+        <!-- END DEBUG MODE TOGGLE BUTTON -->
+      </div>
+      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->
+    </div>
+    <!-- END FLEX-ITEM-1 -->
+  </div>
+  <!-- END FLEX-CONTAINER-3 -->
 </div>
-<!-- BEGIN FLEX-CONTAINER-MAIN-2 -->
 <!-- END FOOTER -->

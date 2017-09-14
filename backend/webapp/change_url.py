@@ -31,8 +31,11 @@ def replace_celery_app(domain):
         with open(VIEW_CELERY_APP) as old_file:
             for line in old_file:
                 if not changed and line.startswith('CELERY_APP'):
-                    line = 'CELERY_APP = "' + domain + 'rico"\n'
-                    changed = True
+                    r_po = line.find('CELERY_APP')
+                    s_po = line.find('#')
+                    if s_po < 0 or s_po > r_po:
+                        line = 'CELERY_APP = "' + domain + 'rico"\n'
+                        changed = True
                 new_file.write(line)
 
     # Remove original file
@@ -51,8 +54,11 @@ def replace_root_url(domain):
         with open(JS_ROOT_URL) as old_file:
             for line in old_file:
                 if not changed and 'this.ROOT_URL' in line:
-                    line = '        this.ROOT_URL = "' + domain + '";\n'
-                    changed = True
+                    r_po = line.find('this.ROOT_URL')
+                    s_po = line.find('/')
+                    if s_po < 0 or s_po > r_po:
+                        line = '        this.ROOT_URL = "' + domain + '";\n'
+                        changed = True
                 new_file.write(line)
 
     # Remove original file

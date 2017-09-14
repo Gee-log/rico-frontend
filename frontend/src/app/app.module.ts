@@ -10,7 +10,7 @@ import { MaterialModule } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Component 
+// Component
 import { AppComponent } from './app.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { PortConnectionComponent } from './port-connection/port-connection.component';

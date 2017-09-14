@@ -555,7 +555,7 @@ export class PortConnectionComponent implements OnInit {
   }
   // TOGGLE DEBUG BUTTON
   toggleDebugMode() {
-    $('#stops, #sequence').toggle();
+    $('#stops, #sequence, #input-container').toggle();
     this.debugMode = !this.debugMode;
     console.log('toggleDebugMode ' + this.debugMode);
   }
