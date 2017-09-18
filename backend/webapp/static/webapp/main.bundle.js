@@ -1418,7 +1418,8 @@ var ApiService = (function () {
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
 
         // this.ROOT_URL = "http://192.168.60.76:80/";
-        this.ROOT_URL = "http://192.168.60.76:80/";
+        // this.ROOT_URL = "http://192.168.60.76:80/";
+        this.ROOT_URL = "http://127.0.0.1:8000/";
         // this.ROOT_URL = "http://192.168.60.142:8000/";
 
     }

@@ -2,85 +2,66 @@
 <html lang="en">
 
 <head>
-    {% load static %}
-    <meta charset="utf-8">
-    <title>Landing page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="{%  static 'webapp/XENO.ico' %}">
+
+  <!-- Basic Page Needs -->
+  {% load static %}
+  <meta charset="utf-8">
+  <title>Landing page</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT -->
+  <link href="{% static 'webapp/font/raleway.css' %}" rel='stylesheet' type='text/css'>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'webapp/css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'webapp/css/skeleton.css' %}">
+  <link rel="stylesheet" href="{% static 'webapp/css/custom.css' %}">
+
+  <!-- Scripts -->
+  <script src="{% static 'webapp/js/jquery-3.2.1.min.js' %}"></script>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{%  static 'webapp/XENO.ico' %}">
 </head>
-<style>
-    body {
-        font-family: Roboto, "Helevetica Neue", sans-serif;
-    }
-
-    h3 {
-        padding-left: 10px;
-        color: #0091ea;
-        cursor: default;
-        font-size: 24px;
-    }
-
-    li {
-        padding-top: 10px;
-    }
-
-    li,
-    text {
-        cursor: default;
-    }
-
-    a {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: #0091ea;
-    }
-
-    ul {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-
-    div {
-        padding-left: 10px;
-    }
-</style>
 
 <body>
-    <div>
-    <h3>Landing Page</h3>
-    <li>
-        <a href="/frontend/">Frontend</a>
-    </li>
-    <li>Backend</li>
-    <ul>
-        <li>
-            <a href="/alarms/">Alarm api</a>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <a href="/connections/">Connection api</a>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <a href="/connectionhistorys/">Connection History api</a>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <a href="/ports/">Port api</a>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <a href="/admin/">Admin</a>
-        </li>
-    </ul>
+
+  <div class="section first-section">
+    <div class="container">
+      <div class="row">
+        <div class="one">
+          <h1>Landing Page</h1>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="section second-section">
+    <div class="container">
+      <div class="row">
+        <div class="one-half column">
+          <button>Frontend</button>
+          <ul>
+            <li><a href="/frontend">Index</a></li>
+          </ul>
+        </div>
+        <div class="one-half column">
+          <button>Backend</button>
+          <ul>
+            <li><a href="/ports">Port api</a></li>
+            <li><a href="/alarms">Alarm api</a></li>
+            <li><a href="/connections">Connection api</a></li>
+            <li><a href="/connectionhistorys">Connectionhistory api</a></li>
+            <li><a href="/admin">Admin site</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
 </body>
 
 </html>
