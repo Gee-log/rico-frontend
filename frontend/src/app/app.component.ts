@@ -62,7 +62,7 @@ export class AppComponent {
     $('#menu-list, #menu-drop-down, #menu-drop-up').toggle();
 
   }
-  // TOGGLE DOCUMENT MENUgot
+  // TOGGLE DOCUMENT MENU
   toggleDocument() {
 
     $('#documents-drop-down, #documents-drop-up').toggle();
