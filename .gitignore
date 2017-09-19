@@ -7,7 +7,7 @@ ENV
 
 # django
 migrations
-static
+# static
 *.idea
 
 # vscode
