@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataSource } from '@angular/cdk';
+import { DataSource } from '@angular/cdk/table';
 import { MdPaginator } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -51,21 +51,21 @@ export class PortHistoryComponent implements OnInit {
     this.ApiService.getConnectionHistory().then((data) => {
       _.each(data, (obj) => {
         console.log(obj);
-        const date = new Date(obj.timestamp);
+        const date = new Date(obj['timestamp']);
         const day = date.toString().substring(0, 15);
         const time = date.toString().substring(15);
-        const status = obj.status.charAt(0).toUpperCase() + obj.status.slice(1);
+        const status = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
         // IF SWITCHTING_TYPE IS CONNECT
-        if (obj.switching_type === 'C') {
+        if (obj['switching_type'] === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west,
-            status: 'Connected', robotStatus: { 'status': status, 'id': obj.id }
+            date: day, time: time, east: 'E' + obj['east'], west: 'W' + obj['west'],
+            status: 'Connected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west,
-            status: 'Disconnected', robotStatus: { 'status': status, 'id': obj.id }
+            date: day, time: time, east: 'E' + obj['east'], west: 'W' + obj['west'],
+            status: 'Disconnected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
         }
       });

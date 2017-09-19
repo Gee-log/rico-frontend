@@ -453,24 +453,26 @@ export class PortConnectionComponent implements OnInit {
       console.log('------------------------------- All Port Status -------------------------------');
 
       _.each(data, (obj) => {
-        if (obj.status === 'success') {
-          const east = 'E' + obj.east;
-          const west = 'W' + obj.west;
-          const status = obj.status;
+
+
+        if (obj['status'] === 'success') {
+          const east = 'E' + obj['east'];
+          const west = 'W' + obj['west'];
+          const status = obj['status'];
           $('#' + east).addClass('connected'); // ADD GREEN COLOR
           $('#' + west).addClass('connected'); // ADD GREEN COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
-        } else if (obj.status === 'started' || obj.status === 'pending') {
-          const east = 'E' + obj.east;
-          const west = 'W' + obj.west;
-          const status = obj.status;
+        } else if (obj['status'] === 'started' || obj['status'] === 'pending') {
+          const east = 'E' + obj['east'];
+          const west = 'W' + obj['west'];
+          const status = obj['status'];
           $('#' + east).addClass('pending'); // ADD RED COLOR
           $('#' + west).addClass('pending'); // ADD RED COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
-        } else if (obj.status === 'break') {
-          const east = 'E' + obj.east;
-          const west = 'W' + obj.west;
-          const status = obj.status;
+        } else if (obj['status'] === 'break') {
+          const east = 'E' + obj['east'];
+          const west = 'W' + obj['west'];
+          const status = obj['status'];
           $('#' + east).addClass('break'); // ADD YELLOW COLOR
           $('#' + west).addClass('break'); // ADD YELLOW COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
