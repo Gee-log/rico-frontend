@@ -56,13 +56,13 @@ export class AppComponent {
     $('#settings-list, #settings-drop-up, #settings-drop-down').toggle();
 
   }
-  // TOGGLE MENU 
+  // TOGGLE MENU
   toggleMenu() {
 
     $('#menu-list, #menu-drop-down, #menu-drop-up').toggle();
 
   }
-  // TOGGLE DOCUMENT MENU 
+  // TOGGLE DOCUMENT MENU
   toggleDocument() {
 
     $('#documents-drop-down, #documents-drop-up').toggle();
