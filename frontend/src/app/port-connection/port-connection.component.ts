@@ -46,7 +46,7 @@ export class PortConnectionComponent implements OnInit {
   // Pie
   public pieChartLabels: string[] = ['connected', 'available', 'unavailable'];
   public pieChartData: number[] = [this.connectedports, this.availableports, this.unavailableports];
-  public pieChartType: string = 'pie';
+  public pieChartType = 'pie';
 
   // Radar
   public radarChartLabels: string[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
@@ -54,8 +54,7 @@ export class PortConnectionComponent implements OnInit {
     { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
     { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
   ];
-  public radarChartType: string = 'radar';
-
+  public radarChartType = 'radar';
 
   constructor(private http: Http, private ApiService: ApiService) { }
 
@@ -115,22 +114,22 @@ export class PortConnectionComponent implements OnInit {
   // PUSH EAST PORT NOTE
   pushEastNote(id) {
 
-    let i = id.substring(1);
-    let index = parseInt(i) - 1;
+    const i = id.substring(1);
+    const index = parseInt(i, 10) - 1;
 
-    if (id == 'E' + id.substring(1)) {
-      return this.eportNote[index]
+    if (id === 'E' + id.substring(1)) {
+      return this.eportNote[index];
     }
 
   }
   // PUSH WEST PORT NOTE
   pushWestNote(id) {
 
-    let i = id.substring(1);
-    let index = parseInt(i) - 1;
+    const i = id.substring(1);
+    const index = parseInt(i, 10) - 1;
 
-    if (id == 'W' + id.substring(1)) {
-      return this.wportNote[index]
+    if (id === 'W' + id.substring(1)) {
+      return this.wportNote[index];
     }
 
   }
@@ -148,7 +147,7 @@ export class PortConnectionComponent implements OnInit {
 
       // CHECK CURRENT STATUS OF TASK
       // WHEN CURRENT STATUS IS SUCCESS
-      if (this.status === 'success' || this.status === 'revoked' || this.status == 'failure' || this.status == 'canceled') {
+      if (this.status === 'success' || this.status === 'revoked' || this.status === 'failure' || this.status === 'canceled') {
         $('.East, .West').removeClass('unselectable'); // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         $('#stops').removeAttr('disabled'); // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         $('#sequence').attr('disabled', 'disabled'); // LOCK SEQUENCE INPUT
@@ -168,9 +167,9 @@ export class PortConnectionComponent implements OnInit {
     const west = this.selectedWestPortID;
 
     if (((east && west) !== '') && (!$('#' + east).hasClass('selected') || (!$('#' + west).hasClass('selected')))) {
-      $('.East, .West').removeClass('current-selected');
-      $('#' + east).addClass('current-selected');
-      $('#' + west).addClass('current-selected');
+      $('.East, .West').removeClass('current-selected Blink');
+      $('#' + east).addClass('current-selected Blink');
+      $('#' + west).addClass('current-selected Blink');
     }
 
   }
@@ -253,8 +252,8 @@ export class PortConnectionComponent implements OnInit {
   eastPair() {
 
     _.each(this.pair, (obj) => {
-      let east = 'E' + obj.east;
-      let west = 'W' + obj.west;
+      const east = 'E' + obj.east;
+      const west = 'W' + obj.west;
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         $('#' + east).addClass('selected-pair');
         $('#' + west).addClass('selected-pair');
@@ -263,15 +262,15 @@ export class PortConnectionComponent implements OnInit {
         $('#' + east).addClass('pair');
         $('#' + west).addClass('pair');
       }
-    })
+    });
 
   }
   // SHOW HIS PAIR WHEN CLICK WEST PORT
   westPair() {
 
     _.each(this.pair, (obj) => {
-      let east = 'E' + obj.east;
-      let west = 'W' + obj.west;
+      const east = 'E' + obj.east;
+      const west = 'W' + obj.west;
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         $('#' + east).addClass('selected-pair');
         $('#' + west).addClass('selected-pair');
@@ -280,7 +279,7 @@ export class PortConnectionComponent implements OnInit {
         $('#' + east).addClass('pair');
         $('#' + west).addClass('pair');
       }
-    })
+    });
 
   }
   // LOCK AND UNLOCK BUTTONS BY CHECKING CURRENT STATUS
@@ -455,28 +454,28 @@ export class PortConnectionComponent implements OnInit {
 
       _.each(data, (obj) => {
         if (obj.status === 'success') {
-          let east = 'E' + obj.east;
-          let west = 'W' + obj.west;
-          let status = obj.status;
+          const east = 'E' + obj.east;
+          const west = 'W' + obj.west;
+          const status = obj.status;
           $('#' + east).addClass('connected'); // ADD GREEN COLOR
           $('#' + west).addClass('connected'); // ADD GREEN COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
         } else if (obj.status === 'started' || obj.status === 'pending') {
-          let east = 'E' + obj.east;
-          let west = 'W' + obj.west;
-          let status = obj.status;
+          const east = 'E' + obj.east;
+          const west = 'W' + obj.west;
+          const status = obj.status;
           $('#' + east).addClass('pending'); // ADD RED COLOR
           $('#' + west).addClass('pending'); // ADD RED COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
         } else if (obj.status === 'break') {
-          let east = 'E' + obj.east;
-          let west = 'W' + obj.west;
-          let status = obj.status;
+          const east = 'E' + obj.east;
+          const west = 'W' + obj.west;
+          const status = obj.status;
           $('#' + east).addClass('break'); // ADD YELLOW COLOR
           $('#' + west).addClass('break'); // ADD YELLOW COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
         }
-      })
+      });
 
       console.log('-------------------------------------------------------------------------------');
     });
@@ -489,10 +488,8 @@ export class PortConnectionComponent implements OnInit {
     if (stops === undefined || stops === null || stops === '') {
       stops = null;
       localStorage.setItem('stops', JSON.stringify(stops));
-    }
-
-    // LOCK CONNECT BUTTON WHEN INVALID STOPS INPUT
-    else if ($('#stops').hasClass('ng-invalid')) {
+      // LOCK CONNECT BUTTON WHEN INVALID STOPS INPUT
+    } else if ($('#stops').hasClass('ng-invalid')) {
       $('#Connect').attr('disabled', 'disabled');
     }
 
@@ -508,21 +505,22 @@ export class PortConnectionComponent implements OnInit {
   tooltipEast(EastID) {
 
     for (const i in this.pair) {
-      let east = 'E' + this.pair[i].east
-      let west = 'W' + this.pair[i].west
-      if (EastID == east) {
-        return 'Connected to ' + west
+      const east = 'E' + this.pair[i].east;
+      const west = 'W' + this.pair[i].west;
+      if (EastID === east) {
+        return 'Connected to ' + west;
       }
     }
+
   }
   // PUSH CONNECTED PORT OF WEST TO WEST TOOLTIP
   tooltipWest(WestID) {
 
     for (const i in this.pair) {
-      let east = 'E' + this.pair[i].east
-      let west = 'W' + this.pair[i].west
-      if (WestID == west) {
-        return 'Connected to ' + east
+      const east = 'E' + this.pair[i].east;
+      const west = 'W' + this.pair[i].west;
+      if (WestID === west) {
+        return 'Connected to ' + east;
       }
     }
 
@@ -532,26 +530,28 @@ export class PortConnectionComponent implements OnInit {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
     for (const i in this.pair) {
-      let east = 'E' + this.pair[i].east
+      const east = 'E' + this.pair[i].east;
       if (EastID === east) {
-        return 'right'
+        return 'right';
       }
     }
     // ELSE RETURN TOOLTIP POSTION = ABOVE
-    return 'above'
+    return 'above';
+
   }
   // CHANGE POSITION OF SECOND TOOLTIP
   wtooltipPostion(WestID) {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
     for (const i in this.pair) {
-      let west = 'W' + this.pair[i].west
+      const west = 'W' + this.pair[i].west;
       if (WestID === west) {
-        return 'left'
+        return 'left';
       }
     }
     // ELSE RETURN TOOLTIP POSTION = ABOVE
-    return 'above'
+    return 'above';
+
   }
   // TOGGLE DEBUG BUTTON
   toggleDebugMode() {
@@ -562,7 +562,7 @@ export class PortConnectionComponent implements OnInit {
   // DISABLE NOT AVAILABLE EAST PORT
   disabledEastPort(id) {
 
-    return (id !== 'E1' && id !== 'E2' && id != 'E3') ? 'port-unselectable' : '';
+    return (id !== 'E1' && id !== 'E2' && id !== 'E3') ? 'port-unselectable' : '';
 
     // if (id !== 'E1' && id !== 'E2' && id !== 'E3') {
     //   return 'port-unselectable'
@@ -574,7 +574,7 @@ export class PortConnectionComponent implements OnInit {
   // DISABLE NOT AVAILABLE WEST PORT
   disabledWestPort(id) {
 
-    return (id !== 'W1' && id !== 'W2' && id != 'W3') ? 'port-unselectable' : '';
+    return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
 
     // if (id !== 'W1' && id !== 'W2' && id !== 'W3') {
     //   return 'port-unselectable'

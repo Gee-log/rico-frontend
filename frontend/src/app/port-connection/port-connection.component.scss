@@ -286,7 +286,7 @@
       // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24); // NEW SHADOW
       // transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       // NEW SHADOW
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       border-radius: 4px;
       .td-style {
@@ -305,14 +305,17 @@
       .connected {
         color: white !important;
         background: #00C853 !important;
+        box-shadow: none !important;
       } // PENDING STATUS PORT
       .pending {
         color: white !important;
         background: #D61515 !important;
+        box-shadow: none !important;
       } // BREAK STATUS PORT
       .break {
         color: white !important;
         background: #FBC02D !important;
+        box-shadow: none !important;
       } // PAIR PORT
       .pair {
         color: white !important;
@@ -352,7 +355,7 @@
       // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24); // NEW SHADOW
       // transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       // NEW SHADOW
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       border-radius: 4px;
       .td-style {
@@ -371,14 +374,17 @@
       .connected {
         color: white !important;
         background: #00C853 !important;
+        box-shadow: none !important;
       } // PENDING STATUS PORT
       .pending {
         color: white !important;
         background: #D61515 !important;
+        box-shadow: none !important;
       } // BREAK STATUS PORT
       .break {
         color: white !important;
         background: #FBC02D !important;
+        box-shadow: none !important;
       } // PAIR PORT
       .pair {
         color: white !important;
@@ -940,4 +946,46 @@
 @keyframes blinker {
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+.bee-container {
+  width: 100vw;
+  height: 500px;
+  background: skyblue;
+}
+.bee-hive {
+  width: 50%;
+  height: 100%;
+  background: wheat;
+}
+
+.rhex {
+  position: relative;
+  margin: 1em auto;
+  width: 10em; height: 17.32em;
+  border-radius: 1em/ .5em;
+  opacity: .25;
+  background: orange;
+  transition: opacity .5s;
+  cursor: pointer;
+}
+.rhex:before, .rhex:after {
+  position: absolute;
+  width: inherit; height: inherit;
+  border-radius: inherit;
+  background: inherit;
+  content: '';
+}
+.rhex:before {
+  transform: rotate(60deg);
+}
+.rhex:after {
+  transform: rotate(-60deg);
+}
+.rhex:hover {
+  opacity: 1;
+}
+
+td {
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);  
 }

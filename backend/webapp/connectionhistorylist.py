@@ -22,14 +22,20 @@ class ConnectionHistoryList(APIView):
             ({'id': '1', 'east', '1', 'west': '1', 'switching_type': 'C', 'timestamp': '10:42', 'status': 'success')}
         """
 
-        connh = ConnectionHistory.objects.all()
-        data = []
-        for ch in connh:
-            obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
-                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status)}
-            data.append(obj)
+        # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
+        if 'type' in request.GET and request.GET['type'] == 'connectionhistory':
 
-        return Response(data)
+            return self.savedata(request)
+
+        else:
+            connh = ConnectionHistory.objects.all()
+            data = []
+            for ch in connh:
+                obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
+                        'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status)}
+                data.append(obj)
+
+            return Response(data)
 
     def post(self, request):
         """POST ConnectionHistoryList API,
@@ -90,11 +96,6 @@ class ConnectionHistoryList(APIView):
             OperationHistory.objects.all().delete()
 
             return HttpResponse('Clear database success !')
-
-        # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-        if 'type' in request.data and request.data['type'] == 'connectionhistory':
-
-            return self.savedata(request)
 
     # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
     def savedata(self, request):

@@ -10,6 +10,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-port-history',
@@ -57,15 +58,17 @@ export class PortHistoryComponent implements OnInit {
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj.switching_type === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: { 'status': status, 'id': obj.id }
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west,
+            status: 'Connected', robotStatus: { 'status': status, 'id': obj.id }
           });
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: { 'status': status, 'id': obj.id }
+            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west,
+            status: 'Disconnected', robotStatus: { 'status': status, 'id': obj.id }
           });
         }
-      })
+      });
     });
 
   }
@@ -79,7 +82,16 @@ export class PortHistoryComponent implements OnInit {
   // SAVE DATA
   saveData() {
 
-    this.ApiService.saveData_Connectionhistory('connectionhistory');
+    // USING HTTP TO DOWLOAD
+    // window.location.href = 'http://localhost:8000/connectionhistorys?type=connectionhistory';
+
+    // USING API SERVICE TO DOWNLOAD
+    this.ApiService.downloadFile();
+
+    // USING ANGULAR2CSV PACKAGE TO DOWNLOAD
+    // this.ApiService.getConnectionHistory().then((data) => {
+    //    const x = new Angular2Csv(data, 'connect_log');
+    // });
 
   }
   // FILTER SEARCH

@@ -1,9 +1,11 @@
 // ANGULAR MODULE
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptions } from '@angular/http';
+import { Headers, Http, RequestOptions, ResponseContentType } from '@angular/http';
 
 // Third-Party
 import * as _ from 'lodash';
+import * as FileSaver from 'file-saver';
+
 
 @Injectable()
 export class ApiService {
@@ -22,9 +24,9 @@ export class ApiService {
     let eportschunk = []; // 144 to [12,12,...]
     let wportschunk = []; // 144 to [12,12,...]
     let allPort = []; // ALL PORTS, 288 PORTS
-    let eportNote = []; // EAST PORT NOTE
-    let wportNote = []; // WEST PORT NOTE
-    let id = []; // OBJECT ID
+    const eportNote = []; // EAST PORT NOTE
+    const wportNote = []; // WEST PORT NOTE
+    const id = []; // OBJECT ID
 
     return this.http.get(this.ROOT_URL + 'ports/').toPromise().then((response: any) => {
       allPort = JSON.parse(response._body);
@@ -44,7 +46,10 @@ export class ApiService {
           id.push(obj.id);
         }
       });
-      return ({ allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id });
+      return ({
+        allPort: allPort, eports: eports, wports: wports,
+        eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
+      });
 
     });
 
@@ -61,23 +66,25 @@ export class ApiService {
     // STOPS MODE
     // PAYLOAD { east, west, action, stops }
     if (stops && number === undefined) {
-      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops }, this.options).toPromise().then((response: any) => {
-        console.log(response._body);
-        return response;
+      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops },
+        this.options).toPromise().then((response: any) => {
+          console.log(response._body);
+          return response;
 
-      }).catch(() => {
-        console.log('error')
-      });
+        }).catch(() => {
+          console.log('error');
+        });
       // DEBUG MODE
       // PAYLOAD { east, west, action, stops, number }
     } else if (stops && number) {
-      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, number }, this.options).toPromise().then((response: any) => {
-        console.log(response._body);
-        return response;
+      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, number },
+        this.options).toPromise().then((response: any) => {
+          console.log(response._body);
+          return response;
 
-      }).catch(() => {
-        console.log('error')
-      });
+        }).catch(() => {
+          console.log('error');
+        });
       // NORMAL MODE
       // PAYLOAD { east, west, action }
     } else {
@@ -86,7 +93,7 @@ export class ApiService {
         return response;
 
       }).catch(() => {
-        console.log('error')
+        console.log('error');
       });
     }
 
@@ -103,13 +110,13 @@ export class ApiService {
       //   action = obj.action;
       // });
       // NEW VERSION
-      let status = response.status; // CURRENT STATUS
-      let sequence = response.sequence; // CURRENT SEQUENCE
-      let action = response.action; // CURRENT ACTION
+      const status = response.status; // CURRENT STATUS
+      const sequence = response.sequence; // CURRENT SEQUENCE
+      const action = response.action; // CURRENT ACTION
 
       return ({ status: status, sequence: sequence, action: action });
 
-    })
+    });
 
   }
   // CHECK CONNECTION STATUS ALL PORT
@@ -117,9 +124,9 @@ export class ApiService {
 
     return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
-      return (response)
+      return (response);
 
-    })
+    });
 
   }
   // GET CONNECTION HISTORYS
@@ -127,9 +134,9 @@ export class ApiService {
 
     return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
-      return (response)
+      return (response);
 
-    })
+    });
 
   }
   // GET ALARM HISTORY
@@ -137,9 +144,9 @@ export class ApiService {
 
     return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
-      return (response)
+      return (response);
 
-    })
+    });
 
   }
   // POST ALARM
@@ -150,8 +157,8 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error')
-    })
+      console.log('error');
+    });
 
   }
   // POST PENDING TASK
@@ -162,8 +169,8 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error')
-    })
+      console.log('error');
+    });
 
   }
   // POST CANCEL TASK
@@ -174,8 +181,8 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error')
-    })
+      console.log('error');
+    });
 
   }
   // CLEAR DATABASE DATA
@@ -186,8 +193,8 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error')
-    })
+      console.log('error');
+    });
 
   }
   // SAVE DATA (CSV FILE)
@@ -196,10 +203,37 @@ export class ApiService {
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type }, this.options).toPromise().then((response: any) => {
       console.log(response._body);
       return response;
-
     }).catch(() => {
-      console.log('error')
-    })
+      console.log('error');
+    });
+
+  }
+
+  // downloadFile() {
+  //   let i = {'id': '1'};
+  //   const api = `http://127.0.0.1:8000/connectionhistorys/?type=connecthistorys`;
+  //   const fileName = `connection_log.csv`;
+
+  //   this.http.get(api, { responseType: ResponseContentType.Blob })
+  //     .subscribe((response: any) => {
+
+  //       // FileSaver.saveAs(response.blob(), fileName);
+  //     });
+
+  // }
+
+  // TEST DOWLOAD (CSV FILE)
+  downloadFile() {
+    const path = `connectionhistorys/?type=connecthistorys`;
+    return this.http.get(this.ROOT_URL + path, { responseType: ResponseContentType.Blob })
+      .subscribe(
+      (res: any) => {
+        const blob = res.blob();
+        console.log(res);
+        const filename = 'connection_log.json';
+        FileSaver.saveAs(blob, filename);
+      }
+      );
 
   }
 
