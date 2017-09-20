@@ -78,13 +78,18 @@ class ConnectionList(APIView):
         Returns:
             Json: request.data
         """
-        # If use white walker dummy
-        if walk.is_dummy():
-            return self.for_whitewalker(request)
+        if self.check_current_status_error(request):
 
-        # If not use white walker dummy
+            # If use white walker dummy
+            if walk.is_dummy():
+                return self.for_whitewalker(request)
+
+            # If not use white walker dummy
+            else:
+                return self.for_embest(request)
+        
         else:
-            return self.for_embest(request)
+            return self.query_status_error(request)
 
     def for_whitewalker(self, request):
 
@@ -461,3 +466,55 @@ class ConnectionList(APIView):
 
             else:
                 return status
+
+    def check_current_status_error(self, request):
+        """Check current status error from celery
+
+        Args:
+            request: request data
+
+        Returns:
+            status: status
+        """
+
+        operations = Operation.objects.filter(robotnumber='1')
+        for i in operations:
+
+            uuid = str(i.uuid)
+
+            if uuid is not None:
+                resp = requests.get(CELERY_APP + '/result?id=' + uuid)
+                data = str(resp.json())
+                data_dict = ast.literal_eval(data)
+                status = data_dict['status']
+
+                if data_dict['status'] == 'error':
+
+                    return False
+                
+                else:
+                    return True
+
+            else:
+                return True
+    
+    def query_status_error(self, request):
+        """Query error detail of error status from celery
+
+        Args:
+            request: request data
+
+        Returns:
+            status: status
+        """
+
+        operations = Operation.objects.filter(robotnumber='1')
+        for i in operations:
+
+            uuid = str(i.uuid)
+            resp = requests.get(CELERY_APP + '/result?id=' + uuid)
+            data = str(resp.json())
+            data_dict = ast.literal_eval(data)
+            error = 'error_' + data_dict['error']
+
+            return HttpResponse(error)
