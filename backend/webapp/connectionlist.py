@@ -78,20 +78,31 @@ class ConnectionList(APIView):
         Returns:
             Json: request.data
         """
-        if self.check_current_status_error(request):
 
-            # If use white walker dummy
-            if walk.is_dummy():
-                return self.for_whitewalker(request)
+        # If use white walker dummy
+        if walk.is_dummy():
 
-            # If not use white walker dummy
-            else:
-                return self.for_embest(request)
-        
+            return self.for_whitewalker(request)
+
+        # If not use white walker dummy
         else:
-            return self.query_status_error(request)
+            # Check if current status is not error then call for_embest()
+            if self.check_current_status_error(request):
+                return self.for_embest(request)
+            
+            # Check if current status is error then return error message
+            else:
+                return self.query_status_error(request)
 
     def for_whitewalker(self, request):
+        """For using with whitewalker
+
+        Args:
+            request: request data
+
+        Returns:
+            debug function, connection function, disconnection function
+        """
 
         # Angular2 cannot access database if request superuser
         # if request.user.is_superuser or request.user.is_staff:
@@ -116,6 +127,14 @@ class ConnectionList(APIView):
             return self.connection(request)
 
     def for_embest(self, request):
+        """For using with embest
+
+        Args:
+            request: request data
+
+        Returns:
+            debug function, connection function, disconnection function
+        """
 
         # Angular2 cannot access database if request superuser
         # if request.user.is_superuser or request.user.is_staff:
@@ -139,11 +158,13 @@ class ConnectionList(APIView):
 
             # If current status is started or pending then return error_robotworking message
             elif self.check_current_status(request) in ['started', 'pending']:
-                return HttpResponse('error_robotworking')
+                # return HttpResponse('error_robotworking')
+                return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_uuid  message
             else:
-                return HttpResponse('error_uuid')
+                # return HttpResponse('error_uuid')
+                return JsonResponse({'status': 'error', 'error': 'uuid'})
 
         # Disconnection checking condition
         elif request.data['action'] == 'disconnect':
@@ -154,11 +175,13 @@ class ConnectionList(APIView):
 
             # If current status is started or pending or break then return error_robotworking message
             elif self.check_current_status(request) in ['started', 'pending', 'break']:
-                return HttpResponse('error_robotworking')
+                # return HttpResponse('error_robotworking')
+                return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_uuid  message
             else:
-                return HttpResponse('error_uuid')
+                # return HttpResponse('error_uuid')
+                return JsonResponse({'status': 'error', 'error': 'uuid'})
 
         # Connection checking condition
         elif request.data['action'] == 'connect':
@@ -169,15 +192,17 @@ class ConnectionList(APIView):
 
             # If current status is started or pending or break then return error_robotworking message
             elif self.check_current_status(request) in ['started', 'pending', 'break']:
-                return HttpResponse('error_robotworking')
+                # return HttpResponse('error_robotworking')
+                return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_uuid  message
             else:
-                return HttpResponse('error_uuid')
+                # return HttpResponse('error_uuid')
+                return JsonResponse({'status': 'error', 'error': 'uuid'})
 
         # Else return error_operation message
         else:
-            return HttpResponse('error_operation')
+            return JsonResponse({'status': 'error', 'error': 'operation'})
 
     def debug(self, request):
         """Debug Process
@@ -488,7 +513,7 @@ class ConnectionList(APIView):
                 data_dict = ast.literal_eval(data)
                 status = data_dict['status']
 
-                if data_dict['status'] == 'error':
+                if data_dict['status'] == 'error' or data_dict['status'] == 'alarm':
 
                     return False
                 
@@ -515,6 +540,7 @@ class ConnectionList(APIView):
             resp = requests.get(CELERY_APP + '/result?id=' + uuid)
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
-            error = 'error_' + data_dict['error']
+            status = data_dict['status']
+            error = data_dict['error']
 
-            return HttpResponse(error)
+            return JsonResponse({'status': status, 'error': error})

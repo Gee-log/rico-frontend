@@ -182,7 +182,15 @@
     <!-- BEGIN FLEX-ITEM-1 -->
     <div class="flex-item-1" align="center">
       <!-- BEGIN ITEM-1 -->
-      <div class="item-1"></div>
+      <div class="item-1">
+        <!-- BEGIN ERROR-DIALOG -->
+        <div id="error-dialog" class="hide">
+          <md-card class="Blink">
+            <p>{{ error_message }}</p>
+          </md-card>
+        </div>
+        <!-- END ERROR-DIALOG -->
+      </div>
       <!-- END ITEM-1 -->
     </div>
     <!-- END FLEX-ITEM-1 -->

@@ -74,19 +74,8 @@ export class ApiService {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops },
         this.options).toPromise().then((response: any) => {
 
-          // CHECK IF GET RESPONSE ERROR MESSAGE THEN DISPLAY DIALOG
-          if (response._body.startsWith('error')) {
-
-            console.error(response);
-            alert('Error Codes : ' + response._body);
-
-            // IF NOT GET RESPONSE ERROR MESSAGE
-          } else {
-
-            console.log(response._body);
-            return response;
-
-          }
+          response = JSON.parse(response._body);
+          return (response);
 
         }).catch(() => {
           console.error('POST ERROR');
@@ -97,44 +86,22 @@ export class ApiService {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, number },
         this.options).toPromise().then((response: any) => {
 
-          // CHECK IF GET RESPONSE ERROR MESSAGE THEN DISPLAY DIALOG
-          if (response._body.startsWith('error')) {
-
-            console.error(response);
-            alert('Error Codes : ' + response._body);
-
-            // IF NOT GET RESPONSE ERROR MESSAGE
-          } else {
-
-            console.log(response._body);
-            return response;
-
-          }
+          response = JSON.parse(response._body);
+          return (response);
 
         }).catch(() => {
-          console.error('POST ERROR');
+          console.error('POST DEBUG MODE ERROR!');
         });
       // NORMAL MODE
       // PAYLOAD { east, west, action }
     } else {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
 
-        // CHECK IF GET RESPONSE ERROR MESSAGE THEN DISPLAY DIALOG
-        if (response._body.startsWith('error')) {
-
-          console.error(response);
-          alert('Error Codes : ' + response._body);
-
-          // IF NOT GET RESPONSE ERROR MESSAGE
-        } else {
-
-          console.log(response._body);
-          return response;
-
-        }
+        response = JSON.parse(response._body);
+        return (response);
 
       }).catch(() => {
-        console.error('POST ERROR');
+        console.error('POST NORMAL MODE ERROR!');
       });
     }
 
@@ -167,6 +134,8 @@ export class ApiService {
       response = JSON.parse(response._body);
       return (response);
 
+    }).catch(() => {
+      console.error('GET CONNECTED PORT ERROR!');
     });
 
   }

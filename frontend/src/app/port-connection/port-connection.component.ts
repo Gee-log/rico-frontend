@@ -40,6 +40,7 @@ export class PortConnectionComponent implements OnInit {
   availableports = 288 - this.unavailableports; // AVAILABLEPORTS
   connectedports = 2; // CONNECTEDPORTS
   debugMode = false;
+  error_message = undefined;
 
   public timerInterval: any; // set public variable type any
 
@@ -365,11 +366,39 @@ export class PortConnectionComponent implements OnInit {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops);
+      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
+        .then((data) => {
+          // IF CELERY'S CURRENT STATUS IS ERROR
+          if (data.status === 'error') {
 
+            this.error_message = data.status + '_' + data.error + ' !';
+            $('#error-dialog').removeClass('hide');
+
+            // IF CELERY'S CURRENT STATUS IS NOT ERROR
+          } else {
+
+            $('#error-dialog').addClass('hide');
+
+          }
+
+        });
       // PAYLOAD { east, west, action }
     } else {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect');
+      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
+        .then((data) => {
+          // IF CELERY'S CURRENT STATUS IS ERROR
+          if (data.status === 'error') {
+
+            this.error_message = data.status + '_' + data.error + ' !';
+            $('#error-dialog').removeClass('hide');
+
+            // IF CELERY'S CURRENT STATUS IS NOT ERROR
+          } else {
+
+            $('#error-dialog').addClass('hide');
+
+          }
+        });
       // LOCK CONTINUE BUTTON AFTER POST
       $('#Connect').attr('disabled', 'disabled');
     }
@@ -392,11 +421,41 @@ export class PortConnectionComponent implements OnInit {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops);
+      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
+        .then((data) => {
+          // IF CELERY'S CURRENT STATUS IS ERROR
+          if (data.status === 'error') {
 
+            this.error_message = data.status + '_' + data.error + ' !';
+            $('#error-dialog').removeClass('hide');
+
+            // IF CELERY'S CURRENT STATUS IS NOT ERROR
+          } else {
+
+            $('#error-dialog').addClass('hide');
+
+          }
+
+        });
       // PAYLOAD { east, west, action }
     } else {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect');
+      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
+        .then((data) => {
+          // IF CELERY'S CURRENT STATUS IS ERROR
+          if (data.status === 'error') {
+
+            this.error_message = data.status + '_' + data.error + ' !';
+            $('#error-dialog').removeClass('hide');
+
+            // IF CELERY'S CURRENT STATUS IS NOT ERROR
+          } else {
+
+            $('#error-dialog').addClass('hide');
+
+          }
+
+        });
+
       // LOCK DISCONTINUE BUTTON AFTER POST
       $('#Disconnect').attr('disabled', 'disabled');
     }
@@ -424,8 +483,22 @@ export class PortConnectionComponent implements OnInit {
       const selectedWestPortID = localStorage.getItem('selectedWestPortID');
       // POST DATA
       this.ApiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
-        this.action, JSON.parse(stops), this.sequence);
+        this.action, JSON.parse(stops), this.sequence)
+        .then((data) => {
+          // IF CELERY'S CURRENT STATUS IS ERROR
+          if (data.status === 'error') {
 
+            this.error_message = data.status + '_' + data.error + ' !';
+            $('#error-dialog').removeClass('hide');
+
+            // IF CELERY'S CURRENT STATUS IS NOT ERROR
+          } else {
+
+            $('#error-dialog').addClass('hide');
+
+          }
+
+        });
       // NO stops, sequence VALUE IN PAYLOAD
     } else {
       console.log('No stops or sequence value !');
