@@ -34,18 +34,23 @@ export class ApiService {
 
         // SEPERATE BY DIRECTION 'E'
         if (obj.direction === 'E') {
+
           eports.push(obj.direction + obj.number);
           eportschunk = _.chunk(eports, 12);
           eportNote.push(obj.note);
           id.push(obj.id);
+
           // SEPERATE BY DIRECTION 'W'
         } else if (obj.direction === 'W') {
+
           wports.push(obj.direction + obj.number);
           wportschunk = _.chunk(wports, 12);
           wportNote.push(obj.note);
           id.push(obj.id);
+
         }
       });
+
       return ({
         allPort: allPort, eports: eports, wports: wports,
         eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
@@ -68,32 +73,68 @@ export class ApiService {
     if (stops && number === undefined) {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops },
         this.options).toPromise().then((response: any) => {
-          console.log(response._body);
-          return response;
+
+          // CHECK IF GET RESPONSE ERROR MESSAGE THEN DISPLAY DIALOG
+          if (response._body.startsWith('error')) {
+
+            console.error(response);
+            alert('Error Codes : ' + response._body);
+
+            // IF NOT GET RESPONSE ERROR MESSAGE
+          } else {
+
+            console.log(response._body);
+            return response;
+
+          }
 
         }).catch(() => {
-          console.log('error');
+          console.error('POST ERROR');
         });
       // DEBUG MODE
       // PAYLOAD { east, west, action, stops, number }
     } else if (stops && number) {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, number },
         this.options).toPromise().then((response: any) => {
-          console.log(response._body);
-          return response;
+
+          // CHECK IF GET RESPONSE ERROR MESSAGE THEN DISPLAY DIALOG
+          if (response._body.startsWith('error')) {
+
+            console.error(response);
+            alert('Error Codes : ' + response._body);
+
+            // IF NOT GET RESPONSE ERROR MESSAGE
+          } else {
+
+            console.log(response._body);
+            return response;
+
+          }
 
         }).catch(() => {
-          console.log('error');
+          console.error('POST ERROR');
         });
       // NORMAL MODE
       // PAYLOAD { east, west, action }
     } else {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
-        console.log(response._body);
-        return response;
+
+        // CHECK IF GET RESPONSE ERROR MESSAGE THEN DISPLAY DIALOG
+        if (response._body.startsWith('error')) {
+
+          console.error(response);
+          alert('Error Codes : ' + response._body);
+
+          // IF NOT GET RESPONSE ERROR MESSAGE
+        } else {
+
+          console.log(response._body);
+          return response;
+
+        }
 
       }).catch(() => {
-        console.log('error');
+        console.error('POST ERROR');
       });
     }
 
@@ -157,7 +198,7 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error');
+      console.error('POST ERROR');
     });
 
   }
@@ -169,7 +210,7 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error');
+      console.error('POST ERROR');
     });
 
   }
@@ -181,7 +222,7 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error');
+      console.error('POST ERROR');
     });
 
   }
@@ -193,7 +234,7 @@ export class ApiService {
       return response;
 
     }).catch(() => {
-      console.log('error');
+      console.error('POST ERROR');
     });
 
   }
@@ -204,7 +245,7 @@ export class ApiService {
       console.log(response._body);
       return response;
     }).catch(() => {
-      console.log('error');
+      console.error('POST ERROR');
     });
 
   }
