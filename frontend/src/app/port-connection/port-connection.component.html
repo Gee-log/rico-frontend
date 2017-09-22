@@ -140,7 +140,7 @@
     <!-- EAST TABLE -->
     <!-- BEGIN TABLE-CONTAINER-1 -->
     <table class="table-container-1" align="center">
-      <tbody>
+      <tbody [ngClass]="{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}">
         <tr class="tr-style" *ngFor="let row of eportschunk">
           <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">
             <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
@@ -158,7 +158,7 @@
     <!-- WEST TABLE -->
     <!-- BEGIN TABLE-CONTAINER-2 -->
     <table class="table-container-2" align="center">
-      <tbody>
+      <tbody [ngClass]="{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}">
         <tr class="tr-style" *ngFor="let row of wportschunk">
           <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">
             <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
@@ -223,7 +223,7 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CONTINUE BUTTON -->
-              <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" disabled>Continue</button>
+              <button md-raised-button id="Continue" class="button-width" (click)="postDebug()" color="primary" [attr.disabled]="this.disabled_continue_button == true ? false : null" disabled>Continue</button>
               <!-- END CONTINUE BUTTON -->
             </div>
             <!-- END BUTTON-CONTAINER-ITEM-2 -->
@@ -248,7 +248,7 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CONNECT BUTTON -->
-              <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" disabled>Connect</button>
+              <button md-raised-button id="Connect" class="button-width" (click)="postConnection()" color="primary" [attr.disabled]="this.disabled_connect_button == true ? false : null" disabled>Connect</button>
               <!-- END CONNECT BUTTON -->
             </div>
             <!-- END BUTTON-CONTAINER-ITEM-2 -->
@@ -273,7 +273,7 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN DISCONNECT BUTTON -->
-              <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" disabled>Disconnect</button>
+              <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" [attr.disabled]="this.disabled_disconnect_button == true ? false : null" disabled>Disconnect</button>
               <!-- END DISCONNECT BUTTON -->
             </div>
             <!-- END BUTTON-CONTAINER-ITEM-2 -->
@@ -294,12 +294,13 @@
               <!-- BEGIN STOP INPUT -->
               <md-input-container>
                 <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" pattern="[0-9,]{1,20}"
-                  hidden>
+                  [attr.disabled]="this.disable_stops_input == true ? false : null" hidden>
               </md-input-container>
               <!-- END STOP INPUT -->
               <!-- BEGIN SEQUENCE INPUT -->
               <md-input-container>
-                <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence" hidden>
+                <input mdInput id="sequence" placeholder="Sequence :" value="sequence" [(ngModel)]="sequence"
+                [attr.disabled]="this.disable_stops_input == true" hidden>
               </md-input-container>
               <!-- END SEQUENCE INPUT -->
             </div>

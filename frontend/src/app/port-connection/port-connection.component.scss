@@ -336,7 +336,14 @@
         color: #9E9E9E;
         background: #E0E0E0;
         pointer-events: none;
-      } //  TD HOVER
+      } 
+      // ENABLED TD
+      .selectable {
+        .unselectable {
+          all: revert;
+        }
+      }
+      //  TD HOVER
       .port-unselectable {
         color: #9E9E9E;
         background: #E0E0E0;
@@ -671,6 +678,9 @@
               &:focus {
                 outline: 0;
               }
+            }
+            .unselectable {
+              pointer-events: none;
             }
         }
       }

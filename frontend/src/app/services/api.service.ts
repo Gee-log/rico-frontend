@@ -75,7 +75,16 @@ export class ApiService {
         this.options).toPromise().then((response: any) => {
 
           response = JSON.parse(response._body);
-          return (response);
+
+          if (response.status === 'error' || response.status === 'alarm') {
+
+            return (response);
+
+          } else {
+
+            return ({ 'status': undefined, 'error': undefined });
+
+          }
 
         }).catch(() => {
           console.error('POST ERROR');
@@ -87,7 +96,16 @@ export class ApiService {
         this.options).toPromise().then((response: any) => {
 
           response = JSON.parse(response._body);
-          return (response);
+
+          if (response.status === 'error' || response.status === 'alarm') {
+
+            return (response);
+
+          } else {
+
+            return ({ 'status': undefined, 'error': undefined });
+
+          }
 
         }).catch(() => {
           console.error('POST DEBUG MODE ERROR!');
@@ -98,7 +116,16 @@ export class ApiService {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
 
         response = JSON.parse(response._body);
-        return (response);
+
+        if (response.status === 'error' || response.status === 'alarm') {
+
+          return (response);
+
+        } else {
+
+          return ({ 'status': undefined, 'error': undefined });
+
+        }
 
       }).catch(() => {
         console.error('POST NORMAL MODE ERROR!');
