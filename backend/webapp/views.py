@@ -15,9 +15,10 @@ import ast
 import requests
 from webapp.white import Walker
 import logging
+import logging.handlers
 
 
-CELERY_APP = "http://localhost:8000/rico"   # localhost
+CELERY_APP = "http://localhost:8000/rico"
 # CELERY_APP = "http://192.168.60.76:80/rico"   # embest
 
 
@@ -29,7 +30,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('webapp')
 
 # create a file handler
-handler = logging.FileHandler('webapp.log')
+handler = logging.handlers.RotatingFileHandler('webapp.log', maxBytes=10485760, backupCount=10, encoding='utf-8')
 handler.setLevel(logging.INFO)
 
 # create a logging format
@@ -98,6 +99,12 @@ def checkstatus(request, uuid):
     elif status == 'revoked':
         data = checkrevoked(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+    elif status == 'error':
+        data = checkerror(request, data_dict, uuid)
+        logger.info('checktask end: %s', data)
+    elif status == 'alarm':
+        data = checkalarm(request, data_dict, uuid)
+        logger.info('checktask end: %s', data)
     else:
         return JsonResponse({'status': str(status), 'sequence': None, 'action': None})
 
@@ -131,12 +138,12 @@ def checksuccess(request, data_dict, uuid):
                 east = i
             if i.direction == 'W' and i.number == west:
                 west = i
-        checksuccess_checkcondition(request, action, east, west, status, response, uuid)
+        checksuccess_checkcondition(request, action, east, west, status, uuid)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action})
 
 
-def checksuccess_checkcondition(request, action, east, west, status, response, uuid):
+def checksuccess_checkcondition(request, action, east, west, status, uuid):
     """Check condition for calling sub functions to update database
 
     Args:
@@ -145,7 +152,6 @@ def checksuccess_checkcondition(request, action, east, west, status, response, u
         east (integer): east port's number from checksuccess()
         west (integer): west port's number from checksuccess()
         status (string): robot's status from checksuccess()
-        response (string): robot's response from checksuccess()
         uuid (uuid4): uuid from checksuccess()
     """
 
@@ -153,19 +159,19 @@ def checksuccess_checkcondition(request, action, east, west, status, response, u
     for c in conns:
         if east == c.east and west == c.west and action == 'connect':
             if c.status == 'pending':
-                savedata_pendingtosuccess_connect(request, east, west, status, response, uuid)
+                savedata_pendingtosuccess_connect(request, east, west, status, uuid)
             elif c.status == 'break':
-                savedata_breaktosuccess_connect(request, east, west, status, response, uuid)
+                savedata_breaktosuccess_connect(request, east, west, status, uuid)
             elif c.status == 'started':
-                savedata_startedtosuccess_connect(request, east, west, status, response, uuid)
+                savedata_startedtosuccess_connect(request, east, west, status, uuid)
 
         elif east == c.east and west == c.west and action == 'disconnect':
             if c.status == 'pending':
-                savedata_pendingtosuccess_disconnect(request, east, west, status, response, uuid)
+                savedata_pendingtosuccess_disconnect(request, east, west, status, uuid)
             elif c.status == 'break':
-                savedata_breaktosuccess_disconnect(request, east, west, status, response, uuid)
+                savedata_breaktosuccess_disconnect(request, east, west, status, uuid)
             elif c.status == 'started':
-                savedata_startedtosuccess_disconnect(request, east, west, status, response, uuid)
+                savedata_startedtosuccess_disconnect(request, east, west, status, uuid)
 
 
 def checkbreak(request, data_dict, uuid):
@@ -247,7 +253,10 @@ def checkrevoked(request, data_dict, uuid):
         Json: ({'status': status, 'sequence': None, 'action': None})
     """
 
+    obj = {'action': 'connect'}
     status = data_dict['status']
+    east = data_dict['request']['east']
+    west = data_dict['request']['west']
     operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
 
     Operation.objects.filter(robotnumber='1', uuid=uuid).update(status=status)
@@ -256,13 +265,94 @@ def checkrevoked(request, data_dict, uuid):
         obj = ast.literal_eval(i.request)
         east = obj['east']
         west = obj['west']
+
     if obj['action'] == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').delete()
+
     else:
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').update(
             status='success', disconnected_date=None)
 
-    return JsonResponse({'status': status, 'sequence': None, 'action': None})
+    return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']})
+
+
+def checkerror(request, data_dict, uuid):
+    """If current status is error then update database
+
+    Args:
+        request: request data
+        data_dict (dictionary): dictionary's data from checkstatus()
+        uuid (uuid4): uuid from checkstatus()
+
+    Returns:
+        Json: ({'status': status, 'sequence': None, 'action': None})
+    """
+
+    obj = {'action': 'connect'}
+    status = data_dict['status']
+    response_error = data_dict['error']
+    east = data_dict['request']['east']
+    west = data_dict['request']['west']
+    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
+
+    for i in operations:
+        obj = ast.literal_eval(i.request)
+        east = obj['east']
+        west = obj['west']
+
+    if obj['action'] == 'connect':
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
+
+    else:
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).update(
+            status='success', disconnected_date=None)
+
+    ConnectionHistory.objects.filter(east=east, west=west, status=['pending', 'started']).update(status=status)
+    Operation.objects.filter(robotnumber='1', uuid=uuid).update(status=status, response=response_error)
+    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
+                                                      response=response_error)
+
+    return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']})
+
+
+def checkalarm(request, data_dict, uuid):
+    """If current status is alarm then update database
+
+    Args:
+        request: request data
+        data_dict (dictionary): dictionary's data from checkstatus()
+        uuid (uuid4): uuid from checkstatus()
+
+    Returns:
+        Json: ({'status': status, 'sequence': None, 'action': None})
+    """
+
+    obj = {'action': 'connect'}
+    status = data_dict['status']
+    response_alarm = data_dict['response']
+    sequence = data_dict['response']['sequence']
+    east = data_dict['request']['east']
+    west = data_dict['request']['west']
+    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
+
+    for i in operations:
+        obj = ast.literal_eval(i.request)
+        east = obj['east']
+        west = obj['west']
+
+    if obj['action'] == 'connect':
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
+
+    else:
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).update(
+            status='success', disconnected_date=None)
+
+    ConnectionHistory.objects.filter(east=east, west=west, status=['pending', 'started']).update(status=status)
+    Operation.objects.filter(robotnumber='1', uuid=uuid).update(status=status, response=response_alarm)
+    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
+                                                      response=response_alarm)
+
+    return JsonResponse({'status': status, 'sequence': sequence, 'action': obj['action']})
 
 
 def checktask(request):
@@ -287,7 +377,7 @@ def checktask(request):
     return status
 
 
-def savedata_pendingtosuccess_connect(request, east, west, status, response, uuid):
+def savedata_pendingtosuccess_connect(request, east, west, status, uuid):
     """Update database's status pending to success, action connect
 
     Args:
@@ -295,9 +385,10 @@ def savedata_pendingtosuccess_connect(request, east, west, status, response, uui
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
-        response (string): robot's response from checksuccess_checkcondition()
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
+
+    response = None
 
     logger.info('pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
@@ -306,7 +397,7 @@ def savedata_pendingtosuccess_connect(request, east, west, status, response, uui
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktosuccess_connect(request, east, west, status, response, uuid):
+def savedata_breaktosuccess_connect(request, east, west, status, uuid):
     """Update database's status break to success, action connect
 
     Args:
@@ -314,9 +405,10 @@ def savedata_breaktosuccess_connect(request, east, west, status, response, uuid)
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
-        response (string): robot's response from checksuccess_checkcondition()
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
+
+    response = None
 
     logger.info('break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
@@ -325,7 +417,7 @@ def savedata_breaktosuccess_connect(request, east, west, status, response, uuid)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_startedtosuccess_connect(request, east, west, status, response, uuid):
+def savedata_startedtosuccess_connect(request, east, west, status, uuid):
     """Update database's status started to success, action connect
 
     Args:
@@ -333,9 +425,10 @@ def savedata_startedtosuccess_connect(request, east, west, status, response, uui
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
-        response (string): robot's response from checksuccess_checkcondition()
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
+
+    response = None
 
     logger.info('started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
@@ -344,7 +437,7 @@ def savedata_startedtosuccess_connect(request, east, west, status, response, uui
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_pendingtosuccess_disconnect(request, east, west, status, response, uuid):
+def savedata_pendingtosuccess_disconnect(request, east, west, status, uuid):
     """Update database's status pending to success, action disconnect
 
     Args:
@@ -352,9 +445,10 @@ def savedata_pendingtosuccess_disconnect(request, east, west, status, response, 
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
-        response (string): robot's response from checksuccess_checkcondition()
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
+
+    response = None
 
     logger.info('disconnect pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(
@@ -364,7 +458,7 @@ def savedata_pendingtosuccess_disconnect(request, east, west, status, response, 
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktosuccess_disconnect(request, east, west, status, response, uuid):
+def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
     """Update database's status break to success, action disconnect
 
     Args:
@@ -376,6 +470,8 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, response, uu
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
 
+    response = None
+
     logger.info('disconnect break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(
         status=status, disconnected_date=datetime.now())
@@ -384,7 +480,7 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, response, uu
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_startedtosuccess_disconnect(request, east, west, status, response, uuid):
+def savedata_startedtosuccess_disconnect(request, east, west, status, uuid):
     """Update database's status started to success, action disconnect
 
     Args:
@@ -392,9 +488,10 @@ def savedata_startedtosuccess_disconnect(request, east, west, status, response, 
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
-        response (string): robot's response from checksuccess_checkcondition()
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
+
+    response = None
 
     logger.info('disconnect started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(

@@ -6,6 +6,7 @@ from webapp.serializers import ConnectionSerializer
 from webapp.views import walk, CELERY_APP
 import ast
 import logging
+import logging.handlers
 import requests
 
 
@@ -15,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
 
 # create a file handler
-handler = logging.FileHandler('connectionlist.log')
+handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10485760,backupCount=10, encoding='utf-8')
 handler.setLevel(logging.INFO)
 
 # create a logging format
@@ -87,7 +88,7 @@ class ConnectionList(APIView):
         # If not use white walker dummy
         else:
             # Check if current status is not error then call for_embest()
-            if self.check_current_status_error(request):
+            if self.check_current_status(request) not in ['error', 'alarm']:
                 return self.for_embest(request)
             
             # Check if current status is error then return error message
@@ -153,52 +154,46 @@ class ConnectionList(APIView):
         if 'number' in request.data and 'stops' in request.data:
 
             # If current status is success or break then making debug mode
-            if self.check_current_status(request) in ['success', 'break']:
+            if self.check_current_status(request) == 'break':
                 return self.debug(request)
 
             # If current status is started or pending then return error_robotworking message
             elif self.check_current_status(request) in ['started', 'pending']:
-                # return HttpResponse('error_robotworking')
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_uuid  message
             else:
-                # return HttpResponse('error_uuid')
-                return JsonResponse({'status': 'error', 'error': 'uuid'})
+                return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Disconnection checking condition
         elif request.data['action'] == 'disconnect':
 
             # If current status is success then making disconnection
-            if self.check_current_status(request) == 'success':
+            if self.check_current_status(request) in ['success', 'revoked', 'no_uuid']:
                 return self.disconnect(request)
 
             # If current status is started or pending or break then return error_robotworking message
             elif self.check_current_status(request) in ['started', 'pending', 'break']:
-                # return HttpResponse('error_robotworking')
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_uuid  message
             else:
-                # return HttpResponse('error_uuid')
-                return JsonResponse({'status': 'error', 'error': 'uuid'})
+                return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Connection checking condition
         elif request.data['action'] == 'connect':
 
             # If current status is success then making connection
-            if self.check_current_status(request) == 'success':
+            if self.check_current_status(request) in ['success', 'revoked', 'no_uuid']:
                 return self.connection(request)
 
             # If current status is started or pending or break then return error_robotworking message
             elif self.check_current_status(request) in ['started', 'pending', 'break']:
-                # return HttpResponse('error_robotworking')
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_uuid  message
             else:
-                # return HttpResponse('error_uuid')
-                return JsonResponse({'status': 'error', 'error': 'uuid'})
+                return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Else return error_operation message
         else:
@@ -474,54 +469,25 @@ class ConnectionList(APIView):
             status: status
         """
 
-        status = 'error_uuid'
+        uuid = None
+        status = 'no_uuid'
 
-        operations = Operation.objects.filter(robotnumber='1')
+        operations = Operation.objects.all()
+        
         for i in operations:
 
             uuid = str(i.uuid)
 
-            if uuid is not None:
-                resp = requests.get(CELERY_APP + '/result?id=' + uuid)
-                data = str(resp.json())
-                data_dict = ast.literal_eval(data)
-                status = data_dict['status']
+        if uuid is not None:
+            resp = requests.get(CELERY_APP + '/result?id=' + uuid)
+            data = str(resp.json())
+            data_dict = ast.literal_eval(data)
+            status = data_dict['status']
+            
+            return status
 
-                return status
-
-            else:
-                return status
-
-    def check_current_status_error(self, request):
-        """Check current status error from celery
-
-        Args:
-            request: request data
-
-        Returns:
-            status: status
-        """
-
-        operations = Operation.objects.filter(robotnumber='1')
-        for i in operations:
-
-            uuid = str(i.uuid)
-
-            if uuid is not None:
-                resp = requests.get(CELERY_APP + '/result?id=' + uuid)
-                data = str(resp.json())
-                data_dict = ast.literal_eval(data)
-                status = data_dict['status']
-
-                if data_dict['status'] == 'error' or data_dict['status'] == 'alarm':
-
-                    return False
-                
-                else:
-                    return True
-
-            else:
-                return True
+        else:           
+            return status
     
     def query_status_error(self, request):
         """Query error detail of error status from celery
@@ -533,7 +499,8 @@ class ConnectionList(APIView):
             status: status
         """
 
-        operations = Operation.objects.filter(robotnumber='1')
+        operations = Operation.objects.all()
+        
         for i in operations:
 
             uuid = str(i.uuid)
@@ -542,5 +509,5 @@ class ConnectionList(APIView):
             data_dict = ast.literal_eval(data)
             status = data_dict['status']
             error = data_dict['error']
-
+            
             return JsonResponse({'status': status, 'error': error})
