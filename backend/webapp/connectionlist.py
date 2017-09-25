@@ -124,6 +124,9 @@ class ConnectionList(APIView):
         elif request.data['action'] == 'disconnect':
             return self.disconnect(request)
 
+        elif request.data['action'] == 'test_connect':
+            return self.test_connect(request)
+
         else:
             return self.connection(request)
 
@@ -511,3 +514,33 @@ class ConnectionList(APIView):
             error = data_dict['error']
             
             return JsonResponse({'status': status, 'error': error})
+
+    def test_connect(self, request):
+
+        east, west = self.get_available_ports(request)
+        connected_east = []
+        connected_west = []
+        conns = Connection.objects.filter(disconnected_date=None)
+        
+        if conns is not None:
+
+            for i in conns:
+                obj_east = i.east
+                obj_west = i.west
+                connected_east.append(obj_east)
+                connected_west.append(obj_west)
+
+            if east not in connected_east and west not in connected_west:
+
+                Connection.objects.create(east=east, west=west, status='success')
+
+                return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
+            
+            else:
+
+                return JsonResponse({'status': 'error', 'error': 'one of this ports is connected'})
+        else:
+            
+            Connection.objects.create(east=east, west=west, status='success')
+
+            return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})

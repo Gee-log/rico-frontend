@@ -19,6 +19,7 @@ import { AlarmComponent } from './alarm/alarm.component';
 import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PortPipe } from './port.pipe';
+import { TestingModeComponent } from './testing-mode/testing-mode.component';
 
 // Third-Party
 import { ChartsModule } from 'ng2-charts';
@@ -42,6 +43,7 @@ import { AppRoutingModule } from './app-routing.module';
     AlarmHistoryComponent,
     NavBarComponent,
     PortPipe,
+    TestingModeComponent,
   ],
   imports: [
     BrowserModule,
