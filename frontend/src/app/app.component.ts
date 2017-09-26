@@ -45,6 +45,11 @@ export class AppComponent {
       icon: 'build',
       name: 'Execution table',
       path: '#'
+    },
+    {
+      icon: 'settings_applications',
+      name: 'Testing mode',
+      path: '/testing_mode'
     }
   ];
 
@@ -71,7 +76,6 @@ export class AppComponent {
   // CLEAR DATABASE DATA
   clearDatabase() {
     this.ApiService.clearDatabase('cleardatabase');
-    window.location.reload();
   }
 
 }

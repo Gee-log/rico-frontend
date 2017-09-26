@@ -17,44 +17,44 @@ import 'rxjs/Rx';
 export class PortConnectionComponent implements OnInit, OnDestroy {
 
   // PORTS DATA
-  eports = []; // 144 EAST PORTS
-  wports = []; // 144 WEST PORTS
-  eportschunk = []; // 144 to [12,12,...]
-  wportschunk = []; // 144 to [12,12,...]
-  portID = []; // PORT ID
-  eportNote = []; // EAST PORT NOTE
-  wportNote = []; // WEST PORT NOTE
+  eports: Object = []; // 144 EAST PORTS
+  wports: Object = []; // 144 WEST PORTS
+  eportschunk: Object = []; // 144 to [12,12,...]
+  wportschunk: Object = []; // 144 to [12,12,...]
+  portID: Object = []; // PORT ID
+  eportNote: Object = []; // EAST PORT NOTE
+  wportNote: Object = []; // WEST PORT NOTE
 
   // CONNECTION DATA
-  pair = []; // PAIR OF CONNECTED PORT {[east, west]}
+  pair: Object = []; // PAIR OF CONNECTED PORT {[east, west]}
 
   // LOCAL & USER EVENT DATA
-  selectedEastPortID = ''; // CURRENT SELECTED EAST PORT
-  selectedWestPortID = ''; // CURRENT SELECTED WEST PORT
+  selectedEastPortID: string = ''; // CURRENT SELECTED EAST PORT
+  selectedWestPortID: string = ''; // CURRENT SELECTED WEST PORT
   stops = JSON.parse(localStorage.getItem('stops')); // CURRENT STOPS POINT ROBOT IN DEBUG MODE
-  eValue = 1; // VALUE OF EPORT
-  wValue = 1; // VALUE OF WPORT
-  debugMode = false; // DEBUG MODE
+  eValue: number = 1; // VALUE OF EPORT
+  wValue: number = 1; // VALUE OF WPORT
+  debugMode: boolean = false; // DEBUG MODE
 
   // DATA FROM CELERY
-  sequence; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
-  status; // CURRENT STATUS TASK OF ROBOT
-  action; // CURRENT ACTION IN DEBUG MODE
-  error_message = undefined; // ERROR MESSAGE
+  sequence: string; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
+  status: string; // CURRENT STATUS TASK OF ROBOT
+  action: string; // CURRENT ACTION IN DEBUG MODE
+  error_message: string = undefined; // ERROR MESSAGE
 
   // DISABLE ULITIES
-  unselectable_table = false; // DISABLED TABLE
-  disable_stops_input = false; // DISABLED STOPS INPUT
-  disable_sequence_input = false; // DISABLED SEQUENCE INPUT
-  disabled_connect_button = false; // DISABLED CONNECT BUTTON
-  disabled_disconnect_button = false; // DISABLED DISCONNECT BUTTON
-  disabled_continue_button = false; // DISABLED CONTINUE BUTTON
-  availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
-  availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
+  unselectable_table: boolean = false; // DISABLED TABLE
+  disable_stops_input: boolean = false; // DISABLED STOPS INPUT
+  disable_sequence_input: boolean = false; // DISABLED SEQUENCE INPUT
+  disabled_connect_button: boolean = false; // DISABLED CONNECT BUTTON
+  disabled_disconnect_button: boolean = false; // DISABLED DISCONNECT BUTTON
+  disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
+  availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
+  availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
 
   // DATA FROM DOM
-  all_east = document.getElementsByClassName('East');
-  all_west = document.getElementsByClassName('West');
+  all_east: Object = document.getElementsByClassName('East');
+  all_west: Object = document.getElementsByClassName('West');
 
   // FOR ngOnDestroy
   public timerInterval: any; // set public variable type any
@@ -72,13 +72,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.timerInterval = setInterval(() => {
       this.checkStatus();
     }, 3000);
-    // OLD VERSION
-    // setInterval(() => {
-    //   this.checkStatus();
-    // }, 5000);
-    // setInterval(() => {
-    //   this.test();
-    // });
 
   }
 
@@ -351,33 +344,11 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     return (this.selectedEastPortID === Eport) ? 'selected' : '';
 
-    // // TO DO
-    // let classString = '';
-    // if (this.selectedEastPortID === Eport) {
-    //   classString = 'selected';
-
-    // } else {
-    //   classString = '';
-    // }
-
-    // return classString;
-
   }
   // SELECTED WEST PORT AND CHANGE COLOR WHEN CLICK
   isSelectWest(Wport) {
 
     return (this.selectedWestPortID === Wport) ? 'selected' : '';
-
-    // TO DO
-    // let classString = '';
-    // if (this.selectedWestPortID === Wport) {
-    //   classString = 'selected';
-
-    // } else {
-    //   classString = '';
-    // }
-
-    // return classString;
 
   }
   // POST CONNECTION
@@ -689,23 +660,12 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     return (id !== 'E1' && id !== 'E2' && id !== 'E3') ? 'port-unselectable' : '';
 
-    // if (id !== 'E1' && id !== 'E2' && id !== 'E3') {
-    //   return 'port-unselectable'
-    // } else {
-    //   return ''
-    // }
-
   }
   // DISABLE NOT AVAILABLE WEST PORT
   disabledWestPort(id) {
 
     return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
 
-    // if (id !== 'W1' && id !== 'W2' && id !== 'W3') {
-    //   return 'port-unselectable'
-    // } else {
-    //   return ''
-    // }
   }
 
 }

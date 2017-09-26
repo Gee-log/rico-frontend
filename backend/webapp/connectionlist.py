@@ -16,12 +16,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
 
 # create a file handler
-handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10485760,backupCount=10, encoding='utf-8')
+handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10485760, backupCount=10,
+                                               encoding='utf-8')
 handler.setLevel(logging.INFO)
 
 # create a logging format
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 
 # add the handlers to the logger
@@ -198,6 +198,10 @@ class ConnectionList(APIView):
             else:
                 return JsonResponse({'status': 'error', 'error': 'status'})
 
+        # Create connection in connection table
+        elif request.data['action'] == 'test_connect':
+
+            return self.test_connect(request)
         # Else return error_operation message
         else:
             return JsonResponse({'status': 'error', 'error': 'operation'})
@@ -476,7 +480,7 @@ class ConnectionList(APIView):
         status = 'no_uuid'
 
         operations = Operation.objects.all()
-        
+
         for i in operations:
 
             uuid = str(i.uuid)
@@ -486,12 +490,12 @@ class ConnectionList(APIView):
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
             status = data_dict['status']
-            
+
             return status
 
-        else:           
+        else:
             return status
-    
+
     def query_status_error(self, request):
         """Query error detail of error status from celery
 
@@ -503,7 +507,7 @@ class ConnectionList(APIView):
         """
 
         operations = Operation.objects.all()
-        
+
         for i in operations:
 
             uuid = str(i.uuid)
@@ -521,7 +525,7 @@ class ConnectionList(APIView):
         connected_east = []
         connected_west = []
         conns = Connection.objects.filter(disconnected_date=None)
-        
+
         if conns is not None:
 
             for i in conns:
@@ -535,12 +539,12 @@ class ConnectionList(APIView):
                 Connection.objects.create(east=east, west=west, status='success')
 
                 return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
-            
+
             else:
 
                 return JsonResponse({'status': 'error', 'error': 'one of this ports is connected'})
         else:
-            
+
             Connection.objects.create(east=east, west=west, status='success')
 
             return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
