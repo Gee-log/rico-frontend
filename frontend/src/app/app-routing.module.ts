@@ -8,6 +8,8 @@ import { PortHistoryComponent } from './port-history/port-history.component';
 import { AlarmComponent } from './alarm/alarm.component';
 import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
+import { PortConnectionMobileComponent } from './port-connection-mobile/port-connection-mobile.component';
+
 
 export const appRoutes: Routes = [
   {
@@ -29,6 +31,10 @@ export const appRoutes: Routes = [
   {
     path: 'testing_mode',
     component: TestingModeComponent
+  },
+  {
+    path: 'port_connection_mobile',
+    component: PortConnectionMobileComponent
   }
 ];
 

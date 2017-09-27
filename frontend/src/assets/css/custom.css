@@ -1,0 +1,31 @@
+/* Second-section
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.first-section {
+    text-align: center;
+    padding-top: 5rem;
+}
+
+
+/* Second-section
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.second-section {
+    padding-top: 5rem;
+}
+
+
+/* Global <h1>
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+h1 {
+    cursor: default;
+}
+
+
+/* Global <button>
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+button {
+    pointer-events: none;
+}

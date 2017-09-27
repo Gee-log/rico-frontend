@@ -1,20 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ApiService } from '../services/api.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, Headers, Response } from '@angular/http';
-import { ApiService } from '../services/api.service';
 import { ChartsModule } from 'ng2-charts';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import 'rxjs/Rx';
 
 @Component({
-  selector: 'app-port-connection',
-  templateUrl: './port-connection.component.html',
-  styleUrls: ['./port-connection.component.scss'],
-  providers: []
+  selector: 'app-port-connection-mobile',
+  templateUrl: './port-connection-mobile.component.html',
+  styleUrls: ['./port-connection-mobile.component.scss']
 })
-
-export class PortConnectionComponent implements OnInit, OnDestroy {
+export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
   // PORTS DATA
   eports: Object = []; // 144 EAST PORTS
@@ -24,6 +22,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   portID: Object = []; // PORT ID
   eportNote: Object = []; // EAST PORT NOTE
   wportNote: Object = []; // WEST PORT NOTE
+  eportschunk_left_table = [];
+  eportschunk_right_table = [];
+  wportschunk_left_table = [];
+  wportschunk_right_table = [];
 
   // CONNECTION DATA
   pair: Object = []; // PAIR OF CONNECTED PORT {[east, west]}
@@ -59,7 +61,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // FOR ngOnDestroy
   public timerInterval: any; // set public variable type any
 
-  constructor(private http: Http, private ApiService: ApiService) { }
+  constructor(private ApiService: ApiService) { }
 
   ngOnInit() {
 
@@ -91,9 +93,23 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       this.eportNote = data.eportNote;
       this.wportNote = data.wportNote;
       this.portID = data.id;
+
+      for (let i = 0; i < 12; i++) {
+        // PUSH INDEX < 6
+        if (i < 6) {
+          this.eportschunk_left_table.push(this.eportschunk[i]);
+          this.wportschunk_left_table.push(this.wportschunk[i]);
+          // PUSH INDEX > 6
+        } else {
+          this.eportschunk_right_table.push(this.eportschunk[i]);
+          this.wportschunk_right_table.push(this.wportschunk[i]);
+        }
+      }
+
     });
 
   }
+
   // PUSH EAST PORT NOTE
   pushEastNote(id) {
 

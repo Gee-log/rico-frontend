@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { PortConnectionComponent } from './port-connection/port-connection.component';
+import { PortConnectionMobileComponent } from './port-connection-mobile/port-connection-mobile.component';
 import { PortHistoryComponent } from './port-history/port-history.component';
 import { AlarmComponent } from './alarm/alarm.component';
 import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
@@ -44,6 +45,7 @@ import { AppRoutingModule } from './app-routing.module';
     NavBarComponent,
     PortPipe,
     TestingModeComponent,
+    PortConnectionMobileComponent,
   ],
   imports: [
     BrowserModule,

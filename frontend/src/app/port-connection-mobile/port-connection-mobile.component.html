@@ -1,0 +1,175 @@
+<div class="section first-section">
+  <div class="container">
+    <div class="row">
+      <div class="four columns">
+        <div class="container">
+          <div class="flex-item-container">
+            <div class="temperature-container">
+              <div class="flex-item-1">
+                <div class="content-1">
+                  <span>26 °C</span>
+                  <p>78.8 °C</p>
+                </div>
+                <div class="content-2">
+                  <span>Temperature</span>
+                </div>
+              </div>
+              <div class="flex-item-2">
+                <img alt="Temperature-icon" src="../../assets/temp-icon.png">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="four columns">
+        <div class="container">
+          <div class="flex-item-container">
+            <div class="humidity-container">
+              <div class="flex-item-1">
+                <div class="content-1">
+                  <span>50%</span>
+                </div>
+                <div class="content-2">
+                  <span>Humidity</span>
+                </div>
+              </div>
+              <div class="flex-item-2">
+                <img alt="Temperature-icon" src="../../assets/humidity-icon.png">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="four columns">
+        <div class="container">
+          <div class="flex-item-container">
+            <div class="time-container">
+              <div class="flex-item-1">
+                <div class="content-1">
+                  <span>54 sec.</span>
+                </div>
+                <div class="content-2">
+                  <span>Avg times</span>
+                </div>
+              </div>
+              <div class="flex-item-2">
+                <img alt="Temperature-icon" src="../../assets/timer-icon.png">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section east-banner">
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <md-card>East port table</md-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section second-section">
+  <div class="container">
+    <div class="row">
+      <div class="one-half column">
+        <div class="left-table">
+          <div *ngFor="let row of eportschunk_left_table">
+            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="one-half column">
+        <div class="right-table">
+          <div *ngFor="let row of eportschunk_right_table">
+            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section west-banner">
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <md-card>West port table</md-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section third-section">
+  <div class="container">
+    <div class="row">
+      <div class="one-half column">
+        <div class="left-table">
+          <div *ngFor="let row of wportschunk_left_table">
+            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="one-half column">
+        <div class="right-table">
+          <div *ngFor="let row of wportschunk_right_table">
+            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section fourth-section">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <div class="first-container" align="center">
+          <div class="button-container">
+            <div class="button-connect-container">
+              <div class="item-1">
+                <div class="connect-button-circle Blink"></div>
+              </div>
+              <div class="item-2">
+                <button md-raised-button id="Connect" (click)="postConnection()" color="primary" [attr.disabled]="this.disabled_connect_button == true ? false : null"
+                  disabled>Connect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="twelve columns">
+        <div class="first-container" align="center">
+          <div class="button-container">
+            <div class="button-disconnect-container">
+              <div class="item-1">
+                <div class="disconnect-button-circle Blink"></div>
+              </div>
+              <div class="item-2">
+                <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" [attr.disabled]="this.disabled_disconnect_button == true ? false : null"
+                  disabled>Disconnect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="six columns">
+        <div class="second-container">
+          <div id="error-dialog" class="hide">
+            <md-card class="Blink">{{ error_message }}</md-card>
+          </div>
+        </div>
+      </div>
+      <div class="six columns">
+        <div class="second-container"></div>
+      </div>
+    </div>
+  </div>
+</div>

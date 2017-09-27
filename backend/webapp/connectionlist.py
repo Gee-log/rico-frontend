@@ -9,19 +9,19 @@ import logging
 import logging.handlers
 import requests
 
-
 # Log process
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
 
 # create a file handler
-handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10485760, backupCount=10,
-                                               encoding='utf-8')
+handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10485760,
+                                               backupCount=10, encoding='utf-8')
 handler.setLevel(logging.INFO)
 
 # create a logging format
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 
 # add the handlers to the logger
@@ -29,7 +29,6 @@ logger.addHandler(handler)
 
 
 class ConnectionList(APIView):
-
     def get(self, request):
         """GET ConnectionList API
 
@@ -51,7 +50,6 @@ class ConnectionList(APIView):
             conns = Connection.objects.all().filter(disconnected_date=None)
             data = []
             for c in conns:
-
                 obj = {'east': c.east.number,
                        'west': c.west.number, 'status': c.status}
                 data.append(obj)
@@ -90,7 +88,7 @@ class ConnectionList(APIView):
             # Check if current status is not error then call for_embest()
             if self.check_current_status(request) not in ['error', 'alarm']:
                 return self.for_embest(request)
-            
+
             # Check if current status is error then return error message
             else:
                 return self.query_status_error(request)
@@ -482,7 +480,6 @@ class ConnectionList(APIView):
         operations = Operation.objects.all()
 
         for i in operations:
-
             uuid = str(i.uuid)
 
         if uuid is not None:
@@ -509,17 +506,24 @@ class ConnectionList(APIView):
         operations = Operation.objects.all()
 
         for i in operations:
-
             uuid = str(i.uuid)
             resp = requests.get(CELERY_APP + '/result?id=' + uuid)
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
             status = data_dict['status']
             error = data_dict['error']
-            
+
             return JsonResponse({'status': status, 'error': error})
 
     def test_connect(self, request):
+        """Create a connection in connection table
+
+        Args:
+            request: request data
+
+        Returns:
+            Json = ({'status': 'success', 'east': str(east), 'west': str(west)})
+        """
 
         east, west = self.get_available_ports(request)
         connected_east = []
