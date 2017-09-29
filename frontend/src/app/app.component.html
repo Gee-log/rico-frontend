@@ -126,7 +126,7 @@
             </a>
             </div>
           </div>
-          <div id="settings-list" hidden>
+          <div id="settings-list" class="settings-container-height" hidden>
             <md-list>
               <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of settinglinks">
                 <md-list-item>
@@ -155,12 +155,12 @@
         </div>
         <!-- END DOCUMENT LABEL -->
         <!-- BEGIN FOOTER-CONTAINER -->
-        <div class="footer-container">
+        <!-- <div class="footer-container"> -->
           <!-- <hr> -->
-          <div class="text-center">
+          <!-- <div class="text-center">
             <span>Help & Feedback</span>
           </div>
-        </div>
+        </div> -->
         <!-- END FOOTER-CONTAINER -->
       </div>
       <!-- END SCROLLING-CONTENT -->

@@ -1,31 +1,32 @@
+"""webapp views
+"""
+import ast
+import requests
+import logging
+import logging.handlers
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory
-from webapp.serializers import OperationSerializer, OperationHistorySerializer
 from datetime import datetime
 from django.utils import timezone
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+
+from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory
+from webapp.serializers import OperationSerializer, OperationHistorySerializer
 # from django.contrib.auth import authenticate, get_user_model, login, logout
 # from personal.forms import UserLoginForm
 # from django.contrib.auth.decorators import login_required
 # from django.views.decorators.csrf import csrf_protect, csrf_exempt
 # from django.utils.decorators import method_decorator
-import ast
-import requests
 from webapp.white import Walker
-import logging
-import logging.handlers
 
 
-CELERY_APP = "http://localhost:8000/rico"
+CELERY_APP = "http://192.168.60.76:80/rico"
 # CELERY_APP = "http://192.168.60.76:80/rico"   # embest
-
 
 walk = Walker()
 
-# Log process
-
+# set logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('webapp')
 
@@ -41,7 +42,6 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 # utilities
-
 # @login_required(login_url='/login/') If want validations user
 
 
@@ -71,40 +71,52 @@ def checkstatus(request, uuid):
         uuid (uuid4): uuid from celery
 
     Returns:
-        Json: data
-        ({'status': 'started, break, success, revoked', 'sequence': '1,2, ...', 'action': 'connect or disconnect'})
+        json:
+            status (string): status code
+            sequence (string): current sequence
+            action (action): action type
     """
 
+    # Validate using dummy
     if walk.is_dummy():
         data_dict = walk.checkstatus(uuid)
+
         if data_dict['status'] != 'success':
             logger.info('Walker Status: %s , %s', uuid, data_dict)
+
     else:
         resp = requests.get(CELERY_APP + '/result?id=' + uuid)
-        # print("checktask", resp.text)
         logger.info('checktask: %s : %s', uuid, resp)
         data = str(resp.json())
         logger.info('checktask data: %s', data)
         data_dict = ast.literal_eval(data)
+
     status = data_dict['status']
+
     if status == 'success':
         data = checksuccess(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+
     elif status == 'break':
         data = checkbreak(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+
     elif status == 'started':
         data = checkstarted(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+
     elif status == 'revoked':
         data = checkrevoked(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+
     elif status == 'error':
         data = checkerror(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+
     elif status == 'alarm':
         data = checkalarm(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
+
     else:
         return JsonResponse({'status': str(status), 'sequence': None, 'action': None})
 
@@ -112,7 +124,7 @@ def checkstatus(request, uuid):
 
 
 def checksuccess(request, data_dict, uuid):
-    """If current status is success and calling checksuccess_checkcondition() to check condition
+    """If current status is success then calling checksuccess_checkcondition() to check condition
 
     Args:
         request: request data
@@ -120,8 +132,10 @@ def checksuccess(request, data_dict, uuid):
         uuid (uuid4): uuid from checkstatus()
 
     Returns:
-        Json: data
-        ({'status': 'success', 'sequence': '1,2, ...', 'action': 'connect or disconnect'})
+        json:
+            status (string): 'success'
+            sequence (string): current sequence
+            action (action): action type
     """
 
     status = data_dict['status']
@@ -132,12 +146,16 @@ def checksuccess(request, data_dict, uuid):
     sequence = None
 
     if response is None:
+
         ports = Port.objects.all()
         for i in ports:
+
             if i.direction == 'E' and i.number == east:
                 east = i
+
             if i.direction == 'W' and i.number == west:
                 west = i
+
         checksuccess_checkcondition(request, action, east, west, status, uuid)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action})
@@ -157,19 +175,26 @@ def checksuccess_checkcondition(request, action, east, west, status, uuid):
 
     conns = Connection.objects.all()
     for c in conns:
+
         if east == c.east and west == c.west and action == 'connect':
+
             if c.status == 'pending':
                 savedata_pendingtosuccess_connect(request, east, west, status, uuid)
+
             elif c.status == 'break':
                 savedata_breaktosuccess_connect(request, east, west, status, uuid)
+
             elif c.status == 'started':
                 savedata_startedtosuccess_connect(request, east, west, status, uuid)
 
         elif east == c.east and west == c.west and action == 'disconnect':
+
             if c.status == 'pending':
                 savedata_pendingtosuccess_disconnect(request, east, west, status, uuid)
+
             elif c.status == 'break':
                 savedata_breaktosuccess_disconnect(request, east, west, status, uuid)
+
             elif c.status == 'started':
                 savedata_startedtosuccess_disconnect(request, east, west, status, uuid)
 
@@ -183,8 +208,10 @@ def checkbreak(request, data_dict, uuid):
         uuid (uuid4): uuid from checkstatus()
 
     Returns:
-        Json: data
-        ({'status':  'break', 'sequence': '1,2, ...', 'action': 'connect or disconnect'})
+        json:
+            status (string): 'break'
+            sequence (string): current sequence
+            action (action): action type
     """
 
     response = data_dict['response']
@@ -198,16 +225,22 @@ def checkbreak(request, data_dict, uuid):
     if response:
         ports = Port.objects.all()
         for i in ports:
+
             if i.direction == 'E' and i.number == east:
                 east = i
+
             if i.direction == 'W' and i.number == west:
                 west = i
+
         conns = Connection.objects.all()
         for c in conns:
+
             if east == c.east and west == c.west and c.status == 'break':
                 savedata_breaktobreak(request, east, west, status, response, uuid)
+
             elif east == c.east and west == c.west and c.status == 'pending':
                 savedata_breaktopending(request, east, west, status, response, uuid)
+
             elif east == c.east and west == c.west and c.status == 'started':
                 savedata_breaktostarted(request, east, west, status, response, uuid)
 
@@ -223,18 +256,23 @@ def checkstarted(request, data_dict, uuid):
         uuid (uuid4): uuid from checkstatus()
 
     Returns:
-        Json: data
-        ({'status':  'started', 'sequence': None, 'action': None})
+        json:
+            status (string): 'started'
+            sequence (string): current sequence
+            action (action): action type
     """
 
     status = data_dict['status']
 
     conns = Connection.objects.all()
     for c in conns:
+
         if c.status == 'break':
             savedata_startedtobreak(request, status, uuid)
+
         elif c.status == 'pending':
             savedata_startedtopending(request, status, uuid)
+
         elif c.status == 'started':
             savedata_startedtostarted(request, status, uuid)
 
@@ -250,6 +288,10 @@ def checkrevoked(request, data_dict, uuid):
         uuid (uuid4): uuid from checkstatus()
 
     Returns:
+        json:
+            status (string): status code
+            sequence (string): None
+            action (string): None
         Json: ({'status': status, 'sequence': None, 'action': None})
     """
 
@@ -257,11 +299,12 @@ def checkrevoked(request, data_dict, uuid):
     status = data_dict['status']
     east = data_dict['request']['east']
     west = data_dict['request']['west']
-    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
 
     Operation.objects.filter(robotnumber='1', uuid=uuid).update(status=status)
 
+    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
     for i in operations:
+
         obj = ast.literal_eval(i.request)
         east = obj['east']
         west = obj['west']
@@ -285,7 +328,10 @@ def checkerror(request, data_dict, uuid):
         uuid (uuid4): uuid from checkstatus()
 
     Returns:
-        Json: ({'status': status, 'sequence': None, 'action': None})
+        json:
+            status (string): status code
+            sequence (string): None
+            action (string): None
     """
 
     obj = {'action': 'connect'}
@@ -293,9 +339,10 @@ def checkerror(request, data_dict, uuid):
     response_error = data_dict['error']
     east = data_dict['request']['east']
     west = data_dict['request']['west']
-    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
 
+    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
     for i in operations:
+
         obj = ast.literal_eval(i.request)
         east = obj['east']
         west = obj['west']
@@ -324,7 +371,10 @@ def checkalarm(request, data_dict, uuid):
         uuid (uuid4): uuid from checkstatus()
 
     Returns:
-        Json: ({'status': status, 'sequence': None, 'action': None})
+        json:
+            status (string): status code
+            sequence (string): None
+            action (string): None
     """
 
     obj = {'action': 'connect'}
@@ -333,9 +383,10 @@ def checkalarm(request, data_dict, uuid):
     sequence = data_dict['response']['sequence']
     east = data_dict['request']['east']
     west = data_dict['request']['west']
-    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
 
+    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
     for i in operations:
+
         obj = ast.literal_eval(i.request)
         east = obj['east']
         west = obj['west']
@@ -363,14 +414,17 @@ def checktask(request):
         request: request data
 
     Returns:
-        Json: data
-        ({'status': 'started, break, success, revoked', 'sequence': '1,2, ...', 'action': 'connect or disconnect'})
+            json:
+                status (string): status code
+                sequence (string): current sequence
+                action (action): action type
     """
 
     status = JsonResponse({'status': 'canceled'})
 
     operations = Operation.objects.filter(robotnumber='1')
     for i in operations:
+
         uuid = str(i.uuid)
         status = checkstatus(request, uuid)
 
@@ -466,7 +520,6 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
-        response (string): robot's response from checksuccess_checkcondition()
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
 
@@ -624,29 +677,34 @@ def pendingtask(request):
     historyid = ""
     resp = ""
     payload = []
+
     if 'id' in request.POST:
         historyid = request.POST['id']
+
         connh = ConnectionHistory.objects.all().filter(id=historyid)
         for i in connh:
-            conn = Connection.objects.all().filter(
-                east=i.east, west=i.west, disconnected_date=None)
+
+            conn = Connection.objects.all().filter(east=i.east, west=i.west, disconnected_date=None)
             for c in conn:
+
                 if i.switching_type == 'C' and c.disconnected_date is None:
-                    payload = {'east': i.east.number,
-                               'west': i.west.number, 'action': 'connect'}
+                    payload = {'east': i.east.number, 'west': i.west.number, 'action': 'connect'}
+
+                    # Validate using dummy
                     if walk.is_dummy():
                         resp = walk.connect(payload)
+
                     else:
-                        resp = requests.post(
-                            CELERY_APP + '/connect', data=payload)
-                if i.switching_type == 'D' and c.disconnected_date is None:
-                    payload = {'east': i.east.number,
-                               'west': i.west.number, 'action': 'disconnect'}
+                        resp = requests.post(CELERY_APP + '/connect', data=payload)
+
+                elif i.switching_type == 'D' and c.disconnected_date is None:
+                    payload = {'east': i.east.number, 'west': i.west.number, 'action': 'disconnect'}
+
                     if walk.is_dummy():
                         resp = walk.disconnect(payload)
+
                     else:
-                        resp = requests.post(
-                            CELERY_APP + '/disconnect', data=payload)
+                        resp = requests.post(CELERY_APP + '/disconnect', data=payload)
             uuid = resp.text
             # print('payload', payload)
             # print('UUID:', uuid)
@@ -654,13 +712,12 @@ def pendingtask(request):
         operations = Operation.objects.filter(robotnumber='1')
 
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending',
-                              request=str(payload))
+            operations.update(uuid=uuid, status='pending', request=str(payload))
+
         else:
-            Operation.objects.create(
-                robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-    OperationHistory.objects.create(
-        robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+
+    OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
     return JsonResponse({'historyid': historyid})
 
@@ -697,80 +754,49 @@ def save(request, question_id, timestamp=0):
     # load file
     data.seek(0)
     response = HttpResponse(data, content_type='text/csv')
-    if qus == '1':  # connection_log
+
+    # connection_log
+    if qus == '1':
         download_name = 'connection_log.csv'
         response['Content-Disposition'] = "attachment; filename=%s" % download_name
         writer = csv.writer(response)
-        connection = ConnectionHistory.objects.all()
         writer.writerow(['Time', 'Type', 'East Port', 'West Port'])
+
+        connection = ConnectionHistory.objects.all()
         for con in connection:
+
             if con.switching_type == 'C':
-                writer.writerow(
-                    [timezone.localtime(con.timestamp), 'connected', con.east, con.west])
+                writer.writerow([timezone.localtime(con.timestamp), 'connected', con.east, con.west])
 
             else:
-                writer.writerow(
-                    [timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
+                writer.writerow([timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
 
-    elif qus == '2':  # current_alarm_log
+    # current_alarm_log
+    elif qus == '2':
         download_name = 'current_alarm_log.csv'
         response['Content-Disposition'] = "attachment; filename=%s" % download_name
         writer = csv.writer(response)
         s = datetime.fromtimestamp(float(timestamp) / 1000)
         now = datetime.now()
-        connection = Alarm.objects.filter(timestamp__range=(s, now))
         writer.writerow(['Alarm', 'Detail', 'Time'])
-        for con in connection:
-            writer.writerow(
-                [con.alarm, con.detail, timezone.localtime(con.timestamp)])
 
-    elif qus == '3':  # alarmHistory_log
+        alarms = Alarm.objects.filter(timestamp__range=(s, now))
+        for i in alarms:
+            writer.writerow([i.alarm, i.detail, timezone.localtime(i.timestamp)])
+
+    # alarmHistory_log
+    elif qus == '3':
         download_name = 'alarmHistory_log.csv'
         response['Content-Disposition'] = "attachment; filename=%s" % download_name
         writer = csv.writer(response)
-        connection = Alarm.objects.all()
         writer.writerow(['Alarm', 'Detail', 'Time'])
-        for con in connection:
-            writer.writerow(
-                [con.alarm, con.detail, timezone.localtime(con.timestamp)])
+
+        alarms = Alarm.objects.all()
+        for i in alarms:
+            writer.writerow([i.alarm, i.detail, timezone.localtime(i.timestamp)])
+
     else:
         logger.info('Error !')
-        return False
+        return None
 
     return response
-
-
-class OperationList(APIView):
-
-    def get(self, request):
-        """GET OperationList API
-
-        Args:
-            request: request data
-
-        Returns:
-            Json: Operation data
-        """
-
-        operations = Operation.objects.all()
-        serializer = OperationSerializer(operations, many=True)
-
-        return Response(serializer.data)
-
-
-class OperationHistoryList(APIView):
-
-    def get(self, request):
-        """GET OperationHistoryList API
-
-        Args:
-            request: request data
-
-        Returns:
-            Json: OperationHistory data
-        """
-
-        operationhistorys = OperationHistory.objects.all()
-        serializer = OperationHistorySerializer(operationhistorys, many=True)
-
-        return Response(serializer.data)

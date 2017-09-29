@@ -1,16 +1,20 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import HttpResponse, JsonResponse
-from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory
-from webapp.serializers import ConnectionSerializer
-from webapp.views import walk, CELERY_APP
+"""connectionlist api
+"""
+
 import ast
 import logging
 import logging.handlers
 import requests
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import HttpResponse, JsonResponse
 
-# Log process
+from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory
+from webapp.serializers import ConnectionSerializer
+from webapp.views import walk, CELERY_APP
 
+
+# set logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
 
@@ -20,8 +24,7 @@ handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10
 handler.setLevel(logging.INFO)
 
 # create a logging format
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 
 # add the handlers to the logger
@@ -29,6 +32,7 @@ logger.addHandler(handler)
 
 
 class ConnectionList(APIView):
+
     def get(self, request):
         """GET ConnectionList API
 
@@ -36,22 +40,27 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            If action == 'connected'
-            Json: data
-            ({'east': c.east.number, 'west': c.west.number, 'status': c.status})
-
-            Else
-            Json: ConnectionList data
+            json:
+                If action == 'connected':
+                    east (integer): east port number
+                    west (integer): west port number
+                    status (string): status code
+                Else:
+                    east (integer): east port object number
+                    west (integer): west port object number
+                    connected_date (datetime): connected time
+                    disconnected_date (datetime): disconnected time
+                    status (string): status code
         """
 
-        # logger.info('ConnectionList get %s', request.GET)
+        # Get connected port data
         if 'action' in request.GET and request.GET['action'] == 'connected':
             operations = Operation.objects.filter(robotnumber='1')
             conns = Connection.objects.all().filter(disconnected_date=None)
             data = []
+
             for c in conns:
-                obj = {'east': c.east.number,
-                       'west': c.west.number, 'status': c.status}
+                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status}
                 data.append(obj)
 
             if len(operations) > 0:
@@ -62,6 +71,7 @@ class ConnectionList(APIView):
 
             return Response(data)
 
+        # Get all port data
         else:
             conns = Connection.objects.all().filter(disconnected_date=None)
             serializer = ConnectionSerializer(conns, many=True)
@@ -75,20 +85,25 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            Json: request.data
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                number (string): number of sequence
+                stops (string): current sequence
+                action (string): action type
         """
 
-        # If use white walker dummy
+        # If using white walker dummy
         if walk.is_dummy():
-
             return self.for_whitewalker(request)
 
-        # If not use white walker dummy
+        # If not using white walker dummy
         else:
             # Check if current status is not error then call for_embest()
             if self.check_current_status(request) not in ['error', 'alarm']:
                 return self.for_embest(request)
-
+            
             # Check if current status is error then return error message
             else:
                 return self.query_status_error(request)
@@ -100,13 +115,21 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            debug function, connection function, disconnection function
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                number (string): number of sequence
+                stops (string): current sequence
+                action (string): action type
         """
 
         # Angular2 cannot access database if request superuser
-        # if request.user.is_superuser or request.user.is_staff:
+        # If request.user.is_superuser or request.user.is_staff:
+
         logger.info(request.data)
-        # validate inputs
+
+        # Validate inputs
         if 'action' not in request.data:
             return Response('No action', content_type="text/plain")
 
@@ -119,6 +142,7 @@ class ConnectionList(APIView):
         if 'number' in request.data and 'stops' in request.data:
             return self.debug(request)
 
+        # Validate action
         elif request.data['action'] == 'disconnect':
             return self.disconnect(request)
 
@@ -135,12 +159,20 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            debug function, connection function, disconnection function
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                number (string): number of sequence
+                stops (string): current sequence
+                action (string): action type
         """
 
         # Angular2 cannot access database if request superuser
         # if request.user.is_superuser or request.user.is_staff:
+
         logger.info(request.data)
+
         # validate inputs
         if 'action' not in request.data:
             return Response('No action', content_type="text/plain")
@@ -154,7 +186,7 @@ class ConnectionList(APIView):
         # Debug mode checking condition
         if 'number' in request.data and 'stops' in request.data:
 
-            # If current status is success or break then making debug mode
+            # If current status is break then making debug mode
             if self.check_current_status(request) == 'break':
                 return self.debug(request)
 
@@ -162,14 +194,14 @@ class ConnectionList(APIView):
             elif self.check_current_status(request) in ['started', 'pending']:
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
-            # Else return error_uuid  message
+            # Else return error_status message
             else:
                 return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Disconnection checking condition
         elif request.data['action'] == 'disconnect':
 
-            # If current status is success then making disconnection
+            # If current status is success or revoked or no_uuid then making disconnection
             if self.check_current_status(request) in ['success', 'revoked', 'no_uuid']:
                 return self.disconnect(request)
 
@@ -177,14 +209,14 @@ class ConnectionList(APIView):
             elif self.check_current_status(request) in ['started', 'pending', 'break']:
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
-            # Else return error_uuid  message
+            # Else return error_status message
             else:
                 return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Connection checking condition
         elif request.data['action'] == 'connect':
 
-            # If current status is success then making connection
+            # If current status is success or revoked or no_uuid then making connection
             if self.check_current_status(request) in ['success', 'revoked', 'no_uuid']:
                 return self.connection(request)
 
@@ -192,14 +224,14 @@ class ConnectionList(APIView):
             elif self.check_current_status(request) in ['started', 'pending', 'break']:
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
-            # Else return error_uuid  message
+            # Else return error_status message
             else:
                 return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Create connection in connection table
         elif request.data['action'] == 'test_connect':
-
             return self.test_connect(request)
+
         # Else return error_operation message
         else:
             return JsonResponse({'status': 'error', 'error': 'operation'})
@@ -211,12 +243,19 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            Json: request.data
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                number (string): number of sequence
+                stops (string): current sequence
+                action (string): action type
         """
 
         east, west = self.get_available_ports(request)
         logger.info('debug %s - %s', east, west)
 
+        # Validate input
         if east is None:
             return Response('No east port number ' + str(east), content_type="text/plain")
 
@@ -224,6 +263,7 @@ class ConnectionList(APIView):
             return Response('No west port number ' + str(west), content_type="text/plain")
 
         logger.info('connection_history %s - %s', east, west)
+        # create debug mode
         self.create_debug(request, east, west)
 
         return Response(request.data)
@@ -237,6 +277,7 @@ class ConnectionList(APIView):
             west(string): west's port from debug()
         """
 
+        # Validate input
         if 'number' in request.data and 'stops' in request.data:
             number = request.data['number']
             stops = request.data['stops']
@@ -245,35 +286,31 @@ class ConnectionList(APIView):
         else:
             number = None
             stops = None
-            action = None
 
         if stops and number:
             payload = {'east': east.number, 'west': west.number, 'action': str(action), 'stops': str(stops),
                        'no': str(number)}
 
         else:
-            return False
+            return None
 
+        # Validate using dummy
         if walk.is_dummy():
             resp = walk.debug(payload)
 
         else:
             resp = requests.post(CELERY_APP + '/debug', data=payload)
-        uuid = resp.text
-        logger.info('%s %s E%s W%s stops:%s no:%s', uuid, action,
-                    east.number, west.number, stops, number)
 
+        uuid = resp.text
+        logger.info('%s %s E%s W%s stops:%s no:%s', uuid, action, east.number, west.number, stops, number)
         operations = Operation.objects.filter(robotnumber='1')
 
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending',
-                              request=str(payload))
+            operations.update(uuid=uuid, status='pending', request=str(payload))
 
         else:
-            Operation.objects.create(
-                robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(
-            robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
     def connection(self, request):
         """Connection Process
@@ -282,14 +319,20 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            Json: request.data
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                action (string): action type
         """
 
         # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
+
         east, west = self.get_available_ports(request)
         logger.info('connection %s - %s', east, west)
 
+        # Validate input
         if east is None:
             return Response('No east port number ' + str(east), content_type="text/plain")
 
@@ -311,9 +354,9 @@ class ConnectionList(APIView):
         """
 
         Connection.objects.create(east=east, west=west, status='pending')
-        ConnectionHistory.objects.create(
-            east=east, west=west, switching_type='C', status='pending')
+        ConnectionHistory.objects.create(east=east, west=west, switching_type='C', status='pending')
 
+        # Validate input
         if 'stops' in request.data:
             stops = request.data['stops']
 
@@ -321,13 +364,12 @@ class ConnectionList(APIView):
             stops = None
 
         if stops:
-            payload = {'east': east.number, 'west': west.number,
-                       'action': "connect", 'stops': stops}
+            payload = {'east': east.number, 'west': west.number, 'action': "connect", 'stops': stops}
 
         else:
-            payload = {'east': east.number,
-                       'west': west.number, 'action': "connect"}
+            payload = {'east': east.number, 'west': west.number, 'action': "connect"}
 
+        # Validate using dummy
         if walk.is_dummy():
             resp = walk.connect(payload)
 
@@ -335,21 +377,16 @@ class ConnectionList(APIView):
             resp = requests.post(CELERY_APP + '/connect', data=payload)
 
         uuid = resp.text
-
         operations = Operation.objects.filter(robotnumber='1')
 
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending',
-                              request=str(payload))
+            operations.update(uuid=uuid, status='pending', request=str(payload))
 
         else:
-            Operation.objects.create(
-                robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(
-            robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
-        logger.info('%s connect E%s W%s stops:%s', uuid,
-                    east.number, west.number, stops)
+        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        logger.info('%s connect E%s W%s stops:%s', uuid, east.number, west.number, stops)
 
     def disconnect(self, request):
         """Disconnection Process
@@ -358,14 +395,20 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            Json: request.data
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                action (string): action type
         """
 
         # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
+
         east, west = self.get_available_ports(request)
         logger.info('disconnection %s - %s', east, west)
 
+        # Validate input
         if east is None:
             return Response('No east port number ' + str(east), content_type="text/plain")
 
@@ -392,10 +435,10 @@ class ConnectionList(APIView):
             if c.east == east and c.west == west:
                 Connection.objects.filter(east=east, west=west, disconnected_date=None, status='success').update(
                     status='pending')
-                ConnectionHistory.objects.create(
-                    east=east, west=west, switching_type='D', status='pending')
+                ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending')
                 logger.info('connection_history %s - %s', east, west)
 
+                # Validate input
                 if 'stops' in request.data:
                     stops = request.data['stops']
 
@@ -403,36 +446,32 @@ class ConnectionList(APIView):
                     stops = None
 
                 if stops:
-                    payload = {'east': east.number, 'west': west.number,
-                               'action': "disconnect", 'stops': stops}
+                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect", 'stops': stops}
 
                 else:
-                    payload = {'east': east.number,
-                               'west': west.number, 'action': "disconnect"}
+                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect"}
 
+                # Validate using dummy
                 if walk.is_dummy():
                     resp = walk.disconnect(payload)
 
                 else:
-                    resp = requests.post(
-                        CELERY_APP + '/disconnect', data=payload)
+                    resp = requests.post(CELERY_APP + '/disconnect', data=payload)
 
                 uuid = resp.text
-
                 operations = Operation.objects.filter(robotnumber='1')
 
                 if len(operations) == 1:
-                    operations.update(
-                        uuid=uuid, status='pending', request=str(payload))
+                    operations.update(uuid=uuid, status='pending', request=str(payload))
 
                 else:
-                    Operation.objects.create(
-                        robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-                OperationHistory.objects.create(
-                    robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+                    Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
 
-                logger.info('%s disconnection E%s W%s stops:%s',
-                            uuid, east.number, west.number, stops)
+                OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+                logger.info('%s disconnection E%s W%s stops:%s', uuid, east.number, west.number, stops)
+
+            else:
+                return None
 
     def get_available_ports(self, request):
         """Query available port in database
@@ -441,8 +480,8 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            east: west port
-            west: east port
+            east (object): west port
+            west (object): east port
         """
 
         east, west = None, None
@@ -471,15 +510,15 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            status: status
+            status (string): status
         """
 
         uuid = None
         status = 'no_uuid'
 
         operations = Operation.objects.all()
-
         for i in operations:
+
             uuid = str(i.uuid)
 
         if uuid is not None:
@@ -487,12 +526,12 @@ class ConnectionList(APIView):
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
             status = data_dict['status']
-
+            
             return status
 
-        else:
+        else:           
             return status
-
+    
     def query_status_error(self, request):
         """Query error detail of error status from celery
 
@@ -500,20 +539,23 @@ class ConnectionList(APIView):
             request: request data
 
         Returns:
-            status: status
+            status (string): status
         """
 
-        operations = Operation.objects.all()
+        status = ''
+        error = ''
 
+        operations = Operation.objects.all()
         for i in operations:
+
             uuid = str(i.uuid)
             resp = requests.get(CELERY_APP + '/result?id=' + uuid)
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
             status = data_dict['status']
             error = data_dict['error']
-
-            return JsonResponse({'status': status, 'error': error})
+            
+        return JsonResponse({'status': status, 'error': error})
 
     def test_connect(self, request):
         """Create a connection in connection table
@@ -528,27 +570,26 @@ class ConnectionList(APIView):
         east, west = self.get_available_ports(request)
         connected_east = []
         connected_west = []
-        conns = Connection.objects.filter(disconnected_date=None)
 
+        conns = Connection.objects.filter(disconnected_date=None)
         if conns is not None:
 
             for i in conns:
+
                 obj_east = i.east
                 obj_west = i.west
                 connected_east.append(obj_east)
                 connected_west.append(obj_west)
 
             if east not in connected_east and west not in connected_west:
-
                 Connection.objects.create(east=east, west=west, status='success')
 
                 return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
-
+            
             else:
-
                 return JsonResponse({'status': 'error', 'error': 'one of this ports is connected'})
-        else:
 
+        else:
             Connection.objects.create(east=east, west=west, status='success')
 
             return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})

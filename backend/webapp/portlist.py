@@ -1,3 +1,5 @@
+"""portlist api
+"""
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from webapp.models import Port
@@ -13,7 +15,11 @@ class PortList(APIView):
             request: request data
 
         Returns:
-            Json: PortList data
+            json:
+                direction (string): direction of port
+                number (integer): port number
+                note (string): note of port
+                id (integer): id of object
         """
 
         ports = Port.objects.all()
@@ -22,6 +28,17 @@ class PortList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        """POST PortList API
+
+        Args:
+            request: request data
+
+        Returns:
+            json:
+                direction (string): direction of port
+                number (integer): port number
+                note (string): note of port
+                id (integer): id of object
+        """
 
         return Response(request.data)
-
