@@ -261,7 +261,9 @@ export class ApiService {
 
   // TEST DOWLOAD (CSV FILE)
   downloadFile() {
+
     const path = `connectionhistorys/?type=connecthistorys`;
+
     return this.http.get(this.ROOT_URL + path, { responseType: ResponseContentType.Blob })
       .subscribe(
       (res: any) => {
@@ -275,6 +277,7 @@ export class ApiService {
   }
   // CREATE CONNECTION IN CONNECTION TABLE
   create_connection_in_database(east, west, action) {
+
     return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
       response = JSON.parse(response._body);
 

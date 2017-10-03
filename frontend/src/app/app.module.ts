@@ -33,6 +33,7 @@ import { ApiService } from './services/api.service';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AppRoutingModule } from './app-routing.module';
     PortPipe,
     TestingModeComponent,
     PortConnectionMobileComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

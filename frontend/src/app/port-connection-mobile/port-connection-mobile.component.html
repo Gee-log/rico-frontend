@@ -151,7 +151,11 @@
         <!-- BEGIN LEFT-TABLE -->
         <div class="left-table">
           <div *ngFor="let row of eportschunk_left_table">
-            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">
+              <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
+                  <span [mdTooltip]="pushEastNote(column)" mdTooltipPosition="below">{{ column }}</span>
+              </span>
+            </div>
           </div>
         </div>
         <!-- END LEFT-TABLE -->
@@ -163,7 +167,11 @@
         <!-- BEGIN RIGHT-TABLE -->
         <div class="right-table">
           <div *ngFor="let row of eportschunk_right_table">
-            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">
+                <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
+                    <span [mdTooltip]="pushEastNote(column)" mdTooltipPosition="below">{{ column }}</span>
+                </span>
+            </div>
           </div>
         </div>
         <!-- END RIGHT-TABLE -->
@@ -207,7 +215,11 @@
         <!-- BEGIN LEFT-TABLE -->
         <div class="left-table">
           <div *ngFor="let row of wportschunk_left_table">
-            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">
+                <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
+                    <span [mdTooltip]="pushWestNote(column)" mdTooltipPosition="below">{{ column }}</span>
+                </span>
+            </div>
           </div>
         </div>
         <!-- END LEFT-TABLE -->
@@ -219,7 +231,11 @@
         <!-- BEGIN RIGHT-TABLE -->
         <div class="right-table">
           <div *ngFor="let row of wportschunk_right_table">
-            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">
+                <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
+                    <span [mdTooltip]="pushWestNote(column)" mdTooltipPosition="below">{{ column }}</span>
+                </span>
+            </div>
           </div>
         </div>
         <!-- END RIGHT-TABLE -->
