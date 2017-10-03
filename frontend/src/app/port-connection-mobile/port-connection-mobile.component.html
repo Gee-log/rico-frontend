@@ -1,133 +1,246 @@
+<!-- BEGIN FIRST-SECTION -->
 <div class="section first-section">
+  <!-- BEGIN CONTAINER -->
   <div class="container">
+    <!-- BEGIN ROW -->
     <div class="row">
+
+      <!-- BEGIN FOUR COLUMNS -->
       <div class="four columns">
+        <!-- BEGIN CONTAINER -->
         <div class="container">
+          <!-- BEGIN FLEX-ITEM-CONTAINER -->
           <div class="flex-item-container">
+            <!-- BEGIN TEMPERATURE-CONTAINER -->
             <div class="temperature-container">
+              <!-- BEGIN FLEX-ITEM-1 -->
               <div class="flex-item-1">
+                <!-- BEGIN CONTENT-1 -->
                 <div class="content-1">
                   <span>26 °C</span>
                   <p>78.8 °C</p>
                 </div>
+                <!-- END CONTENT-1 -->
+                <!-- BEGIN CONTENT-2 -->
                 <div class="content-2">
                   <span>Temperature</span>
                 </div>
+                <!-- END CONTENT-2 -->
               </div>
+              <!-- END FLEX-ITEM-2 -->
+              <!-- BEGIN FLEX-ITEM-2 -->
               <div class="flex-item-2">
                 <img alt="Temperature-icon" src="../../assets/temp-icon.png">
               </div>
+              <!-- END FLEX-ITEM-2 -->
             </div>
+            <!-- END TEMPERATURE-CONTAINER -->
           </div>
+          <!-- END FLEX-ITEM-CONTAINER -->
         </div>
+        <!-- END CONTAINER -->
       </div>
+      <!-- END FOUR COLUMNS -->
+
+      <!-- BEGIN FOUR COLUMNS -->
       <div class="four columns">
+        <!-- BEGIN CONTAINER -->
         <div class="container">
+          <!-- BEGIN FLEX-ITEM-CONTAINER -->
           <div class="flex-item-container">
+            <!-- BEGIN HUMIDITY-CONTAINER -->
             <div class="humidity-container">
+              <!-- BEGIN FLEX-ITEM-1 -->
               <div class="flex-item-1">
+                <!-- BEGIN CONTENT-1 -->
                 <div class="content-1">
                   <span>50%</span>
                 </div>
+                <!-- END CONTENT-1 -->
+                <!-- BEGIN CONTENT-2 -->
                 <div class="content-2">
                   <span>Humidity</span>
                 </div>
+                <!-- END CONTENT-2 -->
               </div>
+              <!-- END FLEX-ITEM-1 -->
+              <!-- BEGIN FLEX-ITEM-2 -->
               <div class="flex-item-2">
                 <img alt="Temperature-icon" src="../../assets/humidity-icon.png">
               </div>
+              <!-- END FLEX-ITEM-2 -->
             </div>
+            <!-- END HUMIDITY-CONTAINER -->
           </div>
+          <!-- END FLEX-ITEM-CONTAINER -->
         </div>
+        <!-- END CONTAINER -->
       </div>
+      <!-- END FOUR COLUMNS -->
+
+      <!-- BEGIN FOUR COLUMNS -->
       <div class="four columns">
+        <!-- BEGIN CONTAINER -->
         <div class="container">
+          <!-- BEGIN FLEX-ITEM-CONTAINER -->
           <div class="flex-item-container">
+            <!-- BEGIN TIME-CONTAINER -->
             <div class="time-container">
+              <!-- BEGIN FLEX-ITEM-1 -->
               <div class="flex-item-1">
+                <!-- BEGIN CONTENT-1 -->
                 <div class="content-1">
                   <span>54 sec.</span>
                 </div>
+                <!-- END CONTENT-1 -->
+                <!-- BEGIN CONTENT-2 -->
                 <div class="content-2">
                   <span>Avg times</span>
                 </div>
+                <!-- END CONTENT-2 -->
               </div>
+              <!-- END FLEX-ITEM-1 -->
+              <!-- BEGIN FLEX-ITEM-2 -->
               <div class="flex-item-2">
                 <img alt="Temperature-icon" src="../../assets/timer-icon.png">
               </div>
+              <!-- END FLEX-ITEM-2 -->
             </div>
+            <!-- END TIME-CONTAINER -->
           </div>
+          <!-- END FLEX-ITEM-CONTAINER -->
         </div>
+        <!-- END CONTAINER -->
       </div>
-    </div>
-  </div>
-</div>
+      <!-- END FOUR COLUMNS -->
 
+    </div>
+    <!-- END ROW -->
+  </div>
+  <!-- END CONTAINER -->
+</div>
+<!-- END FIRST-SECTION -->
+
+<!-- BEGIN EAST-BANNER -->
 <div class="section east-banner">
+  <!-- BEGIN CONTAINER -->
   <div class="container">
+    <!-- BEGIN ROW -->
     <div class="row">
+      <!-- BEGIN COLUMN -->
       <div class="column">
         <md-card>East port table</md-card>
       </div>
+      <!-- END COLUMN -->
     </div>
+    <!-- END ROW -->
   </div>
+  <!-- END CONTAINER -->
 </div>
+<!-- END EAST-BANNER -->
 
+<!-- BEGIN SECOND-SECTION -->
 <div class="section second-section">
+  <!-- BEGIN CONTAINER -->
   <div class="container">
+    <!-- BEGIN ROW -->
     <div class="row">
+
+      <!-- BEGIN ONE-HALF COLUMN -->
       <div class="one-half column">
+        <!-- BEGIN LEFT-TABLE -->
         <div class="left-table">
           <div *ngFor="let row of eportschunk_left_table">
             <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
+        <!-- END LEFT-TABLE -->
       </div>
+      <!-- END ONE-HALF COLUMN -->
+
+      <!-- BEGIN ONE-HALF COLUMN -->
       <div class="one-half column">
+        <!-- BEGIN RIGHT-TABLE -->
         <div class="right-table">
           <div *ngFor="let row of eportschunk_right_table">
             <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
+        <!-- END RIGHT-TABLE -->
       </div>
-    </div>
-  </div>
-</div>
+      <!-- END ONE-HALF COLUMN -->
 
+    </div>
+    <!-- END ROW -->
+  </div>
+  <!-- END CONTAINER -->
+</div>
+<!-- END SECOND-SECTION -->
+
+<!-- BEGIN WEST-BANNER -->
 <div class="section west-banner">
+  <!-- BEGIN CONTAINER -->
   <div class="container">
+    <!-- BEGIN ROW -->
     <div class="row">
+      <!-- BEGIN COLUMN -->
       <div class="column">
         <md-card>West port table</md-card>
       </div>
+      <!-- END COLUMN -->
     </div>
+    <!-- END ROW -->
   </div>
+  <!-- END CONTAINER -->
 </div>
+<!-- END WEST-BANNER -->
 
+<!-- BEGIN THIRD-SECTION -->
 <div class="section third-section">
+  <!-- BEGIN CONTAINER -->
   <div class="container">
+    <!-- BEGIN ROW -->
     <div class="row">
+
+      <!-- BEGIN ONE-HALF COLUNB -->
       <div class="one-half column">
+        <!-- BEGIN LEFT-TABLE -->
         <div class="left-table">
           <div *ngFor="let row of wportschunk_left_table">
             <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
+        <!-- END LEFT-TABLE -->
       </div>
+      <!-- END ONE-HALF COLUNB -->
+
+      <!-- BEGIN ONE-HALF COLUNB -->
       <div class="one-half column">
+        <!-- BEGIN RIGHT-TABLE -->
         <div class="right-table">
           <div *ngFor="let row of wportschunk_right_table">
             <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
+        <!-- END RIGHT-TABLE -->
       </div>
-    </div>
-  </div>
-</div>
+      <!-- BEGIN ONE-HALF COLUNB -->
 
+    </div>
+    <!-- END ROW -->
+  </div>
+  <!-- END CONTAINER -->
+</div>
+<!-- END THIRD-SECTION -->
+
+<!-- BEGIN FOURTH-SECTION -->
 <div class="section fourth-section">
+  <!-- BEGIN CONTAINER -->
   <div class="container">
+    <!-- BEGIN ROW -->
     <div class="row">
+
+      <!-- BEGIN TWELVE COLUMNS -->
       <div class="twelve columns">
         <div class="first-container" align="center">
           <div class="button-container">
@@ -143,33 +256,65 @@
           </div>
         </div>
       </div>
+      <!-- END TWELVE COLUMNS -->
+
+      <!-- BEGIN TWELVE COLUMNS -->
       <div class="twelve columns">
+        <!-- BEGIN FIRST-CONTAINER -->
         <div class="first-container" align="center">
+          <!-- BEGIN BUTTON-CONTAINER -->
           <div class="button-container">
+            <!-- BEGIN BUTTON-DISCONNECT-CONTAINER -->
             <div class="button-disconnect-container">
+              <!-- BEGIN ITEM-1 -->
               <div class="item-1">
                 <div class="disconnect-button-circle Blink"></div>
               </div>
+              <!-- END ITEM-1 -->
+              <!-- BEGIN ITEM-2 -->
               <div class="item-2">
                 <button md-raised-button id="Disconnect" (click)="postDisconnection()" color="primary" [attr.disabled]="this.disabled_disconnect_button == true ? false : null"
                   disabled>Disconnect</button>
               </div>
+              <!-- END ITEM-2 -->
             </div>
+            <!-- END BUTTON-DISCONNECT-CONTAINER -->
           </div>
+          <!-- END BUTTON-CONTAINER -->
         </div>
+        <!-- END FIRST-CONTAINER -->
       </div>
+      <!-- END TWELVE COLUMNS -->
+
     </div>
+    <!-- END ROW -->
+
+    <!-- BEGIN ROW -->
     <div class="row">
+
+      <!-- BEGIN SIX COLUMNS -->
       <div class="six columns">
+        <!-- BEGIN SECOND-CONTAINER -->
         <div class="second-container">
           <div id="error-dialog" class="hide">
             <md-card class="Blink">{{ error_message }}</md-card>
           </div>
         </div>
+        <!-- END SECOND-CONTAINER -->
       </div>
+      <!-- END SIX COLUMNS -->
+
+      <!-- BEGIN SIX COLUMS -->
       <div class="six columns">
+        <!-- BEGIN SECOND-CONTAINER -->
         <div class="second-container"></div>
+        <!-- END SECOND-CONTAINER -->
       </div>
+      <!-- END SIX COLUMS -->
     </div>
+    <!-- END ROW -->
+
   </div>
+  <!-- END CONTAINER -->
 </div>
+<!-- END FOURTH-SECTION -->
