@@ -279,9 +279,9 @@ export class ApiService {
       response = JSON.parse(response._body);
 
       if (response.status === 'error') {
-        alert('status: ' + response.status + ', error_code: ' + response.error);
+        console.error('status: ' + response.status + ', error_code: ' + response.error);
       } else {
-        alert('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
+        console.log('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
       }
       return (response);
 

@@ -143,10 +143,11 @@ class ConnectionList(APIView):
             return self.debug(request)
 
         # Validate action
-        elif request.data['action'] == 'disconnect':
+        if request.data['action'] == 'disconnect':
+            print('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
             return self.disconnect(request)
 
-        elif request.data['action'] == 'test_connect':
+        if request.data['action'] == 'test_connect':
             return self.test_connect(request)
 
         else:
@@ -292,7 +293,7 @@ class ConnectionList(APIView):
                        'no': str(number)}
 
         else:
-            return None
+            return False
 
         # Validate using dummy
         if walk.is_dummy():
@@ -470,8 +471,6 @@ class ConnectionList(APIView):
                 OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
                 logger.info('%s disconnection E%s W%s stops:%s', uuid, east.number, west.number, stops)
 
-            else:
-                return None
 
     def get_available_ports(self, request):
         """Query available port in database

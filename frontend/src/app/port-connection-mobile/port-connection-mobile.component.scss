@@ -23,6 +23,16 @@ md-card {
     visibility: hidden;
 }
 
+#Connect:disabled {
+    pointer-events: none;
+    color: rgba(0,0,0,.38);
+}
+
+#Disconnect:disabled {
+    pointer-events: none;
+    color: rgba(0,0,0,.38);
+}
+
 /* First-section
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .first-section {
@@ -330,7 +340,7 @@ md-card {
             height: 45px;
 
             .button-connect-container {
-                width: 180px;
+                width: 212px;
                 display: inline-flex;
                 margin-right: 5px;
                 flex-grow: 1;
@@ -354,6 +364,7 @@ md-card {
                     width: 80%;
                     height: 100%;
                     button {
+                        width: 152px;
                         border: none;
                         border-radius: 20px;
                         transform: translateY(7%);

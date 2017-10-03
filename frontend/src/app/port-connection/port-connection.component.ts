@@ -1,7 +1,11 @@
+// ANGULAR MODULE
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Http, Headers, Response } from '@angular/http';
+import { Router } from '@angular/router';
+
+// Api Service
 import { ApiService } from '../services/api.service';
+
+// Third-party
 import { ChartsModule } from 'ng2-charts';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
@@ -13,7 +17,6 @@ import 'rxjs/Rx';
   styleUrls: ['./port-connection.component.scss'],
   providers: []
 })
-
 export class PortConnectionComponent implements OnInit, OnDestroy {
 
   // PORTS DATA
@@ -59,10 +62,11 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // FOR ngOnDestroy
   public timerInterval: any; // set public variable type any
 
-  constructor(private http: Http, private ApiService: ApiService) { }
+  constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
-
+    // DEVICE DETECT
+    this.deviceDetect();
     // FETCH DATA
     this.fetchData();
     // SET COLOR OF PORT CONNECTION
@@ -79,7 +83,14 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     clearInterval(this.timerInterval); // CLEAR INTERVAL
 
   }
+  // DEVICE DETECT
+  deviceDetect() {
 
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.router.navigateByUrl('/port_connection_mobile');
+    }
+
+  }
   // FETCH DATA
   fetchData() {
 
@@ -121,7 +132,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     this.ApiService.checkStatus().then((data) => {
 
-      console.log(data);
       this.sequence = data.sequence;
       this.status = data.status;
       this.action = data.action;

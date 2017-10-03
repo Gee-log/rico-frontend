@@ -1,10 +1,17 @@
+// ANGULAR MODULE
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Http } from '@angular/http';
+
+// MATERIAL MODULE
 import { DataSource } from '@angular/cdk/table';
 import { MdPaginator } from '@angular/material';
+
+// Api Service
+import { ApiService } from '../services/api.service';
+
+// Third-party
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers, Response } from '@angular/http';
-import { ApiService } from '../services/api.service';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
@@ -39,7 +46,7 @@ export class AlarmHistoryComponent implements OnInit {
 
   }
 
-  constructor(private http: Http, private ApiService: ApiService) {
+  constructor(private ApiService: ApiService) {
 
     this.temp = this.rows;
 

@@ -35,6 +35,11 @@ export const appRoutes: Routes = [
   {
     path: 'port_connection_mobile',
     component: PortConnectionMobileComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+    pathMatch: 'full'
   }
 ];
 

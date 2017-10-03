@@ -1,7 +1,11 @@
+// ANGULAR MODULE
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+
+// Api Service
 import { ApiService } from '../services/api.service';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Http, Headers, Response } from '@angular/http';
+
+// Third-party
 import { ChartsModule } from 'ng2-charts';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
@@ -22,10 +26,10 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   portID: Object = []; // PORT ID
   eportNote: Object = []; // EAST PORT NOTE
   wportNote: Object = []; // WEST PORT NOTE
-  eportschunk_left_table = [];
-  eportschunk_right_table = [];
-  wportschunk_left_table = [];
-  wportschunk_right_table = [];
+  eportschunk_left_table = new Array(); // EAST PORT LEFT TABLE CHUNK 6 OBJECT [12,12,...]
+  eportschunk_right_table = new Array(); // EAST PORT RIGHT TABLE CHUNK 6 OBJECT [12,12,...]
+  wportschunk_left_table = new Array(); // WEST PORT LEFT TABLE CHUNK 6 OBJECT [12,12,...]
+  wportschunk_right_table = new Array(); // WEST PORT RIGHT TABLE CHUNK 6 OBJECT [12,12,...]
 
   // CONNECTION DATA
   pair: Object = []; // PAIR OF CONNECTED PORT {[east, west]}
@@ -61,10 +65,12 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   // FOR ngOnDestroy
   public timerInterval: any; // set public variable type any
 
-  constructor(private ApiService: ApiService) { }
+  constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
 
+    // DEVICE DETECT
+    this.deviceDetect();
     // FETCH DATA
     this.fetchData();
     // SET COLOR OF PORT CONNECTION
@@ -82,6 +88,14 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
   }
 
+  // DEVICE DETECT
+  deviceDetect() {
+
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.router.navigateByUrl('/');
+    }
+
+  }
   // FETCH DATA
   fetchData() {
 
@@ -99,7 +113,7 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
         if (i < 6) {
           this.eportschunk_left_table.push(this.eportschunk[i]);
           this.wportschunk_left_table.push(this.wportschunk[i]);
-          // PUSH INDEX > 6
+          // PUSH INDEX => 6
         } else {
           this.eportschunk_right_table.push(this.eportschunk[i]);
           this.wportschunk_right_table.push(this.wportschunk[i]);
@@ -109,7 +123,6 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
     });
 
   }
-
   // PUSH EAST PORT NOTE
   pushEastNote(id) {
 
@@ -137,7 +150,6 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
     this.ApiService.checkStatus().then((data) => {
 
-      console.log(data);
       this.sequence = data.sequence;
       this.status = data.status;
       this.action = data.action;
@@ -561,7 +573,6 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
       _.each(data, (obj) => {
 
-
         if (obj['status'] === 'success') {
           const east = 'E' + obj['east'];
           const west = 'W' + obj['west'];
@@ -668,16 +679,10 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
     this.debugMode = !this.debugMode;
     console.log('toggleDebugMode ' + this.debugMode);
   }
-  // DISABLE NOT AVAILABLE EAST PORT
-  disabledEastPort(id) {
+  // DISABLE PORT
+  lockPort() {
 
-    return (id !== 'E1' && id !== 'E2' && id !== 'E3') ? 'port-unselectable' : '';
-
-  }
-  // DISABLE NOT AVAILABLE WEST PORT
-  disabledWestPort(id) {
-
-    return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
+    return (this.unselectable_table === true) ? 'port-unselectable' : '';
 
   }
 

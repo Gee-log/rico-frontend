@@ -79,14 +79,14 @@
       <div class="one-half column">
         <div class="left-table">
           <div *ngFor="let row of eportschunk_left_table">
-            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
       </div>
       <div class="one-half column">
         <div class="right-table">
           <div *ngFor="let row of eportschunk_right_table">
-            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="East" [ngClass]="[isSelectEast(column), lockPort()]" (click)="setEastID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
       </div>
@@ -110,14 +110,14 @@
       <div class="one-half column">
         <div class="left-table">
           <div *ngFor="let row of wportschunk_left_table">
-            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
       </div>
       <div class="one-half column">
         <div class="right-table">
           <div *ngFor="let row of wportschunk_right_table">
-            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
+            <div id="{{ column }}" class="West" [ngClass]="[isSelectWest(column), lockPort()]" (click)="setWestID(column)" *ngFor="let column of row">{{ column }}</div>
           </div>
         </div>
       </div>
@@ -151,7 +151,7 @@
                 <div class="disconnect-button-circle Blink"></div>
               </div>
               <div class="item-2">
-                <button md-raised-button id="Disconnect" class="button-width" (click)="postDisconnection()" color="primary" [attr.disabled]="this.disabled_disconnect_button == true ? false : null"
+                <button md-raised-button id="Disconnect" (click)="postDisconnection()" color="primary" [attr.disabled]="this.disabled_disconnect_button == true ? false : null"
                   disabled>Disconnect</button>
               </div>
             </div>
