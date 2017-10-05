@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^operationhistorys/', operationhistorylist.OperationHistoryList.as_view()),
     url(r'^(?P<question_id>[0-9]+)/$', views.save, name='connection_log'),
     url(r'^frontend/', views.index, name='index'),
+    url(r'^homes/', views.homes, name='homes'),
     url(r'^$', views.landing, name='landing'),
     # url(r'', views.index, name='index')
 ]

@@ -137,6 +137,13 @@ class Walker(object):
         resp.text = str(uuid.uuid4())
         return resp
 
+    def homes(self):
+        self._log('homes')
+
+        resp = Response()
+        resp.text = str(uuid.uuid4())
+        return resp
+
     def _log(self, p1, p2=None):
 
         if p2 is not None:

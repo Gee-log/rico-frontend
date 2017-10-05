@@ -1,6 +1,7 @@
 // ANGULAR MODULE
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule }   from '@angular/forms';
 
 // Api Service
 import { ApiService } from '../services/api.service';
@@ -20,6 +21,8 @@ export class TestingModeComponent implements OnInit {
 
   // LOCK BUTTON UTILITIES
   debug_button;
+
+  errorRobot: string = '';
 
   constructor(private ApiService: ApiService, private router: Router) { }
 
@@ -92,4 +95,14 @@ export class TestingModeComponent implements OnInit {
 
   }
 
+  home_motor() {
+    this.ApiService.home_robot_axes().then((data) => {
+      if (data['status'] === 'success') {
+        console.log(data);
+      } else {
+        console.error(data);
+        this.errorRobot = data['status'];
+      }
+    });
+  }
 }
