@@ -21,6 +21,7 @@ frontend:
     - "4200:4200"
   volumes:
     - /usr/src/app
+    - ./frontend/src:/usr/src/app/src
   env_file: .env
   command: '/start.sh'
 
