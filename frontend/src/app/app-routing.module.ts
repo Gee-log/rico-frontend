@@ -10,6 +10,7 @@ import { PortConnectionComponent } from './port-connection/port-connection.compo
 import { PortConnectionMobileComponent } from './port-connection-mobile/port-connection-mobile.component';
 import { PortHistoryComponent } from './port-history/port-history.component';
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
+import { ServerStatusErrorComponent } from './server-status-error/server-status-error.component';
 
 export const appRoutes: Routes = [
   {
@@ -36,6 +37,11 @@ export const appRoutes: Routes = [
   {
     path: 'testing_mode',
     component: TestingModeComponent
+  },
+  // SERVER STATUS 500
+  {
+    path: '500',
+    component: ServerStatusErrorComponent
   },
   // OUT OF PATH LIST WILL REDIRECT TO HOME
   {

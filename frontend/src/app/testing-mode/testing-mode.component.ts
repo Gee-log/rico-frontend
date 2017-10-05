@@ -1,5 +1,8 @@
+// ANGULAR MODULE
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { Router } from '@angular/router';
+
+// Api Service
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -18,11 +21,25 @@ export class TestingModeComponent implements OnInit {
   // LOCK BUTTON UTILITIES
   debug_button;
 
-  constructor(private http: Http, private ApiService: ApiService) { }
+  constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
 
+    // CHECK SERVER STATUS
+    this.check_server_status();
+    // SET debug_button = true
     this.debug_button = true;
+
+  }
+
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+    });
 
   }
   // CREATE CONNECTION

@@ -16,6 +16,7 @@ import 'rxjs/Rx';
   templateUrl: './port-connection-mobile.component.html',
   styleUrls: ['./port-connection-mobile.component.scss']
 })
+
 export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
   // PORTS DATA
@@ -69,6 +70,8 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    // CHECK SERVER STATUS
+    this.check_server_status();
     // DEVICE DETECT
     this.deviceDetect();
     // FETCH DATA
@@ -84,10 +87,20 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
-    clearInterval(this.timerInterval); // CLEAR INTERVAL
+    clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
 
   }
 
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+    });
+
+  }
   // DEVICE DETECT
   deviceDetect() {
 

@@ -1,9 +1,11 @@
 // ANGULAR MODULE
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { enableProdMode } from '@angular/core'; // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+
 
 // MATERIAL MODULE
 import { MaterialModule } from '@angular/material';
@@ -21,6 +23,8 @@ import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PortPipe } from './port.pipe';
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ServerStatusErrorComponent } from './server-status-error/server-status-error.component';
 
 // Third-Party
 import { ChartsModule } from 'ng2-charts';
@@ -33,7 +37,8 @@ import { ApiService } from './services/api.service';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
 @NgModule({
   declarations: [
@@ -48,6 +53,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     TestingModeComponent,
     PortConnectionMobileComponent,
     PageNotFoundComponent,
+    ServerStatusErrorComponent,
   ],
   imports: [
     BrowserModule,

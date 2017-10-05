@@ -1,6 +1,6 @@
 // ANGULAR MODULE
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Http } from '@angular/http';
+import { Router } from '@angular/router';
 
 // MATERIAL MODULE
 import { DataSource } from '@angular/cdk/table';
@@ -13,9 +13,6 @@ import { ApiService } from '../services/api.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 
 @Component({
@@ -42,16 +39,30 @@ export class AlarmHistoryComponent implements OnInit {
 
   ngOnInit() {
 
+    // CHECK SERVER STATUS
+    this.check_server_status();
+    // FETCH DATA
     this.fetchData();
 
   }
 
-  constructor(private ApiService: ApiService) {
+  constructor(private ApiService: ApiService, private router: Router) {
 
     this.temp = this.rows;
 
   }
 
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+    });
+
+  }
+  // FETCH DATA
   fetchData() {
 
     this.ApiService.getAlarmHistory().then((data) => {
@@ -62,13 +73,13 @@ export class AlarmHistoryComponent implements OnInit {
     });
 
   }
-
+  // TEST FUNCTION
   clickme(row) {
 
     console.log(row);
 
   }
-
+  // FILTER <-- Need to fix bug
   updateFilter(event) {
 
     const val = event.target.value.toLowerCase();

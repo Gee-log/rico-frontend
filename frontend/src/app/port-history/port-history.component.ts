@@ -1,14 +1,17 @@
+// ANGULAR MODULE
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+
+// MATERIAL MODULE
 import { DataSource } from '@angular/cdk/table';
 import { MdPaginator } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Http, Headers, Response } from '@angular/http';
+
+// Api Service
 import { ApiService } from '../services/api.service';
+
+// Third-party
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
@@ -37,12 +40,28 @@ export class PortHistoryComponent implements OnInit {
   @ViewChild('table') table: DatatableComponent;
 
   ngOnInit() {
+
+    // CHECK SERVER STATUS
+    this.check_server_status();
+    // FETCH DATA
     this.fetchData();
+
   }
 
-  constructor(private http: Http, private ApiService: ApiService) {
+  constructor(private ApiService: ApiService, private router: Router) {
 
     this.temp = this.rows;
+
+  }
+
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+    });
 
   }
   // SET DATA TABLE

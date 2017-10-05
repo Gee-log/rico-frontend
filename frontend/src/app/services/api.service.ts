@@ -293,5 +293,20 @@ export class ApiService {
     });
   }
 
+  check_server_status() {
+
+    let status;
+
+    return this.http.get(this.ROOT_URL).toPromise().then((response: any) => {
+
+      return (response.status);
+
+      // IF CANNOT GET RESPONSE FROM SERVER
+    }).catch(() => {
+      status = 500;
+      return status;
+    });
+
+  }
 
 }

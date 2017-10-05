@@ -43,6 +43,14 @@
                   cursor: default;
                   color: white;
                 }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    margin-left: 15px;
+                  }
+                  p {
+                    margin-left: 15px;
+                  }
+                }
               }
               .content-2 {
                 height: 50%;
@@ -55,6 +63,12 @@
                 span {
                   cursor: default;
                   color: white;
+                }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    font-size: 14px;
+                    margin-left: 15px;
+                  }
                 }
               }
             }
@@ -102,6 +116,11 @@
                   cursor: default;
                   color: white;
                 }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    margin-left: 15px;
+                  }
+                }
               }
               .content-2 {
                 height: 50%;
@@ -114,6 +133,11 @@
                 span {
                   cursor: default;
                   color: white;
+                }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    font-size: 14px;
+                  }
                 }
               }
             }
@@ -174,6 +198,11 @@
                   cursor: default;
                   color: white;
                 }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    font-size: 14px;
+                  }
+                }
               }
             }
             .flex-item-2 {
@@ -186,6 +215,11 @@
                 width: 90px;
                 /* you can use % */
                 height: auto;
+              }
+            }
+            @media only screen and (max-width: 1200px) {
+              .flex-item-1 {
+                overflow: hidden;
               }
             }
           }
@@ -220,6 +254,11 @@
                   cursor: default;
                   color: white;
                 }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    margin-left: 15px;
+                  }
+                }
               }
               .content-2 {
                 height: 50%;
@@ -232,6 +271,12 @@
                 span {
                   cursor: default;
                   color: white;
+                }
+                @media only screen and (max-width: 1200px) {
+                  span {
+                    font-size: 14px;
+                    margin-left: 15px;
+                  }
                 }
               }
             }
