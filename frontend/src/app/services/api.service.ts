@@ -12,7 +12,7 @@ export class ApiService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://127.0.0.1:8000/`;
+  private ROOT_URL = `http://localhost/`;
 
   constructor(private http: Http) { }
 
@@ -307,6 +307,19 @@ export class ApiService {
       return status;
     });
 
+  }
+
+  home_robot_axes() {
+    return this.http.get(this.ROOT_URL + 'homes/').toPromise().then((response: any) => {
+
+      let resp = JSON.parse(response._body);
+      resp['status'] = 'success'
+      return resp;
+
+      // IF CANNOT GET RESPONSE FROM SERVER
+    }).catch((error) => {
+      return {'status':'error', 'error':error};
+    });
   }
 
 }

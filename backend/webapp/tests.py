@@ -1,5 +1,4 @@
 import time
-from webapp.views import walk
 from random import randint
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -11,24 +10,27 @@ west = randint(1, 144)
 
 class TestWhitewalker(APITestCase):
 
+    HOST = 'http://localhost:8000'
+
     def setUp(self):
 
-        call_command('loaddata', '.\data\Eport_data.json')
-        call_command('loaddata', '.\data\Wport_data.json')
+        call_command('loaddata', './data/Eport_data.json')
+        call_command('loaddata', './data/Wport_data.json')
 
     def test_correct_input_connect(self):
-        url = 'http://localhost:8000/connections/'
         data = {'east': east, 'west': west, 'action': 'connect'}
-        resp = self.client.post(url, data, format='json')
+        resp = self.client.post('{}/connections/'.format(self.HOST),
+                data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(resp.data, data)
-        resp_uuid = walk.connect(data)
-        out = walk.checkstatus(resp_uuid.text)
+
+        resp = self.client.get('{}/checktask/'.format(self.HOST))
+        out = resp.json()
         self.assertEqual(out['status'], 'started')
+
         time.sleep(10)
-            # out2 = walk.connect(data)
-        out2 = walk.checkstatus(resp_uuid.text)
-        self.assertEqual(out2['status'], 'success')
+        out = self.client.get('{}/checktask/'.format(self.HOST)).json()
+        self.assertEqual(out['status'], 'success')
 
     def test_no_east_input_connect(self):
         url = 'http://localhost:8000/connections/'

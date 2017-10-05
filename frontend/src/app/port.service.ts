@@ -4,7 +4,7 @@ import { Http } from "@angular/http";
 @Injectable()
 export class PortService {
 
-    private ROOT_URL = `http://127.0.0.1:8000/`;
+    private ROOT_URL = `http://localhost/`;
 
     constructor(private http: Http) { }
 

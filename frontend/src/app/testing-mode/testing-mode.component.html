@@ -2,6 +2,26 @@
 <div class="main-container">
   <!-- BEGIN TAB-GROUP -->
   <md-tab-group>
+    <!-- BEGIN ROBOT-TAB -->
+    <md-tab label="Robot Handler">
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title> Home </md-panel-title>
+          <md-panel-description> Home all axes </md-panel-description>
+        </md-expansion-panel-header>
+
+        <button md-button color="primary" (click)="home_motor()">Home</button>
+      </md-expansion-panel>
+
+      <md-action-row>
+      <!--<md-error [(ngModel)]="errorRobot">error message</md-error>-->
+      <md-error>{{errorRobot}}</md-error>
+      </md-action-row>
+      <!--<div>-->
+      <!--<br />-->
+      <!--</div>-->
+    </md-tab>
+    <!-- END ROBOT-TAB -->
     <!-- BEGIN CONNECTION-TAB -->
     <md-tab label="Connection">
       <!-- BEGIN CREATE CONNECTION -->
