@@ -1,0 +1,44 @@
+backend:
+  restart: always
+  build: ./backend/
+  expose:
+    - "8000"
+  links:
+    - mysql:mysql
+    #- redis:redis
+  volumes:
+    - /usr/src/app
+    - /usr/src/app/static
+  env_file: .env
+  environment:
+    DEBUG: 'true'
+  command: '/start.sh'
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /www/static
+  volumes_from:
+    - backend
+  links:
+    - backend:web
+
+mysql:
+  restart: always
+  image: mysql:latest
+  ports:
+    - "3306:3306"
+  env_file: .env
+  volumes:
+    - mysqldata:/var/lib/mysql
+
+#redis:
+  #restart: always
+  #image: redis:latest
+  #ports:
+    #- "6379:6379"
+  #volumes:
+    #- redisdata:/data
