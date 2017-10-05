@@ -12,7 +12,7 @@ export class ApiService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://127.0.0.1:8000/`;
+  private ROOT_URL = `http://localhost/`;
 
   constructor(private http: Http) { }
 
