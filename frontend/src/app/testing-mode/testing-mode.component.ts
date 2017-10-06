@@ -21,6 +21,8 @@ export class TestingModeComponent implements OnInit {
   // LOCK BUTTON UTILITIES
   debug_button;
 
+  errorRobot: string = '';
+
   constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
@@ -92,4 +94,9 @@ export class TestingModeComponent implements OnInit {
 
   }
 
+  home_button() {
+    var msg = 'home error !'
+    this.errorRobot = msg;
+    console.error(msg);
+  }
 }
