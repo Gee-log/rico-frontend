@@ -8,7 +8,7 @@ else
   ./manage.py makemigrations --empty webapp
   ./manage.py makemigrations
   ./manage.py migrate
-  ./manage.py collectstatic
+  ./manage.py collectstatic --no-input
 fi
 
 ports=`./manage.py dumpdata webapp.port`; chrlen=${#ports} # 32320
