@@ -35,6 +35,8 @@ def replace_celery_app(domain):
                     s_po = line.find('#')
                     if s_po < 0 or s_po > r_po:
                         line = 'CELERY_APP = "' + domain + 'rico"\n'
+                        for i in range(r_po): # put indent
+                            line = ' ' + line
                         changed = True
                 new_file.write(line)
 

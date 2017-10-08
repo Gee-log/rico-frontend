@@ -1,6 +1,7 @@
 // ANGULAR MODULE
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule }   from '@angular/forms';
 
 // Api Service
 import { ApiService } from '../services/api.service';
@@ -94,9 +95,14 @@ export class TestingModeComponent implements OnInit {
 
   }
 
-  home_button() {
-    var msg = 'home error !'
-    this.errorRobot = msg;
-    console.error(msg);
+  home_motor() {
+    this.ApiService.home_robot_axes().then((data) => {
+      if (data['status'] === 'success') {
+        console.log(data);
+      } else {
+        console.error(data);
+        this.errorRobot = data['status'];
+      }
+    });
   }
 }

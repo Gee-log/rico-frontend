@@ -1,9 +1,10 @@
 """webapp views
 """
 import ast
-import requests
 import logging
 import logging.handlers
+import os
+import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import datetime
@@ -20,9 +21,6 @@ from webapp.serializers import OperationSerializer, OperationHistorySerializer
 # from django.utils.decorators import method_decorator
 from webapp.white import Walker
 
-
-CELERY_APP = "http://192.168.60.76:80/rico"
-# CELERY_APP = "http://192.168.60.76:80/rico"   # embest
 
 walk = Walker()
 
@@ -43,6 +41,14 @@ logger.addHandler(handler)
 
 # utilities
 # @login_required(login_url='/login/') If want validations user
+
+
+if os.environ['CELERY_APP']:
+    CELERY_APP = os.environ['CELERY_APP']
+    logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
+else:
+    CELERY_APP = "http://192.168.60.76:80/rico"   # embest
+    logger.info('CELERY_APP: {}'.format(CELERY_APP))
 
 
 def index(request):
@@ -800,3 +806,23 @@ def save(request, question_id, timestamp=0):
         return None
 
     return response
+
+
+def homes(request):
+    """Ask robot to home all axes
+
+    Returns:
+            json:
+                status (string): status code
+                sequence (string): current sequence
+                action (action): action type
+    """
+
+    # Validate using dummy
+    if walk.is_dummy():
+        resp = walk.homes()
+    else:
+        resp = requests.get(CELERY_APP + '/homes')
+
+    return JsonResponse({'uuid':resp.text})
+

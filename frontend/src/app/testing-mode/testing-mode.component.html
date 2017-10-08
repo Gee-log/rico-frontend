@@ -10,11 +10,12 @@
           <md-panel-description> Home all axes </md-panel-description>
         </md-expansion-panel-header>
 
-        <button md-button color="primary" (click)="home_button()">Home</button>
+        <button md-button color="primary" (click)="home_motor()">Home</button>
       </md-expansion-panel>
 
       <md-action-row>
-        <md-error [(ngModel)]="errorRobot">error message</md-error>
+      <!--<md-error [(ngModel)]="errorRobot">error message</md-error>-->
+      <md-error>{{errorRobot}}</md-error>
       </md-action-row>
       <!--<div>-->
       <!--<br />-->
