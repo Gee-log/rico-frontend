@@ -1,6 +1,6 @@
 """operationhistorylist api
 """
-from rest_framework.views import APIView
+from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from webapp.models import OperationHistory
 from webapp.serializers import OperationHistorySerializer
@@ -22,3 +22,45 @@ class OperationHistoryList(APIView):
         serializer = OperationHistorySerializer(operationhistorys, many=True)
 
         return Response(serializer.data)
+
+    def post(self, request):
+        """POST OperationHistoryList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def put(self, request):
+        """PUT OperationHistoryList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def delete(self, request):
+        """DELETE OperationHistoryList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+        
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)

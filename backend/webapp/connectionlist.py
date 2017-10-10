@@ -5,7 +5,7 @@ import ast
 import logging
 import logging.handlers
 import requests
-from rest_framework.views import APIView
+from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from django.http import HttpResponse, JsonResponse
 
@@ -108,6 +108,34 @@ class ConnectionList(APIView):
             else:
                 return self.query_status_error(request)
 
+    def put(self, request):
+        """PUT ConnectionList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def delete(self, request):
+        """DELETE ConnectionList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+        
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
     def for_whitewalker(self, request):
         """For using with whitewalker
 
@@ -144,7 +172,6 @@ class ConnectionList(APIView):
 
         # Validate action
         if request.data['action'] == 'disconnect':
-            print('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
             return self.disconnect(request)
 
         if request.data['action'] == 'test_connect':

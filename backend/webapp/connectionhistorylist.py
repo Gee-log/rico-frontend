@@ -1,6 +1,6 @@
 """connectionhistorylist api
 """
-from rest_framework.views import APIView
+from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from django.http import JsonResponse, HttpResponse
 from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
@@ -116,6 +116,34 @@ class ConnectionHistoryList(APIView):
         if 'type' in request.data and request.data['type'] == 'connectionhistory':
 
             return self.savedata(request)
+
+    def put(self, request):
+        """PUT ConnectionHistoryList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def delete(self, request):
+        """DELETE ConnectionHistoryList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+        
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
     def savedata(self, request):

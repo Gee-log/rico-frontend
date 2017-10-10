@@ -1,6 +1,6 @@
 """alarmlist api
 """
-from rest_framework.views import APIView
+from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from webapp.models import Alarm
 from webapp.serializers import AlarmSerializer
@@ -55,3 +55,32 @@ class AlarmList(APIView):
         alarms.save()
 
         return Response(request.data)
+
+    def put(self, request):
+        """PUT AlarmList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def delete(self, request):
+        """DELETE AlarmList API
+
+        Args:
+            request: request data
+
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+        
+        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
