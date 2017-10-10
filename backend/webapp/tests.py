@@ -1,3 +1,6 @@
+"""Unit test
+    python manage.py test webapp.tests
+"""
 import time
 from webapp.views import walk
 from random import randint
