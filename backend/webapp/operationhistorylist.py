@@ -34,7 +34,7 @@ class OperationHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        error_detail = {'detail': 'Method "POST" not allowed.'}
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def put(self, request):
@@ -48,7 +48,7 @@ class OperationHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        error_detail = {'detail': 'Method "PUT" not allowed.'}
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
@@ -62,5 +62,5 @@ class OperationHistoryList(APIView):
             status (string): HTTP status
         """
         
-        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        error_detail = {'detail': 'Method "DELETE" not allowed.'}
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
