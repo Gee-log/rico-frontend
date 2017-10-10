@@ -43,7 +43,7 @@ logger.addHandler(handler)
 # @login_required(login_url='/login/') If want validations user
 
 
-if os.environ['CELERY_APP']:
+if 'CELERY_APP' in os.environ and os.environ['CELERY_APP']:
     CELERY_APP = os.environ['CELERY_APP']
     logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
 else:
