@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import * as $ from 'jquery';
 import { ApiService } from './services/api.service';
 import { Http, Headers, Response } from '@angular/http';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -53,7 +54,7 @@ export class AppComponent {
     }
   ];
 
-  constructor(private http: Http, private ApiService: ApiService) {}
+  constructor(private http: Http, private ApiService: ApiService, private router: Router) { }
 
   // TOGGLE SETTINGS MENU
   toggleSettings() {
@@ -77,5 +78,12 @@ export class AppComponent {
   clearDatabase() {
     this.ApiService.clearDatabase('cleardatabase');
   }
-
+  // SHOW NAVBAR
+  showNavbar() {
+    if (this.router.url === '/login') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

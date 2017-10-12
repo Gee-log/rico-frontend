@@ -1,7 +1,7 @@
 // ANGULAR MODULE
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 // Api Service
 import { ApiService } from '../services/api.service';

@@ -11,11 +11,16 @@ import { PortConnectionMobileComponent } from './port-connection-mobile/port-con
 import { PortHistoryComponent } from './port-history/port-history.component';
 import { ServerStatusErrorComponent } from './server-status-error/server-status-error.component';
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
+import { LoginComponent } from './login/login.component';
 
 export const appRoutes: Routes = [
   {
     path: '',
     component: PortConnectionComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'port_connection_mobile',

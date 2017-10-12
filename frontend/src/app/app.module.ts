@@ -37,6 +37,7 @@ import { ApiService } from './services/api.service';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
+import { LoginComponent } from './login/login.component';
 
 enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
@@ -54,6 +55,7 @@ enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
     PortConnectionMobileComponent,
     PageNotFoundComponent,
     ServerStatusErrorComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

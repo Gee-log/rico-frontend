@@ -8,6 +8,8 @@ from webapp import portlist
 from webapp import operationlist
 from webapp import operationhistorylist
 
+from rest_framework.authtoken import views as rest_framework_views
+
 urlpatterns = [
     url(r'^alarms/', alarmlist.AlarmList.as_view()),
     url(r'^connections/', connectionlist.ConnectionList.as_view()),
@@ -21,5 +23,7 @@ urlpatterns = [
     url(r'^frontend/', views.index, name='index'),
     url(r'^homes/', views.homes, name='homes'),
     url(r'^$', views.landing, name='landing'),
+    # Session Login
+    url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
     # url(r'', views.index, name='index')
 ]
