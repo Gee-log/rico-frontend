@@ -3,7 +3,8 @@
   <!-- BEGIN SIDENAV-FAB-CONTAINER -->
   <md-sidenav-container class="sidenav-fab-container">
     <!-- BEGIN NAV BAR -->
-    <md-toolbar class="toolbar-container" color="primary">
+    <md-toolbar class="toolbar-container" color="primary" *ngIf="showNavbar()">
+    <!-- attr.disabled]="this.disable_stops_input == true ? false : null" -->
       <!-- BEGIN MENU ICON -->
       <div>
         <button type="button" md-button class="div-icon-menu" (click)="sidenav.toggle()">
