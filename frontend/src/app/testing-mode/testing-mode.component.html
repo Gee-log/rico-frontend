@@ -14,8 +14,8 @@
       </md-expansion-panel>
 
       <md-action-row>
-      <!--<md-error [(ngModel)]="errorRobot">error message</md-error>-->
-      <md-error>{{errorRobot}}</md-error>
+        <!--<md-error [(ngModel)]="errorRobot">error message</md-error>-->
+        <md-error>{{errorRobot}}</md-error>
       </md-action-row>
       <!--<div>-->
       <!--<br />-->
@@ -46,7 +46,8 @@
         </md-form-field>
 
         <md-action-row>
-          <button md-button color="primary" (click)="create_connection()" [attr.disabled]="validate_connect_button() === false ? true : null" disabled>Send Data</button>
+          <button md-button color="primary" (click)="create_connection()" [attr.disabled]="validate_connect_button() === false ? true : null"
+            disabled>Send Data</button>
         </md-action-row>
       </md-expansion-panel>
       <!-- END CREATE CONNECTION -->
@@ -63,7 +64,7 @@
 
         <md-form-field>
           <input mdInput id="east_port_input" placeholder="East port" value="east_port_number" [(ngModel)]="east_port_number" minlength="1"
-          maxlength="3" pattern="^[1-9][0-9]{1,3}">
+            maxlength="3" pattern="^[1-9][0-9]{1,3}">
         </md-form-field>
 
         <md-form-field>
@@ -72,8 +73,7 @@
         </md-form-field>
 
         <md-form-field>
-          <input mdInput id="stops" placeholder="Stops" value="stops" [(ngModel)]="stops" minlength="1" maxlength="20"
-          pattern="^[1-9][0-9,]{1,20}">
+          <input mdInput id="stops" placeholder="Stops" value="stops" [(ngModel)]="stops" minlength="1" maxlength="20" pattern="^[1-9][0-9,]{1,20}">
         </md-form-field>
 
         <md-form-field class="event-prevent">
@@ -81,14 +81,30 @@
         </md-form-field>
 
         <md-action-row>
-          <button md-button id="debug_button" color="primary" (click)="create_connection_debug_mode()" [attr.disabled]="validate_debug_button() === false ? true : null" disabled>Send Data</button>
+          <button md-button id="debug_button" color="primary" (click)="create_connection_debug_mode()" [attr.disabled]="validate_debug_button() === false ? true : null"
+            disabled>Send Data</button>
         </md-action-row>
       </md-expansion-panel>
       <!-- END CREATE CONNECTION DEBUG MODE -->
     </md-tab>
     <!-- END CONNECTION-TAB -->
     <!-- BEGIN SOME FUNCTION -->
-    <md-tab label="Some function in future">Some test function</md-tab>
+    <md-tab label="Some function in future">
+
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title> Get User </md-panel-title>
+          <md-panel-description> Test get user </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="getUser()">Get user</button>
+          <button md-button color="primary" (click)="logOut()">Log out</button>
+          
+        </md-action-row>
+      </md-expansion-panel>
+
+    </md-tab>
     <!-- END SOME FUNCTION -->
   </md-tab-group>
   <!-- END TAB-GROUP -->

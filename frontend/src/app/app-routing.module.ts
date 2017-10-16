@@ -13,40 +13,49 @@ import { ServerStatusErrorComponent } from './server-status-error/server-status-
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
 import { LoginComponent } from './login/login.component';
 
+// GUARD
+import { AuthGuard } from './_guards/auth.guard';
+
 export const appRoutes: Routes = [
   {
     path: '',
-    component: PortConnectionComponent
+    component: PortConnectionComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'port_connection_mobile',
+    component: PortConnectionMobileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'alarm',
+    component: AlarmComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'alarm_history',
+    component: AlarmHistoryComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'port_history',
+    component: PortHistoryComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'testing_mode',
+    component: TestingModeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
     component: LoginComponent
   },
-  {
-    path: 'port_connection_mobile',
-    component: PortConnectionMobileComponent
-  },
-  {
-    path: 'alarm',
-    component: AlarmComponent
-  },
-  {
-    path: 'alarm_history',
-    component: AlarmHistoryComponent
-  },
-  {
-    path: 'port_history',
-    component: PortHistoryComponent
-  },
-
-  {
-    path: 'testing_mode',
-    component: TestingModeComponent
-  },
   // SERVER STATUS 500
   {
     path: '500',
-    component: ServerStatusErrorComponent
+    component: ServerStatusErrorComponent,
   },
   // OUT OF PATH LIST WILL REDIRECT TO 404
   {
@@ -54,7 +63,7 @@ export const appRoutes: Routes = [
     // redirectTo: '/',
     // pathMatch: 'full'
     component: PageNotFoundComponent,
-  }
+  },
 ];
 
 @NgModule({

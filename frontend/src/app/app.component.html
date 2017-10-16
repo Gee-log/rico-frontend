@@ -7,7 +7,7 @@
     <!-- attr.disabled]="this.disable_stops_input == true ? false : null" -->
       <!-- BEGIN MENU ICON -->
       <div>
-        <button type="button" md-button class="div-icon-menu" (click)="sidenav.toggle()">
+        <button id="menu-icon" type="button" md-button class="div-icon-menu" (click)="sidenav.toggle(); getUserName();">
            <md-icon >menu</md-icon>
         </button>
       </div>
@@ -61,12 +61,12 @@
           <!-- END AVATAR -->
           <!-- BEGIN NAME-AVATAR-CONTAINER -->
           <div class="name-avatar-container">
-            <p>Aya Stark</p>
+            <p>{{ this.username }}</p>
           </div>
           <!-- END NAME-AVATAR-CONTAINER -->
           <!-- BEGIN USER-DROPDOWN-MENU -->
           <div class="user-dropdown-menu">
-            <span>aya.stark@xenoptics.com</span>
+            <span>{{ this.username }}@xenoptics.com</span>
             <div class="mdl-layout-spacer"></div>
             <button md-button class="div-icon" [mdMenuTriggerFor]="menudrop">
               <md-icon >arrow_drop_down</md-icon>
@@ -76,7 +76,7 @@
                 <md-icon>add</md-icon>
                 <span>Add another account...</span>
               </button>
-              <button md-menu-item>
+              <button md-menu-item (click)="logOut()">
                 <md-icon>remove</md-icon>
                 <span>Logout</span>
               </button>
