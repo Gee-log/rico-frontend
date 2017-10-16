@@ -4,9 +4,12 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+<<<<<<< HEAD
 // Api Service
 import { ApiService } from '../services/api.service';
 
+=======
+>>>>>>> 7a0edfd... Login work on frontend
 
 @Injectable()
 export class AuthenticationService {
@@ -16,7 +19,11 @@ export class AuthenticationService {
   private options = new RequestOptions({ headers: this.headers });
   private ROOT_URL = `http://localhost:8000/`;
 
+<<<<<<< HEAD
   constructor(private http: Http, private ApiService: ApiService) {
+=======
+  constructor(private http: Http) {
+>>>>>>> 7a0edfd... Login work on frontend
     // set token if saved in local storage
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
@@ -29,7 +36,10 @@ export class AuthenticationService {
 
       // login successful if there's a jwt token in the response
       const token = response && response['token'];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7a0edfd... Login work on frontend
       if (token) {
         // set token property
         this.token = token;
@@ -37,9 +47,12 @@ export class AuthenticationService {
         // store username and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
 
+<<<<<<< HEAD
         // set token for Api Service
         localStorage.setItem('token', JSON.stringify({ token: token }));
 
+=======
+>>>>>>> 7a0edfd... Login work on frontend
         // return true to indicate successful login
         return true;
       } else {
@@ -57,7 +70,10 @@ export class AuthenticationService {
     // clear token remove user from local storage to log user out
     this.token = null;
     localStorage.removeItem('currentUser');
+<<<<<<< HEAD
     localStorage.removeItem('token');
+=======
+>>>>>>> 7a0edfd... Login work on frontend
   }
 
 }
