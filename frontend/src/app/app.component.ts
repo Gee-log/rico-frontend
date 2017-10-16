@@ -1,9 +1,13 @@
+// ANGULAR Module
 import { Component } from '@angular/core';
-import * as $ from 'jquery';
-import { ApiService } from './services/api.service';
 import { Http, Headers, Response } from '@angular/http';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 
+// Api Service
+import { ApiService } from './services/api.service';
+import { AuthenticationService } from './services/authentication.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +15,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+
+  // USER DATA
+  user_data: object;
+  username: string;
 
   links = [
     {
@@ -54,7 +61,8 @@ export class AppComponent {
     }
   ];
 
-  constructor(private http: Http, private ApiService: ApiService, private router: Router) { }
+  constructor(private http: Http, private ApiService: ApiService,
+    private AuthenticationService: AuthenticationService, private UserService: UserService, private router: Router) { }
 
   // TOGGLE SETTINGS MENU
   toggleSettings() {
@@ -76,14 +84,38 @@ export class AppComponent {
   }
   // CLEAR DATABASE DATA
   clearDatabase() {
+
     this.ApiService.clearDatabase('cleardatabase');
+
   }
   // SHOW NAVBAR
   showNavbar() {
+
     if (this.router.url === '/login') {
       return false;
     } else {
       return true;
     }
+
   }
+  // LOGOUT
+  logOut() {
+
+    // CALL LOGOUT FUNCTION
+    this.AuthenticationService.logout();
+    // RE ROUTE TO LOGIN
+    this.router.navigateByUrl('/login');
+    // MAKE CLICK EVENT TO CLOSE SIDEBAR
+    document.getElementById('menu-icon').click();
+
+  }
+  // GET USERNAME
+  getUserName() {
+
+    // SET VARIABLE
+    this.user_data = this.UserService.getUsers();
+    this.username = this.user_data['username'];
+
+  }
+
 }

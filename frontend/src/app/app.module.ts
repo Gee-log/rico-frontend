@@ -34,10 +34,15 @@ import * as _ from 'lodash';
 
 // Services
 import { ApiService } from './services/api.service';
+import { AuthenticationService } from './services/authentication.service';
+import { UserService } from './services/user.service';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
+
+// Guard
+import { AuthGuard } from './_guards/auth.guard';
 
 enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
@@ -69,7 +74,7 @@ enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
     NgxDatatableModule,
     ChartsModule
   ],
-  providers: [ApiService],
+  providers: [ApiService, AuthGuard, AuthenticationService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
