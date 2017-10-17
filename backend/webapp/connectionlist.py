@@ -69,14 +69,14 @@ class ConnectionList(APIView):
             else:
                 logger.info('conn: %s', data)
 
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
 
         # Get all port data
         else:
             conns = Connection.objects.all().filter(disconnected_date=None)
             serializer = ConnectionSerializer(conns, many=True)
 
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST ConnectionList API
@@ -157,16 +157,20 @@ class ConnectionList(APIView):
 
         logger.info(request.data)
 
-        # Validate inputs
+        # Validate errors inputs
         if 'action' not in request.data:
-            return Response('No action', content_type="text/plain")
+            error_detail = {'error': 'No action'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         if 'east' not in request.data:
-            return Response('No east', content_type="text/plain")
+            error_detail = {'error': 'No east'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         if 'west' not in request.data:
-            return Response('No west', content_type="text/plain")
+            error_detail = {'error': 'No west'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
+        # Debug mode checking condition
         if 'number' in request.data and 'stops' in request.data:
             return self.debug(request)
 
@@ -174,11 +178,15 @@ class ConnectionList(APIView):
         if request.data['action'] == 'disconnect':
             return self.disconnect(request)
 
-        if request.data['action'] == 'test_connect':
+        elif request.data['action'] == 'test_connect':
             return self.test_connect(request)
 
-        else:
+        elif request.data['action'] == 'connect':
             return self.connection(request)
+
+        else:
+            error_detail = {'error': 'Invalid action'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
     def for_embest(self, request):
         """For using with embest
@@ -201,15 +209,18 @@ class ConnectionList(APIView):
 
         logger.info(request.data)
 
-        # validate inputs
+         # Validate errors inputs
         if 'action' not in request.data:
-            return Response('No action', content_type="text/plain")
+            error_detail = {'error': 'No action'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         if 'east' not in request.data:
-            return Response('No east', content_type="text/plain")
+            error_detail = {'error': 'No east'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         if 'west' not in request.data:
-            return Response('No west', content_type="text/plain")
+            error_detail = {'error': 'No west'}
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         # Debug mode checking condition
         if 'number' in request.data and 'stops' in request.data:
@@ -370,7 +381,7 @@ class ConnectionList(APIView):
         # create connection
         self.create_connect(request, east, west)
 
-        return Response(request.data)
+        return Response(request.data, status=status.HTTP_201_CREATED)
 
     def create_connect(self, request, east, west):
         """Create connection in database
@@ -446,7 +457,7 @@ class ConnectionList(APIView):
         # create disconnection
         self.create_disconnect(request, east, west)
 
-        return Response(request.data)
+        return Response(request.data, status=status.HTTP_201_CREATED)
 
     def create_disconnect(self, request, east, west):
         """Create disconnection in database

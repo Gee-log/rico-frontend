@@ -1,3 +1,4 @@
+// ANGULAR MODULE
 import { Component, OnInit } from '@angular/core';
 
 @Component({

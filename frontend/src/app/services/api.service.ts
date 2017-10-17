@@ -292,7 +292,7 @@ export class ApiService {
       console.error('POST TESTING CONNECTION ERROR!');
     });
   }
-
+  // CHECK SERVER IS ONLINE OR NOT
   check_server_status() {
 
     let status;
@@ -312,13 +312,13 @@ export class ApiService {
   home_robot_axes() {
     return this.http.get(this.ROOT_URL + 'homes/').toPromise().then((response: any) => {
 
-      let resp = JSON.parse(response._body);
-      resp['status'] = 'success'
+      const resp = JSON.parse(response._body);
+      resp['status'] = 'success';
       return resp;
 
       // IF CANNOT GET RESPONSE FROM SERVER
     }).catch((error) => {
-      return {'status':'error', 'error':error};
+      return { 'status': 'error', 'error': error };
     });
   }
 
