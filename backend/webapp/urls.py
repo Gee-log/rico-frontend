@@ -7,7 +7,6 @@ from webapp import alarmlist
 from webapp import portlist
 from webapp import operationlist
 from webapp import operationhistorylist
-from webapp import user
 
 from rest_framework.authtoken import views as rest_framework_views
 

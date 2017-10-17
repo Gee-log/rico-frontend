@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 // Api Service
 import { ApiService } from '../services/api.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -17,14 +18,25 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false; // <-- Not using right now
   error = '';
+  current_user = this.userservice.getUsers();
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService,
+    private userservice: UserService) { }
 
   ngOnInit() {
+    // check current user
+    this.checkCurrentUser();
     // reset login status
-    this.authenticationService.logout();
+    // this.authenticationService.logout();
+  }
+
+  // VALIDATE CURRENT USER
+  checkCurrentUser() {
+    if (this.current_user) {
+      this.router.navigate(['/']);
+    }
   }
   // LOGIN
   login() {
