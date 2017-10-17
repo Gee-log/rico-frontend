@@ -41,7 +41,21 @@ class PortList(APIView):
                 id (integer): id of object
         """
 
-        return Response(request.data)
+        serializer = PortSerializer(data=request.data)
+        
+        if serializer.is_valid():
+
+            if Port.objects.filter(direction=request.data['direction'], number=request.data['number']):
+            
+                error_detail = {'error': 'This port already exist in database.'}
+                
+                return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+            
+            else: 
+                serializer.save()        
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT PortList API

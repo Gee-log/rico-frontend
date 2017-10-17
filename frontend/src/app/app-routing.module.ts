@@ -50,12 +50,13 @@ export const appRoutes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   // SERVER STATUS 500
   {
     path: '500',
     component: ServerStatusErrorComponent,
+    canActivate: [AuthGuard]
   },
   // OUT OF PATH LIST WILL REDIRECT TO 404
   {
@@ -63,6 +64,7 @@ export const appRoutes: Routes = [
     // redirectTo: '/',
     // pathMatch: 'full'
     component: PageNotFoundComponent,
+    canActivate: [AuthGuard]
   },
 ];
 

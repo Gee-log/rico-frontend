@@ -9,8 +9,10 @@ import { MdPaginator } from '@angular/material';
 // Api Service
 import { ApiService } from '../services/api.service';
 
-// Third-party
+// ReactiveX
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+// Third-party
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
 import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
@@ -26,6 +28,7 @@ export class PortHistoryComponent implements OnInit {
   rows = [];
   temp = [];
   selected: any[] = [];
+
   // COLUMNS VARIABLES
   columns = [
     { name: 'Date' },

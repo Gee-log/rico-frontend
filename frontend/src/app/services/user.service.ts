@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
+// ReactiveX
 import { Observable } from 'rxjs/Observable'; // <-- Not using right now
 import 'rxjs/add/operator/map'; // <-- Not using right now
 
@@ -9,8 +10,7 @@ import 'rxjs/add/operator/map'; // <-- Not using right now
 import { AuthenticationService } from './authentication.service';
 
 // Model
-// Not using right now
-import { User } from '../_models/user';
+import { User } from '../_models/user'; // <-- Not using right now
 
 @Injectable()
 export class UserService {
