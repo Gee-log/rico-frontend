@@ -7,11 +7,14 @@ import logging.handlers
 import requests
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from django.http import HttpResponse, JsonResponse
 
 from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory
 from webapp.serializers import ConnectionSerializer
 from webapp.views import walk, CELERY_APP
+
+
 
 
 # set logger
@@ -94,19 +97,38 @@ class ConnectionList(APIView):
                 action (string): action type
         """
 
-        # If using white walker dummy
-        if walk.is_dummy():
-            return self.for_whitewalker(request)
+        # Validate authorization
+        if request.META.get('HTTP_AUTHORIZATION'):
 
-        # If not using white walker dummy
-        else:
-            # Check if current status is not error then call for_embest()
-            if self.check_current_status(request) not in ['error', 'alarm']:
-                return self.for_embest(request)
+            # Set token
+            token = request.META.get('HTTP_AUTHORIZATION')
+
+            # Check token is exist in database or not
+            if Token.objects.all().filter(key=token):
+
+                # If using white walker dummy
+                if walk.is_dummy():
+                    return self.for_whitewalker(request)
+
+                # If not using white walker dummy
+                else:
+                    # Check if current status is not error then call for_embest()
+                    if self.check_current_status(request) not in ['error', 'alarm']:
+                        return self.for_embest(request)
+                    
+                    # Check if current status is error then return error message
+                    else:
+                        return self.query_status_error(request)
             
-            # Check if current status is error then return error message
             else:
-                return self.query_status_error(request)
+                
+                error_detail = {'detail': 'Permission denied'}
+                return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
+                
+        else:
+            
+            error_detail = {'detail': 'Permission denied'}
+            return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
         """PUT ConnectionList API
