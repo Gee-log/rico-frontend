@@ -1,7 +1,9 @@
 """connectionhistorylist api
 """
-from rest_framework.views import APIView, status
+from rest_framework.views import APIView
+from rest_framework.views import status as drf_status
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from django.http import JsonResponse, HttpResponse
 from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
 #  from webapp.serializers import ConnectionHistorySerializer
@@ -70,52 +72,71 @@ class ConnectionHistoryList(APIView):
                 csv: csv file
         """
 
-        if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
-            historyid = request.data['id']
-            status = request.data['action']
+        # Validate authorization
+        if request.META.get('HTTP_AUTHORIZATION'):
+    
+            # Set token
+            token = request.META.get('HTTP_AUTHORIZATION')
 
-            connh = ConnectionHistory.objects.all().filter(id=historyid)
-            conn = Connection.objects.all()
-            for i in connh:
+            # Check token is exist in database or not
+            if Token.objects.all().filter(key=token):
 
-                for c in conn:
+                if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
+                    historyid = request.data['id']
+                    status = request.data['action']
 
-                    if i.switching_type == 'C' and c.disconnected_date is None:
-                        Connection.objects.filter(east=i.east, west=i.west, status='pending').delete()
-                        Connection.objects.filter(east=i.east, west=i.west, status='break').delete()
-                        Connection.objects.filter(east=i.east, west=i.west, status='started').delete()
+                    connh = ConnectionHistory.objects.all().filter(id=historyid)
+                    conn = Connection.objects.all()
+                    for i in connh:
 
-                    elif i.switching_type == 'D' and c.disconnected_date is None:
-                        Connection.objects.filter(east=i.east, west=i.west, status='pending').update(
-                            status='success', disconnected_date=None)
-                        Connection.objects.filter(east=i.east, west=i.west, status='break').update(
-                            status='success', disconnected_date=None)
-                        Connection.objects.filter(east=i.east, west=i.west, status='started').update(
-                            status='success', disconnected_date=None)
+                        for c in conn:
 
-            ConnectionHistory.objects.filter(id=historyid).update(status=status)
+                            if i.switching_type == 'C' and c.disconnected_date is None:
+                                Connection.objects.filter(east=i.east, west=i.west, status='pending').delete()
+                                Connection.objects.filter(east=i.east, west=i.west, status='break').delete()
+                                Connection.objects.filter(east=i.east, west=i.west, status='started').delete()
 
-            operations = Operation.objects.filter(robotnumber='1')
-            for o in operations:
-                revoke(o.uuid, terminate=True)
+                            elif i.switching_type == 'D' and c.disconnected_date is None:
+                                Connection.objects.filter(east=i.east, west=i.west, status='pending').update(
+                                    status='success', disconnected_date=None)
+                                Connection.objects.filter(east=i.east, west=i.west, status='break').update(
+                                    status='success', disconnected_date=None)
+                                Connection.objects.filter(east=i.east, west=i.west, status='started').update(
+                                    status='success', disconnected_date=None)
 
-            Operation.objects.all().delete()
+                    ConnectionHistory.objects.filter(id=historyid).update(status=status)
 
-            return JsonResponse({'historyid': historyid, 'action': status})
+                    operations = Operation.objects.filter(robotnumber='1')
+                    for o in operations:
+                        revoke(o.uuid, terminate=True)
 
-        elif 'action' in request.data and request.data['action'] == 'cleardatabase':
+                    Operation.objects.all().delete()
 
-            Connection.objects.all().delete()
-            # ConnectionHistory.objects.all().delete()
-            Operation.objects.all().delete()
-            OperationHistory.objects.all().delete()
+                    return JsonResponse({'historyid': historyid, 'action': status})
 
-            return HttpResponse('Clear database success !')
+                elif 'action' in request.data and request.data['action'] == 'cleardatabase':
 
-        # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-        if 'type' in request.data and request.data['type'] == 'connectionhistory':
+                    Connection.objects.all().delete()
+                    # ConnectionHistory.objects.all().delete()
+                    Operation.objects.all().delete()
+                    OperationHistory.objects.all().delete()
 
-            return self.savedata(request)
+                    return HttpResponse('Clear database success !')
+
+                # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
+                if 'type' in request.data and request.data['type'] == 'connectionhistory':
+
+                    return self.savedata(request)
+
+            else:
+
+                error_detail = {'detail': 'Permission denied'}
+                return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
+        
+        else:
+
+            error_detail = {'detail': 'Permission denied'}
+            return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
         """PUT ConnectionHistoryList API

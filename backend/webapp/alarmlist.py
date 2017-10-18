@@ -2,6 +2,7 @@
 """
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from webapp.models import Alarm
 from webapp.serializers import AlarmSerializer
 from datetime import datetime
@@ -51,10 +52,30 @@ class AlarmList(APIView):
                 detail (string): alarm's detail
                 severity (string): severity
         """
-        alarms = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
-        alarms.save()
 
-        return Response(request.data)
+        # Validate authorization
+        if request.META.get('HTTP_AUTHORIZATION'):
+    
+            # Set token
+            token = request.META.get('HTTP_AUTHORIZATION')
+
+            # Check token is exist in database or not
+            if Token.objects.all().filter(key=token):
+
+                alarms = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
+                alarms.save()
+
+                return Response(request.data)
+            
+            else:
+                    
+                error_detail = {'detail': 'Permission denied'}
+                return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
+                
+        else:
+            
+            error_detail = {'detail': 'Permission denied'}
+            return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
         """PUT AlarmList API

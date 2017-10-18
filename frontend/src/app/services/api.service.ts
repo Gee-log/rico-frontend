@@ -2,6 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions, ResponseContentType } from '@angular/http';
 
+import { AuthenticationService } from '../services/authentication.service';
+
 // Third-Party
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
@@ -10,7 +12,8 @@ import * as FileSaver from 'file-saver';
 @Injectable()
 export class ApiService {
 
-  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private authToken = JSON.parse(localStorage.getItem('token'));
+  private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken['token']});
   private options = new RequestOptions({ headers: this.headers });
   private ROOT_URL = `http://localhost:8000/`;
 
@@ -240,6 +243,7 @@ export class ApiService {
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type }, this.options).toPromise().then((response: any) => {
       console.log(response._body);
       return response;
+
     }).catch(() => {
       console.error('POST ERROR');
     });
