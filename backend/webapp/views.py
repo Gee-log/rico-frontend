@@ -57,6 +57,7 @@ def index(request):
     Returns:
         render: index.html
     """
+
     return render(request, template_name='webapp/index.html')
 
 
@@ -66,6 +67,7 @@ def landing(request):
     Returns:
         render: landing.html
     """
+
     return render(request, template_name='webapp/landing.html')
 
 
