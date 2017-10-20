@@ -81,7 +81,7 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
     // CHECK STATUS EVERY 5 SEC.
     this.timerInterval = setInterval(() => {
       this.checkStatus();
-    }, 3000);
+    }, 1500);
 
   }
 

@@ -1,8 +1,20 @@
 from django.contrib import admin
-from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory
+from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role
 
-admin.site.register(Port)
 
+class PortModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "direction", "number", "note", "connection_counter"]
+    class Meta:
+        model = Port
+
+admin.site.register(Port, PortModelAdmin)
+
+class RoleModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "user", "role"]
+    class Meta:
+        model = Role
+
+admin.site.register(Role, RoleModelAdmin)
 
 class ConnectionModelAdmin(admin.ModelAdmin):
     list_display = ["__str__", "east" , "west" , "connected_date", "disconnected_date", "status"]

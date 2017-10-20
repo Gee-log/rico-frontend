@@ -28,12 +28,18 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     // check current user
     this.checkCurrentUser();
+
     // reset login status
     // this.authenticationService.logout();
   }
 
   // VALIDATE CURRENT USER
   checkCurrentUser() {
+
+    // set fake token in localStorage first ** this versy important
+
+    localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
+
     if (this.current_user) {
       this.router.navigate(['/']);
     }

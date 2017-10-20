@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -16,6 +17,7 @@ class Port(models.Model):
     direction = models.CharField(max_length=1, choices=DIRECTION_TYPE)
     number = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(144)])
     note = models.CharField(max_length=64, null=True)
+    connection_counter = models.IntegerField(default=0)
 
     def __str__(self):
         return self.direction + str(self.number)
@@ -133,6 +135,21 @@ class OperationHistory(models.Model):
 
     class Meta:
         ordering = ['-created_time']
+
+
+class Role(models.Model):
+    USER_ROLE = (
+        ('Admin', 'Admin'),
+        ('Manager', 'Manager'),
+        ('Staff', 'Staff'),
+        ('User', 'User'),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=7, choices=USER_ROLE, default='Admin')
+
+    def __str__(self):
+        return str(self.user) + ' (' + str(self.role) + ')'
 
 
 # This code is triggered whenever a new user has been created and saved to the database
