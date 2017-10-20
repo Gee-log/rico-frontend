@@ -7,6 +7,7 @@ from webapp import alarmlist
 from webapp import portlist
 from webapp import operationlist
 from webapp import operationhistorylist
+from webapp import userlist
 
 from rest_framework.authtoken import views as rest_framework_views
 
@@ -33,6 +34,8 @@ urlpatterns = [
     url(r'^frontend/', views.index, name='index'),
     # call home method
     url(r'^homes/', views.homes, name='homes'),
+    # user api
+    url(r'^users/', userlist.RoleList.as_view()),
     # redirect to landing page
     url(r'^$', views.landing, name='landing'),
     # Session Login
