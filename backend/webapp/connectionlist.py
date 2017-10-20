@@ -9,6 +9,7 @@ from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.http import HttpResponse, JsonResponse
+from django.db.models import F
 
 from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory
 from webapp.serializers import ConnectionSerializer
@@ -448,6 +449,10 @@ class ConnectionList(APIView):
 
         OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
         logger.info('%s connect E%s W%s stops:%s', uuid, east.number, west.number, stops)
+        
+        #  connection counter        
+        Port.objects.all().filter(direction='E', number=str(east.number)).update(connection_counter=F('connection_counter')+1)
+        Port.objects.all().filter(direction='W', number=str(west.number)).update(connection_counter=F('connection_counter')+1)
 
     def disconnect(self, request):
         """Disconnection Process
@@ -530,6 +535,10 @@ class ConnectionList(APIView):
 
                 OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
                 logger.info('%s disconnection E%s W%s stops:%s', uuid, east.number, west.number, stops)
+                
+                #  connection counter
+                Port.objects.all().filter(direction='E', number=str(east.number)).update(connection_counter=F('connection_counter')+1)
+                Port.objects.all().filter(direction='W', number=str(west.number)).update(connection_counter=F('connection_counter')+1)
 
 
     def get_available_ports(self, request):

@@ -12,8 +12,8 @@ import * as FileSaver from 'file-saver';
 @Injectable()
 export class ApiService {
 
-  private authToken = JSON.parse(localStorage.getItem('token'));
-  private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken['token']});
+  private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
+  private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
   private ROOT_URL = `http://localhost:8000/`;
 
@@ -73,9 +73,15 @@ export class ApiService {
 
     // STOPS MODE
     // PAYLOAD { east, west, action, stops }
+
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
     if (stops && number === undefined) {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops },
-        this.options).toPromise().then((response: any) => {
+        options).toPromise().then((response: any) => {
 
           response = JSON.parse(response._body);
 
@@ -96,7 +102,7 @@ export class ApiService {
       // PAYLOAD { east, west, action, stops, number }
     } else if (stops && number) {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, number },
-        this.options).toPromise().then((response: any) => {
+        options).toPromise().then((response: any) => {
 
           response = JSON.parse(response._body);
 
@@ -116,7 +122,10 @@ export class ApiService {
       // NORMAL MODE
       // PAYLOAD { east, west, action }
     } else {
-      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
+
+      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
+
+        console.log(authToken['token']);
 
         response = JSON.parse(response._body);
 
@@ -216,8 +225,14 @@ export class ApiService {
   // POST CANCEL TASK
   cancelTask(id, action) {
 
-    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id, action }, this.options).toPromise().then((response: any) => {
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id, action }, options).toPromise().then((response: any) => {
       console.log(response._body);
+
       return response;
 
     }).catch(() => {
@@ -228,7 +243,12 @@ export class ApiService {
   // CLEAR DATABASE DATA
   clearDatabase(action) {
 
-    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action }, this.options).toPromise().then((response: any) => {
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action }, options).toPromise().then((response: any) => {
       console.log(response._body);
       return response;
 
