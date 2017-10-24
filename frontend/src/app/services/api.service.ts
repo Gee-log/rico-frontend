@@ -62,19 +62,6 @@ export class ApiService {
         eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
       });
 
-    }).catch((error: any) => {
-      // ERROR FROM SERVER
-      if (error.status && error.status !== 0) {
-
-        console.error('GET ALL PORT ERROR ' + error.status, Observable.throw(new Error(error.status)));
-        return ({ status: 'error', error: 'ERROR ' + error.status });
-
-        // ERROR FROM CLIENT
-      } else {
-        console.error('GET ALL PORT ERROR 500 Internal Server');
-        return ({ status: 'error', error: 'ERROR 500' });
-      }
-
     });
 
   }
