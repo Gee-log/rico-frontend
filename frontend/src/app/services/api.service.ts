@@ -4,6 +4,9 @@ import { Headers, Http, RequestOptions, ResponseContentType } from '@angular/htt
 
 import { AuthenticationService } from '../services/authentication.service';
 
+// Reactive
+import { Observable } from 'rxjs/Rx';
+
 // Third-Party
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
@@ -59,6 +62,19 @@ export class ApiService {
         eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
       });
 
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('GET ALL PORT ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET ALL PORT ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
 
   }
@@ -79,6 +95,7 @@ export class ApiService {
     const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
     const options = new RequestOptions({ headers: headers });
 
+    // START DEBUG MODE
     if (stops && number === undefined) {
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops },
         options).toPromise().then((response: any) => {
@@ -95,8 +112,19 @@ export class ApiService {
 
           }
 
-        }).catch(() => {
-          console.error('POST ERROR');
+        }).catch((error: any) => {
+          // ERROR FROM SERVER
+          if (error.status && error.status !== 0) {
+
+            console.error('POST START DEBUG MODE ERROR ' + error.status, Observable.throw(new Error(error.status)));
+            return ({ status: 'error', error: 'ERROR ' + error.status });
+
+            // ERROR FROM CLIENT
+          } else {
+            console.error('POST START DEBUG MODE ERROR 500 Internal Server');
+            return ({ status: 'error', error: 'ERROR 500' });
+          }
+
         });
       // DEBUG MODE
       // PAYLOAD { east, west, action, stops, number }
@@ -116,8 +144,19 @@ export class ApiService {
 
           }
 
-        }).catch(() => {
-          console.error('POST DEBUG MODE ERROR!');
+        }).catch((error: any) => {
+          // ERROR FROM SERVER
+          if (error.status && error.status !== 0) {
+
+            console.error('POST DEBUG MODE ERROR ' + error.status, Observable.throw(new Error(error.status)));
+            return ({ status: 'error', error: 'ERROR ' + error.status });
+
+            // ERROR FROM CLIENT
+          } else {
+            console.error('POST DEBUG MODE ERROR 500 Internal Server');
+            return ({ status: 'error', error: 'ERROR 500' });
+          }
+
         });
       // NORMAL MODE
       // PAYLOAD { east, west, action }
@@ -139,8 +178,19 @@ export class ApiService {
 
         }
 
-      }).catch(() => {
-        console.error('POST NORMAL MODE ERROR!');
+      }).catch((error: any) => {
+        // ERROR FROM SERVER
+        if (error.status && error.status !== 0) {
+
+          console.error('POST NORMAL MODE ERROR ' + error.status, Observable.throw(new Error(error.status)));
+          return ({ status: 'error', error: 'ERROR ' + error.status });
+
+          // ERROR FROM CLIENT
+        } else {
+          console.error('POST NORMAL MODE ERROR 500 Internal Server');
+          return ({ status: 'error', error: 'ERROR 500' });
+        }
+
       });
     }
 
@@ -163,6 +213,39 @@ export class ApiService {
 
       return ({ status: status, sequence: sequence, action: action });
 
+    }).catch((error: any) => {
+
+
+
+      if (error.status === 500) {
+
+        const response = JSON.parse(error._body);
+        const status = response.status;
+        const action = response.action;
+        const sequence = response.sequence;
+        const error_detail = response.error;
+        const error_code = response.code;
+
+        console.error('CHECK STATUS ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: status, action: action, sequence: sequence, error: error_detail, code: error_code });
+
+      } else if (error.status === 400) {
+
+        console.error('CHECK STATUS ERROR ' + error.status, Observable.throw(new Error(error.status)));
+
+      } else if (error.status === 409) {
+
+        console.error('CHECK STATUS ERROR ' + error.status, Observable.throw(new Error(error.status)));
+
+      } else if (error.status === 406) {
+
+        console.error('CHECK STATUS ERROR ' + error.status, Observable.throw(new Error(error.status)));
+
+      } else {
+        console.error('CHECK STATUS ERROR 500 Internal Server');
+        return ({ status: 'error', sequence: null, action: null, error: 'ERROR 500', code: null });
+
+      }
     });
 
   }
@@ -173,8 +256,19 @@ export class ApiService {
       response = JSON.parse(response._body);
       return (response);
 
-    }).catch(() => {
-      console.error('GET CONNECTED PORT ERROR!');
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('GET CONNECTED PORT ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET CONNECTED PORT ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
 
   }
@@ -184,6 +278,19 @@ export class ApiService {
     return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then((response: any) => {
       response = JSON.parse(response._body);
       return (response);
+
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('GET CONNECTION HISTORY ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET CONNECTION HISTORY ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
 
     });
 
@@ -195,6 +302,19 @@ export class ApiService {
       response = JSON.parse(response._body);
       return (response);
 
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('GET ALARM HISTORY ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET ALARM HISTORY ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
 
   }
@@ -205,8 +325,19 @@ export class ApiService {
       console.log(response._body);
       return response;
 
-    }).catch(() => {
-      console.error('POST ERROR');
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('GET ALARM ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET ALARM ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
 
   }
@@ -217,10 +348,20 @@ export class ApiService {
       console.log(response._body);
       return response;
 
-    }).catch(() => {
-      console.error('POST ERROR');
-    });
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
 
+        console.error('PENDING TASK ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('PENDING TASK ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
+    });
   }
   // POST CANCEL TASK
   cancelTask(id, action) {
@@ -235,10 +376,20 @@ export class ApiService {
 
       return response;
 
-    }).catch(() => {
-      console.error('POST ERROR');
-    });
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
 
+        console.error('CANCELED TASK ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('CANCELED TASK ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
+    });
   }
   // CLEAR DATABASE DATA
   clearDatabase(action) {
@@ -252,8 +403,19 @@ export class ApiService {
       console.log(response._body);
       return response;
 
-    }).catch(() => {
-      console.error('POST ERROR');
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('CLEAR DATABASE TASK ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('CLEAR DATABASE ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
 
   }
@@ -264,8 +426,19 @@ export class ApiService {
       console.log(response._body);
       return response;
 
-    }).catch(() => {
-      console.error('POST ERROR');
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('SAVE DATA ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('SAVE DATA ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
 
   }
@@ -312,9 +485,21 @@ export class ApiService {
       }
       return (response);
 
-    }).catch(() => {
-      console.error('POST TESTING CONNECTION ERROR!');
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+
+        console.error('TESTING CONNECTION ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('TESTING CONNECTION ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
     });
+
   }
   // CHECK SERVER IS ONLINE OR NOT
   check_server_status() {

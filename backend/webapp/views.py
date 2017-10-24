@@ -342,20 +342,16 @@ def checkerror(request, data_dict, uuid):
             action (string): None
     """
 
-    obj = {'action': 'connect'}
+    action = data_dict['request']['action']
     status = data_dict['status']
-    response_error = data_dict['error']
+    response_error = data_dict['response']
+    sequence = None
     east = data_dict['request']['east']
     west = data_dict['request']['west']
+    error = data_dict['response']['message']
+    code = data_dict['response']['code']
 
-    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
-    for i in operations:
-
-        obj = ast.literal_eval(i.request)
-        east = obj['east']
-        west = obj['west']
-
-    if obj['action'] == 'connect':
+    if action == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
 
     else:
@@ -367,7 +363,7 @@ def checkerror(request, data_dict, uuid):
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
                                                       response=response_error)
 
-    return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']})
+    return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
 
 
 def checkalarm(request, data_dict, uuid):
@@ -385,21 +381,16 @@ def checkalarm(request, data_dict, uuid):
             action (string): None
     """
 
-    obj = {'action': 'connect'}
+    action = data_dict['request']['action']
     status = data_dict['status']
-    response_alarm = data_dict['response']
-    sequence = data_dict['response']['sequence']
+    response_error = data_dict['response']
+    sequence = None
     east = data_dict['request']['east']
     west = data_dict['request']['west']
+    error = data_dict['response']['message']
+    code = data_dict['response']['code']
 
-    operations = Operation.objects.filter(robotnumber='1', uuid=uuid)
-    for i in operations:
-
-        obj = ast.literal_eval(i.request)
-        east = obj['east']
-        west = obj['west']
-
-    if obj['action'] == 'connect':
+    if action == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
 
     else:
@@ -407,11 +398,11 @@ def checkalarm(request, data_dict, uuid):
             status='success', disconnected_date=None)
 
     ConnectionHistory.objects.filter(east=east, west=west, status=['pending', 'started']).update(status=status)
-    Operation.objects.filter(robotnumber='1', uuid=uuid).update(status=status, response=response_alarm)
+    Operation.objects.filter(robotnumber='1', uuid=uuid).update(status=status, response=response_error)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
-                                                      response=response_alarm)
+                                                      response=response_error)
 
-    return JsonResponse({'status': status, 'sequence': sequence, 'action': obj['action']})
+    return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
 
 
 def checktask(request):
