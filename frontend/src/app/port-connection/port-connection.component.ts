@@ -162,12 +162,26 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
-      } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started' || this.status === 'error'
-        || this.status === 'alarm') {
+      } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
 
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
+
+      } else if (this.status === 'error' || this.status === 'alarm') {
+
+        if (data['code'] !== null) {
+
+          this.error_message = data['status'] + ' ' + data['error'] + ' Code ' + data['code'];
+
+        } else {
+
+          this.error_message = data['status'] + ' ' + data['error'];
+
+        }
+
+        document.getElementById('error-dialog').classList.remove('hide');
+
       }
 
     });
@@ -392,7 +406,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
+            this.error_message = data.status + ' ' + data.error;
             document.getElementById('error-dialog').classList.remove('hide');
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
@@ -410,7 +424,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
+            this.error_message = data.status + ' ' + data.error;
             document.getElementById('error-dialog').classList.remove('hide');
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
@@ -451,7 +465,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
+            this.error_message = data.status + ' ' + data.error;
             document.getElementById('error-dialog').classList.remove('hide');
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
@@ -469,7 +483,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
+            this.error_message = data.status + ' ' + data.error;
             document.getElementById('error-dialog').classList.remove('hide');
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
@@ -517,7 +531,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
+            this.error_message = data.status + ' ' + data.error;
             document.getElementById('error-dialog').classList.remove('hide');
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
@@ -566,6 +580,11 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       }
 
       console.log('------------------------------- All Port Status -------------------------------');
+
+      if (data['status'] === 'error') {
+        this.error_message = data.status + ' ' + data.error;
+        document.getElementById('error-dialog').classList.remove('hide');
+      }
 
       _.each(data, (obj) => {
 
