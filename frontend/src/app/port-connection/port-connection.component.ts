@@ -162,8 +162,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
-      } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started' || this.status === 'error'
-        || this.status === 'alarm') {
+      } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
 
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
