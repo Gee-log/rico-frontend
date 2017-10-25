@@ -172,7 +172,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
         if (data['code'] !== null) {
 
-          this.error_message = data['status'] + ' ' + data['error'] + ' Code ' + data['code'];
+          this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code'];
 
         } else {
 
@@ -581,9 +581,12 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
       console.log('------------------------------- All Port Status -------------------------------');
 
+      // IF STATUS IS ERROR SHOW ERROR DIALOG
       if (data['status'] === 'error') {
+
         this.error_message = data.status + ' ' + data.error;
         document.getElementById('error-dialog').classList.remove('hide');
+
       }
 
       _.each(data, (obj) => {
