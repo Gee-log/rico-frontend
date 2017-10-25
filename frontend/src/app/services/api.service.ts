@@ -182,29 +182,42 @@ export class ApiService {
     }
 
   }
-
+  // PARSE AN ERROR HTTPRESPONSE BODY
   parseErrorBody(error) {
+
     try {
-      let response = JSON.parse(error._body);
+
+      const response = JSON.parse(error._body);
+
       return response;
+
     } catch (e) {
-      if (e instanceof SyntaxError){
-        console.log('cannot parse json');
-        let obj: any = {
+
+      if (e instanceof SyntaxError) {
+
+        const parse = new DOMParser();
+        const htmlData = parse.parseFromString(error._body, 'text/html');
+        const title = htmlData.getElementsByTagName('title')[0].textContent;
+        const error_message = htmlData.getElementsByClassName('exception_value')[0].textContent;
+
+        const obj: any = {
           'status': 'error',
           'action': '-',
           'sequence': '-',
-          'error_detail': error._body,
-          'error_code': error.status,
-        }
+          'error': title,
+          'code': error_message
+        };
 
-        return <JSON> obj;
+        return <JSON>obj;
+
       } else {
-        console.log ('parseErrorBody', e);
+
+        console.log('parseErrorBody', e);
+
       }
     }
-  }
 
+  }
   // CHECK STATUS FROM CURRENT TASK
   checkStatus() {
 
