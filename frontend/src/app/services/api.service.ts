@@ -18,7 +18,7 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://localhost:8000/`;
+  private ROOT_URL = `http://192.168.60.76:8080/`;
 
   constructor(private http: Http) { }
 
@@ -182,6 +182,29 @@ export class ApiService {
     }
 
   }
+
+  parseErrorBody(error) {
+    try {
+      let response = JSON.parse(error._body);
+      return response;
+    } catch (e) {
+      if (e instanceof SyntaxError){
+        console.log('cannot parse json');
+        let obj: any = {
+          'status': 'error',
+          'action': '-',
+          'sequence': '-',
+          'error_detail': error._body,
+          'error_code': error.status,
+        }
+
+        return <JSON> obj;
+      } else {
+        console.log ('parseErrorBody', e);
+      }
+    }
+  }
+
   // CHECK STATUS FROM CURRENT TASK
   checkStatus() {
 
@@ -202,11 +225,9 @@ export class ApiService {
 
     }).catch((error: any) => {
 
-
-
       if (error.status === 500) {
 
-        const response = JSON.parse(error._body);
+        const response = this.parseErrorBody(error);
         const status = response.status;
         const action = response.action;
         const sequence = response.sequence;
