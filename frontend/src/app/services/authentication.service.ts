@@ -14,7 +14,8 @@ export class AuthenticationService {
   public token: string;
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://localhost:8000/`;
+  // private ROOT_URL = `http://localhost:8000/`;
+  private ROOT_URL = `http://192.168.60.76:8080/`;
 
   constructor(private http: Http, private ApiService: ApiService) {
     // set token if saved in local storage

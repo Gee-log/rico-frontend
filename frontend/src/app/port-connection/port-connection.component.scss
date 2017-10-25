@@ -543,14 +543,14 @@
           // background: skyblue;
           md-card {
           width: 135px;
-          height: 0;
+          height: 80px;
           font-size: 14px;
           border-radius: 35px;
           background: #E74856;
             & p {
               cursor: default;
               color: white;
-              transform: translateY(-50%);
+              transform: translateY(-15%);
             }
           }
           .hide {
