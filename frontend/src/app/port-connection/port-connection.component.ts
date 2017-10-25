@@ -168,6 +168,49 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
+
+        // WHEN CURRENT STATUS IS ERRROR
+      } else if (this.status === 'error') {
+
+        this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
+        this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
+        this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
+
+        // IF data['code'] is not null
+        if (data['code'] !== null) {
+
+          this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code'];  // <-- set error_message
+          this.checkMessageLength(); // <-- check message length
+
+          // IF data['code] is null
+        } else {
+
+          this.error_message = data['status'] + ' ' + data['error'];  // <-- set error_message
+          this.checkMessageLength(); // <-- check message length
+
+        }
+
+        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
+        // WHEN CURRENT STATUS IS ALARM
+      } else if (this.status === 'alarm') {
+
+        // IF data['code'] is not null
+        if (data['code'] !== null) {
+
+          this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code'];  // <-- set error_message
+          this.checkMessageLength(); // <-- check message length
+
+          // IF data['code] is null
+        } else {
+
+          this.error_message = data['status'] + ' ' + data['error'];  // <-- set error_message
+          this.checkMessageLength(); // <-- check message length
+
+        }
+
+        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
       }
 
     });
@@ -392,13 +435,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
-            document.getElementById('error-dialog').classList.remove('hide');
+            this.error_message = data.status + ' ' + data.error;  // <-- set error_message
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            document.getElementById('error-dialog').classList.add('hide');
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.add('hide');   // <-- add class hide
 
           }
 
@@ -410,13 +455,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
-            document.getElementById('error-dialog').classList.remove('hide');
+            this.error_message = data.status + ' ' + data.error;  // <-- set error_message
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            document.getElementById('error-dialog').classList.add('hide');
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
         });
@@ -451,13 +498,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
-            document.getElementById('error-dialog').classList.remove('hide');
+            this.error_message = data.status + ' ' + data.error;  // <-- set error_message
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            document.getElementById('error-dialog').classList.add('hide');
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
 
@@ -469,13 +518,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
-            document.getElementById('error-dialog').classList.remove('hide');
+            this.error_message = data.status + ' ' + data.error;
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            document.getElementById('error-dialog').classList.add('hide');
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
 
@@ -517,13 +568,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
-            this.error_message = data.status + '_' + data.error + ' !';
-            document.getElementById('error-dialog').classList.remove('hide');
+            this.error_message = data.status + ' ' + data.error;  // <-- set error_message
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            document.getElementById('error-dialog').classList.add('hide');
+            this.checkMessageLength();  // <-- check message length
+            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
 
@@ -566,6 +619,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       }
 
       console.log('------------------------------- All Port Status -------------------------------');
+
+      // IF STATUS IS ERROR SHOW ERROR DIALOG
+      if (data['status'] === 'error') {
+
+        this.error_message = data.status + ' ' + data.error;  // <-- set error_message
+        this.checkMessageLength();  // <-- check message length
+        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
+      }
 
       _.each(data, (obj) => {
 
@@ -686,6 +748,26 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   disabledWestPort(id) {
 
     return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
+
+  }
+  // CHECK MESSAGE LENGTH FOR ADJUST DIALOG BOX HEIGHT
+  checkMessageLength() {
+
+    const message_length = this.error_message.length; // <-- set message length
+
+    // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
+    if (message_length <= 30) {
+
+      const card = document.getElementsByTagName('md-card');
+      card[0].setAttribute('style', 'height: 20px');  // <-- set height 20px
+
+      // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
+    } else {
+
+      const card = document.getElementsByTagName('md-card');
+      card[0].setAttribute('style', 'height: 80px');  // <-- set height 80px
+
+    }
 
   }
 
