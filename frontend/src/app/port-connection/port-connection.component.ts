@@ -441,7 +441,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            this.checkMessageLength();  // <-- check message length
             document.getElementById('error-dialog').classList.add('hide');   // <-- add class hide
 
           }
@@ -461,7 +460,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            this.checkMessageLength();  // <-- check message length
             document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
@@ -504,7 +502,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            this.checkMessageLength();  // <-- check message length
             document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
@@ -524,7 +521,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            this.checkMessageLength();  // <-- check message length
             document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
@@ -574,7 +570,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
 
-            this.checkMessageLength();  // <-- check message length
             document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
@@ -582,7 +577,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         });
       // NO stops, sequence VALUE IN PAYLOAD
     } else {
+
       console.log('No stops or sequence value !');
+
     }
 
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
@@ -629,7 +626,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       }
 
       _.each(data, (obj) => {
-
 
         if (obj['status'] === 'success') {
           const east = 'E' + obj['east'];

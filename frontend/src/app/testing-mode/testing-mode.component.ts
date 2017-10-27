@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 
 // Api Service
 import { ApiService } from '../services/api.service';
-import { UserService } from '../services/user.service';
-import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-testing-mode',
@@ -26,8 +24,7 @@ export class TestingModeComponent implements OnInit {
 
   errorRobot: string = '';
 
-  constructor(private ApiService: ApiService, private UserService: UserService,
-    private AuthenticationService: AuthenticationService, private router: Router) { }
+  constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
 
@@ -107,15 +104,6 @@ export class TestingModeComponent implements OnInit {
         this.errorRobot = data['status'];
       }
     });
-  }
-
-  getUser() {
-    console.log(this.UserService.getUsers());
-  }
-
-  logOut() {
-    this.AuthenticationService.logout();
-    this.router.navigateByUrl('/login');
   }
 
 }

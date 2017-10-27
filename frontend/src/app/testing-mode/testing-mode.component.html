@@ -37,12 +37,12 @@
 
         <md-form-field>
           <input mdInput id="east_port_input" placeholder="East port" value="east_port_number" [(ngModel)]="east_port_number" minlength="1"
-            maxlength="3" pattern="^[1-9][0-9]{1,3}">
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
         </md-form-field>
 
         <md-form-field>
           <input mdInput id="west_port_input" placeholder="West port" value="west_port_number" [(ngModel)]="west_port_number" minlength="1"
-            maxlength="3" pattern="^[1-9][0-9]{1,3}">
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
         </md-form-field>
 
         <md-action-row>
@@ -64,12 +64,12 @@
 
         <md-form-field>
           <input mdInput id="east_port_input" placeholder="East port" value="east_port_number" [(ngModel)]="east_port_number" minlength="1"
-            maxlength="3" pattern="^[1-9][0-9]{1,3}">
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
         </md-form-field>
 
         <md-form-field>
           <input mdInput id="west_port_input" placeholder="West port" value="west_port_number" [(ngModel)]="west_port_number" minlength="1"
-            maxlength="3" pattern="^[1-9][0-9]{1,3}">
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
         </md-form-field>
 
         <md-form-field>
@@ -88,24 +88,6 @@
       <!-- END CREATE CONNECTION DEBUG MODE -->
     </md-tab>
     <!-- END CONNECTION-TAB -->
-    <!-- BEGIN SOME FUNCTION -->
-    <md-tab label="Some function in future">
-
-      <md-expansion-panel>
-        <md-expansion-panel-header>
-          <md-panel-title> Get User </md-panel-title>
-          <md-panel-description> Test get user </md-panel-description>
-        </md-expansion-panel-header>
-
-        <md-action-row>
-          <button md-button color="primary" (click)="getUser()">Get user</button>
-          <button md-button color="primary" (click)="logOut()">Log out</button>
-          
-        </md-action-row>
-      </md-expansion-panel>
-
-    </md-tab>
-    <!-- END SOME FUNCTION -->
   </md-tab-group>
   <!-- END TAB-GROUP -->
 </div>

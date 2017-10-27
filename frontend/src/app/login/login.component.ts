@@ -71,5 +71,21 @@ export class LoginComponent implements OnInit {
     }
 
   }
+  // CATCH ENTER
+  catchEnter(e) {
+
+    // IF KEYUP EVENT IS "ENTER"
+    if (e.keyCode === 13) {
+
+      // CHECK USERNAME AND PASSWORD NOT NULL OR BLANK
+      if ((this.model.username && this.model.username !== '') && (this.model.password && this.model.password !== '')) {
+
+        this.login();
+
+      }
+
+    }
+
+  }
 
 }

@@ -18,7 +18,8 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://192.168.60.76:8080/`;
+  private ROOT_URL = `http://192.168.60.76/`;
+  // private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) { }
 
@@ -150,8 +151,6 @@ export class ApiService {
     } else {
 
       return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
-
-        console.log(authToken['token']);
 
         response = JSON.parse(response._body);
 
@@ -496,7 +495,12 @@ export class ApiService {
   // CREATE CONNECTION IN CONNECTION TABLE
   create_connection_in_database(east, west, action) {
 
-    return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, this.options).toPromise().then((response: any) => {
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
       response = JSON.parse(response._body);
 
       if (response.status === 'error') {

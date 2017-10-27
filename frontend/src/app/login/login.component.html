@@ -27,7 +27,7 @@
 
       <md-form-field>
         <input mdInput placeholder="Password" type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel"
-        />
+        (keyup)="catchEnter($event)" />
       </md-form-field>
 
     </div>
