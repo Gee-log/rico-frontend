@@ -33,7 +33,7 @@ export class PortHistoryComponent implements OnInit {
   columns = [
     { name: 'Date' },
     { name: 'Time' },
-    { name: 'Type' },
+    { name: 'User' },
     { prop: 'East' },
     { name: 'West' },
     { name: 'Status' },
@@ -80,13 +80,15 @@ export class PortHistoryComponent implements OnInit {
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj['switching_type'] === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj['east'], west: 'W' + obj['west'],
+            date: day, time: time, user: obj['username'].charAt(0).toUpperCase() + obj['username'].slice(1)
+            , east: 'E' + obj['east'], west: 'W' + obj['west'],
             status: 'Connected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj['east'], west: 'W' + obj['west'],
+            date: day, time: time, user: obj['username'].charAt(0).toUpperCase() + obj['username'].slice(1)
+            , east: 'E' + obj['east'], west: 'W' + obj['west'],
             status: 'Disconnected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
         }

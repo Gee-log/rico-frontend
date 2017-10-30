@@ -24,7 +24,7 @@ class ConnectionModelAdmin(admin.ModelAdmin):
 admin.site.register(Connection, ConnectionModelAdmin)
 
 class ConnectionHistoryModelAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "id", "east", "west", "switching_type", "timestamp", "status"]
+    list_display = ["__str__", "id", "east", "west", "switching_type", "timestamp", "status", "username"]
     class Meta:
         model = ConnectionHistory
 

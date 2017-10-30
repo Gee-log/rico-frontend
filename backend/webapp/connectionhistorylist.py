@@ -37,7 +37,7 @@ class ConnectionHistoryList(APIView):
         for ch in connh:
 
             obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
-                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status)}
+                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status), 'username': str(ch.username)}
             data.append(obj)
 
         return Response(data)

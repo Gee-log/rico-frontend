@@ -18,8 +18,8 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://192.168.60.76/`;
-  // private ROOT_URL = `http://localhost:8000/`;
+  // private ROOT_URL = `http://192.168.60.76/`;
+  private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) { }
 
@@ -66,6 +66,15 @@ export class ApiService {
     });
 
   }
+  // GET USERNAME
+  getUsername() {
+
+    if (localStorage.getItem('currentUser') !== null && localStorage.getItem('currentUser') !== undefined) {
+      const user_data = JSON.parse(localStorage.getItem('currentUser'));
+      return user_data['username'];
+    }
+
+  }
   // POST CONNECTION, DISCONNECTION, DEBUG API TO SERVER
   connectPort(east, west, action, stops?, number?) {
     // VARIABLE DETAILS
@@ -82,6 +91,7 @@ export class ApiService {
     const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
     const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
     const options = new RequestOptions({ headers: headers });
+    const username = this.getUsername();
 
     // START DEBUG MODE
     if (stops && number === undefined) {
@@ -149,8 +159,7 @@ export class ApiService {
       // NORMAL MODE
       // PAYLOAD { east, west, action }
     } else {
-
-      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
+      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, username }, options).toPromise().then((response: any) => {
 
         response = JSON.parse(response._body);
 

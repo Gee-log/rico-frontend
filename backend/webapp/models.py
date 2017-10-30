@@ -54,10 +54,11 @@ class ConnectionHistory(models.Model):
     switching_type = models.CharField(max_length=1, choices=SWITCHING_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=256, null=True)
+    username = models.CharField(max_length=256, null=True)
 
     @classmethod
-    def create(cls, east, west, switching_type, status):
-        connecthistory = cls(east=east, west=west, switching_type=switching_type, status=status)
+    def create(cls, east, west, switching_type, status, username):
+        connecthistory = cls(east=east, west=west, switching_type=switching_type, status=status, username=username)
         return connecthistory
 
     def __str__(self):

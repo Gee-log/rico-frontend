@@ -391,6 +391,7 @@ class ConnectionList(APIView):
         # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
 
+        username = request.data['username']
         east, west = self.get_available_ports(request)
         logger.info('connection %s - %s', east, west)
 
@@ -402,11 +403,11 @@ class ConnectionList(APIView):
             return Response('No west port number ' + str(west), content_type="text/plain")
 
         # create connection
-        self.create_connect(request, east, west)
+        self.create_connect(request, east, west, username)
 
         return Response(request.data, status=status.HTTP_201_CREATED)
 
-    def create_connect(self, request, east, west):
+    def create_connect(self, request, east, west, username):
         """Create connection in database
 
         Args:
@@ -416,7 +417,7 @@ class ConnectionList(APIView):
         """
 
         Connection.objects.create(east=east, west=west, status='pending')
-        ConnectionHistory.objects.create(east=east, west=west, switching_type='C', status='pending')
+        ConnectionHistory.objects.create(east=east, west=west, switching_type='C', status='pending', username=username)
 
         # Validate input
         if 'stops' in request.data:
@@ -471,6 +472,7 @@ class ConnectionList(APIView):
         # Angular2 cannot access database if request is superuser
         # if request.user.is_superuser or request.user.is_staff:
 
+        username = request.data['username']
         east, west = self.get_available_ports(request)
         logger.info('disconnection %s - %s', east, west)
 
@@ -482,11 +484,11 @@ class ConnectionList(APIView):
             return Response('No west port number ' + str(west), content_type="text/plain")
 
         # create disconnection
-        self.create_disconnect(request, east, west)
+        self.create_disconnect(request, east, west, username)
 
         return Response(request.data, status=status.HTTP_201_CREATED)
 
-    def create_disconnect(self, request, east, west):
+    def create_disconnect(self, request, east, west, username):
         """Create disconnection in database
 
         Args:
@@ -501,7 +503,7 @@ class ConnectionList(APIView):
             if c.east == east and c.west == west:
                 Connection.objects.filter(east=east, west=west, disconnected_date=None, status='success').update(
                     status='pending')
-                ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending')
+                ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending', username=username)
                 logger.info('connection_history %s - %s', east, west)
 
                 # Validate input

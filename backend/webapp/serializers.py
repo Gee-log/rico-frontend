@@ -27,7 +27,7 @@ class ConnectionHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConnectionHistory
-        fields = ('id', 'east', 'west', 'switching_type', 'timestamp', 'status')
+        fields = ('id', 'east', 'west', 'switching_type', 'timestamp', 'status', 'username')
 
 
 class OperationSerializer(serializers.ModelSerializer):
