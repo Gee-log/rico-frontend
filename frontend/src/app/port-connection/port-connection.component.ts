@@ -54,8 +54,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
   availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
-  disableEastPortArray = []; // SET UNVAILABLE EAST PORT ARRAY
-  disableWestPortArray = []; // SET UNVAILABLE WEST PORT ARRAY
+  disableEastPortArray = [
+    'E25', 'E26', 'E27', 'E28', 'E29', 'E30', 'E31', 'E32', 'E33', 'E34',
+    'E35', 'E36', 'E37', 'E38', 'E39', 'E40', 'E41', 'E42', 'E43', 'E44',
+    'E45', 'E46', 'E47', 'E48', 'E49', 'E50', 'E51', 'E52', 'E53', 'E54',
+    'E55', 'E56', 'E57', 'E58', 'E59', 'E60'
+  ]; // SET UNVAILABLE EAST PORT ARRAY
+  disableWestPortArray = [
+    'W25', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34',
+    'W35', 'W36', 'W37', 'W38', 'W39', 'W40', 'W41', 'W42', 'W43', 'W44',
+    'W45', 'W46', 'W47', 'W48', 'W49', 'W50', 'W51', 'W52', 'W53', 'W54',
+    'W55', 'W56', 'W57', 'W58', 'W59', 'W60'
+  ]; // SET UNVAILABLE WEST PORT ARRAY
 
   // DATA FROM DOM
   all_east: Object = document.getElementsByClassName('East');
@@ -745,7 +755,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   }
   // DISABLE NOT AVAILABLE EAST PORT
   disabledEastPort(id) {
-
+    console.log(this.disableEastPortArray);
+    console.log(this.disableWestPortArray);
     return (this.disableEastPortArray.includes(id)) ? 'port-unselectable' : '';
 
   }
