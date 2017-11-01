@@ -1,5 +1,5 @@
 // ANGULAR MODULE
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Api Service
@@ -17,7 +17,7 @@ import 'rxjs/Rx';
   styleUrls: ['./port-connection.component.scss'],
   providers: []
 })
-export class PortConnectionComponent implements OnInit, OnDestroy {
+export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // PORTS DATA
   eports: Object = []; // 144 EAST PORTS
@@ -54,6 +54,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
   availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
+  disableEastPortArray = []; // SET UNVAILABLE EAST PORT ARRAY
+  disableWestPortArray = []; // SET UNVAILABLE WEST PORT ARRAY
 
   // DATA FROM DOM
   all_east: Object = document.getElementsByClassName('East');
@@ -74,10 +76,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.fetchData();
     // SET COLOR OF PORT CONNECTION
     this.setConnectedPort();
+    // PUSH UNAVAILABLE PORT ARRAY
+    this.pushNotAvailablePort();
     // CHECK STATUS EVERY 5 SEC.
     this.timerInterval = setInterval(() => {
       this.checkStatus();
     }, 1500);
+
+  }
+
+  ngAfterViewInit() {
+
+
 
   }
 
@@ -736,13 +746,24 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // DISABLE NOT AVAILABLE EAST PORT
   disabledEastPort(id) {
 
-    return (id !== 'E1' && id !== 'E2' && id !== 'E3') ? 'port-unselectable' : '';
+    return (this.disableEastPortArray.includes(id)) ? 'port-unselectable' : '';
 
   }
   // DISABLE NOT AVAILABLE WEST PORT
   disabledWestPort(id) {
 
-    return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
+    return (this.disableWestPortArray.includes(id)) ? 'port-unselectable' : '';
+
+  }
+  // PUSH NOT AVAILABLE PORT ARRAY
+  pushNotAvailablePort() {
+
+    for (let i = 25; i <= 60; i++) {
+
+      this.disableEastPortArray.push('E' + i);
+      this.disableWestPortArray.push('W' + i);
+
+    }
 
   }
   // CHECK MESSAGE LENGTH FOR ADJUST DIALOG BOX HEIGHT

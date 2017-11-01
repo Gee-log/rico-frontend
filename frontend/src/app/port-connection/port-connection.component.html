@@ -142,7 +142,7 @@
     <table class="table-container-1" align="center">
       <tbody [ngClass]="{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}">
         <tr class="tr-style" *ngFor="let row of eportschunk">
-          <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column)]" (click)="setEastID(column)" *ngFor="let column of row">
+          <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column), disabledEastPort(column)]" (click)="setEastID(column)" *ngFor="let column of row">
             <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
               <span [mdTooltip]="pushEastNote(column)" [mdTooltipPosition]="etooltipPostion(column)">{{ column }}</span>
             </span>
@@ -160,7 +160,7 @@
     <table class="table-container-2" align="center">
       <tbody [ngClass]="{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}">
         <tr class="tr-style" *ngFor="let row of wportschunk">
-          <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column)]" (click)="setWestID(column)" *ngFor="let column of row">
+          <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column), disabledWestPort(column)]" (click)="setWestID(column)" *ngFor="let column of row">
             <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
               <span [mdTooltip]="pushWestNote(column)" [mdTooltipPosition]="wtooltipPostion(column)">{{ column }}</span>
             </span>
