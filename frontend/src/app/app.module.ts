@@ -43,6 +43,7 @@ import { LoginComponent } from './login/login.component';
 
 // Guard
 import { AuthGuard } from './_guards/auth.guard';
+import { CurrentConnectionComponent } from './current-connection/current-connection.component';
 
 enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
@@ -61,6 +62,7 @@ enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
     PageNotFoundComponent,
     ServerStatusErrorComponent,
     LoginComponent,
+    CurrentConnectionComponent,
   ],
   imports: [
     BrowserModule,

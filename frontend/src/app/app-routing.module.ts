@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 // COMPONENT
 import { AlarmComponent } from './alarm/alarm.component';
 import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
+import { CurrentConnectionComponent } from './current-connection/current-connection.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PortConnectionComponent } from './port-connection/port-connection.component';
 import { PortConnectionMobileComponent } from './port-connection-mobile/port-connection-mobile.component';
@@ -42,7 +43,11 @@ export const appRoutes: Routes = [
     component: PortHistoryComponent,
     canActivate: [AuthGuard]
   },
-
+  {
+    path: 'current_connection',
+    component: CurrentConnectionComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'testing_mode',
     component: TestingModeComponent,

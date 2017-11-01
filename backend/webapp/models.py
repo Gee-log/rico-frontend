@@ -16,7 +16,7 @@ class Port(models.Model):
 
     direction = models.CharField(max_length=1, choices=DIRECTION_TYPE)
     number = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(144)])
-    note = models.CharField(max_length=64, null=True)
+    note = models.CharField(max_length=64, default=None, blank=True, null=True)
     connection_counter = models.IntegerField(default=0)
 
     def __str__(self):
@@ -28,8 +28,8 @@ class Connection(models.Model):
     east = models.ForeignKey(Port, related_name='east')
     west = models.ForeignKey(Port, related_name='west')
     connected_date = models.DateTimeField(auto_now_add=True)
-    disconnected_date = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=64, null=True)
+    disconnected_date = models.DateTimeField(default=None, blank=True, null=True)
+    status = models.CharField(max_length=64, default=None, blank=True, null=True)
 
     @classmethod
     def create(cls, east, west, status):
@@ -53,8 +53,8 @@ class ConnectionHistory(models.Model):
     west = models.ForeignKey(Port, related_name='westH')
     switching_type = models.CharField(max_length=1, choices=SWITCHING_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=256, null=True)
-    username = models.CharField(max_length=256, null=True)
+    status = models.CharField(max_length=256, default=None, blank=True, null=True)
+    username = models.CharField(max_length=256, default=None, blank=True, null=True)
 
     @classmethod
     def create(cls, east, west, switching_type, status, username):
@@ -107,7 +107,7 @@ class Operation(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
     status = models.CharField(max_length=64)
     request = models.CharField(max_length=256)
-    response = models.CharField(max_length=256, null=True)
+    response = models.CharField(max_length=256, default=None, blank=True, null=True)
 
     @classmethod
     def create(cls, robotnumber, uuid, status, request, response):
@@ -123,10 +123,10 @@ class OperationHistory(models.Model):
     uuid = models.UUIDField(primary_key=True, editable=False)
     robotnumber = models.CharField(max_length=1)
     created_time = models.DateTimeField(auto_now_add=True)
-    finished_time = models.DateTimeField(null=True, blank=True)
+    finished_time = models.DateTimeField(default=None, blank=True, null=True)
     status = models.CharField(max_length=64)
     request = models.CharField(max_length=256)
-    response = models.CharField(max_length=256, null=True)
+    response = models.CharField(max_length=256, default=None, blank=True, null=True)
 
     def __str__(self):
         return str(self.uuid)

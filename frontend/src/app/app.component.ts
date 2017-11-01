@@ -27,6 +27,11 @@ export class AppComponent {
       path: '/'
     },
     {
+      icon: 'settings_input_component',
+      name: 'Current Connection',
+      path: '/current_connection'
+    },
+    {
       icon: 'history',
       name: 'Port History',
       path: '/port_history'

@@ -34,7 +34,7 @@ export class PortHistoryComponent implements OnInit {
     { name: 'Date' },
     { name: 'Time' },
     { name: 'User' },
-    { prop: 'East' },
+    { name: 'East' },
     { name: 'West' },
     { name: 'Status' },
     { name: 'RobotStatus' }

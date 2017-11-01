@@ -64,7 +64,7 @@ class ConnectionList(APIView):
             data = []
 
             for c in conns:
-                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status}
+                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status, 'connected_date': c.connected_date}
                 data.append(obj)
 
             if len(operations) > 0:

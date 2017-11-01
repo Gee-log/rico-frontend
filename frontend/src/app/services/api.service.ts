@@ -18,7 +18,7 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL = `http://192.168.60.76/`;
+  // private ROOT_URL = `http://192.168.60.76:8000/`;
   private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) { }
@@ -95,7 +95,7 @@ export class ApiService {
 
     // START DEBUG MODE
     if (stops && number === undefined) {
-      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops },
+      return this.http.post(this.ROOT_URL + 'connections/', { east, west, action, stops, username },
         options).toPromise().then((response: any) => {
 
           response = JSON.parse(response._body);
