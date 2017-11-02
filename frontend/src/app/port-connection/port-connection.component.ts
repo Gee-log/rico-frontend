@@ -755,8 +755,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   }
   // DISABLE NOT AVAILABLE EAST PORT
   disabledEastPort(id) {
-    console.log(this.disableEastPortArray);
-    console.log(this.disableWestPortArray);
+
     return (this.disableEastPortArray.includes(id)) ? 'port-unselectable' : '';
 
   }
