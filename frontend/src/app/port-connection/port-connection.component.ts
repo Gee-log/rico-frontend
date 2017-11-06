@@ -52,6 +52,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   disabled_connect_button: boolean = false; // DISABLED CONNECT BUTTON
   disabled_disconnect_button: boolean = false; // DISABLED DISCONNECT BUTTON
   disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
+  disabled_cancel_button: boolean = false; // DISABLED CANCEL BUTTON
   availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
   disableEastPortArray = [

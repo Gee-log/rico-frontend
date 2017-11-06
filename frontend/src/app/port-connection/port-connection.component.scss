@@ -675,6 +675,12 @@
         #Disconnect:disabled {
           background-color: rgba(0,0,0,.115);
         }
+        #Cancel:not(disabled) {
+          background: #0091ea;
+        }
+        #Cancel:disabled {
+          background-color: rgba(0,0,0,.13);
+        }
           .button-container {
             display: inline-flex;
             margin-left: 15px;
@@ -1006,6 +1012,14 @@
   transform: translateY(95%);
 }
 
+.cancel-button-circle {
+  border-radius: 50%;
+	width: 15px;
+  height: 15px; 
+  background: #0091ea;
+  margin-left: 10px !important;
+  transform: translateY(95%);
+}
 
 // BLINK EFFECT
 .Blink {
