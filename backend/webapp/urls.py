@@ -8,7 +8,7 @@ from webapp import portlist
 from webapp import operationlist
 from webapp import operationhistorylist
 from webapp import userlist
-from webapp import tasktranslation
+from webapp import taskcancelation
 
 from rest_framework.authtoken import views as rest_framework_views
 
@@ -38,7 +38,7 @@ urlpatterns = [
     # user api
     url(r'^users/', userlist.RoleList.as_view()),
     # tasktranslation api
-    url(r'^tasktranslations', tasktranslation.TasktranslationList.as_view()),
+    url(r'^tasktranslations', taskcancelation.TaskcancelationList.as_view()),
     # redirect to landing page
     url(r'^$', views.landing, name='landing'),
     # Session Login

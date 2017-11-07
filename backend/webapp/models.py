@@ -153,7 +153,15 @@ class Role(models.Model):
         return str(self.user) + ' (' + str(self.role) + ')'
 
 
-class Tasktranslation(models.Model):
+class Robot(models.Model):
+    
+    robot_number = models.IntegerField(unique=True)
+
+    def __str__(self):
+        return 'Robot number: ' + str(self.robot_number)
+
+
+class Taskcancelation(models.Model):
     
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     mode = models.CharField(max_length=64)
@@ -169,6 +177,8 @@ class Tasktranslation(models.Model):
     def __str__(self):
         return 'UUID: ' + str(self.uuid) + ' Mode: ' + str(self.mode) + ' Robot: ' + str(self.robot) + ' Continue mode: ' + str(self.continue_mode) + ' Response: ' + str(self.response)
 
+    class Meta:
+        ordering = ['-id']
 
 # This code is triggered whenever a new user has been created and saved to the database
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

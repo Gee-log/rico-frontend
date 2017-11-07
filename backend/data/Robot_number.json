@@ -1,0 +1,8 @@
+[
+    {
+      "model": "webapp.Robot",
+      "fields": {
+        "robot_number": 3
+      }
+    }
+]

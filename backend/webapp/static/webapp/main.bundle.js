@@ -13,6 +13,50 @@ webpackEmptyContext.id = "../../../../../src async recursive";
 
 /***/ }),
 
+/***/ "../../../../../src/app/_guards/auth.guard.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuard; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// ANGULAR Module
+
+
+var AuthGuard = (function () {
+    function AuthGuard(router) {
+        this.router = router;
+    }
+    AuthGuard.prototype.canActivate = function () {
+        if (localStorage.getItem('currentUser')) {
+            // logged in so return true
+            return true;
+        }
+        // not logged in so redirect to login page
+        this.router.navigate(['/login']);
+        return false;
+    };
+    return AuthGuard;
+}());
+AuthGuard = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object])
+], AuthGuard);
+
+var _a;
+//# sourceMappingURL=auth.guard.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/alarm-history/alarm-history.component.html":
 /***/ (function(module, exports) {
 
@@ -43,17 +87,11 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_swimlane_ngx_datatable_src_components_datatable_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/datatable.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__ = __webpack_require__("../../../../rxjs/add/observable/merge.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AlarmHistoryComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -64,18 +102,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR MODULE
 
 
-
-
-
+// Api Service
 
 
 
 var AlarmHistoryComponent = (function () {
-    function AlarmHistoryComponent(http, ApiService) {
-        this.http = http;
+    function AlarmHistoryComponent(ApiService, router) {
         this.ApiService = ApiService;
+        this.router = router;
         this.rows = [];
         this.temp = [];
         this.columns = [
@@ -87,20 +124,35 @@ var AlarmHistoryComponent = (function () {
         this.temp = this.rows;
     }
     AlarmHistoryComponent.prototype.ngOnInit = function () {
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // FETCH DATA
         this.fetchData();
     };
+    // CHECK SERVER STATUS
+    AlarmHistoryComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
+    };
+    // FETCH DATA
     AlarmHistoryComponent.prototype.fetchData = function () {
         var _this = this;
         this.ApiService.getAlarmHistory().then(function (data) {
-            __WEBPACK_IMPORTED_MODULE_7_lodash__["each"](data, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 console.log(obj);
                 _this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
             });
         });
     };
+    // TEST FUNCTION
     AlarmHistoryComponent.prototype.clickme = function (row) {
         console.log(row);
     };
+    // FILTER <-- Need to fix bug
     AlarmHistoryComponent.prototype.updateFilter = function (event) {
         var val = event.target.value.toLowerCase();
         // filter our data
@@ -124,7 +176,7 @@ AlarmHistoryComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/alarm-history/alarm-history.component.html"),
         styles: [__webpack_require__("../../../../../src/app/alarm-history/alarm-history.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _c || Object])
 ], AlarmHistoryComponent);
 
 var _a, _b, _c;
@@ -162,19 +214,13 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_swimlane_ngx_datatable_src_components_datatable_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/datatable.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__ = __webpack_require__("../../../../rxjs/add/observable/merge.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_jquery__ = __webpack_require__("../../../../jquery/dist/jquery.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery__ = __webpack_require__("../../../../jquery/dist/jquery.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jquery__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AlarmComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -185,19 +231,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR MODULE
 
 
-
-
-
+// Api Service
 
 
 
 
 var AlarmComponent = (function () {
-    function AlarmComponent(http, ApiService) {
-        this.http = http;
+    function AlarmComponent(ApiService, router) {
         this.ApiService = ApiService;
+        this.router = router;
         this.currentAlarmTime = new Date();
         this.patterns = [
             ['I', 'Robot standby', '1'],
@@ -225,8 +270,20 @@ var AlarmComponent = (function () {
         this.temp = this.rows;
     }
     AlarmComponent.prototype.ngOnInit = function () {
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // FEETCH DATA
         this.fetchData();
         // setInterval(this.randomAlert(), this.randomTime());
+    };
+    // CHECK SERVER STATUS
+    AlarmComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
     };
     // SET ALARM HISTORY DATA
     AlarmComponent.prototype.fetchData = function () {
@@ -236,7 +293,7 @@ var AlarmComponent = (function () {
         // console.log('polling', new Date())
         // let since = this.currentAlarmTime.getTime() / 1000
         this.ApiService.getAlarmHistory().then(function (data) {
-            __WEBPACK_IMPORTED_MODULE_7_lodash__["each"](data, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 console.log(obj);
                 _this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
             });
@@ -248,11 +305,11 @@ var AlarmComponent = (function () {
     // SAVE TIME IN .crf FILE
     AlarmComponent.prototype.updateSaveUrl = function (time) {
         console.log('updateSaveUrl', time);
-        __WEBPACK_IMPORTED_MODULE_8_jquery__('#save').prop('href', '/2/' + time);
+        __WEBPACK_IMPORTED_MODULE_5_jquery__('#save').prop('href', '/2/' + time);
     };
     // CLEAR TABLE
     AlarmComponent.prototype.clear = function () {
-        __WEBPACK_IMPORTED_MODULE_8_jquery__('#alarm').empty();
+        __WEBPACK_IMPORTED_MODULE_5_jquery__('#alarm').empty();
         this.currentAlarmTime = new Date();
         this.updateSaveUrl(this.currentAlarmTime.getTime());
     };
@@ -305,7 +362,7 @@ AlarmComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/alarm/alarm.component.html"),
         styles: [__webpack_require__("../../../../../src/app/alarm/alarm.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _c || Object])
 ], AlarmComponent);
 
 var _a, _b, _c;
@@ -319,12 +376,17 @@ var _a, _b, _c;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__port_connection_port_connection_component__ = __webpack_require__("../../../../../src/app/port-connection/port-connection.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__port_history_port_history_component__ = __webpack_require__("../../../../../src/app/port-history/port-history.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__alarm_alarm_component__ = __webpack_require__("../../../../../src/app/alarm/alarm.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__alarm_history_alarm_history_component__ = __webpack_require__("../../../../../src/app/alarm-history/alarm-history.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__testing_mode_testing_mode_component__ = __webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alarm_alarm_component__ = __webpack_require__("../../../../../src/app/alarm/alarm.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__alarm_history_alarm_history_component__ = __webpack_require__("../../../../../src/app/alarm-history/alarm-history.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__current_connection_current_connection_component__ = __webpack_require__("../../../../../src/app/current-connection/current-connection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__page_not_found_page_not_found_component__ = __webpack_require__("../../../../../src/app/page-not-found/page-not-found.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__port_connection_port_connection_component__ = __webpack_require__("../../../../../src/app/port-connection/port-connection.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__port_connection_mobile_port_connection_mobile_component__ = __webpack_require__("../../../../../src/app/port-connection-mobile/port-connection-mobile.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__port_history_port_history_component__ = __webpack_require__("../../../../../src/app/port-history/port-history.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__server_status_error_server_status_error_component__ = __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__testing_mode_testing_mode_component__ = __webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__ = __webpack_require__("../../../../../src/app/_guards/auth.guard.ts");
 /* unused harmony export appRoutes */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -343,31 +405,66 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
+
+
+// GUARD
+
 var appRoutes = [
     {
         path: '',
-        component: __WEBPACK_IMPORTED_MODULE_2__port_connection_port_connection_component__["a" /* PortConnectionComponent */]
-    },
-    {
-        path: 'port_history',
-        component: __WEBPACK_IMPORTED_MODULE_3__port_history_port_history_component__["a" /* PortHistoryComponent */]
-    },
-    {
-        path: 'alarm',
-        component: __WEBPACK_IMPORTED_MODULE_4__alarm_alarm_component__["a" /* AlarmComponent */]
-    },
-    {
-        path: 'alarm_history',
-        component: __WEBPACK_IMPORTED_MODULE_5__alarm_history_alarm_history_component__["a" /* AlarmHistoryComponent */]
-    },
-    {
-        path: 'testing_mode',
-        component: __WEBPACK_IMPORTED_MODULE_6__testing_mode_testing_mode_component__["a" /* TestingModeComponent */]
+        component: __WEBPACK_IMPORTED_MODULE_6__port_connection_port_connection_component__["a" /* PortConnectionComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
     },
     {
         path: 'port_connection_mobile',
-        component: __WEBPACK_IMPORTED_MODULE_7__port_connection_mobile_port_connection_mobile_component__["a" /* PortConnectionMobileComponent */]
-    }
+        component: __WEBPACK_IMPORTED_MODULE_7__port_connection_mobile_port_connection_mobile_component__["a" /* PortConnectionMobileComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'alarm',
+        component: __WEBPACK_IMPORTED_MODULE_2__alarm_alarm_component__["a" /* AlarmComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'alarm_history',
+        component: __WEBPACK_IMPORTED_MODULE_3__alarm_history_alarm_history_component__["a" /* AlarmHistoryComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'port_history',
+        component: __WEBPACK_IMPORTED_MODULE_8__port_history_port_history_component__["a" /* PortHistoryComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'current_connection',
+        component: __WEBPACK_IMPORTED_MODULE_4__current_connection_current_connection_component__["a" /* CurrentConnectionComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'testing_mode',
+        component: __WEBPACK_IMPORTED_MODULE_10__testing_mode_testing_mode_component__["a" /* TestingModeComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'login',
+        component: __WEBPACK_IMPORTED_MODULE_11__login_login_component__["a" /* LoginComponent */],
+    },
+    // SERVER STATUS 500
+    {
+        path: '500',
+        component: __WEBPACK_IMPORTED_MODULE_9__server_status_error_server_status_error_component__["a" /* ServerStatusErrorComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
+    // OUT OF PATH LIST WILL REDIRECT TO 404
+    {
+        path: '**',
+        // redirectTo: '/',
+        // pathMatch: 'full'
+        component: __WEBPACK_IMPORTED_MODULE_5__page_not_found_page_not_found_component__["a" /* PageNotFoundComponent */],
+        canActivate: [__WEBPACK_IMPORTED_MODULE_12__guards_auth_guard__["a" /* AuthGuard */]]
+    },
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
@@ -377,12 +474,11 @@ var AppRoutingModule = (function () {
 AppRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot(appRoutes)
-            // IF WANT TO USE #
-            // RouterModule.forRoot(appRoutes, { useHash: true })
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forRoot(appRoutes, { enableTracing: true }) // <-- debugging purposes only
+            // RouterModule.forRoot(appRoutes, { useHash: true }) // <-- if want to use #
         ],
         exports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]
         ]
     })
 ], AppRoutingModule);
@@ -394,7 +490,7 @@ AppRoutingModule = __decorate([
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN SIDENAV-FAB-CONTAINER -->\r\n  <md-sidenav-container class=\"sidenav-fab-container\">\r\n    <!-- BEGIN NAV BAR -->\r\n    <md-toolbar class=\"toolbar-container\" color=\"primary\">\r\n      <!-- BEGIN MENU ICON -->\r\n      <div>\r\n        <button type=\"button\" md-button class=\"div-icon-menu\" (click)=\"sidenav.toggle()\">\r\n           <md-icon >menu</md-icon>\r\n        </button>\r\n      </div>\r\n      <!-- END MENU ICON -->\r\n      <!-- BEGIN MORE-VERT ICON -->\r\n      <div class=\"warpper-right\">\r\n        <button md-icon-button>\r\n          <md-icon>mail</md-icon>\r\n        </button>\r\n        <button md-icon-button>\r\n          <md-icon>notifications</md-icon>\r\n        </button>\r\n        <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n          <md-icon >more_vert</md-icon>\r\n       </button>\r\n        <!-- BEGIN MENU-LIST -->\r\n        <md-menu #menu=\"mdMenu\">\r\n          <!-- BEGIN NOTIFICATION ICON -->\r\n          <button md-menu-item>\r\n            <md-icon>notifications_off</md-icon>\r\n            <span>Disable alerts</span>\r\n          </button>\r\n          <!-- END NOTIFICATION ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clearDatabase()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear database</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n        </md-menu>\r\n        <!-- END MENU-LIST -->\r\n      </div>\r\n      <!-- END MORE-VERT ICON -->\r\n    </md-toolbar>\r\n    <!-- END NAV BAR -->\r\n\r\n    <!-- OLD VERSION SIDENAV ! -->\r\n    <!-- <md-sidenav #sidenav mode=\"side\" opened=\"false\"> -->\r\n\r\n    <!-- NEW VERSION SIDENAV ! -->\r\n    <!-- BEGIN SIDENAV -->\r\n    <md-sidenav #sidenav opened=\"false\">\r\n      <!-- BEGIN SCROLLING-CONTENT -->\r\n      <div class=\"scrolling-content\">\r\n        <!-- BEGIN USER-CONTAINER -->\r\n        <header class=\"user-container\">\r\n          <!-- BEGIN AVATAR -->\r\n          <div class=\"avatar-container\">\r\n            <img src=\"../../static/webapp/assets/user.jpg\" alt=\"Avatar\" class=\"avatar\">\r\n          </div>\r\n          <!-- END AVATAR -->\r\n          <!-- BEGIN NAME-AVATAR-CONTAINER -->\r\n          <div class=\"name-avatar-container\">\r\n            <p>Aya Stark</p>\r\n          </div>\r\n          <!-- END NAME-AVATAR-CONTAINER -->\r\n          <!-- BEGIN USER-DROPDOWN-MENU -->\r\n          <div class=\"user-dropdown-menu\">\r\n            <span>aya.stark@xenoptics.com</span>\r\n            <div class=\"mdl-layout-spacer\"></div>\r\n            <button md-button class=\"div-icon\" [mdMenuTriggerFor]=\"menudrop\">\r\n              <md-icon >arrow_drop_down</md-icon>\r\n           </button>\r\n            <md-menu #menudrop=\"mdMenu\">\r\n              <button md-menu-item>\r\n                <md-icon>add</md-icon>\r\n                <span>Add another account...</span>\r\n              </button>\r\n              <button md-menu-item>\r\n                <md-icon>remove</md-icon>\r\n                <span>Logout</span>\r\n              </button>\r\n            </md-menu>\r\n          </div>\r\n          <!-- END USER-DROPDOWN-MENU -->\r\n        </header>\r\n        <!-- END USER-CONTAINER -->\r\n        <!-- BEGIN MENU -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"menu-open\" class=\"menu\">\r\n            <div id=\"menu-drop-down\" (click)=\"toggleMenu();\" hidden>\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n            </a>\r\n            </div>\r\n            <div id=\"menu-drop-up\" (click)=\"toggleMenu();\">\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n          </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"menu-list\" class=\"menu-container-height\">\r\n            <md-list>\r\n              <!-- IF WANT TO ADD LOGO -->\r\n              <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of links\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END MENU -->\r\n        <!-- BEGIN SETTINGS -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"settings-open\" class=\"settings\">\r\n            <div id=\"settings-drop-down\" (click)=\"toggleSettings();\">\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n              </a>\r\n            </div>\r\n            <div id=\"settings-drop-up\" (click)=\"toggleSettings();\" hidden>\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n            </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"settings-list\" class=\"settings-container-height\" hidden>\r\n            <md-list>\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of settinglinks\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END SETTINGS -->\r\n        <!-- BEGIN DOCUMENT LABEL -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"documents-open\" class=\"document\">\r\n            <div id=\"documents-drop-down\" (click)=\"toggleDocument();\">\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n                </a>\r\n            </div>\r\n            <div id=\"documents-drop-up\" (click)=\"toggleDocument();\" hidden>\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END DOCUMENT LABEL -->\r\n        <!-- BEGIN FOOTER-CONTAINER -->\r\n        <!-- <div class=\"footer-container\"> -->\r\n          <!-- <hr> -->\r\n          <!-- <div class=\"text-center\">\r\n            <span>Help & Feedback</span>\r\n          </div>\r\n        </div> -->\r\n        <!-- END FOOTER-CONTAINER -->\r\n      </div>\r\n      <!-- END SCROLLING-CONTENT -->\r\n    </md-sidenav>\r\n    <!-- END SIDENAV -->\r\n    <!-- BEGIN ROUTER-OUTLET -->\r\n    <router-outlet></router-outlet>\r\n    <!-- END ROUTER-OUTLET -->\r\n  </md-sidenav-container>\r\n  <!-- END SIDE NAV -->\r\n</div>\r\n<!-- END MAIN CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN SIDENAV-FAB-CONTAINER -->\r\n  <md-sidenav-container class=\"sidenav-fab-container\">\r\n    <!-- BEGIN NAV BAR -->\r\n    <md-toolbar class=\"toolbar-container\" color=\"primary\" *ngIf=\"showNavbar()\">\r\n    <!-- attr.disabled]=\"this.disable_stops_input == true ? false : null\" -->\r\n      <!-- BEGIN MENU ICON -->\r\n      <div>\r\n        <button id=\"menu-icon\" type=\"button\" md-button class=\"div-icon-menu\" (click)=\"sidenav.toggle(); getUserName();\">\r\n           <md-icon >menu</md-icon>\r\n        </button>\r\n      </div>\r\n      <!-- END MENU ICON -->\r\n      <!-- BEGIN MORE-VERT ICON -->\r\n      <div class=\"warpper-right\">\r\n        <button md-icon-button>\r\n          <md-icon>mail</md-icon>\r\n        </button>\r\n        <button md-icon-button>\r\n          <md-icon>notifications</md-icon>\r\n        </button>\r\n        <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n          <md-icon >more_vert</md-icon>\r\n       </button>\r\n        <!-- BEGIN MENU-LIST -->\r\n        <md-menu #menu=\"mdMenu\">\r\n          <!-- BEGIN NOTIFICATION ICON -->\r\n          <button md-menu-item>\r\n            <md-icon>notifications_off</md-icon>\r\n            <span>Disable alerts</span>\r\n          </button>\r\n          <!-- END NOTIFICATION ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clearDatabase()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear database</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n        </md-menu>\r\n        <!-- END MENU-LIST -->\r\n      </div>\r\n      <!-- END MORE-VERT ICON -->\r\n    </md-toolbar>\r\n    <!-- END NAV BAR -->\r\n\r\n    <!-- OLD VERSION SIDENAV ! -->\r\n    <!-- <md-sidenav #sidenav mode=\"side\" opened=\"false\"> -->\r\n\r\n    <!-- NEW VERSION SIDENAV ! -->\r\n    <!-- BEGIN SIDENAV -->\r\n    <md-sidenav #sidenav opened=\"false\">\r\n      <!-- BEGIN SCROLLING-CONTENT -->\r\n      <div class=\"scrolling-content\">\r\n        <!-- BEGIN USER-CONTAINER -->\r\n        <header class=\"user-container\">\r\n          <!-- BEGIN AVATAR -->\r\n          <div class=\"avatar-container\">\r\n            <img src=\"../../static/webapp/assets/user.jpg\" alt=\"Avatar\" class=\"avatar\">\r\n          </div>\r\n          <!-- END AVATAR -->\r\n          <!-- BEGIN NAME-AVATAR-CONTAINER -->\r\n          <div class=\"name-avatar-container\">\r\n            <p>{{ this.username }}</p>\r\n          </div>\r\n          <!-- END NAME-AVATAR-CONTAINER -->\r\n          <!-- BEGIN USER-DROPDOWN-MENU -->\r\n          <div class=\"user-dropdown-menu\">\r\n            <span>{{ this.username }}@xenoptics.com</span>\r\n            <div class=\"mdl-layout-spacer\"></div>\r\n            <button md-button class=\"div-icon\" [mdMenuTriggerFor]=\"menudrop\">\r\n              <md-icon >arrow_drop_down</md-icon>\r\n           </button>\r\n            <md-menu #menudrop=\"mdMenu\">\r\n              <button md-menu-item>\r\n                <md-icon>add</md-icon>\r\n                <span>Add another account...</span>\r\n              </button>\r\n              <button md-menu-item (click)=\"logOut()\">\r\n                <md-icon>remove</md-icon>\r\n                <span>Logout</span>\r\n              </button>\r\n            </md-menu>\r\n          </div>\r\n          <!-- END USER-DROPDOWN-MENU -->\r\n        </header>\r\n        <!-- END USER-CONTAINER -->\r\n        <!-- BEGIN MENU -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"menu-open\" class=\"menu\">\r\n            <div id=\"menu-drop-down\" (click)=\"toggleMenu();\" hidden>\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n            </a>\r\n            </div>\r\n            <div id=\"menu-drop-up\" (click)=\"toggleMenu();\">\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n          </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"menu-list\" class=\"menu-container-height\">\r\n            <md-list>\r\n              <!-- IF WANT TO ADD LOGO -->\r\n              <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of links\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END MENU -->\r\n        <!-- BEGIN SETTINGS -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"settings-open\" class=\"settings\">\r\n            <div id=\"settings-drop-down\" (click)=\"toggleSettings();\">\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n              </a>\r\n            </div>\r\n            <div id=\"settings-drop-up\" (click)=\"toggleSettings();\" hidden>\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n            </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"settings-list\" class=\"settings-container-height\" hidden>\r\n            <md-list>\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of settinglinks\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END SETTINGS -->\r\n        <!-- BEGIN DOCUMENT LABEL -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"documents-open\" class=\"document\">\r\n            <div id=\"documents-drop-down\" (click)=\"toggleDocument();\">\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n                </a>\r\n            </div>\r\n            <div id=\"documents-drop-up\" (click)=\"toggleDocument();\" hidden>\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END DOCUMENT LABEL -->\r\n        <!-- BEGIN FOOTER-CONTAINER -->\r\n        <!-- <div class=\"footer-container\"> -->\r\n          <!-- <hr> -->\r\n          <!-- <div class=\"text-center\">\r\n            <span>Help & Feedback</span>\r\n          </div>\r\n        </div> -->\r\n        <!-- END FOOTER-CONTAINER -->\r\n      </div>\r\n      <!-- END SCROLLING-CONTENT -->\r\n    </md-sidenav>\r\n    <!-- END SIDENAV -->\r\n    <!-- BEGIN ROUTER-OUTLET -->\r\n    <router-outlet></router-outlet>\r\n    <!-- END ROUTER-OUTLET -->\r\n  </md-sidenav-container>\r\n  <!-- END SIDE NAV -->\r\n</div>\r\n<!-- END MAIN CONTAINER -->"
 
 /***/ }),
 
@@ -406,7 +502,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "a {\n  cursor: default; }\n\nspan {\n  cursor: default; }\n\np {\n  cursor: default; }\n\nhr {\n  border: 0;\n  height: 0;\n  border-top: 1.5px solid rgba(0, 0, 0, 0.1);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.3); }\n\n.main-container {\n  padding: 0;\n  margin: 0;\n  width: 100vw;\n  height: 100vh; }\n  .main-container .sidenav-fab-container {\n    width: 100%;\n    height: 100vh; }\n    .main-container .sidenav-fab-container .toolbar-container {\n      display: block;\n      padding: 0 10px; }\n      .main-container .sidenav-fab-container .toolbar-container .div-icon-menu {\n        border-radius: 50%;\n        font-size: 24px;\n        height: 34px;\n        margin-left: 0;\n        margin-right: 0;\n        min-width: 38px;\n        width: 32px;\n        padding: 0;\n        overflow: hidden;\n        color: inherit;\n        line-height: normal; }\n      .main-container .sidenav-fab-container .toolbar-container .warpper-right {\n        margin-left: auto;\n        margin-right: 0; }\n        .main-container .sidenav-fab-container .toolbar-container .warpper-right .div-icon-mail {\n          border-radius: 50%;\n          font-size: 22px;\n          height: 34px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 38px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n        .main-container .sidenav-fab-container .toolbar-container .warpper-right .div-icon-notification {\n          border-radius: 50%;\n          font-size: 22px;\n          height: 34px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 38px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n        .main-container .sidenav-fab-container .toolbar-container .warpper-right .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n    .main-container .sidenav-fab-container .scrolling-content {\n      overflow: auto;\n      width: 100%; }\n      .main-container .sidenav-fab-container .scrolling-content .user-container {\n        box-sizing: border-box;\n        display: -ms-flexbox;\n        display: -webkit-box;\n        display: flex;\n        -ms-flex-direction: column;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n                flex-direction: column;\n        -ms-flex-pack: end;\n        -webkit-box-pack: end;\n                justify-content: flex-end;\n        padding: 16px;\n        height: 170px;\n        background: #303F9F;\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }\n        .main-container .sidenav-fab-container .scrolling-content .user-container .avatar-container {\n          padding-bottom: 0; }\n          .main-container .sidenav-fab-container .scrolling-content .user-container .avatar-container .avatar {\n            width: 55px;\n            height: 55px;\n            border-radius: 30px; }\n        .main-container .sidenav-fab-container .scrolling-content .user-container .name-avatar-container {\n          padding-bottom: 0;\n          font-weight: bold;\n          color: white; }\n        .main-container .sidenav-fab-container .scrolling-content .user-container .user-dropdown-menu {\n          display: -ms-flexbox;\n          display: -webkit-box;\n          display: flex;\n          position: relative;\n          -ms-flex-direction: row;\n          -webkit-box-orient: horizontal;\n          -webkit-box-direction: normal;\n                  flex-direction: row;\n          -ms-flex-align: center;\n          -webkit-box-align: center;\n                  align-items: center;\n          width: 100%;\n          color: white;\n          font-size: 13px; }\n          .main-container .sidenav-fab-container .scrolling-content .user-container .user-dropdown-menu .mdl-layout-spacer {\n            -ms-flex-positive: 1;\n            -webkit-box-flex: 1;\n                    flex-grow: 1; }\n          .main-container .sidenav-fab-container .scrolling-content .user-container .user-dropdown-menu .div-icon {\n            border-radius: 50%;\n            font-size: 24px;\n            height: 32px;\n            margin-left: 0;\n            margin-right: 0;\n            min-width: 32px;\n            width: 32px;\n            padding: 0;\n            overflow: hidden;\n            color: inherit;\n            line-height: normal; }\n    .main-container .sidenav-fab-container .menu-list-container {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n      height: 100%;\n      margin: 0.5vh 0.5vh; }\n      .main-container .sidenav-fab-container .menu-list-container:hover {\n        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }\n      .main-container .sidenav-fab-container .menu-list-container .menu {\n        padding: 10px 0 10px 23px; }\n        .main-container .sidenav-fab-container .menu-list-container .menu a {\n          cursor: pointer; }\n        .main-container .sidenav-fab-container .menu-list-container .menu a:hover {\n          color: #3F51B5; }\n        .main-container .sidenav-fab-container .menu-list-container .menu .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n      .main-container .sidenav-fab-container .menu-list-container .menu-container-height {\n        height: 260px; }\n      .main-container .sidenav-fab-container .menu-list-container .settings {\n        padding: 10px 0 10px 23px; }\n        .main-container .sidenav-fab-container .menu-list-container .settings a {\n          cursor: pointer; }\n        .main-container .sidenav-fab-container .menu-list-container .settings a:hover {\n          color: #3F51B5; }\n        .main-container .sidenav-fab-container .menu-list-container .settings .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n      .main-container .sidenav-fab-container .menu-list-container .document {\n        padding: 10px 0 10px 23px; }\n        .main-container .sidenav-fab-container .menu-list-container .document a {\n          cursor: pointer; }\n        .main-container .sidenav-fab-container .menu-list-container .document a:hover {\n          color: #3F51B5; }\n        .main-container .sidenav-fab-container .menu-list-container .document .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n    .main-container .sidenav-fab-container .blank-container {\n      height: 15vh;\n      margin-top: 2vh; }\n    .main-container .sidenav-fab-container .footer-container {\n      position: fixed;\n      bottom: 0;\n      width: 100%;\n      height: 2vh;\n      padding-bottom: 10px;\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }\n      .main-container .sidenav-fab-container .footer-container:hover {\n        box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }\n      .main-container .sidenav-fab-container .footer-container .text-center {\n        text-align: center;\n        font-size: 14px;\n        margin-top: 2%; }\n        .main-container .sidenav-fab-container .footer-container .text-center span {\n          cursor: pointer; }\n          .main-container .sidenav-fab-container .footer-container .text-center span:hover {\n            color: #3F51B5; }\n      .main-container .sidenav-fab-container .footer-container .text-left {\n        text-align: left; }\n      .main-container .sidenav-fab-container .footer-container .icon-opacity {\n        opacity: 0.25;\n        cursor: pointer; }\n\n.example-sidenav-fab-container .mat-sidenav-content,\n.example-sidenav-fab-container md-sidenav {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  overflow: visible;\n  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);\n  width: 300px; }\n\n.mat-list .mat-subheader {\n  margin: 24px 0;\n  text-align: center;\n  font-size: 24px; }\n\n.mat-list md-icon {\n  opacity: 0.25; }\n\n.menu-list-container {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n  height: 100%;\n  margin: 0.5vh 0.5vh; }\n  .menu-list-container:hover {\n    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }\n  .menu-list-container .settings-container-height {\n    height: 200px; }\n\n:host /deep/ md-list-item.mat-list-item .mat-list-item-content {\n  margin: 12px 24px;\n  border-radius: 5px; }\n\n:host /deep/ .active .mat-list-item-content {\n  color: white;\n  background-color: #D61515;\n  box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2); }\n\n:host /deep/ a {\n  text-decoration: none; }\n  :host /deep/ a:not(.active):hover .mat-list-item-content {\n    background-color: rgba(0, 0, 0, 0.15);\n    color: blue;\n    cursor: pointer; }\n\n:host /deep/ a:focus {\n  outline: none !important; }\n\n:host /deep/ md-toolbar {\n  cursor: default;\n  min-height: 42px;\n  max-height: 42px;\n  width: 100vw;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }\n  :host /deep/ md-toolbar md-toolbar-row {\n    min-height: 40.5px;\n    max-height: 40.5px;\n    width: 100vw; }\n\n.mat-sidenav-container {\n  background: transparent; }\n\n.mat-sidenav {\n  height: 100vh;\n  width: 300px; }\n\n.mat-icon {\n  height: 27px; }\n\n.blank-container {\n  height: 15vh;\n  margin-top: 2vh; }\n\n.example-scrolling-content {\n  height: 100%;\n  width: 100%; }\n", ""]);
+exports.push([module.i, "a {\n  cursor: default; }\n\nspan {\n  cursor: default; }\n\np {\n  cursor: default; }\n\nhr {\n  border: 0;\n  height: 0;\n  border-top: 1.5px solid rgba(0, 0, 0, 0.1);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.3); }\n\n.hide {\n  visibility: hidden !important; }\n\n.main-container {\n  padding: 0;\n  margin: 0;\n  width: 100vw;\n  height: 100vh; }\n  .main-container .sidenav-fab-container {\n    width: 100%;\n    height: 100vh; }\n    .main-container .sidenav-fab-container .toolbar-container {\n      display: block;\n      padding: 0 10px; }\n      .main-container .sidenav-fab-container .toolbar-container .div-icon-menu {\n        border-radius: 50%;\n        font-size: 24px;\n        height: 34px;\n        margin-left: 0;\n        margin-right: 0;\n        min-width: 38px;\n        width: 32px;\n        padding: 0;\n        overflow: hidden;\n        color: inherit;\n        line-height: normal; }\n      .main-container .sidenav-fab-container .toolbar-container .warpper-right {\n        margin-left: auto;\n        margin-right: 0; }\n        .main-container .sidenav-fab-container .toolbar-container .warpper-right .div-icon-mail {\n          border-radius: 50%;\n          font-size: 22px;\n          height: 34px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 38px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n        .main-container .sidenav-fab-container .toolbar-container .warpper-right .div-icon-notification {\n          border-radius: 50%;\n          font-size: 22px;\n          height: 34px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 38px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n        .main-container .sidenav-fab-container .toolbar-container .warpper-right .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n    .main-container .sidenav-fab-container .scrolling-content {\n      overflow: auto;\n      width: 100%; }\n      .main-container .sidenav-fab-container .scrolling-content .user-container {\n        box-sizing: border-box;\n        display: -ms-flexbox;\n        display: -webkit-box;\n        display: flex;\n        -ms-flex-direction: column;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n                flex-direction: column;\n        -ms-flex-pack: end;\n        -webkit-box-pack: end;\n                justify-content: flex-end;\n        padding: 16px;\n        height: 170px;\n        background: #303F9F;\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }\n        .main-container .sidenav-fab-container .scrolling-content .user-container .avatar-container {\n          padding-bottom: 0; }\n          .main-container .sidenav-fab-container .scrolling-content .user-container .avatar-container .avatar {\n            width: 55px;\n            height: 55px;\n            border-radius: 30px; }\n        .main-container .sidenav-fab-container .scrolling-content .user-container .name-avatar-container {\n          padding-bottom: 0;\n          font-weight: bold;\n          color: white; }\n        .main-container .sidenav-fab-container .scrolling-content .user-container .user-dropdown-menu {\n          display: -ms-flexbox;\n          display: -webkit-box;\n          display: flex;\n          position: relative;\n          -ms-flex-direction: row;\n          -webkit-box-orient: horizontal;\n          -webkit-box-direction: normal;\n                  flex-direction: row;\n          -ms-flex-align: center;\n          -webkit-box-align: center;\n                  align-items: center;\n          width: 100%;\n          color: white;\n          font-size: 13px; }\n          .main-container .sidenav-fab-container .scrolling-content .user-container .user-dropdown-menu .mdl-layout-spacer {\n            -ms-flex-positive: 1;\n            -webkit-box-flex: 1;\n                    flex-grow: 1; }\n          .main-container .sidenav-fab-container .scrolling-content .user-container .user-dropdown-menu .div-icon {\n            border-radius: 50%;\n            font-size: 24px;\n            height: 32px;\n            margin-left: 0;\n            margin-right: 0;\n            min-width: 32px;\n            width: 32px;\n            padding: 0;\n            overflow: hidden;\n            color: inherit;\n            line-height: normal; }\n    .main-container .sidenav-fab-container .menu-list-container {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n      height: 100%;\n      margin: 0.5vh 0.5vh; }\n      .main-container .sidenav-fab-container .menu-list-container:hover {\n        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }\n      .main-container .sidenav-fab-container .menu-list-container .menu {\n        padding: 10px 0 10px 23px; }\n        .main-container .sidenav-fab-container .menu-list-container .menu a {\n          cursor: pointer; }\n        .main-container .sidenav-fab-container .menu-list-container .menu a:hover {\n          color: #3F51B5; }\n        .main-container .sidenav-fab-container .menu-list-container .menu .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n      .main-container .sidenav-fab-container .menu-list-container .menu-container-height {\n        height: 320px; }\n      .main-container .sidenav-fab-container .menu-list-container .settings {\n        padding: 10px 0 10px 23px; }\n        .main-container .sidenav-fab-container .menu-list-container .settings a {\n          cursor: pointer; }\n        .main-container .sidenav-fab-container .menu-list-container .settings a:hover {\n          color: #3F51B5; }\n        .main-container .sidenav-fab-container .menu-list-container .settings .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n      .main-container .sidenav-fab-container .menu-list-container .document {\n        padding: 10px 0 10px 23px; }\n        .main-container .sidenav-fab-container .menu-list-container .document a {\n          cursor: pointer; }\n        .main-container .sidenav-fab-container .menu-list-container .document a:hover {\n          color: #3F51B5; }\n        .main-container .sidenav-fab-container .menu-list-container .document .div-icon {\n          border-radius: 50%;\n          font-size: 24px;\n          height: 32px;\n          margin-left: 0;\n          margin-right: 0;\n          min-width: 32px;\n          width: 32px;\n          padding: 0;\n          overflow: hidden;\n          color: inherit;\n          line-height: normal; }\n    .main-container .sidenav-fab-container .blank-container {\n      height: 15vh;\n      margin-top: 2vh; }\n    .main-container .sidenav-fab-container .footer-container {\n      position: fixed;\n      bottom: 0;\n      width: 100%;\n      height: 2vh;\n      padding-bottom: 10px;\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }\n      .main-container .sidenav-fab-container .footer-container:hover {\n        box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }\n      .main-container .sidenav-fab-container .footer-container .text-center {\n        text-align: center;\n        font-size: 14px;\n        margin-top: 2%; }\n        .main-container .sidenav-fab-container .footer-container .text-center span {\n          cursor: pointer; }\n          .main-container .sidenav-fab-container .footer-container .text-center span:hover {\n            color: #3F51B5; }\n      .main-container .sidenav-fab-container .footer-container .text-left {\n        text-align: left; }\n      .main-container .sidenav-fab-container .footer-container .icon-opacity {\n        opacity: 0.25;\n        cursor: pointer; }\n\n.example-sidenav-fab-container .mat-sidenav-content,\n.example-sidenav-fab-container md-sidenav {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  overflow: visible;\n  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);\n  width: 300px; }\n\n.mat-list .mat-subheader {\n  margin: 24px 0;\n  text-align: center;\n  font-size: 24px; }\n\n.mat-list md-icon {\n  opacity: 0.25; }\n\n.menu-list-container {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n  height: 100%;\n  margin: 0.5vh 0.5vh; }\n  .menu-list-container:hover {\n    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }\n  .menu-list-container .settings-container-height {\n    height: 200px; }\n\n:host /deep/ md-list-item.mat-list-item .mat-list-item-content {\n  margin: 12px 24px;\n  border-radius: 5px; }\n\n:host /deep/ .active .mat-list-item-content {\n  color: white;\n  background-color: #D61515;\n  box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2); }\n\n:host /deep/ a {\n  text-decoration: none; }\n  :host /deep/ a:not(.active):hover .mat-list-item-content {\n    background-color: rgba(0, 0, 0, 0.15);\n    color: blue;\n    cursor: pointer; }\n\n:host /deep/ a:focus {\n  outline: none !important; }\n\n:host /deep/ md-toolbar {\n  cursor: default;\n  min-height: 42px;\n  max-height: 42px;\n  width: 100vw;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }\n  :host /deep/ md-toolbar md-toolbar-row {\n    min-height: 40.5px;\n    max-height: 40.5px;\n    width: 100vw; }\n\n.mat-sidenav-container {\n  background: transparent; }\n\n.mat-sidenav {\n  height: 100vh;\n  width: 300px; }\n\n.mat-icon {\n  height: 27px; }\n\n.blank-container {\n  height: 15vh;\n  margin-top: 2vh; }\n\n.example-scrolling-content {\n  height: 100%;\n  width: 100%; }\n", ""]);
 
 // exports
 
@@ -421,10 +517,13 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__("../../../../jquery/dist/jquery.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__("../../../../jquery/dist/jquery.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__ = __webpack_require__("../../../../../src/app/services/authentication.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -435,20 +534,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR Module
 
+
+
+
+// Api Service
 
 
 
 var AppComponent = (function () {
-    function AppComponent(http, ApiService) {
+    function AppComponent(http, ApiService, AuthenticationService, UserService, router) {
         this.http = http;
         this.ApiService = ApiService;
-        this.title = 'app';
+        this.AuthenticationService = AuthenticationService;
+        this.UserService = UserService;
+        this.router = router;
         this.links = [
             {
                 icon: 'settings_input_component',
                 name: 'Port Connection',
                 path: '/'
+            },
+            {
+                icon: 'settings_input_component',
+                name: 'Current Connection',
+                path: '/current_connection'
             },
             {
                 icon: 'history',
@@ -486,19 +597,43 @@ var AppComponent = (function () {
     }
     // TOGGLE SETTINGS MENU
     AppComponent.prototype.toggleSettings = function () {
-        __WEBPACK_IMPORTED_MODULE_1_jquery__('#settings-list, #settings-drop-up, #settings-drop-down').toggle();
+        __WEBPACK_IMPORTED_MODULE_3_jquery__('#settings-list, #settings-drop-up, #settings-drop-down').toggle();
     };
     // TOGGLE MENU
     AppComponent.prototype.toggleMenu = function () {
-        __WEBPACK_IMPORTED_MODULE_1_jquery__('#menu-list, #menu-drop-down, #menu-drop-up').toggle();
+        __WEBPACK_IMPORTED_MODULE_3_jquery__('#menu-list, #menu-drop-down, #menu-drop-up').toggle();
     };
     // TOGGLE DOCUMENT MENU
     AppComponent.prototype.toggleDocument = function () {
-        __WEBPACK_IMPORTED_MODULE_1_jquery__('#documents-drop-down, #documents-drop-up').toggle();
+        __WEBPACK_IMPORTED_MODULE_3_jquery__('#documents-drop-down, #documents-drop-up').toggle();
     };
     // CLEAR DATABASE DATA
     AppComponent.prototype.clearDatabase = function () {
         this.ApiService.clearDatabase('cleardatabase');
+    };
+    // SHOW NAVBAR
+    AppComponent.prototype.showNavbar = function () {
+        if (this.router.url === '/login') {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+    // LOGOUT
+    AppComponent.prototype.logOut = function () {
+        // CALL LOGOUT FUNCTION
+        this.AuthenticationService.logout();
+        // RE ROUTE TO LOGIN
+        this.router.navigateByUrl('/login');
+        // MAKE CLICK EVENT TO CLOSE SIDEBAR
+        document.getElementById('menu-icon').click();
+    };
+    // GET USERNAME
+    AppComponent.prototype.getUserName = function () {
+        // SET VARIABLE
+        this.user_data = this.UserService.getUsers();
+        this.username = this.user_data['username'];
     };
     return AppComponent;
 }());
@@ -508,10 +643,10 @@ AppComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["e" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__["a" /* AuthenticationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* UserService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === "function" && _e || Object])
 ], AppComponent);
 
-var _a, _b;
+var _a, _b, _c, _d, _e;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -538,14 +673,21 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__nav_bar_nav_bar_component__ = __webpack_require__("../../../../../src/app/nav-bar/nav-bar.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__port_pipe__ = __webpack_require__("../../../../../src/app/port.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__testing_mode_testing_mode_component__ = __webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ng2_charts__ = __webpack_require__("../../../../ng2-charts/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable__ = __webpack_require__("../../../../@swimlane/ngx-datatable/release/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_hammerjs__ = __webpack_require__("../../../../hammerjs/hammer.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20_hammerjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__page_not_found_page_not_found_component__ = __webpack_require__("../../../../../src/app/page-not-found/page-not-found.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__server_status_error_server_status_error_component__ = __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ng2_charts__ = __webpack_require__("../../../../ng2-charts/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable__ = __webpack_require__("../../../../@swimlane/ngx-datatable/release/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_hammerjs__ = __webpack_require__("../../../../hammerjs/hammer.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22_hammerjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__services_authentication_service__ = __webpack_require__("../../../../../src/app/services/authentication.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__guards_auth_guard__ = __webpack_require__("../../../../../src/app/_guards/auth.guard.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__current_connection_current_connection_component__ = __webpack_require__("../../../../../src/app/current-connection/current-connection.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -556,6 +698,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // ANGULAR MODULE
 
 
+ // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
 
 
@@ -574,14 +717,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 // Third-Party
 
 
 
 // Services
 
+
+
 // Routing
 
+
+// Guard
+
+
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["enableProdMode"])(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 var AppModule = (function () {
     function AppModule() {
     }
@@ -600,25 +752,270 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_16__port_pipe__["a" /* PortPipe */],
             __WEBPACK_IMPORTED_MODULE_17__testing_mode_testing_mode_component__["a" /* TestingModeComponent */],
             __WEBPACK_IMPORTED_MODULE_11__port_connection_mobile_port_connection_mobile_component__["a" /* PortConnectionMobileComponent */],
+            __WEBPACK_IMPORTED_MODULE_18__page_not_found_page_not_found_component__["a" /* PageNotFoundComponent */],
+            __WEBPACK_IMPORTED_MODULE_19__server_status_error_server_status_error_component__["a" /* ServerStatusErrorComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__login_login_component__["a" /* LoginComponent */],
+            __WEBPACK_IMPORTED_MODULE_29__current_connection_current_connection_component__["a" /* CurrentConnectionComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["BrowserModule"],
             __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClientModule */],
             __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
             __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MaterialModule */],
-            __WEBPACK_IMPORTED_MODULE_22__app_routing_module__["a" /* AppRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_26__app_routing_module__["a" /* AppRoutingModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["a" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_cdk_table__["a" /* CdkTableModule */],
-            __WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable__["NgxDatatableModule"],
-            __WEBPACK_IMPORTED_MODULE_18_ng2_charts__["ChartsModule"]
+            __WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable__["NgxDatatableModule"],
+            __WEBPACK_IMPORTED_MODULE_20_ng2_charts__["ChartsModule"]
         ],
-        providers: [__WEBPACK_IMPORTED_MODULE_21__services_api_service__["a" /* ApiService */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_23__services_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_28__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_24__services_authentication_service__["a" /* AuthenticationService */], __WEBPACK_IMPORTED_MODULE_25__services_user_service__["a" /* UserService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
 //# sourceMappingURL=app.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/current-connection/current-connection.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-ITEM -->\n  <div class=\"flex-item\">\n    <!-- BEGIN TABLE-CONTAINER  -->\n    <div class=\"table-container\">\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\n        (keyup)='updateFilter($event)' />\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n        <!-- BEGIN EAST PORT COLUMN -->\n        <ngx-datatable-column name=\"East\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END EAST PORT COLUMN -->\n        <!-- BEGIN WEST PORT COLUMN -->\n        <ngx-datatable-column name=\"West\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END WEST PORT COLUMN -->\n        <!-- BEGIN DATE COLUMN  -->\n        <ngx-datatable-column name=\"Date\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END DATE COLUMN -->\n      </ngx-datatable>\n      <!-- END TABLE -->\n    </div>\n    <!-- END SEARCH FILTER -->\n  </div>\n  <!-- END FLEX-ITEM -->\n</div>\n<!-- END FLEX-CONTAINER -->\n<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-FOOTER -->\n  <div class=\"flex-fix-padding\" align=\"center\">\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\n  </div>\n  <!-- END FLEX-FOOTER -->\n</div>\n<!-- END FLEX-CONTAINER -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/current-connection/current-connection.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".flex-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: distribute;\n      justify-content: space-around; }\n  .flex-container .flex-item {\n    padding: 20px;\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1;\n    font-size: 14px;\n    font-weight: 500;\n    cursor: default; }\n  .flex-container .button-width {\n    min-width: 90px; }\n  .flex-container .button-red {\n    background: red;\n    color: white; }\n  .flex-container .flex-fix-padding {\n    padding: 5px;\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1; }\n  .flex-container .red {\n    color: red; }\n  .flex-container .orange {\n    color: orange; }\n  .flex-container .blue {\n    color: blue; }\n  .flex-container .green {\n    color: #00C853; }\n  .flex-container .shadow {\n    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12); }\n\n.table-container {\n  background-color: transparent; }\n  .table-container input.fliter {\n    margin-left: 10px !important;\n    outline: none;\n    border-left: none;\n    border-top: none;\n    border-right: none;\n    transition: border-color 0.05s ease-in-out;\n    box-shadow: 0 10px 6px -6px #777; }\n    .table-container input.fliter:focus {\n      border-color: #1985A1; }\n\n:host /deep/ ngx-datatable {\n  background: #fff !important;\n  font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;\n  font-size: 14px;\n  font-weight: 500;\n  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12); }\n\n:host /deep/ datatable-header {\n  font-weight: 600; }\n  :host /deep/ datatable-header:hover span {\n    cursor: pointer; }\n  :host /deep/ datatable-header datatable-header-cell {\n    width: 100%;\n    text-align: center !important; }\n\n:host /deep/ datatable-body-cell {\n  text-align: center !important; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/current-connection/current-connection.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_swimlane_ngx_datatable_src_components_datatable_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/datatable.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CurrentConnectionComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// ANGULAR MODULE
+
+
+// Api Service
+
+// Third-party
+
+
+var CurrentConnectionComponent = (function () {
+    function CurrentConnectionComponent(ApiService, router) {
+        this.ApiService = ApiService;
+        this.router = router;
+        this.rows = [];
+        this.temp = [];
+        this.selected = [];
+        // COLUMNS VARIABLES
+        this.columns = [
+            { name: 'East' },
+            { name: 'West' },
+            { name: 'Date' }
+        ];
+        this.temp = this.rows;
+    }
+    CurrentConnectionComponent.prototype.ngOnInit = function () {
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // FETCH DATA
+        this.fetchData();
+    };
+    // CHECK SERVER STATUS
+    CurrentConnectionComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
+    };
+    // SET DATA TABLE
+    CurrentConnectionComponent.prototype.fetchData = function () {
+        var _this = this;
+        this.ApiService.getConnectedPort().then(function (data) {
+            __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
+                var date = new Date(obj['connected_date']);
+                var day = date.toString().substring(0, 15); // not using right now
+                var time = date.toString().substring(15); // now using right now
+                _this.rows.push({
+                    east: 'E' + obj['east'], west: 'W' + obj['west'], date: date
+                });
+            });
+        });
+    };
+    return CurrentConnectionComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__node_modules_swimlane_ngx_datatable_src_components_datatable_component__["a" /* DatatableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__node_modules_swimlane_ngx_datatable_src_components_datatable_component__["a" /* DatatableComponent */]) === "function" && _a || Object)
+], CurrentConnectionComponent.prototype, "table", void 0);
+CurrentConnectionComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-current-connection',
+        template: __webpack_require__("../../../../../src/app/current-connection/current-connection.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/current-connection/current-connection.component.scss")]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _c || Object])
+], CurrentConnectionComponent);
+
+var _a, _b, _c;
+//# sourceMappingURL=current-connection.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- BEGIN CONTAINER -->\r\n<md-card class=\"container\">\r\n  <!-- BEGIN FLEX-1 -->\r\n  <div class=\"flex-1\">\r\n    <div>\r\n      <p>Login</p>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-1 -->\r\n\r\n  <!-- BEGIN FLEX-2 -->\r\n  <div class=\"flex-2\">\r\n    <div>\r\n\r\n      <md-form-field>\r\n        <input mdInput placeholder=\"Username\" type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"model.username\" #username=\"ngModel\"\r\n        />\r\n      </md-form-field>\r\n\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-2 -->\r\n\r\n  <!-- BEGIN FLEX-3 -->\r\n  <div class=\"flex-3\">\r\n    <div>\r\n\r\n      <md-form-field>\r\n        <input mdInput placeholder=\"Password\" type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\"\r\n        (keyup)=\"catchEnter($event)\" />\r\n      </md-form-field>\r\n\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-3 -->\r\n\r\n  <!-- BEGIN FLEX-4 -->\r\n  <div class=\"flex-4\">\r\n    <div class=\"item-1\">\r\n      <button md-raised-button color=\"primary\" (click)=\"login()\" [attr.disabled]=\"validate_login_button() === false ? true : null\"\r\n        disabled>LOGIN</button>\r\n    </div>\r\n    <div class=\"item-2\">\r\n      <md-card id=\"error\" class=\"hide\">\r\n        <p>{{ this.error }}</p>\r\n      </md-card>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-4 -->\r\n\r\n</md-card>\r\n<!-- END CONTAINER -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  width: 400px;\n  height: 280px;\n  margin: 0 auto;\n  margin-top: 2rem; }\n  .container .flex-1 div {\n    width: 100%;\n    height: 60px;\n    background: #3f51b5;\n    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }\n    .container .flex-1 div p {\n      margin-top: 0;\n      padding-top: 20px;\n      padding-left: 20px;\n      font-size: 20px;\n      color: white;\n      cursor: default; }\n  .container .flex-2 div {\n    width: 100%;\n    height: 70px; }\n    .container .flex-2 div md-form-field {\n      padding-top: 20px;\n      width: 100%; }\n  .container .flex-3 div {\n    width: 100%;\n    height: 70px; }\n    .container .flex-3 div md-form-field {\n      padding-top: 20px;\n      width: 100%; }\n  .container .flex-4 {\n    padding-top: 2rem;\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex; }\n    .container .flex-4 .item-2 {\n      margin: 0 auto; }\n      .container .flex-4 .item-2 md-card {\n        width: 220px;\n        height: 10px;\n        background: #ec407a; }\n        .container .flex-4 .item-2 md-card p {\n          font-size: 14px;\n          color: white;\n          cursor: default; }\n\n.hide {\n  visibility: hidden; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_authentication_service__ = __webpack_require__("../../../../../src/app/services/authentication.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// ANGULAR MODULE
+
+
+
+
+var LoginComponent = (function () {
+    function LoginComponent(router, authenticationService, userservice) {
+        this.router = router;
+        this.authenticationService = authenticationService;
+        this.userservice = userservice;
+        this.model = {};
+        this.loading = false; // <-- Not using right now
+        this.error = '';
+        this.current_user = this.userservice.getUsers();
+    }
+    LoginComponent.prototype.ngOnInit = function () {
+        // check current user
+        this.checkCurrentUser();
+        // reset login status
+        // this.authenticationService.logout();
+    };
+    // VALIDATE CURRENT USER
+    LoginComponent.prototype.checkCurrentUser = function () {
+        // set fake token in localStorage first ** this versy important
+        localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
+        if (this.current_user) {
+            this.router.navigate(['/']);
+        }
+    };
+    // LOGIN
+    LoginComponent.prototype.login = function () {
+        var _this = this;
+        this.loading = true;
+        this.authenticationService.login(this.model.username, this.model.password)
+            .then(function (result) {
+            if (result === true) {
+                _this.router.navigate(['/']);
+            }
+            else {
+                document.getElementById('error').classList.remove('hide');
+                _this.error = 'Username or password is incorrect';
+                _this.loading = false;
+            }
+        });
+    };
+    // VALIDATE INPUT TO ENABLE / DISABLE LOGIN BUTTON
+    LoginComponent.prototype.validate_login_button = function () {
+        if (this.model.username && this.model.password) {
+            return true;
+        }
+        else {
+            document.getElementById('error').classList.add('hide');
+            return false;
+        }
+    };
+    // CATCH ENTER
+    LoginComponent.prototype.catchEnter = function (e) {
+        // IF KEYUP EVENT IS "ENTER"
+        if (e.keyCode === 13) {
+            // CHECK USERNAME AND PASSWORD NOT NULL OR BLANK
+            if ((this.model.username && this.model.username !== '') && (this.model.password && this.model.password !== '')) {
+                this.login();
+            }
+        }
+    };
+    return LoginComponent;
+}());
+LoginComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-login',
+        template: __webpack_require__("../../../../../src/app/login/login.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/login/login.component.scss")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_user_service__["a" /* UserService */]) === "function" && _c || Object])
+], LoginComponent);
+
+var _a, _b, _c;
+//# sourceMappingURL=login.component.js.map
 
 /***/ }),
 
@@ -683,10 +1080,80 @@ NavBarComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/page-not-found/page-not-found.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <p>\r\n      404\r\n    </p>\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n\r\n  <!-- BEGIN BUTTON-CONTAINER -->\r\n  <div class=\"button-container Blink\">\r\n    <span mdTooltip=\"Are You Sure, You're Not Drunk?\" mdTooltipPosition=\"right\">\r\n    <button (click)='goHome()'>GO HOME DUDE <br/> YOU'RE DRUNK</button>\r\n    </span>\r\n  </div>\r\n  <!-- END BUTTON-CONTAINER -->\r\n\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/page-not-found/page-not-found.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";\n/* Global\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.Blink {\n  -webkit-animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate;\n          animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }\n\n@-webkit-keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n@keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n/* Main-container\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.main-container {\n  width: 100%;\n  height: 94vh;\n  background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%); }\n  .main-container .container {\n    padding-top: 150px;\n    text-align: center; }\n    .main-container .container p {\n      color: white;\n      font-size: 200px;\n      margin-top: 0;\n      margin-bottom: 0;\n      cursor: default; }\n  .main-container .button-container {\n    text-align: center; }\n    .main-container .button-container button {\n      font-size: 14px;\n      font-weight: bold;\n      color: white;\n      width: 180px;\n      height: 60px;\n      background: transparent;\n      border: 1.1px solid white;\n      border-radius: 3px;\n      line-height: 20px;\n      cursor: pointer; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/page-not-found/page-not-found.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageNotFoundComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// ANGULAR MODULE
+
+
+var PageNotFoundComponent = (function () {
+    function PageNotFoundComponent(router) {
+        this.router = router;
+    }
+    PageNotFoundComponent.prototype.ngOnInit = function () {
+    };
+    // GO HOME
+    PageNotFoundComponent.prototype.goHome = function () {
+        this.router.navigateByUrl('/');
+    };
+    return PageNotFoundComponent;
+}());
+PageNotFoundComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-page-not-found',
+        template: __webpack_require__("../../../../../src/app/page-not-found/page-not-found.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/page-not-found/page-not-found.component.scss")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object])
+], PageNotFoundComponent);
+
+var _a;
+//# sourceMappingURL=page-not-found.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/port-connection-mobile/port-connection-mobile.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"section first-section\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"four columns\">\n        <div class=\"container\">\n          <div class=\"flex-item-container\">\n            <div class=\"temperature-container\">\n              <div class=\"flex-item-1\">\n                <div class=\"content-1\">\n                  <span>26 °C</span>\n                  <p>78.8 °C</p>\n                </div>\n                <div class=\"content-2\">\n                  <span>Temperature</span>\n                </div>\n              </div>\n              <div class=\"flex-item-2\">\n                <img alt=\"Temperature-icon\" src=\"../../static/webapp/assets/temp-icon.png\">\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"four columns\">\n        <div class=\"container\">\n          <div class=\"flex-item-container\">\n            <div class=\"humidity-container\">\n              <div class=\"flex-item-1\">\n                <div class=\"content-1\">\n                  <span>50%</span>\n                </div>\n                <div class=\"content-2\">\n                  <span>Humidity</span>\n                </div>\n              </div>\n              <div class=\"flex-item-2\">\n                <img alt=\"Temperature-icon\" src=\"../../static/webapp/assets/humidity-icon.png\">\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"four columns\">\n        <div class=\"container\">\n          <div class=\"flex-item-container\">\n            <div class=\"time-container\">\n              <div class=\"flex-item-1\">\n                <div class=\"content-1\">\n                  <span>54 sec.</span>\n                </div>\n                <div class=\"content-2\">\n                  <span>Avg times</span>\n                </div>\n              </div>\n              <div class=\"flex-item-2\">\n                <img alt=\"Temperature-icon\" src=\"../../static/webapp/assets/timer-icon.png\">\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"section east-banner\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"column\">\n        <md-card>East port table</md-card>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"section second-section\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"one-half column\">\n        <div class=\"left-table\">\n          <div *ngFor=\"let row of eportschunk_left_table\">\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">{{ column }}</div>\n          </div>\n        </div>\n      </div>\n      <div class=\"one-half column\">\n        <div class=\"right-table\">\n          <div *ngFor=\"let row of eportschunk_right_table\">\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">{{ column }}</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"section west-banner\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"column\">\n        <md-card>West port table</md-card>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"section third-section\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"one-half column\">\n        <div class=\"left-table\">\n          <div *ngFor=\"let row of wportschunk_left_table\">\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">{{ column }}</div>\n          </div>\n        </div>\n      </div>\n      <div class=\"one-half column\">\n        <div class=\"right-table\">\n          <div *ngFor=\"let row of wportschunk_right_table\">\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">{{ column }}</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"section fourth-section\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"twelve columns\">\n        <div class=\"first-container\" align=\"center\">\n          <div class=\"button-container\">\n            <div class=\"button-connect-container\">\n              <div class=\"item-1\">\n                <div class=\"connect-button-circle Blink\"></div>\n              </div>\n              <div class=\"item-2\">\n                <button md-raised-button id=\"Connect\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\n                  disabled>Connect</button>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"twelve columns\">\n        <div class=\"first-container\" align=\"center\">\n          <div class=\"button-container\">\n            <div class=\"button-disconnect-container\">\n              <div class=\"item-1\">\n                <div class=\"disconnect-button-circle Blink\"></div>\n              </div>\n              <div class=\"item-2\">\n                <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\n                  disabled>Disconnect</button>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"six columns\">\n        <div class=\"second-container\">\n          <div id=\"error-dialog\" class=\"hide\">\n            <md-card class=\"Blink\">{{ error_message }}</md-card>\n          </div>\n        </div>\n      </div>\n      <div class=\"six columns\">\n        <div class=\"second-container\"></div>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<!-- BEGIN FIRST-SECTION -->\r\n<div class=\"section first-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n            <div class=\"temperature-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>26 °C</span>\r\n                  <p>78.8 °C</p>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Temperature</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../static/webapp/assets/temp-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END TEMPERATURE-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN HUMIDITY-CONTAINER -->\r\n            <div class=\"humidity-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>50%</span>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Humidity</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-1 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../static/webapp/assets/humidity-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END HUMIDITY-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN TIME-CONTAINER -->\r\n            <div class=\"time-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>54 sec.</span>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Avg times</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-1 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../static/webapp/assets/timer-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END TIME-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END FIRST-SECTION -->\r\n\r\n<!-- BEGIN EAST-BANNER -->\r\n<div class=\"section east-banner\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n      <!-- BEGIN COLUMN -->\r\n      <div class=\"column\">\r\n        <md-card>East port table</md-card>\r\n      </div>\r\n      <!-- END COLUMN -->\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END EAST-BANNER -->\r\n\r\n<!-- BEGIN SECOND-SECTION -->\r\n<div class=\"section second-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN ONE-HALF COLUMN -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN LEFT-TABLE -->\r\n        <div class=\"left-table\">\r\n          <div *ngFor=\"let row of eportschunk_left_table\">\r\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n              <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n                  <span [mdTooltip]=\"pushEastNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n              </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END LEFT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUMN -->\r\n\r\n      <!-- BEGIN ONE-HALF COLUMN -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN RIGHT-TABLE -->\r\n        <div class=\"right-table\">\r\n          <div *ngFor=\"let row of eportschunk_right_table\">\r\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushEastNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END RIGHT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUMN -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END SECOND-SECTION -->\r\n\r\n<!-- BEGIN WEST-BANNER -->\r\n<div class=\"section west-banner\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n      <!-- BEGIN COLUMN -->\r\n      <div class=\"column\">\r\n        <md-card>West port table</md-card>\r\n      </div>\r\n      <!-- END COLUMN -->\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END WEST-BANNER -->\r\n\r\n<!-- BEGIN THIRD-SECTION -->\r\n<div class=\"section third-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN LEFT-TABLE -->\r\n        <div class=\"left-table\">\r\n          <div *ngFor=\"let row of wportschunk_left_table\">\r\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushWestNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END LEFT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUNB -->\r\n\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN RIGHT-TABLE -->\r\n        <div class=\"right-table\">\r\n          <div *ngFor=\"let row of wportschunk_right_table\">\r\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushWestNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END RIGHT-TABLE -->\r\n      </div>\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END THIRD-SECTION -->\r\n\r\n<!-- BEGIN FOURTH-SECTION -->\r\n<div class=\"section fourth-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN TWELVE COLUMNS -->\r\n      <div class=\"twelve columns\">\r\n        <div class=\"first-container\" align=\"center\">\r\n          <div class=\"button-container\">\r\n            <div class=\"button-connect-container\">\r\n              <div class=\"item-1\">\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n              </div>\r\n              <div class=\"item-2\">\r\n                <button md-raised-button id=\"Connect\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                  disabled>Connect</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <!-- END TWELVE COLUMNS -->\r\n\r\n      <!-- BEGIN TWELVE COLUMNS -->\r\n      <div class=\"twelve columns\">\r\n        <!-- BEGIN FIRST-CONTAINER -->\r\n        <div class=\"first-container\" align=\"center\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-DISCONNECT-CONTAINER -->\r\n            <div class=\"button-disconnect-container\">\r\n              <!-- BEGIN ITEM-1 -->\r\n              <div class=\"item-1\">\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n              </div>\r\n              <!-- END ITEM-1 -->\r\n              <!-- BEGIN ITEM-2 -->\r\n              <div class=\"item-2\">\r\n                <button md-raised-button id=\"Disconnect\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                  disabled>Disconnect</button>\r\n              </div>\r\n              <!-- END ITEM-2 -->\r\n            </div>\r\n            <!-- END BUTTON-DISCONNECT-CONTAINER -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END FIRST-CONTAINER -->\r\n      </div>\r\n      <!-- END TWELVE COLUMNS -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN SIX COLUMNS -->\r\n      <div class=\"six columns\">\r\n        <!-- BEGIN SECOND-CONTAINER -->\r\n        <div class=\"second-container\">\r\n          <div id=\"error-dialog\" class=\"hide\">\r\n            <md-card class=\"Blink\">{{ error_message }}</md-card>\r\n          </div>\r\n        </div>\r\n        <!-- END SECOND-CONTAINER -->\r\n      </div>\r\n      <!-- END SIX COLUMNS -->\r\n\r\n      <!-- BEGIN SIX COLUMS -->\r\n      <div class=\"six columns\">\r\n        <!-- BEGIN SECOND-CONTAINER -->\r\n        <div class=\"second-container\"></div>\r\n        <!-- END SECOND-CONTAINER -->\r\n      </div>\r\n      <!-- END SIX COLUMS -->\r\n    </div>\r\n    <!-- END ROW -->\r\n\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END FOURTH-SECTION -->"
 
 /***/ }),
 
@@ -699,7 +1166,7 @@ exports.i(__webpack_require__("../../../../css-loader/index.js?{\"sourceMap\":fa
 exports.i(__webpack_require__("../../../../css-loader/index.js?{\"sourceMap\":false,\"importLoaders\":1}!../../../../postcss-loader/index.js?{\"ident\":\"postcss\"}!../../../../../src/assets/css/skeleton.css"), "");
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n/* Import skeleton framework\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* Global\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nmd-card {\n  cursor: default; }\n\n.Blink {\n  -webkit-animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate;\n          animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }\n\n@-webkit-keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n@keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n.hide {\n  visibility: hidden; }\n\n/* First-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.first-section {\n  height: auto; }\n  .first-section .container {\n    text-align: center;\n    width: 100%; }\n    .first-section .container .flex-item-container {\n      width: 100%;\n      height: 100%; }\n      .first-section .container .flex-item-container .temperature-container {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        margin-top: 0.5rem;\n        width: 100%;\n        height: 70px;\n        background: #0091ea;\n        border-radius: 2px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .first-section .container .flex-item-container .temperature-container .flex-item-1 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1; }\n          .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-1 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 27%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-1 span {\n              font-size: 24px;\n              cursor: default;\n              color: white; }\n            .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-1 p {\n              font-size: 14px;\n              margin: 0;\n              cursor: default;\n              color: white; }\n          .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-2 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 43%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-2 span {\n              cursor: default;\n              color: white; }\n        .first-section .container .flex-item-container .temperature-container .flex-item-2 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1;\n          overflow: hidden; }\n          .first-section .container .flex-item-container .temperature-container .flex-item-2 img {\n            width: 90px;\n            height: auto; }\n      .first-section .container .flex-item-container .humidity-container {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        margin-top: 0.5rem;\n        width: 100%;\n        height: 70px;\n        background: #00c652;\n        border-radius: 2px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .first-section .container .flex-item-container .humidity-container .flex-item-1 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1; }\n          .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-1 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 27%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-1 span {\n              font-size: 24px;\n              cursor: default;\n              color: white; }\n            .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-1 p {\n              margin: 0;\n              cursor: default;\n              color: white; }\n          .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-2 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 43%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-2 span {\n              cursor: default;\n              color: white; }\n        .first-section .container .flex-item-container .humidity-container .flex-item-2 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1;\n          overflow: hidden; }\n          .first-section .container .flex-item-container .humidity-container .flex-item-2 img {\n            width: 90px;\n            height: auto; }\n      .first-section .container .flex-item-container .time-container {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        margin-top: 0.5rem;\n        width: 100%;\n        height: 70px;\n        background: #E74856;\n        border-radius: 2px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .first-section .container .flex-item-container .time-container .flex-item-1 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1; }\n          .first-section .container .flex-item-container .time-container .flex-item-1 .content-1 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 27%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .time-container .flex-item-1 .content-1 span {\n              font-size: 24px;\n              cursor: default;\n              color: white; }\n            .first-section .container .flex-item-container .time-container .flex-item-1 .content-1 p {\n              font-size: 14px;\n              margin: 0;\n              cursor: default;\n              color: white; }\n          .first-section .container .flex-item-container .time-container .flex-item-1 .content-2 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 43%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .time-container .flex-item-1 .content-2 span {\n              cursor: default;\n              color: white; }\n        .first-section .container .flex-item-container .time-container .flex-item-2 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1;\n          overflow: hidden; }\n          .first-section .container .flex-item-container .time-container .flex-item-2 img {\n            width: 90px;\n            height: auto; }\n\n/* east-banner\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.east-banner {\n  text-align: center;\n  margin-top: 1rem; }\n\n/* Second-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.second-section {\n  margin-top: 0.5rem;\n  height: auto; }\n  .second-section .left-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .second-section .left-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .second-section .left-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n  .second-section .right-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .second-section .right-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .second-section .right-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n\n/* west-banner\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.west-banner {\n  text-align: center;\n  margin-top: 1rem; }\n\n/* Third-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.third-section {\n  margin-top: 0.5rem;\n  height: auto; }\n  .third-section .left-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .third-section .left-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .third-section .left-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n  .third-section .right-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .third-section .right-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .third-section .right-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n\n/* Fourth-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.fourth-section {\n  margin-top: 0.5rem;\n  height: auto; }\n  .fourth-section .first-container {\n    margin-top: 0.5rem;\n    height: auto; }\n    .fourth-section .first-container .button-container {\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      width: auto;\n      height: 45px; }\n      .fourth-section .first-container .button-container .button-connect-container {\n        width: 180px;\n        display: -webkit-inline-box;\n        display: -ms-inline-flexbox;\n        display: inline-flex;\n        margin-right: 5px;\n        -webkit-box-flex: 1;\n            -ms-flex-positive: 1;\n                flex-grow: 1;\n        border-radius: 45px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .fourth-section .first-container .button-container .button-connect-container .item-1 {\n          width: 20%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-connect-container .item-1 .connect-button-circle {\n            border-radius: 50%;\n            width: 15px;\n            height: 15px;\n            background: #3f51b5;\n            margin-left: 10px !important;\n            -webkit-transform: translateY(95%);\n                    transform: translateY(95%); }\n        .fourth-section .first-container .button-container .button-connect-container .item-2 {\n          margin-left: 10px;\n          width: 80%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-connect-container .item-2 button {\n            border: none;\n            border-radius: 20px;\n            -webkit-transform: translateY(7%);\n                    transform: translateY(7%); }\n            .fourth-section .first-container .button-container .button-connect-container .item-2 button:hover {\n              cursor: pointer;\n              color: rgba(255, 255, 255, 0.87); }\n            .fourth-section .first-container .button-container .button-connect-container .item-2 button:disabled {\n              background-color: rgba(0, 0, 0, 0.115);\n              border: none;\n              cursor: default; }\n      .fourth-section .first-container .button-container .button-disconnect-container {\n        width: 210px;\n        display: -webkit-inline-box;\n        display: -ms-inline-flexbox;\n        display: inline-flex;\n        margin-right: 5px;\n        -webkit-box-flex: 1;\n            -ms-flex-positive: 1;\n                flex-grow: 1;\n        border-radius: 45px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .fourth-section .first-container .button-container .button-disconnect-container .item-1 {\n          width: 20%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-disconnect-container .item-1 .disconnect-button-circle {\n            border-radius: 50%;\n            width: 15px;\n            height: 15px;\n            background: #E74856;\n            margin-left: 10px !important;\n            -webkit-transform: translateY(95%);\n                    transform: translateY(95%); }\n        .fourth-section .first-container .button-container .button-disconnect-container .item-2 {\n          margin-left: 10px;\n          width: 80%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-disconnect-container .item-2 button {\n            border: none;\n            background: #E74856;\n            border-radius: 20px;\n            -webkit-transform: translateY(7%);\n                    transform: translateY(7%); }\n            .fourth-section .first-container .button-container .button-disconnect-container .item-2 button:hover {\n              cursor: pointer;\n              color: rgba(255, 255, 255, 0.87); }\n            .fourth-section .first-container .button-container .button-disconnect-container .item-2 button:disabled {\n              background-color: rgba(0, 0, 0, 0.115);\n              border: none;\n              cursor: default; }\n  .fourth-section .second-container {\n    margin-top: 0.5rem;\n    height: 50px;\n    background: #eee; }\n\n/* Port-color\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.selected {\n  color: white !important;\n  background: #555555 !important; }\n\n.connected {\n  color: white !important;\n  background: #00C853 !important;\n  box-shadow: none !important; }\n\n.pending {\n  color: white !important;\n  background: #D61515 !important;\n  box-shadow: none !important; }\n\n.break {\n  color: white !important;\n  background: #FBC02D !important;\n  box-shadow: none !important; }\n\n.pair {\n  color: white !important;\n  background: #3f51b5 !important; }\n\n.selected-pair {\n  background: #555555 !important;\n  cursor: default;\n  color: white; }\n\n.current-selected {\n  border-style: solid !important;\n  border-width: 1.2px !important;\n  border-color: orange !important;\n  font-weight: 500; }\n\n.unselectable {\n  color: #9E9E9E;\n  background: #E0E0E0;\n  pointer-events: none; }\n\n.port-unselectable {\n  color: #9E9E9E;\n  background: #E0E0E0;\n  pointer-events: none; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/* Import skeleton framework\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* Global\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nmd-card {\n  cursor: default; }\n\n.Blink {\n  -webkit-animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate;\n          animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }\n\n@-webkit-keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n@keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n.hide {\n  visibility: hidden; }\n\n#Connect:disabled {\n  pointer-events: none;\n  color: rgba(0, 0, 0, 0.38); }\n\n#Disconnect:disabled {\n  pointer-events: none;\n  color: rgba(0, 0, 0, 0.38); }\n\n/* First-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.first-section {\n  height: auto; }\n  .first-section .container {\n    text-align: center;\n    width: 100%; }\n    .first-section .container .flex-item-container {\n      width: 100%;\n      height: 100%; }\n      .first-section .container .flex-item-container .temperature-container {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        margin-top: 0.5rem;\n        width: 100%;\n        height: 70px;\n        background: #0091ea;\n        border-radius: 2px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .first-section .container .flex-item-container .temperature-container .flex-item-1 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1; }\n          .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-1 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 27%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-1 span {\n              font-size: 24px;\n              cursor: default;\n              color: white; }\n            .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-1 p {\n              font-size: 14px;\n              margin: 0;\n              cursor: default;\n              color: white; }\n          .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-2 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 43%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .temperature-container .flex-item-1 .content-2 span {\n              cursor: default;\n              color: white; }\n        .first-section .container .flex-item-container .temperature-container .flex-item-2 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1;\n          overflow: hidden; }\n          .first-section .container .flex-item-container .temperature-container .flex-item-2 img {\n            width: 90px;\n            height: auto; }\n      .first-section .container .flex-item-container .humidity-container {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        margin-top: 0.5rem;\n        width: 100%;\n        height: 70px;\n        background: #00c652;\n        border-radius: 2px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .first-section .container .flex-item-container .humidity-container .flex-item-1 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1; }\n          .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-1 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 27%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-1 span {\n              font-size: 24px;\n              cursor: default;\n              color: white; }\n            .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-1 p {\n              margin: 0;\n              cursor: default;\n              color: white; }\n          .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-2 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 43%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .humidity-container .flex-item-1 .content-2 span {\n              cursor: default;\n              color: white; }\n        .first-section .container .flex-item-container .humidity-container .flex-item-2 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1;\n          overflow: hidden; }\n          .first-section .container .flex-item-container .humidity-container .flex-item-2 img {\n            width: 90px;\n            height: auto; }\n      .first-section .container .flex-item-container .time-container {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        margin-top: 0.5rem;\n        width: 100%;\n        height: 70px;\n        background: #E74856;\n        border-radius: 2px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .first-section .container .flex-item-container .time-container .flex-item-1 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1; }\n          .first-section .container .flex-item-container .time-container .flex-item-1 .content-1 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 27%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .time-container .flex-item-1 .content-1 span {\n              font-size: 24px;\n              cursor: default;\n              color: white; }\n            .first-section .container .flex-item-container .time-container .flex-item-1 .content-1 p {\n              font-size: 14px;\n              margin: 0;\n              cursor: default;\n              color: white; }\n          .first-section .container .flex-item-container .time-container .flex-item-1 .content-2 {\n            height: 50%;\n            width: 100%;\n            margin-left: auto;\n            margin-right: auto;\n            position: relative;\n            top: 43%;\n            -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n            .first-section .container .flex-item-container .time-container .flex-item-1 .content-2 span {\n              cursor: default;\n              color: white; }\n        .first-section .container .flex-item-container .time-container .flex-item-2 {\n          -webkit-box-flex: 1;\n              -ms-flex-positive: 1;\n                  flex-grow: 1;\n          overflow: hidden; }\n          .first-section .container .flex-item-container .time-container .flex-item-2 img {\n            width: 90px;\n            height: auto; }\n\n/* east-banner\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.east-banner {\n  text-align: center;\n  margin-top: 1rem; }\n\n/* Second-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.second-section {\n  margin-top: 0.5rem;\n  height: auto; }\n  .second-section .left-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .second-section .left-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .second-section .left-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n  .second-section .right-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .second-section .right-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .second-section .right-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n\n/* west-banner\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.west-banner {\n  text-align: center;\n  margin-top: 1rem; }\n\n/* Third-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.third-section {\n  margin-top: 0.5rem;\n  height: auto; }\n  .third-section .left-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .third-section .left-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .third-section .left-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n  .third-section .right-table {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    width: 100%;\n    height: 100%; }\n    .third-section .right-table div {\n      font-size: 14px;\n      padding: 6.6px 0;\n      text-align: center;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .third-section .right-table div div {\n        border: 1px solid rgba(85, 85, 85, 0.2);\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 13px; }\n\n/* Fourth-section\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.fourth-section {\n  margin-top: 0.5rem;\n  height: auto; }\n  .fourth-section .first-container {\n    margin-top: 0.5rem;\n    height: auto; }\n    .fourth-section .first-container .button-container {\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      width: auto;\n      height: 45px; }\n      .fourth-section .first-container .button-container .button-connect-container {\n        width: 212px;\n        display: -webkit-inline-box;\n        display: -ms-inline-flexbox;\n        display: inline-flex;\n        margin-right: 5px;\n        -webkit-box-flex: 1;\n            -ms-flex-positive: 1;\n                flex-grow: 1;\n        border-radius: 45px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .fourth-section .first-container .button-container .button-connect-container .item-1 {\n          width: 20%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-connect-container .item-1 .connect-button-circle {\n            border-radius: 50%;\n            width: 15px;\n            height: 15px;\n            background: #3f51b5;\n            margin-left: 10px !important;\n            -webkit-transform: translateY(95%);\n                    transform: translateY(95%); }\n        .fourth-section .first-container .button-container .button-connect-container .item-2 {\n          margin-left: 10px;\n          width: 80%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-connect-container .item-2 button {\n            width: 152px;\n            border: none;\n            border-radius: 20px;\n            -webkit-transform: translateY(7%);\n                    transform: translateY(7%); }\n            .fourth-section .first-container .button-container .button-connect-container .item-2 button:hover {\n              cursor: pointer;\n              color: rgba(255, 255, 255, 0.87); }\n            .fourth-section .first-container .button-container .button-connect-container .item-2 button:disabled {\n              background-color: rgba(0, 0, 0, 0.115);\n              border: none;\n              cursor: default; }\n      .fourth-section .first-container .button-container .button-disconnect-container {\n        width: 210px;\n        display: -webkit-inline-box;\n        display: -ms-inline-flexbox;\n        display: inline-flex;\n        margin-right: 5px;\n        -webkit-box-flex: 1;\n            -ms-flex-positive: 1;\n                flex-grow: 1;\n        border-radius: 45px;\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n        .fourth-section .first-container .button-container .button-disconnect-container .item-1 {\n          width: 20%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-disconnect-container .item-1 .disconnect-button-circle {\n            border-radius: 50%;\n            width: 15px;\n            height: 15px;\n            background: #E74856;\n            margin-left: 10px !important;\n            -webkit-transform: translateY(95%);\n                    transform: translateY(95%); }\n        .fourth-section .first-container .button-container .button-disconnect-container .item-2 {\n          margin-left: 10px;\n          width: 80%;\n          height: 100%; }\n          .fourth-section .first-container .button-container .button-disconnect-container .item-2 button {\n            border: none;\n            background: #E74856;\n            border-radius: 20px;\n            -webkit-transform: translateY(7%);\n                    transform: translateY(7%); }\n            .fourth-section .first-container .button-container .button-disconnect-container .item-2 button:hover {\n              cursor: pointer;\n              color: rgba(255, 255, 255, 0.87); }\n            .fourth-section .first-container .button-container .button-disconnect-container .item-2 button:disabled {\n              background-color: rgba(0, 0, 0, 0.115);\n              border: none;\n              cursor: default; }\n  .fourth-section .second-container {\n    margin-top: 0.5rem;\n    height: 50px;\n    background: #eee; }\n\n/* Port-color\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.selected {\n  color: white !important;\n  background: #555555 !important; }\n\n.connected {\n  color: white !important;\n  background: #00C853 !important;\n  box-shadow: none !important; }\n\n.pending {\n  color: white !important;\n  background: #D61515 !important;\n  box-shadow: none !important; }\n\n.break {\n  color: white !important;\n  background: #FBC02D !important;\n  box-shadow: none !important; }\n\n.pair {\n  color: white !important;\n  background: #3f51b5 !important; }\n\n.selected-pair {\n  background: #555555 !important;\n  cursor: default;\n  color: white; }\n\n.current-selected {\n  border-style: solid !important;\n  border-width: 1.2px !important;\n  border-color: orange !important;\n  font-weight: 500; }\n\n.unselectable {\n  color: #9E9E9E;\n  background: #E0E0E0;\n  pointer-events: none; }\n\n.port-unselectable {\n  color: #9E9E9E;\n  background: #E0E0E0;\n  pointer-events: none; }\n", ""]);
 
 // exports
 
@@ -714,13 +1181,14 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__("../../../../jquery/dist/jquery.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jquery__ = __webpack_require__("../../../../jquery/dist/jquery.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PortConnectionMobileComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -731,14 +1199,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR MODULE
 
+
+// Api Service
 
 
 
 
 var PortConnectionMobileComponent = (function () {
-    function PortConnectionMobileComponent(ApiService) {
+    function PortConnectionMobileComponent(ApiService, router) {
         this.ApiService = ApiService;
+        this.router = router;
         // PORTS DATA
         this.eports = []; // 144 EAST PORTS
         this.wports = []; // 144 WEST PORTS
@@ -747,10 +1219,10 @@ var PortConnectionMobileComponent = (function () {
         this.portID = []; // PORT ID
         this.eportNote = []; // EAST PORT NOTE
         this.wportNote = []; // WEST PORT NOTE
-        this.eportschunk_left_table = [];
-        this.eportschunk_right_table = [];
-        this.wportschunk_left_table = [];
-        this.wportschunk_right_table = [];
+        this.eportschunk_left_table = new Array(); // EAST PORT LEFT TABLE CHUNK 6 OBJECT [12,12,...]
+        this.eportschunk_right_table = new Array(); // EAST PORT RIGHT TABLE CHUNK 6 OBJECT [12,12,...]
+        this.wportschunk_left_table = new Array(); // WEST PORT LEFT TABLE CHUNK 6 OBJECT [12,12,...]
+        this.wportschunk_right_table = new Array(); // WEST PORT RIGHT TABLE CHUNK 6 OBJECT [12,12,...]
         // CONNECTION DATA
         this.pair = []; // PAIR OF CONNECTED PORT {[east, west]}
         // LOCAL & USER EVENT DATA
@@ -770,23 +1242,56 @@ var PortConnectionMobileComponent = (function () {
         this.disabled_continue_button = false; // DISABLED CONTINUE BUTTON
         this.availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
         this.availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
+        this.disableEastPortArray = [
+            'E25', 'E26', 'E27', 'E28', 'E29', 'E30', 'E31', 'E32', 'E33', 'E34',
+            'E35', 'E36', 'E37', 'E38', 'E39', 'E40', 'E41', 'E42', 'E43', 'E44',
+            'E45', 'E46', 'E47', 'E48', 'E49', 'E50', 'E51', 'E52', 'E53', 'E54',
+            'E55', 'E56', 'E57', 'E58', 'E59', 'E60'
+        ]; // SET UNVAILABLE EAST PORT ARRAY
+        this.disableWestPortArray = [
+            'W25', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34',
+            'W35', 'W36', 'W37', 'W38', 'W39', 'W40', 'W41', 'W42', 'W43', 'W44',
+            'W45', 'W46', 'W47', 'W48', 'W49', 'W50', 'W51', 'W52', 'W53', 'W54',
+            'W55', 'W56', 'W57', 'W58', 'W59', 'W60'
+        ]; // SET UNVAILABLE WEST PORT ARRAY
         // DATA FROM DOM
         this.all_east = document.getElementsByClassName('East');
         this.all_west = document.getElementsByClassName('West');
     }
     PortConnectionMobileComponent.prototype.ngOnInit = function () {
         var _this = this;
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // DEVICE DETECT
+        this.deviceDetect();
         // FETCH DATA
         this.fetchData();
         // SET COLOR OF PORT CONNECTION
         this.setConnectedPort();
+        // PUSH UNAVAILABLE PORT ARRAY
+        this.pushNotAvailablePort();
         // CHECK STATUS EVERY 5 SEC.
         this.timerInterval = setInterval(function () {
             _this.checkStatus();
-        }, 3000);
+        }, 1500);
     };
     PortConnectionMobileComponent.prototype.ngOnDestroy = function () {
-        clearInterval(this.timerInterval); // CLEAR INTERVAL
+        clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
+    };
+    // CHECK SERVER STATUS
+    PortConnectionMobileComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
+    };
+    // DEVICE DETECT
+    PortConnectionMobileComponent.prototype.deviceDetect = function () {
+        if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            this.router.navigateByUrl('/');
+        }
     };
     // FETCH DATA
     PortConnectionMobileComponent.prototype.fetchData = function () {
@@ -804,7 +1309,7 @@ var PortConnectionMobileComponent = (function () {
                 if (i < 6) {
                     _this.eportschunk_left_table.push(_this.eportschunk[i]);
                     _this.wportschunk_left_table.push(_this.wportschunk[i]);
-                    // PUSH INDEX > 6
+                    // PUSH INDEX => 6
                 }
                 else {
                     _this.eportschunk_right_table.push(_this.eportschunk[i]);
@@ -833,7 +1338,6 @@ var PortConnectionMobileComponent = (function () {
     PortConnectionMobileComponent.prototype.checkStatus = function () {
         var _this = this;
         this.ApiService.checkStatus().then(function (data) {
-            console.log(data);
             _this.sequence = data.sequence;
             _this.status = data.status;
             _this.action = data.action;
@@ -950,7 +1454,7 @@ var PortConnectionMobileComponent = (function () {
     // SHOW HIS PAIR WHEN CLICK EAST PORT
     PortConnectionMobileComponent.prototype.eastPair = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_2_lodash__["each"](this.pair, function (obj) {
+        __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](this.pair, function (obj) {
             var east = 'E' + obj.east;
             var west = 'W' + obj.west;
             if (_this.selectedEastPortID === east && _this.selectedWestPortID === west) {
@@ -967,7 +1471,7 @@ var PortConnectionMobileComponent = (function () {
     // SHOW HIS PAIR WHEN CLICK WEST PORT
     PortConnectionMobileComponent.prototype.westPair = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_2_lodash__["each"](this.pair, function (obj) {
+        __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](this.pair, function (obj) {
             var east = 'E' + obj.east;
             var west = 'W' + obj.west;
             if (_this.selectedEastPortID === east && _this.selectedWestPortID === west) {
@@ -1183,7 +1687,7 @@ var PortConnectionMobileComponent = (function () {
                 _this.all_west[i].classList.remove('connected', 'pending', 'break');
             }
             console.log('------------------------------- All Port Status -------------------------------');
-            __WEBPACK_IMPORTED_MODULE_2_lodash__["each"](data, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](data, function (obj) {
                 if (obj['status'] === 'success') {
                     var east = 'E' + obj['east'];
                     var west = 'W' + obj['west'];
@@ -1280,17 +1784,24 @@ var PortConnectionMobileComponent = (function () {
     };
     // TOGGLE DEBUG BUTTON
     PortConnectionMobileComponent.prototype.toggleDebugMode = function () {
-        __WEBPACK_IMPORTED_MODULE_3_jquery__('#stops, #sequence, #input-container').toggle();
+        __WEBPACK_IMPORTED_MODULE_4_jquery__('#stops, #sequence, #input-container').toggle();
         this.debugMode = !this.debugMode;
         console.log('toggleDebugMode ' + this.debugMode);
     };
+    // PUSH NOT AVAILABLE PORT ARRAY
+    PortConnectionMobileComponent.prototype.pushNotAvailablePort = function () {
+        for (var i = 25; i <= 60; i++) {
+            this.disableEastPortArray.push('E' + i);
+            this.disableWestPortArray.push('W' + i);
+        }
+    };
     // DISABLE NOT AVAILABLE EAST PORT
     PortConnectionMobileComponent.prototype.disabledEastPort = function (id) {
-        return (id !== 'E1' && id !== 'E2' && id !== 'E3') ? 'port-unselectable' : '';
+        return (this.disableEastPortArray.includes(id)) ? 'port-unselectable' : '';
     };
     // DISABLE NOT AVAILABLE WEST PORT
     PortConnectionMobileComponent.prototype.disabledWestPort = function (id) {
-        return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
+        return (this.disableWestPortArray.includes(id)) ? 'port-unselectable' : '';
     };
     return PortConnectionMobileComponent;
 }());
@@ -1300,10 +1811,10 @@ PortConnectionMobileComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/port-connection-mobile/port-connection-mobile.component.html"),
         styles: [__webpack_require__("../../../../../src/app/port-connection-mobile/port-connection-mobile.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_api_service__["a" /* ApiService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _b || Object])
 ], PortConnectionMobileComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=port-connection-mobile.component.js.map
 
 /***/ }),
@@ -1311,7 +1822,7 @@ var _a;
 /***/ "../../../../../src/app/port-connection/port-connection.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN HEADER-CONTAINER -->\r\n<div class=\"header-container\" align=\"center\">\r\n  <!-- BEGIN CONTAINER-CONTENT -->\r\n  <div class=\"container-content\" align=\"center\">\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n        <div class=\"temperature-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>26 °C</span>\r\n              <p>78.8 °F</p>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Temperature</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/temp-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TEMPERATURE-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN HUMIDITY-CONTAINER -->\r\n        <div class=\"humidity-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>50%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Humidity</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/humidity-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END HUMIDITY-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN ORDER-CONTAINER -->\r\n        <div class=\"order-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN-CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>65%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN-CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Orders Completed</span>\r\n            </div>\r\n            <!-- END-CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/oder-icon2.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END ORDER-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TIME-CONTAINER -->\r\n        <div class=\"time-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>54 sec.</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Avg times</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/timer-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TIME-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n  </div>\r\n  <!-- END CONTAINER-CONTENT -->\r\n</div>\r\n<!-- END HEADER-CONTAINER -->\r\n\r\n<!-- BEGIN TABLE -->\r\n<!-- BEGIN SECTION GROUP -->\r\n<div class=\"section group\">\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- EAST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-1 -->\r\n    <table class=\"table-container-1\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of eportschunk\">\r\n          <td id=\"{{ column }}\" class=\"East td-style\" [ngClass]=\"[isSelectEast(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushEastNote(column)\" [mdTooltipPosition]=\"etooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- END TABLE-CONTAINER-1 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- WEST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n    <table class=\"table-container-2\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of wportschunk\">\r\n          <td id=\"{{ column }}\" class=\"West td-style\" [ngClass]=\"[isSelectWest(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushWestNote(column)\" [mdTooltipPosition]=\"wtooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n</div>\r\n<!-- END SECTION GROUP -->\r\n<!-- END TABLE -->\r\n\r\n<!-- BEGIN FOOTER -->\r\n<div class=\"footer-container\">\r\n  <!-- BEGIN FLEX-CONTAINER-1 -->\r\n  <div class=\"flex-container-1\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ERROR-DIALOG -->\r\n        <div id=\"error-dialog\" class=\"hide\">\r\n          <md-card class=\"Blink\">\r\n            <p>{{ error_message }}</p>\r\n          </md-card>\r\n        </div>\r\n        <!-- END ERROR-DIALOG -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-1 -->\r\n  <!-- BEGIN FLEX-CONTAINER-2 -->\r\n  <div class=\"flex-container-2\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"break-button-circle Blink\"></div>\r\n                <!-- END BREAK-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! debug button will available in debug mode.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONTINUE BUTTON -->\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" (click)=\"postDebug()\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_button == true ? false : null\" disabled>Continue</button>\r\n              <!-- END CONTINUE BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! connect button will available when select two side available ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONNECT BUTTON -->\r\n              <button md-raised-button id=\"Connect\" class=\"button-width\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\" disabled>Connect</button>\r\n              <!-- END CONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! disconnect button will available when select correct pair of connected ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN DISCONNECT BUTTON -->\r\n              <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\" disabled>Disconnect</button>\r\n              <!-- END DISCONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n      <!-- BEGIN ITEM-2 -->\r\n      <div class=\"item-2\">\r\n        <!-- BEGIN SUB-ITEM -->\r\n        <div class=\"sub-item\" align=\"center\">\r\n          <!-- BEGIN INPUT-CONTAINER -->\r\n          <div id=\"input-container\" class=\"align-center\" hidden>\r\n            <!-- BEGIN INPUT DIV -->\r\n            <div style=\"transform: translateY(-20%);\">\r\n              <!-- BEGIN STOP INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"stops\" placeholder=\"Stops :\" value=\"stops\" [(ngModel)]=\"stops\" [ngClass]=\"clearValue(stops)\" pattern=\"[0-9,]{1,20}\"\r\n                  [attr.disabled]=\"this.disable_stops_input == true ? false : null\" hidden>\r\n              </md-input-container>\r\n              <!-- END STOP INPUT -->\r\n              <!-- BEGIN SEQUENCE INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"sequence\" placeholder=\"Sequence :\" value=\"sequence\" [(ngModel)]=\"sequence\"\r\n                [attr.disabled]=\"this.disable_stops_input == true\" hidden>\r\n              </md-input-container>\r\n              <!-- END SEQUENCE INPUT -->\r\n            </div>\r\n            <!-- END INPUT DIV -->\r\n          </div>\r\n          <!-- END INPUT CONTAINER -->\r\n        </div>\r\n        <!-- END SUB-ITEM -->\r\n      </div>\r\n      <!-- END ITEM-2 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n    <!-- BEGIN FLEX-ITEM-2 -->\r\n    <div class=\"flex-item-2\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\" align=\"center\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <md-chip-list>\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <div class=\"detail-container-connected-item-1\">\r\n                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->\r\n                  <div class=\"connected-circle Blink\"></div>\r\n                  <!-- END CONNECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n                <div class=\"detail-container-connected-item-2\">\r\n                  <p>Connected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Green color means the port that connected.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <div class=\"detail-container-break-item-1\">\r\n                  <!-- BEGIN BREAK-CIRCLE BLINK -->\r\n                  <div class=\"break-circle Blink\"></div>\r\n                  <!-- END BREAK-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n                <div class=\"detail-container-break-item-2\">\r\n                  <p>Break</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <span class=\"tooltiptext\">Yellow color means the port that stop in current sequence.</span>\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <div class=\"detail-container-pending-item-1\">\r\n                  <!-- BEGIN PENDING-CIRCLE BLINK -->\r\n                  <div class=\"pending-circle Blink\"></div>\r\n                  <!-- END PENDING-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n                <div class=\"detail-container-pending-item-2\">\r\n                  <p>Pending</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Red color means the port that processing or pending.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <div class=\"detail-container-pair-item-1\">\r\n                  <!-- BEGIN PAIR-CIRCLE BLINK -->\r\n                  <div class=\"pair-circle Blink\"></div>\r\n                  <!-- END PAIR-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n                <div class=\"detail-container-pair-item-2\">\r\n                  <p>Pair</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show pairs of ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <div class=\"detail-container-selected-item-1\">\r\n                  <!-- BEGIN SELECTED-CIRCLE BLINK -->\r\n                  <div class=\"selected-circle Blink\"></div>\r\n                  <!-- END SELECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n                <div class=\"detail-container-selected-item-2\">\r\n                  <p>Selected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show current selected ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n          </md-chip-list>\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-2 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-2 -->\r\n  <!-- BEGIN FLEX-CONTAINER-3 -->\r\n  <div class=\"flex-container-3\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n      <div class=\"flex-item-1-container-shadow\">\r\n        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->\r\n        <md-slide-toggle id=\"toggleDebugButton\" class=\"bt-margin-left\" (click)=\"toggleDebugMode()\">Debug Mode</md-slide-toggle>\r\n        <!-- END DEBUG MODE TOGGLE BUTTON -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-3 -->\r\n</div>\r\n<!-- END FOOTER -->"
+module.exports = "<!-- BEGIN HEADER-CONTAINER -->\r\n<div class=\"header-container\" align=\"center\">\r\n  <!-- BEGIN CONTAINER-CONTENT -->\r\n  <div class=\"container-content\" align=\"center\">\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n        <div class=\"temperature-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>26 °C</span>\r\n              <p>78.8 °F</p>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Temperature</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/temp-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TEMPERATURE-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN HUMIDITY-CONTAINER -->\r\n        <div class=\"humidity-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>50%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Humidity</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/humidity-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END HUMIDITY-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN ORDER-CONTAINER -->\r\n        <div class=\"order-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN-CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>65%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN-CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Orders Completed</span>\r\n            </div>\r\n            <!-- END-CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/oder-icon2.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END ORDER-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TIME-CONTAINER -->\r\n        <div class=\"time-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>54 sec.</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Avg times</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../static/webapp/assets/timer-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TIME-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n  </div>\r\n  <!-- END CONTAINER-CONTENT -->\r\n</div>\r\n<!-- END HEADER-CONTAINER -->\r\n\r\n<!-- BEGIN TABLE -->\r\n<!-- BEGIN SECTION GROUP -->\r\n<div class=\"section group\">\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- EAST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-1 -->\r\n    <table class=\"table-container-1\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of eportschunk\">\r\n          <td id=\"{{ column }}\" class=\"East td-style\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushEastNote(column)\" [mdTooltipPosition]=\"etooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- END TABLE-CONTAINER-1 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- WEST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n    <table class=\"table-container-2\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of wportschunk\">\r\n          <td id=\"{{ column }}\" class=\"West td-style\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushWestNote(column)\" [mdTooltipPosition]=\"wtooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n</div>\r\n<!-- END SECTION GROUP -->\r\n<!-- END TABLE -->\r\n\r\n<!-- BEGIN FOOTER -->\r\n<div class=\"footer-container\">\r\n  <!-- BEGIN FLEX-CONTAINER-1 -->\r\n  <div class=\"flex-container-1\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ERROR-DIALOG -->\r\n        <div id=\"error-dialog\" class=\"hide\">\r\n          <md-card class=\"Blink\">\r\n            <p>{{ error_message }}</p>\r\n          </md-card>\r\n        </div>\r\n        <!-- END ERROR-DIALOG -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-1 -->\r\n  <!-- BEGIN FLEX-CONTAINER-2 -->\r\n  <div class=\"flex-container-2\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"break-button-circle Blink\"></div>\r\n                <!-- END BREAK-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! debug button will available in debug mode.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONTINUE BUTTON -->\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" (click)=\"postDebug()\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_button == true ? false : null\" disabled>Continue</button>\r\n              <!-- END CONTINUE BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! connect button will available when select two side available ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONNECT BUTTON -->\r\n              <button md-raised-button id=\"Connect\" class=\"button-width\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\" disabled>Connect</button>\r\n              <!-- END CONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! disconnect button will available when select correct pair of connected ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN DISCONNECT BUTTON -->\r\n              <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\" disabled>Disconnect</button>\r\n              <!-- END DISCONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n      <!-- BEGIN ITEM-2 -->\r\n      <div class=\"item-2\">\r\n        <!-- BEGIN SUB-ITEM -->\r\n        <div class=\"sub-item\" align=\"center\">\r\n          <!-- BEGIN INPUT-CONTAINER -->\r\n          <div id=\"input-container\" class=\"align-center\" hidden>\r\n            <!-- BEGIN INPUT DIV -->\r\n            <div style=\"transform: translateY(-20%);\">\r\n              <!-- BEGIN STOP INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"stops\" placeholder=\"Stops :\" value=\"stops\" [(ngModel)]=\"stops\" [ngClass]=\"clearValue(stops)\" pattern=\"[0-9,]{1,20}\"\r\n                  [attr.disabled]=\"this.disable_stops_input == true ? false : null\" hidden>\r\n              </md-input-container>\r\n              <!-- END STOP INPUT -->\r\n              <!-- BEGIN SEQUENCE INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"sequence\" placeholder=\"Sequence :\" value=\"sequence\" [(ngModel)]=\"sequence\"\r\n                [attr.disabled]=\"this.disable_stops_input == true\" hidden>\r\n              </md-input-container>\r\n              <!-- END SEQUENCE INPUT -->\r\n            </div>\r\n            <!-- END INPUT DIV -->\r\n          </div>\r\n          <!-- END INPUT CONTAINER -->\r\n        </div>\r\n        <!-- END SUB-ITEM -->\r\n      </div>\r\n      <!-- END ITEM-2 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n    <!-- BEGIN FLEX-ITEM-2 -->\r\n    <div class=\"flex-item-2\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\" align=\"center\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <md-chip-list>\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <div class=\"detail-container-connected-item-1\">\r\n                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->\r\n                  <div class=\"connected-circle Blink\"></div>\r\n                  <!-- END CONNECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n                <div class=\"detail-container-connected-item-2\">\r\n                  <p>Connected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Green color means the port that connected.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <div class=\"detail-container-break-item-1\">\r\n                  <!-- BEGIN BREAK-CIRCLE BLINK -->\r\n                  <div class=\"break-circle Blink\"></div>\r\n                  <!-- END BREAK-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n                <div class=\"detail-container-break-item-2\">\r\n                  <p>Break</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <span class=\"tooltiptext\">Yellow color means the port that stop in current sequence.</span>\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <div class=\"detail-container-pending-item-1\">\r\n                  <!-- BEGIN PENDING-CIRCLE BLINK -->\r\n                  <div class=\"pending-circle Blink\"></div>\r\n                  <!-- END PENDING-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n                <div class=\"detail-container-pending-item-2\">\r\n                  <p>Pending</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Red color means the port that processing or pending.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <div class=\"detail-container-pair-item-1\">\r\n                  <!-- BEGIN PAIR-CIRCLE BLINK -->\r\n                  <div class=\"pair-circle Blink\"></div>\r\n                  <!-- END PAIR-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n                <div class=\"detail-container-pair-item-2\">\r\n                  <p>Pair</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show pairs of ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <div class=\"detail-container-selected-item-1\">\r\n                  <!-- BEGIN SELECTED-CIRCLE BLINK -->\r\n                  <div class=\"selected-circle Blink\"></div>\r\n                  <!-- END SELECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n                <div class=\"detail-container-selected-item-2\">\r\n                  <p>Selected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show current selected ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n          </md-chip-list>\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-2 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-2 -->\r\n  <!-- BEGIN FLEX-CONTAINER-3 -->\r\n  <div class=\"flex-container-3\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n      <div class=\"flex-item-1-container-shadow\">\r\n        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->\r\n        <md-slide-toggle id=\"toggleDebugButton\" class=\"bt-margin-left\" (click)=\"toggleDebugMode()\">Debug Mode</md-slide-toggle>\r\n        <!-- END DEBUG MODE TOGGLE BUTTON -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-3 -->\r\n</div>\r\n<!-- END FOOTER -->"
 
 /***/ }),
 
@@ -1323,7 +1834,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".header-container {\n  width: 100vw;\n  margin-top: 15px;\n  margin-bottom: 0; }\n  .header-container .container-content {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    width: 100%; }\n    .header-container .container-content .sub-container-content {\n      height: 80px;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .header-container .container-content .sub-container-content .flex-item-container {\n        width: 100%;\n        height: 100%; }\n        .header-container .container-content .sub-container-content .flex-item-container .temperature-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #0091ea;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n            .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n          .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n        .header-container .container-content .sub-container-content .flex-item-container .humidity-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #00c652;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n            .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n          .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n        .header-container .container-content .sub-container-content .flex-item-container .order-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #00B294;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n          .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n        .header-container .container-content .sub-container-content .flex-item-container .time-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #E74856;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n            .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n          .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n\n:focus {\n  outline: none; }\n\nbutton {\n  min-width: 110px; }\n\n:host /deep/ md-slide-toggle:hover {\n  color: #e91e63; }\n\n/*  SECTIONS  */\n.section {\n  clear: both;\n  padding: 0px;\n  margin: 0px;\n  width: 100vw; }\n  .section .table-container-1 {\n    width: 90%;\n    height: 100%;\n    margin: auto;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    border-radius: 4px; }\n    .section .table-container-1 .td-style {\n      padding: 4px;\n      border: 1px solid rgba(85, 85, 85, 0.2);\n      text-align: center;\n      font-family: 'Open Sans', sans-serif;\n      font-size: 16px;\n      border-radius: 8px; }\n    .section .table-container-1 .selected {\n      color: white !important;\n      background: #555555 !important; }\n    .section .table-container-1 .connected {\n      color: white !important;\n      background: #00C853 !important;\n      box-shadow: none !important; }\n    .section .table-container-1 .pending {\n      color: white !important;\n      background: #D61515 !important;\n      box-shadow: none !important; }\n    .section .table-container-1 .break {\n      color: white !important;\n      background: #FBC02D !important;\n      box-shadow: none !important; }\n    .section .table-container-1 .pair {\n      color: white !important;\n      background: #3f51b5 !important; }\n    .section .table-container-1 .selected-pair {\n      background: #555555 !important;\n      cursor: default;\n      color: white; }\n    .section .table-container-1 .current-selected {\n      border-style: solid;\n      border-width: 2px;\n      border-color: orange;\n      font-weight: 500; }\n    .section .table-container-1 .unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-1 .selectable .unselectable {\n      all: revert; }\n    .section .table-container-1 .port-unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-1 td:hover {\n      cursor: pointer;\n      background-color: rgba(85, 85, 85, 0.15); }\n  .section .table-container-2 {\n    width: 90%;\n    height: 100%;\n    margin: auto;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    border-radius: 4px; }\n    .section .table-container-2 .td-style {\n      padding: 4px;\n      border: 1px solid rgba(85, 85, 85, 0.2);\n      text-align: center;\n      font-family: 'Open Sans', sans-serif;\n      font-size: 16px;\n      border-radius: 8px; }\n    .section .table-container-2 .selected {\n      color: white !important;\n      background: #555555 !important; }\n    .section .table-container-2 .connected {\n      color: white !important;\n      background: #00C853 !important;\n      box-shadow: none !important; }\n    .section .table-container-2 .pending {\n      color: white !important;\n      background: #D61515 !important;\n      box-shadow: none !important; }\n    .section .table-container-2 .break {\n      color: white !important;\n      background: #FBC02D !important;\n      box-shadow: none !important; }\n    .section .table-container-2 .pair {\n      color: white !important;\n      background: #3f51b5 !important; }\n    .section .table-container-2 .selected-pair {\n      background: #555555 !important;\n      cursor: default;\n      color: white; }\n    .section .table-container-2 .current-selected {\n      border-style: solid;\n      border-width: 2px;\n      border-color: orange;\n      font-weight: 500; }\n    .section .table-container-2 .unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-2 .port-unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-2 td:hover {\n      cursor: pointer;\n      background-color: rgba(85, 85, 85, 0.15); }\n\n/*  COLUMN SETUP  */\n.col {\n  display: block;\n  float: left;\n  margin: 1% 0 1% 1.6%; }\n\n.col:first-child {\n  margin-left: 0; }\n\n/*  GROUPING  */\n.group:before,\n.group:after {\n  content: \"\";\n  display: table; }\n\n.group:after {\n  clear: both; }\n\n.group {\n  zoom: 1;\n  /* For IE 6/7 */ }\n\n/*  GRID OF TWO  */\n.span_2_of_2 {\n  width: 100%; }\n\n.span_1_of_2 {\n  width: 49.2%; }\n\n/*  GO FULL WIDTH AT LESS THAN 1200 PIXELS */\n@media only screen and (max-width: 1200px) {\n  .col {\n    margin: 1% 0 1% 0%; } }\n\n@media only screen and (max-width: 1200px) {\n  .span_2_of_2,\n  .span_1_of_2 {\n    width: 100%; } }\n\n.footer-container {\n  width: 100vw;\n  height: 140px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-top: 15px;\n  margin-bottom: 5px; }\n  .footer-container .flex-container-1 {\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1; }\n    .footer-container .flex-container-1 .flex-item-1 {\n      width: 100%;\n      height: 100%; }\n      .footer-container .flex-container-1 .flex-item-1 .item-1 {\n        height: 100%;\n        width: 100%; }\n        .footer-container .flex-container-1 .flex-item-1 .item-1 md-card {\n          width: 135px;\n          height: 0;\n          font-size: 14px;\n          border-radius: 35px;\n          background: #E74856; }\n          .footer-container .flex-container-1 .flex-item-1 .item-1 md-card p {\n            cursor: default;\n            color: white;\n            -webkit-transform: translateY(-50%);\n                    transform: translateY(-50%); }\n        .footer-container .flex-container-1 .flex-item-1 .item-1 .hide {\n          visibility: hidden; }\n  .footer-container .flex-container-2 {\n    -webkit-box-flex: 2;\n        -ms-flex-positive: 2;\n            flex-grow: 2; }\n    .footer-container .flex-container-2 .flex-item-1 {\n      width: 100%;\n      height: 70%; }\n      .footer-container .flex-container-2 .flex-item-1 .item-1 {\n        margin: auto;\n        max-width: 80%;\n        min-width: 70%;\n        height: 50%;\n        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip {\n          text-align: center;\n          margin: auto;\n          width: 60px;\n          -webkit-transform: translateY(25%);\n                  transform: translateY(25%);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          cursor: default; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:first-child {\n            background: #00C853;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:first-child:hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(2) {\n            background: #FBC02D;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(2):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(3) {\n            background: #D61515;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(3):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(4) {\n            background: #3f51b5;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(4):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(5) {\n            background: #555555;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(5):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:focus {\n            outline: 0; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 div {\n          margin: auto; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-connected {\n            background: #00C853;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-break {\n            background: #FBC02D;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-pending {\n            background: #D61515;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-pair {\n            background: #3f51b5;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-selected {\n            background: #555555;\n            color: white; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .item-1-container-shadow {\n          height: 100%;\n          width: 750px; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 button {\n          -webkit-transform: translateY(13%);\n                  transform: translateY(13%);\n          border-radius: 20px; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Continue:not(disabled) {\n          background: #FBC02D; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Continue:disabled {\n          background-color: rgba(0, 0, 0, 0.13); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Disconnect:not(disabled) {\n          background: #E74856; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Disconnect:disabled {\n          background-color: rgba(0, 0, 0, 0.115); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .button-container {\n          display: -webkit-inline-box;\n          display: -ms-inline-flexbox;\n          display: inline-flex;\n          margin-left: 15px;\n          width: 150px;\n          height: 90%;\n          border-radius: 45px;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          -webkit-transform: translateY(2px);\n                  transform: translateY(2px); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .button-container-item-1 {\n          width: 20%;\n          height: 100%; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .button-container-item-2 {\n          width: 80%;\n          height: 100%; }\n      .footer-container .flex-container-2 .flex-item-1 .item-2 {\n        display: -webkit-inline-box;\n        display: -ms-inline-flexbox;\n        display: inline-flex;\n        width: 100%;\n        height: 50%; }\n        .footer-container .flex-container-2 .flex-item-1 .item-2 .sub-item {\n          margin: auto;\n          width: 60%;\n          height: 100%; }\n          .footer-container .flex-container-2 .flex-item-1 .item-2 .sub-item .align-center {\n            -webkit-transform: translateY(13%);\n                    transform: translateY(13%);\n            height: 80%;\n            width: 420px;\n            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n            border-radius: 25px; }\n        .footer-container .flex-container-2 .flex-item-1 .item-2 .item-2-container-shadow {\n          margin: auto;\n          -webkit-transform: translateY(-15%);\n                  transform: translateY(-15%);\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          border-radius: 2px;\n          height: 100%; }\n          .footer-container .flex-container-2 .flex-item-1 .item-2 .item-2-container-shadow:focus {\n            outline: 0; }\n        .footer-container .flex-container-2 .flex-item-1 .item-2 .unselectable {\n          pointer-events: none; }\n    .footer-container .flex-container-2 .flex-item-2 {\n      width: 100%;\n      height: 30%; }\n      .footer-container .flex-container-2 .flex-item-2 .item-1 {\n        width: 100%;\n        height: 100%;\n        margin: auto; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 button {\n          -webkit-transform: translateY(8%);\n                  transform: translateY(8%);\n          border-radius: 20px; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Continue:not(disabled) {\n          background: #FBC02D; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Continue:disabled {\n          background-color: rgba(0, 0, 0, 0.13); }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Disconnect:not(disabled) {\n          background: #E74856; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Disconnect:disabled {\n          background-color: rgba(0, 0, 0, 0.115); }\n      .footer-container .flex-container-2 .flex-item-2 .item-1-container-shadow {\n        width: 750px;\n        height: 70%;\n        margin: auto;\n        -webkit-transform: translateY(6px);\n                transform: translateY(6px); }\n        .footer-container .flex-container-2 .flex-item-2 .item-1-container-shadow div {\n          margin: auto; }\n  .footer-container .flex-container-3 {\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1; }\n    .footer-container .flex-container-3 .flex-item-1 {\n      width: 100%;\n      height: 50%; }\n      .footer-container .flex-container-3 .flex-item-1 md-slide-toggle {\n        -webkit-transform: translateY(35%);\n                transform: translateY(35%); }\n      .footer-container .flex-container-3 .flex-item-1 .flex-item-1-container-shadow {\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n        border-radius: 30px;\n        height: 50%;\n        width: 150px;\n        -webkit-transform: translateY(20%);\n                transform: translateY(20%); }\n\n.tooltip {\n  position: relative;\n  display: inline-block; }\n\n.tooltip .tooltiptext {\n  visibility: hidden;\n  width: 300px;\n  background-color: #555555;\n  color: #fff;\n  text-align: center;\n  border-radius: 6px;\n  padding: 5px 0;\n  font-size: 13px;\n  cursor: pointer;\n  /* Position the tooltip */\n  position: absolute;\n  z-index: 1;\n  bottom: 100%;\n  left: 50%;\n  margin-left: -150px; }\n\n.tooltip:hover .tooltiptext {\n  visibility: visible; }\n\n.detail-container {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  border-radius: 30px;\n  width: 120px;\n  height: 35px;\n  -webkit-transform: translateY(-5%);\n          transform: translateY(-5%); }\n  .detail-container:focus {\n    outline: 0; }\n\n.detail-container-connected-item-1 {\n  width: 30%;\n  height: 30%; }\n\n.detail-container-connected-item-2 {\n  width: 70%;\n  height: 30%;\n  margin-right: 15px !important; }\n  .detail-container-connected-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-break-item-1 {\n  width: 40%;\n  height: 30%; }\n\n.detail-container-break-item-2 {\n  width: 60%;\n  height: 30%;\n  margin-right: 30px !important; }\n  .detail-container-break-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-pending-item-1 {\n  width: 35%;\n  height: 30%; }\n\n.detail-container-pending-item-2 {\n  width: 65%;\n  height: 30%;\n  margin-right: 20px !important; }\n  .detail-container-pending-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-pair-item-1 {\n  width: 45%;\n  height: 30%; }\n\n.detail-container-pair-item-2 {\n  width: 55%;\n  height: 30%;\n  margin-right: 30px !important; }\n  .detail-container-pair-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-selected-item-1 {\n  width: 35%;\n  height: 30%; }\n\n.detail-container-selected-item-2 {\n  width: 65%;\n  height: 30%;\n  margin-right: 20px !important; }\n  .detail-container-selected-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.connected-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #00C853;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.break-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #FBC02D;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.pending-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #E74856;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.pair-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #3f51b5;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.selected-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #555555;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.connect-button-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #3f51b5;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(95%);\n          transform: translateY(95%); }\n\n.break-button-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #FBC02D;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(95%);\n          transform: translateY(95%); }\n\n.disconnect-button-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #E74856;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(95%);\n          transform: translateY(95%); }\n\n.Blink {\n  -webkit-animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate;\n          animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }\n\n@-webkit-keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n@keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n.bee-container {\n  width: 100vw;\n  height: 500px;\n  background: skyblue; }\n\n.bee-hive {\n  width: 50%;\n  height: 100%;\n  background: wheat; }\n\n.rhex {\n  position: relative;\n  margin: 1em auto;\n  width: 10em;\n  height: 17.32em;\n  border-radius: 1em/ .5em;\n  opacity: .25;\n  background: orange;\n  transition: opacity .5s;\n  cursor: pointer; }\n\n.rhex:before, .rhex:after {\n  position: absolute;\n  width: inherit;\n  height: inherit;\n  border-radius: inherit;\n  background: inherit;\n  content: ''; }\n\n.rhex:before {\n  -webkit-transform: rotate(60deg);\n          transform: rotate(60deg); }\n\n.rhex:after {\n  -webkit-transform: rotate(-60deg);\n          transform: rotate(-60deg); }\n\n.rhex:hover {\n  opacity: 1; }\n\ntd {\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n", ""]);
+exports.push([module.i, ".header-container {\n  width: 100vw;\n  margin-top: 15px;\n  margin-bottom: 0; }\n  .header-container .container-content {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    width: 100%; }\n    .header-container .container-content .sub-container-content {\n      height: 80px;\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1; }\n      .header-container .container-content .sub-container-content .flex-item-container {\n        width: 100%;\n        height: 100%; }\n        .header-container .container-content .sub-container-content .flex-item-container .temperature-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #0091ea;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 span {\n                  margin-left: 15px; }\n                .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-1 p {\n                  margin-left: 15px; } }\n            .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-1 .content-2 span {\n                  font-size: 14px;\n                  margin-left: 15px; } }\n          .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .temperature-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n        .header-container .container-content .sub-container-content .flex-item-container .humidity-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #00c652;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-1 span {\n                  margin-left: 15px; } }\n            .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-1 .content-2 span {\n                  font-size: 14px; } }\n          .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .humidity-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n        .header-container .container-content .sub-container-content .flex-item-container .order-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #00B294;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 .content-2 span {\n                  font-size: 14px; } }\n          .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n          @media only screen and (max-width: 1200px) {\n            .header-container .container-content .sub-container-content .flex-item-container .order-container .flex-item-1 {\n              overflow: hidden; } }\n        .header-container .container-content .sub-container-content .flex-item-container .time-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          height: 100%;\n          min-width: 10vw;\n          max-width: 20vw;\n          background: #E74856;\n          border-radius: 2px;\n          position: relative;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          margin: 0; }\n          .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1; }\n            .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 35%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 span {\n                font-size: 24px;\n                cursor: default;\n                color: white; }\n              .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 p {\n                margin: 0;\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-1 span {\n                  margin-left: 15px; } }\n            .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-2 {\n              height: 50%;\n              width: 100%;\n              margin-left: auto;\n              margin-right: auto;\n              position: relative;\n              top: 48%;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%); }\n              .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-2 span {\n                cursor: default;\n                color: white; }\n              @media only screen and (max-width: 1200px) {\n                .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-1 .content-2 span {\n                  font-size: 14px;\n                  margin-left: 15px; } }\n          .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-2 {\n            -webkit-box-flex: 1;\n                -ms-flex-positive: 1;\n                    flex-grow: 1;\n            overflow: hidden; }\n            .header-container .container-content .sub-container-content .flex-item-container .time-container .flex-item-2 img {\n              position: relative;\n              -webkit-transform: translateY(-50%);\n                      transform: translateY(-50%);\n              top: 60%;\n              width: 90px;\n              /* you can use % */\n              height: auto; }\n\n:focus {\n  outline: none; }\n\nbutton {\n  min-width: 110px; }\n\n:host /deep/ md-slide-toggle:hover {\n  color: #e91e63; }\n\n/*  SECTIONS  */\n.section {\n  clear: both;\n  padding: 0px;\n  margin: 0px;\n  width: 100vw; }\n  .section .table-container-1 {\n    width: 90%;\n    height: 100%;\n    margin: auto;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    border-radius: 4px; }\n    .section .table-container-1 .td-style {\n      padding: 4px;\n      border: 1px solid rgba(85, 85, 85, 0.2);\n      text-align: center;\n      font-family: 'Open Sans', sans-serif;\n      font-size: 16px;\n      border-radius: 8px; }\n    .section .table-container-1 .selected {\n      color: white !important;\n      background: #555555 !important; }\n    .section .table-container-1 .connected {\n      color: white !important;\n      background: #00C853 !important;\n      box-shadow: none !important; }\n    .section .table-container-1 .pending {\n      color: white !important;\n      background: #D61515 !important;\n      box-shadow: none !important; }\n    .section .table-container-1 .break {\n      color: white !important;\n      background: #FBC02D !important;\n      box-shadow: none !important; }\n    .section .table-container-1 .pair {\n      color: white !important;\n      background: #3f51b5 !important; }\n    .section .table-container-1 .selected-pair {\n      background: #555555 !important;\n      cursor: default;\n      color: white; }\n    .section .table-container-1 .current-selected {\n      border-style: solid;\n      border-width: 2px;\n      border-color: orange;\n      font-weight: 500; }\n    .section .table-container-1 .unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-1 .selectable .unselectable {\n      all: revert; }\n    .section .table-container-1 .port-unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-1 td:hover {\n      cursor: pointer;\n      background-color: rgba(85, 85, 85, 0.15); }\n  .section .table-container-2 {\n    width: 90%;\n    height: 100%;\n    margin: auto;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    border-radius: 4px; }\n    .section .table-container-2 .td-style {\n      padding: 4px;\n      border: 1px solid rgba(85, 85, 85, 0.2);\n      text-align: center;\n      font-family: 'Open Sans', sans-serif;\n      font-size: 16px;\n      border-radius: 8px; }\n    .section .table-container-2 .selected {\n      color: white !important;\n      background: #555555 !important; }\n    .section .table-container-2 .connected {\n      color: white !important;\n      background: #00C853 !important;\n      box-shadow: none !important; }\n    .section .table-container-2 .pending {\n      color: white !important;\n      background: #D61515 !important;\n      box-shadow: none !important; }\n    .section .table-container-2 .break {\n      color: white !important;\n      background: #FBC02D !important;\n      box-shadow: none !important; }\n    .section .table-container-2 .pair {\n      color: white !important;\n      background: #3f51b5 !important; }\n    .section .table-container-2 .selected-pair {\n      background: #555555 !important;\n      cursor: default;\n      color: white; }\n    .section .table-container-2 .current-selected {\n      border-style: solid;\n      border-width: 2px;\n      border-color: orange;\n      font-weight: 500; }\n    .section .table-container-2 .unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-2 .port-unselectable {\n      color: #9E9E9E;\n      background: #E0E0E0;\n      pointer-events: none; }\n    .section .table-container-2 td:hover {\n      cursor: pointer;\n      background-color: rgba(85, 85, 85, 0.15); }\n\n/*  COLUMN SETUP  */\n.col {\n  display: block;\n  float: left;\n  margin: 1% 0 1% 1.6%; }\n\n.col:first-child {\n  margin-left: 0; }\n\n/*  GROUPING  */\n.group:before,\n.group:after {\n  content: \"\";\n  display: table; }\n\n.group:after {\n  clear: both; }\n\n.group {\n  zoom: 1;\n  /* For IE 6/7 */ }\n\n/*  GRID OF TWO  */\n.span_2_of_2 {\n  width: 100%; }\n\n.span_1_of_2 {\n  width: 49.2%; }\n\n/*  GO FULL WIDTH AT LESS THAN 1200 PIXELS */\n@media only screen and (max-width: 1200px) {\n  .col {\n    margin: 1% 0 1% 0%; } }\n\n@media only screen and (max-width: 1200px) {\n  .span_2_of_2,\n  .span_1_of_2 {\n    width: 100%; } }\n\n.footer-container {\n  width: 100vw;\n  height: 140px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-top: 15px;\n  margin-bottom: 5px; }\n  .footer-container .flex-container-1 {\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1; }\n    .footer-container .flex-container-1 .flex-item-1 {\n      width: 100%;\n      height: 100%; }\n      .footer-container .flex-container-1 .flex-item-1 .item-1 {\n        height: 100%;\n        width: 100%; }\n        .footer-container .flex-container-1 .flex-item-1 .item-1 md-card {\n          width: 135px;\n          height: 80px;\n          font-size: 14px;\n          border-radius: 35px;\n          background: #E74856; }\n          .footer-container .flex-container-1 .flex-item-1 .item-1 md-card p {\n            cursor: default;\n            color: white;\n            -webkit-transform: translateY(-15%);\n                    transform: translateY(-15%); }\n        .footer-container .flex-container-1 .flex-item-1 .item-1 .hide {\n          visibility: hidden; }\n  .footer-container .flex-container-2 {\n    -webkit-box-flex: 2;\n        -ms-flex-positive: 2;\n            flex-grow: 2; }\n    .footer-container .flex-container-2 .flex-item-1 {\n      width: 100%;\n      height: 70%; }\n      .footer-container .flex-container-2 .flex-item-1 .item-1 {\n        margin: auto;\n        max-width: 80%;\n        min-width: 70%;\n        height: 50%;\n        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip {\n          text-align: center;\n          margin: auto;\n          width: 60px;\n          -webkit-transform: translateY(25%);\n                  transform: translateY(25%);\n          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n          cursor: default; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:first-child {\n            background: #00C853;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:first-child:hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(2) {\n            background: #FBC02D;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(2):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(3) {\n            background: #D61515;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(3):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(4) {\n            background: #3f51b5;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(4):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(5) {\n            background: #555555;\n            color: white; }\n            .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:nth-child(5):hover {\n              width: 100px; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 md-chip:focus {\n            outline: 0; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 div {\n          margin: auto; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-connected {\n            background: #00C853;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-break {\n            background: #FBC02D;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-pending {\n            background: #D61515;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-pair {\n            background: #3f51b5;\n            color: white; }\n          .footer-container .flex-container-2 .flex-item-1 .item-1 div #chip-selected {\n            background: #555555;\n            color: white; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .item-1-container-shadow {\n          height: 100%;\n          width: 750px; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 button {\n          -webkit-transform: translateY(13%);\n                  transform: translateY(13%);\n          border-radius: 20px; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Continue:not(disabled) {\n          background: #FBC02D; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Continue:disabled {\n          background-color: rgba(0, 0, 0, 0.13); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Disconnect:not(disabled) {\n          background: #E74856; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 #Disconnect:disabled {\n          background-color: rgba(0, 0, 0, 0.115); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .button-container {\n          display: -webkit-inline-box;\n          display: -ms-inline-flexbox;\n          display: inline-flex;\n          margin-left: 15px;\n          width: 150px;\n          height: 90%;\n          border-radius: 45px;\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          -webkit-transform: translateY(2px);\n                  transform: translateY(2px); }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .button-container-item-1 {\n          width: 20%;\n          height: 100%; }\n        .footer-container .flex-container-2 .flex-item-1 .item-1 .button-container-item-2 {\n          width: 80%;\n          height: 100%; }\n      .footer-container .flex-container-2 .flex-item-1 .item-2 {\n        display: -webkit-inline-box;\n        display: -ms-inline-flexbox;\n        display: inline-flex;\n        width: 100%;\n        height: 50%; }\n        .footer-container .flex-container-2 .flex-item-1 .item-2 .sub-item {\n          margin: auto;\n          width: 60%;\n          height: 100%; }\n          .footer-container .flex-container-2 .flex-item-1 .item-2 .sub-item .align-center {\n            -webkit-transform: translateY(13%);\n                    transform: translateY(13%);\n            height: 80%;\n            width: 420px;\n            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n            border-radius: 25px; }\n        .footer-container .flex-container-2 .flex-item-1 .item-2 .item-2-container-shadow {\n          margin: auto;\n          -webkit-transform: translateY(-15%);\n                  transform: translateY(-15%);\n          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n          border-radius: 2px;\n          height: 100%; }\n          .footer-container .flex-container-2 .flex-item-1 .item-2 .item-2-container-shadow:focus {\n            outline: 0; }\n        .footer-container .flex-container-2 .flex-item-1 .item-2 .unselectable {\n          pointer-events: none; }\n    .footer-container .flex-container-2 .flex-item-2 {\n      width: 100%;\n      height: 30%; }\n      .footer-container .flex-container-2 .flex-item-2 .item-1 {\n        width: 100%;\n        height: 100%;\n        margin: auto; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 button {\n          -webkit-transform: translateY(8%);\n                  transform: translateY(8%);\n          border-radius: 20px; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Continue:not(disabled) {\n          background: #FBC02D; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Continue:disabled {\n          background-color: rgba(0, 0, 0, 0.13); }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Disconnect:not(disabled) {\n          background: #E74856; }\n        .footer-container .flex-container-2 .flex-item-2 .item-1 #Disconnect:disabled {\n          background-color: rgba(0, 0, 0, 0.115); }\n      .footer-container .flex-container-2 .flex-item-2 .item-1-container-shadow {\n        width: 750px;\n        height: 70%;\n        margin: auto;\n        -webkit-transform: translateY(6px);\n                transform: translateY(6px); }\n        .footer-container .flex-container-2 .flex-item-2 .item-1-container-shadow div {\n          margin: auto; }\n  .footer-container .flex-container-3 {\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1; }\n    .footer-container .flex-container-3 .flex-item-1 {\n      width: 100%;\n      height: 50%; }\n      .footer-container .flex-container-3 .flex-item-1 md-slide-toggle {\n        -webkit-transform: translateY(35%);\n                transform: translateY(35%); }\n      .footer-container .flex-container-3 .flex-item-1 .flex-item-1-container-shadow {\n        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n        border-radius: 30px;\n        height: 50%;\n        width: 150px;\n        -webkit-transform: translateY(20%);\n                transform: translateY(20%); }\n\n.tooltip {\n  position: relative;\n  display: inline-block; }\n\n.tooltip .tooltiptext {\n  visibility: hidden;\n  width: 300px;\n  background-color: #555555;\n  color: #fff;\n  text-align: center;\n  border-radius: 6px;\n  padding: 5px 0;\n  font-size: 13px;\n  cursor: pointer;\n  /* Position the tooltip */\n  position: absolute;\n  z-index: 1;\n  bottom: 100%;\n  left: 50%;\n  margin-left: -150px; }\n\n.tooltip:hover .tooltiptext {\n  visibility: visible; }\n\n.detail-container {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  border-radius: 30px;\n  width: 120px;\n  height: 35px;\n  -webkit-transform: translateY(-5%);\n          transform: translateY(-5%); }\n  .detail-container:focus {\n    outline: 0; }\n\n.detail-container-connected-item-1 {\n  width: 30%;\n  height: 30%; }\n\n.detail-container-connected-item-2 {\n  width: 70%;\n  height: 30%;\n  margin-right: 15px !important; }\n  .detail-container-connected-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-break-item-1 {\n  width: 40%;\n  height: 30%; }\n\n.detail-container-break-item-2 {\n  width: 60%;\n  height: 30%;\n  margin-right: 30px !important; }\n  .detail-container-break-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-pending-item-1 {\n  width: 35%;\n  height: 30%; }\n\n.detail-container-pending-item-2 {\n  width: 65%;\n  height: 30%;\n  margin-right: 20px !important; }\n  .detail-container-pending-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-pair-item-1 {\n  width: 45%;\n  height: 30%; }\n\n.detail-container-pair-item-2 {\n  width: 55%;\n  height: 30%;\n  margin-right: 30px !important; }\n  .detail-container-pair-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.detail-container-selected-item-1 {\n  width: 35%;\n  height: 30%; }\n\n.detail-container-selected-item-2 {\n  width: 65%;\n  height: 30%;\n  margin-right: 20px !important; }\n  .detail-container-selected-item-2 p {\n    font-size: 14px;\n    -webkit-transform: translateY(-100%);\n            transform: translateY(-100%);\n    cursor: default; }\n\n.connected-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #00C853;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.break-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #FBC02D;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.pending-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #E74856;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.pair-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #3f51b5;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.selected-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #555555;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(-15%);\n          transform: translateY(-15%); }\n\n.connect-button-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #3f51b5;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(95%);\n          transform: translateY(95%); }\n\n.break-button-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #FBC02D;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(95%);\n          transform: translateY(95%); }\n\n.disconnect-button-circle {\n  border-radius: 50%;\n  width: 15px;\n  height: 15px;\n  background: #E74856;\n  margin-left: 10px !important;\n  -webkit-transform: translateY(95%);\n          transform: translateY(95%); }\n\n.Blink {\n  -webkit-animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate;\n          animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }\n\n@-webkit-keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n@keyframes blinker {\n  from {\n    opacity: 1; }\n  to {\n    opacity: 0; } }\n\n.bee-container {\n  width: 100vw;\n  height: 500px;\n  background: skyblue; }\n\n.bee-hive {\n  width: 50%;\n  height: 100%;\n  background: wheat; }\n\n.rhex {\n  position: relative;\n  margin: 1em auto;\n  width: 10em;\n  height: 17.32em;\n  border-radius: 1em/ .5em;\n  opacity: .25;\n  background: orange;\n  transition: opacity .5s;\n  cursor: pointer; }\n\n.rhex:before, .rhex:after {\n  position: absolute;\n  width: inherit;\n  height: inherit;\n  border-radius: inherit;\n  background: inherit;\n  content: ''; }\n\n.rhex:before {\n  -webkit-transform: rotate(60deg);\n          transform: rotate(60deg); }\n\n.rhex:after {\n  -webkit-transform: rotate(-60deg);\n          transform: rotate(-60deg); }\n\n.rhex:hover {\n  opacity: 1; }\n\ntd {\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n", ""]);
 
 // exports
 
@@ -1338,7 +1849,7 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
@@ -1356,16 +1867,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR MODULE
 
 
+// Api Service
 
 
 
 
 var PortConnectionComponent = (function () {
-    function PortConnectionComponent(http, ApiService) {
-        this.http = http;
+    function PortConnectionComponent(ApiService, router) {
         this.ApiService = ApiService;
+        this.router = router;
         // PORTS DATA
         this.eports = []; // 144 EAST PORTS
         this.wports = []; // 144 WEST PORTS
@@ -1393,23 +1906,58 @@ var PortConnectionComponent = (function () {
         this.disabled_continue_button = false; // DISABLED CONTINUE BUTTON
         this.availableEastPort = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
         this.availableWestPort = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
+        this.disableEastPortArray = [
+            'E25', 'E26', 'E27', 'E28', 'E29', 'E30', 'E31', 'E32', 'E33', 'E34',
+            'E35', 'E36', 'E37', 'E38', 'E39', 'E40', 'E41', 'E42', 'E43', 'E44',
+            'E45', 'E46', 'E47', 'E48', 'E49', 'E50', 'E51', 'E52', 'E53', 'E54',
+            'E55', 'E56', 'E57', 'E58', 'E59', 'E60'
+        ]; // SET UNVAILABLE EAST PORT ARRAY
+        this.disableWestPortArray = [
+            'W25', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34',
+            'W35', 'W36', 'W37', 'W38', 'W39', 'W40', 'W41', 'W42', 'W43', 'W44',
+            'W45', 'W46', 'W47', 'W48', 'W49', 'W50', 'W51', 'W52', 'W53', 'W54',
+            'W55', 'W56', 'W57', 'W58', 'W59', 'W60'
+        ]; // SET UNVAILABLE WEST PORT ARRAY
         // DATA FROM DOM
         this.all_east = document.getElementsByClassName('East');
         this.all_west = document.getElementsByClassName('West');
     }
     PortConnectionComponent.prototype.ngOnInit = function () {
         var _this = this;
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // DEVICE DETECT
+        this.deviceDetect();
         // FETCH DATA
         this.fetchData();
         // SET COLOR OF PORT CONNECTION
         this.setConnectedPort();
+        // PUSH UNAVAILABLE PORT ARRAY
+        this.pushNotAvailablePort();
         // CHECK STATUS EVERY 5 SEC.
         this.timerInterval = setInterval(function () {
             _this.checkStatus();
-        }, 3000);
+        }, 1500);
+    };
+    PortConnectionComponent.prototype.ngAfterViewInit = function () {
     };
     PortConnectionComponent.prototype.ngOnDestroy = function () {
-        clearInterval(this.timerInterval); // CLEAR INTERVAL
+        clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
+    };
+    // CHECK SERVER STATUS
+    PortConnectionComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
+    };
+    // DEVICE DETECT
+    PortConnectionComponent.prototype.deviceDetect = function () {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            this.router.navigateByUrl('/port_connection_mobile');
+        }
     };
     // FETCH DATA
     PortConnectionComponent.prototype.fetchData = function () {
@@ -1444,7 +1992,6 @@ var PortConnectionComponent = (function () {
     PortConnectionComponent.prototype.checkStatus = function () {
         var _this = this;
         this.ApiService.checkStatus().then(function (data) {
-            console.log(data);
             _this.sequence = data.sequence;
             _this.status = data.status;
             _this.action = data.action;
@@ -1459,11 +2006,41 @@ var PortConnectionComponent = (function () {
                 _this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
                 // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
             }
-            else if (_this.status === 'break' || _this.status === 'pending' || _this.status === 'started' || _this.status === 'error'
-                || _this.status === 'alarm') {
+            else if (_this.status === 'break' || _this.status === 'pending' || _this.status === 'started') {
                 _this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
                 _this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
                 _this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
+                // WHEN CURRENT STATUS IS ERRROR
+            }
+            else if (_this.status === 'error') {
+                _this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
+                _this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
+                _this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
+                // IF data['code'] is not null
+                if (data['code'] !== null) {
+                    _this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code']; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                    // IF data['code] is null
+                }
+                else {
+                    _this.error_message = data['status'] + ' ' + data['error']; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                }
+                document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
+                // WHEN CURRENT STATUS IS ALARM
+            }
+            else if (_this.status === 'alarm') {
+                // IF data['code'] is not null
+                if (data['code'] !== null) {
+                    _this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code']; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                    // IF data['code] is null
+                }
+                else {
+                    _this.error_message = data['status'] + ' ' + data['error']; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                }
+                document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
             }
         });
     };
@@ -1652,12 +2229,13 @@ var PortConnectionComponent = (function () {
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
-                    _this.error_message = data.status + '_' + data.error + ' !';
-                    document.getElementById('error-dialog').classList.remove('hide');
+                    _this.error_message = data.status + ' ' + data.error; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                    document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
-                    document.getElementById('error-dialog').classList.add('hide');
+                    document.getElementById('error-dialog').classList.add('hide'); // <-- add class hide
                 }
             });
             // PAYLOAD { east, west, action }
@@ -1667,12 +2245,13 @@ var PortConnectionComponent = (function () {
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
-                    _this.error_message = data.status + '_' + data.error + ' !';
-                    document.getElementById('error-dialog').classList.remove('hide');
+                    _this.error_message = data.status + ' ' + data.error; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                    document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
-                    document.getElementById('error-dialog').classList.add('hide');
+                    document.getElementById('error-dialog').classList.add('hide'); // <-- add class hide
                 }
             });
             // LOCK CONTINUE BUTTON AFTER POST
@@ -1702,12 +2281,13 @@ var PortConnectionComponent = (function () {
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
-                    _this.error_message = data.status + '_' + data.error + ' !';
-                    document.getElementById('error-dialog').classList.remove('hide');
+                    _this.error_message = data.status + ' ' + data.error; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                    document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
-                    document.getElementById('error-dialog').classList.add('hide');
+                    document.getElementById('error-dialog').classList.add('hide'); // <-- add class hide
                 }
             });
             // PAYLOAD { east, west, action }
@@ -1717,12 +2297,13 @@ var PortConnectionComponent = (function () {
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
-                    _this.error_message = data.status + '_' + data.error + ' !';
-                    document.getElementById('error-dialog').classList.remove('hide');
+                    _this.error_message = data.status + ' ' + data.error;
+                    _this.checkMessageLength(); // <-- check message length
+                    document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
-                    document.getElementById('error-dialog').classList.add('hide');
+                    document.getElementById('error-dialog').classList.add('hide'); // <-- add class hide
                 }
             });
             // LOCK DISCONTINUE BUTTON AFTER POST
@@ -1756,12 +2337,13 @@ var PortConnectionComponent = (function () {
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
-                    _this.error_message = data.status + '_' + data.error + ' !';
-                    document.getElementById('error-dialog').classList.remove('hide');
+                    _this.error_message = data.status + ' ' + data.error; // <-- set error_message
+                    _this.checkMessageLength(); // <-- check message length
+                    document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
-                    document.getElementById('error-dialog').classList.add('hide');
+                    document.getElementById('error-dialog').classList.add('hide'); // <-- add class hide
                 }
             });
             // NO stops, sequence VALUE IN PAYLOAD
@@ -1794,6 +2376,12 @@ var PortConnectionComponent = (function () {
                 _this.all_west[i].classList.remove('connected', 'pending', 'break');
             }
             console.log('------------------------------- All Port Status -------------------------------');
+            // IF STATUS IS ERROR SHOW ERROR DIALOG
+            if (data['status'] === 'error') {
+                _this.error_message = data.status + ' ' + data.error; // <-- set error_message
+                _this.checkMessageLength(); // <-- check message length
+                document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
+            }
             __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](data, function (obj) {
                 if (obj['status'] === 'success') {
                     var east = 'E' + obj['east'];
@@ -1897,11 +2485,32 @@ var PortConnectionComponent = (function () {
     };
     // DISABLE NOT AVAILABLE EAST PORT
     PortConnectionComponent.prototype.disabledEastPort = function (id) {
-        return (id !== 'E1' && id !== 'E2' && id !== 'E3') ? 'port-unselectable' : '';
+        return (this.disableEastPortArray.includes(id)) ? 'port-unselectable' : '';
     };
     // DISABLE NOT AVAILABLE WEST PORT
     PortConnectionComponent.prototype.disabledWestPort = function (id) {
-        return (id !== 'W1' && id !== 'W2' && id !== 'W3') ? 'port-unselectable' : '';
+        return (this.disableWestPortArray.includes(id)) ? 'port-unselectable' : '';
+    };
+    // PUSH NOT AVAILABLE PORT ARRAY
+    PortConnectionComponent.prototype.pushNotAvailablePort = function () {
+        for (var i = 25; i <= 60; i++) {
+            this.disableEastPortArray.push('E' + i);
+            this.disableWestPortArray.push('W' + i);
+        }
+    };
+    // CHECK MESSAGE LENGTH FOR ADJUST DIALOG BOX HEIGHT
+    PortConnectionComponent.prototype.checkMessageLength = function () {
+        var message_length = this.error_message.length; // <-- set message length
+        // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
+        if (message_length <= 30) {
+            var card = document.getElementsByTagName('md-card');
+            card[0].setAttribute('style', 'height: 20px'); // <-- set height 20px
+            // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
+        }
+        else {
+            var card = document.getElementsByTagName('md-card');
+            card[0].setAttribute('style', 'height: 80px'); // <-- set height 80px
+        }
     };
     return PortConnectionComponent;
 }());
@@ -1912,7 +2521,7 @@ PortConnectionComponent = __decorate([
         styles: [__webpack_require__("../../../../../src/app/port-connection/port-connection.component.scss")],
         providers: []
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _b || Object])
 ], PortConnectionComponent);
 
 var _a, _b;
@@ -1923,7 +2532,7 @@ var _a, _b;
 /***/ "../../../../../src/app/port-history/port-history.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n        <!-- BEGIN TIME COLUMN  -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        <!-- BEGIN TYPE COLUMN -->\r\n        <ngx-datatable-column name=\"Type\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TYPE COLUMN -->\r\n        <!-- BEGIN STATUS COLUMN -->\r\n        <ngx-datatable-column name=\"Status\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END STATUS COLUMN -->\r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"RobotStatus\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <!-- OLD VERSION -->\r\n            <!-- <div *ngIf=\"value.status !== 'Pending'\"> -->\r\n            <!-- NEW VERSION -->\r\n            <div *ngIf=\"value.status\">{{value.status}}&nbsp;&nbsp;\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" color=\"primary\" *ngIf=\"value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'\"\r\n                (click)=\"cancelTask(value.id)\">Cancel</button>\r\n            </div>\r\n            <!-- <div class=\"flex-container\"> -->\r\n            <!-- REMOVE PENDING BUTTON -->\r\n            <!-- <button md-raised-button id=\"Continue\" class=\"button-width button-red\" color=\"primary\" *ngIf=\"value.status == 'Pending'\" (click)=\"pending(value.id)\">Continue</button> -->\r\n            <!-- </div> -->\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n        <!-- BEGIN TIME COLUMN  -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        <!-- BEGIN TYPE COLUMN -->\r\n        <ngx-datatable-column name=\"User\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TYPE COLUMN -->\r\n        <!-- BEGIN STATUS COLUMN -->\r\n        <ngx-datatable-column name=\"Status\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END STATUS COLUMN -->\r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"RobotStatus\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <!-- OLD VERSION -->\r\n            <!-- <div *ngIf=\"value.status !== 'Pending'\"> -->\r\n            <!-- NEW VERSION -->\r\n            <div *ngIf=\"value.status\">{{value.status}}&nbsp;&nbsp;\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" color=\"primary\" *ngIf=\"value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'\"\r\n                (click)=\"cancelTask(value.id)\">Cancel</button>\r\n            </div>\r\n            <!-- <div class=\"flex-container\"> -->\r\n            <!-- REMOVE PENDING BUTTON -->\r\n            <!-- <button md-raised-button id=\"Continue\" class=\"button-width button-red\" color=\"primary\" *ngIf=\"value.status == 'Pending'\" (click)=\"pending(value.id)\">Continue</button> -->\r\n            <!-- </div> -->\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
 
 /***/ }),
 
@@ -1950,17 +2559,11 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_swimlane_ngx_datatable_src_components_datatable_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/datatable.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_startWith__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__ = __webpack_require__("../../../../rxjs/add/observable/merge.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PortHistoryComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1971,18 +2574,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR MODULE
 
 
+// Api Service
 
-
-
-
+// Third-party
 
 
 var PortHistoryComponent = (function () {
-    function PortHistoryComponent(http, ApiService) {
-        this.http = http;
+    function PortHistoryComponent(ApiService, router) {
         this.ApiService = ApiService;
+        this.router = router;
         this.rows = [];
         this.temp = [];
         this.selected = [];
@@ -1990,8 +2593,8 @@ var PortHistoryComponent = (function () {
         this.columns = [
             { name: 'Date' },
             { name: 'Time' },
-            { name: 'Type' },
-            { prop: 'East' },
+            { name: 'User' },
+            { name: 'East' },
             { name: 'West' },
             { name: 'Status' },
             { name: 'RobotStatus' }
@@ -1999,13 +2602,25 @@ var PortHistoryComponent = (function () {
         this.temp = this.rows;
     }
     PortHistoryComponent.prototype.ngOnInit = function () {
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // FETCH DATA
         this.fetchData();
+    };
+    // CHECK SERVER STATUS
+    PortHistoryComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
     };
     // SET DATA TABLE
     PortHistoryComponent.prototype.fetchData = function () {
         var _this = this;
         this.ApiService.getConnectionHistory().then(function (data) {
-            __WEBPACK_IMPORTED_MODULE_7_lodash__["each"](data, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 console.log(obj);
                 var date = new Date(obj['timestamp']);
                 var day = date.toString().substring(0, 15);
@@ -2014,14 +2629,16 @@ var PortHistoryComponent = (function () {
                 // IF SWITCHTING_TYPE IS CONNECT
                 if (obj['switching_type'] === 'C') {
                     _this.rows.push({
-                        date: day, time: time, east: 'E' + obj['east'], west: 'W' + obj['west'],
+                        date: day, time: time, user: obj['username'].charAt(0).toUpperCase() + obj['username'].slice(1),
+                        east: 'E' + obj['east'], west: 'W' + obj['west'],
                         status: 'Connected', robotStatus: { 'status': status, 'id': obj['id'] }
                     });
                     // IF SWITCHING_TYPE IS DISCONNECT
                 }
                 else {
                     _this.rows.push({
-                        date: day, time: time, east: 'E' + obj['east'], west: 'W' + obj['west'],
+                        date: day, time: time, user: obj['username'].charAt(0).toUpperCase() + obj['username'].slice(1),
+                        east: 'E' + obj['east'], west: 'W' + obj['west'],
                         status: 'Disconnected', robotStatus: { 'status': status, 'id': obj['id'] }
                     });
                 }
@@ -2068,7 +2685,7 @@ PortHistoryComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/port-history/port-history.component.html"),
         styles: [__webpack_require__("../../../../../src/app/port-history/port-history.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _c || Object])
 ], PortHistoryComponent);
 
 var _a, _b, _c;
@@ -2105,16 +2722,80 @@ PortPipe = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/server-status-error/server-status-error.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  \r\n    <!-- BEGIN CONTAINER -->\r\n    <div class=\"container\">\r\n      <p>\r\n        500. INTERNAL SERVER ERROR\r\n      </p>\r\n    </div>\r\n    <!-- END CONTAINER -->\r\n  \r\n  </div>\r\n  <!-- END MAIN-CONTAINER -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/server-status-error/server-status-error.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";\n/* Main-container\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.main-container {\n  width: 100%;\n  height: 94vh;\n  background: #24C6DC;\n  /* fallback for old browsers */\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to right, #514A9D, #24C6DC);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n  .main-container .container {\n    padding-top: 150px;\n    text-align: center; }\n    .main-container .container p {\n      color: white;\n      font-size: 150px;\n      margin-top: 0;\n      margin-bottom: 0;\n      cursor: default; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/server-status-error/server-status-error.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServerStatusErrorComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// ANGULAR MODULE
+
+var ServerStatusErrorComponent = (function () {
+    function ServerStatusErrorComponent() {
+    }
+    ServerStatusErrorComponent.prototype.ngOnInit = function () {
+    };
+    return ServerStatusErrorComponent;
+}());
+ServerStatusErrorComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-server-status-error',
+        template: __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.scss")]
+    }),
+    __metadata("design:paramtypes", [])
+], ServerStatusErrorComponent);
+
+//# sourceMappingURL=server-status-error.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/api.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_file_saver__ = __webpack_require__("../../../../file-saver/FileSaver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_file_saver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_file_saver__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_file_saver__ = __webpack_require__("../../../../file-saver/FileSaver.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_file_saver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_file_saver__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2128,20 +2809,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // ANGULAR MODULE
 
 
+// Reactive
+
 // Third-Party
 
 
 var ApiService = (function () {
+    // private ROOT_URL = `http://localhost:8000/`;
     function ApiService(http) {
         this.http = http;
-        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+        this.authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-
-        // this.ROOT_URL = "http://192.168.60.76:80/";
-        this.ROOT_URL = "http://localhost/";
-        // this.ROOT_URL = "http://192.168.60.76:8000/";
-        // this.ROOT_URL = "http://192.168.60.142:8000/";
-
+        this.ROOT_URL = "http://192.168.60.103:80/";
     }
     // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
     ApiService.prototype.getAllPort = function () {
@@ -2155,18 +2835,18 @@ var ApiService = (function () {
         var id = []; // OBJECT ID
         return this.http.get(this.ROOT_URL + 'ports/').toPromise().then(function (response) {
             allPort = JSON.parse(response._body);
-            __WEBPACK_IMPORTED_MODULE_2_lodash__["each"](allPort, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](allPort, function (obj) {
                 // SEPERATE BY DIRECTION 'E'
                 if (obj.direction === 'E') {
                     eports.push(obj.direction + obj.number);
-                    eportschunk = __WEBPACK_IMPORTED_MODULE_2_lodash__["chunk"](eports, 12);
+                    eportschunk = __WEBPACK_IMPORTED_MODULE_3_lodash__["chunk"](eports, 12);
                     eportNote.push(obj.note);
                     id.push(obj.id);
                     // SEPERATE BY DIRECTION 'W'
                 }
                 else if (obj.direction === 'W') {
                     wports.push(obj.direction + obj.number);
-                    wportschunk = __WEBPACK_IMPORTED_MODULE_2_lodash__["chunk"](wports, 12);
+                    wportschunk = __WEBPACK_IMPORTED_MODULE_3_lodash__["chunk"](wports, 12);
                     wportNote.push(obj.note);
                     id.push(obj.id);
                 }
@@ -2176,6 +2856,13 @@ var ApiService = (function () {
                 eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
             });
         });
+    };
+    // GET USERNAME
+    ApiService.prototype.getUsername = function () {
+        if (localStorage.getItem('currentUser') !== null && localStorage.getItem('currentUser') !== undefined) {
+            var user_data = JSON.parse(localStorage.getItem('currentUser'));
+            return user_data['username'];
+        }
     };
     // POST CONNECTION, DISCONNECTION, DEBUG API TO SERVER
     ApiService.prototype.connectPort = function (east, west, action, stops, number) {
@@ -2187,8 +2874,14 @@ var ApiService = (function () {
         // number = sequence
         // STOPS MODE
         // PAYLOAD { east, west, action, stops }
+        // set local authToken, header, options
+        var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        var username = this.getUsername();
+        // START DEBUG MODE
         if (stops && number === undefined) {
-            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops }, this.options).toPromise().then(function (response) {
+            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, username: username }, options).toPromise().then(function (response) {
                 response = JSON.parse(response._body);
                 if (response.status === 'error' || response.status === 'alarm') {
                     return (response);
@@ -2196,14 +2889,23 @@ var ApiService = (function () {
                 else {
                     return ({ 'status': undefined, 'error': undefined });
                 }
-            }).catch(function () {
-                console.error('POST ERROR');
+            }).catch(function (error) {
+                // ERROR FROM SERVER
+                if (error.status && error.status !== 0) {
+                    console.error('POST START DEBUG MODE ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                    return ({ status: 'error', error: 'ERROR ' + error.status });
+                    // ERROR FROM CLIENT
+                }
+                else {
+                    console.error('POST START DEBUG MODE ERROR 500 Internal Server');
+                    return ({ status: 'error', error: 'ERROR 500' });
+                }
             });
             // DEBUG MODE
             // PAYLOAD { east, west, action, stops, number }
         }
         else if (stops && number) {
-            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, number: number }, this.options).toPromise().then(function (response) {
+            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, number: number }, options).toPromise().then(function (response) {
                 response = JSON.parse(response._body);
                 if (response.status === 'error' || response.status === 'alarm') {
                     return (response);
@@ -2211,14 +2913,23 @@ var ApiService = (function () {
                 else {
                     return ({ 'status': undefined, 'error': undefined });
                 }
-            }).catch(function () {
-                console.error('POST DEBUG MODE ERROR!');
+            }).catch(function (error) {
+                // ERROR FROM SERVER
+                if (error.status && error.status !== 0) {
+                    console.error('POST DEBUG MODE ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                    return ({ status: 'error', error: 'ERROR ' + error.status });
+                    // ERROR FROM CLIENT
+                }
+                else {
+                    console.error('POST DEBUG MODE ERROR 500 Internal Server');
+                    return ({ status: 'error', error: 'ERROR 500' });
+                }
             });
             // NORMAL MODE
             // PAYLOAD { east, west, action }
         }
         else {
-            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action }, this.options).toPromise().then(function (response) {
+            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, username: username }, options).toPromise().then(function (response) {
                 response = JSON.parse(response._body);
                 if (response.status === 'error' || response.status === 'alarm') {
                     return (response);
@@ -2226,13 +2937,49 @@ var ApiService = (function () {
                 else {
                     return ({ 'status': undefined, 'error': undefined });
                 }
-            }).catch(function () {
-                console.error('POST NORMAL MODE ERROR!');
+            }).catch(function (error) {
+                // ERROR FROM SERVER
+                if (error.status && error.status !== 0) {
+                    console.error('POST NORMAL MODE ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                    return ({ status: 'error', error: 'ERROR ' + error.status });
+                    // ERROR FROM CLIENT
+                }
+                else {
+                    console.error('POST NORMAL MODE ERROR 500 Internal Server');
+                    return ({ status: 'error', error: 'ERROR 500' });
+                }
             });
+        }
+    };
+    // PARSE AN ERROR HTTPRESPONSE BODY
+    ApiService.prototype.parseErrorBody = function (error) {
+        try {
+            var response = JSON.parse(error._body);
+            return response;
+        }
+        catch (e) {
+            if (e instanceof SyntaxError) {
+                var parse = new DOMParser();
+                var htmlData = parse.parseFromString(error._body, 'text/html');
+                var title = htmlData.getElementsByTagName('title')[0].textContent;
+                var error_message = htmlData.getElementsByClassName('exception_value')[0].textContent;
+                var obj = {
+                    'status': 'error',
+                    'action': '-',
+                    'sequence': '-',
+                    'error': title,
+                    'code': error_message
+                };
+                return obj;
+            }
+            else {
+                console.log('parseErrorBody', e);
+            }
         }
     };
     // CHECK STATUS FROM CURRENT TASK
     ApiService.prototype.checkStatus = function () {
+        var _this = this;
         return this.http.get(this.ROOT_URL + 'checktask/').toPromise().then(function (response) {
             response = JSON.parse(response._body);
             // OLD VERSION
@@ -2246,6 +2993,30 @@ var ApiService = (function () {
             var sequence = response.sequence; // CURRENT SEQUENCE
             var action = response.action; // CURRENT ACTION
             return ({ status: status, sequence: sequence, action: action });
+        }).catch(function (error) {
+            if (error.status === 500) {
+                var response = _this.parseErrorBody(error);
+                var status = response.status;
+                var action = response.action;
+                var sequence = response.sequence;
+                var error_detail = response.error;
+                var error_code = response.code;
+                console.error('CHECK STATUS ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: status, action: action, sequence: sequence, error: error_detail, code: error_code });
+            }
+            else if (error.status === 400) {
+                console.error('CHECK STATUS ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+            }
+            else if (error.status === 409) {
+                console.error('CHECK STATUS ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+            }
+            else if (error.status === 406) {
+                console.error('CHECK STATUS ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+            }
+            else {
+                console.error('CHECK STATUS ERROR 500 Internal Server');
+                return ({ status: 'error', sequence: null, action: null, error: 'ERROR 500', code: null });
+            }
         });
     };
     // CHECK CONNECTION STATUS ALL PORT
@@ -2253,8 +3024,17 @@ var ApiService = (function () {
         return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then(function (response) {
             response = JSON.parse(response._body);
             return (response);
-        }).catch(function () {
-            console.error('GET CONNECTED PORT ERROR!');
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('GET CONNECTED PORT ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('GET CONNECTED PORT ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // GET CONNECTION HISTORYS
@@ -2262,6 +3042,17 @@ var ApiService = (function () {
         return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then(function (response) {
             response = JSON.parse(response._body);
             return (response);
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('GET CONNECTION HISTORY ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('GET CONNECTION HISTORY ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // GET ALARM HISTORY
@@ -2269,6 +3060,17 @@ var ApiService = (function () {
         return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then(function (response) {
             response = JSON.parse(response._body);
             return (response);
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('GET ALARM HISTORY ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('GET ALARM HISTORY ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // POST ALARM
@@ -2276,8 +3078,17 @@ var ApiService = (function () {
         return this.http.post(this.ROOT_URL + 'alarms/', { alarm: alarm, detail: detail, severity: severity }, this.options).toPromise().then(function (response) {
             console.log(response._body);
             return response;
-        }).catch(function () {
-            console.error('POST ERROR');
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('GET ALARM ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('GET ALARM ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // POST PENDING TASK
@@ -2285,26 +3096,61 @@ var ApiService = (function () {
         return this.http.post(this.ROOT_URL + 'pendingtask/', { id: id }, this.options).toPromise().then(function (response) {
             console.log(response._body);
             return response;
-        }).catch(function () {
-            console.error('POST ERROR');
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('PENDING TASK ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('PENDING TASK ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // POST CANCEL TASK
     ApiService.prototype.cancelTask = function (id, action) {
-        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id: id, action: action }, this.options).toPromise().then(function (response) {
+        // set local authToken, header, options
+        var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id: id, action: action }, options).toPromise().then(function (response) {
             console.log(response._body);
             return response;
-        }).catch(function () {
-            console.error('POST ERROR');
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('CANCELED TASK ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('CANCELED TASK ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // CLEAR DATABASE DATA
     ApiService.prototype.clearDatabase = function (action) {
-        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action: action }, this.options).toPromise().then(function (response) {
+        // set local authToken, header, options
+        var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action: action }, options).toPromise().then(function (response) {
             console.log(response._body);
             return response;
-        }).catch(function () {
-            console.error('POST ERROR');
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('CLEAR DATABASE TASK ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('CLEAR DATABASE ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // SAVE DATA (CSV FILE)
@@ -2312,8 +3158,17 @@ var ApiService = (function () {
         return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type: type }, this.options).toPromise().then(function (response) {
             console.log(response._body);
             return response;
-        }).catch(function () {
-            console.error('POST ERROR');
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('SAVE DATA ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('SAVE DATA ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
         });
     };
     // downloadFile() {
@@ -2328,38 +3183,221 @@ var ApiService = (function () {
     // TEST DOWLOAD (CSV FILE)
     ApiService.prototype.downloadFile = function () {
         var path = "connectionhistorys/?type=connecthistorys";
-        return this.http.get(this.ROOT_URL + path, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* ResponseContentType */].Blob })
+        return this.http.get(this.ROOT_URL + path, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob })
             .subscribe(function (res) {
             var blob = res.blob();
             console.log(res);
             var filename = 'connection_log.json';
-            __WEBPACK_IMPORTED_MODULE_3_file_saver__["saveAs"](blob, filename);
+            __WEBPACK_IMPORTED_MODULE_4_file_saver__["saveAs"](blob, filename);
         });
     };
     // CREATE CONNECTION IN CONNECTION TABLE
     ApiService.prototype.create_connection_in_database = function (east, west, action) {
-        return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action }, this.options).toPromise().then(function (response) {
+        // set local authToken, header, options
+        var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action }, options).toPromise().then(function (response) {
             response = JSON.parse(response._body);
             if (response.status === 'error') {
-                alert('status: ' + response.status + ', error_code: ' + response.error);
+                console.error('status: ' + response.status + ', error_code: ' + response.error);
             }
             else {
-                alert('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
+                console.log('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
             }
             return (response);
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('TESTING CONNECTION ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('TESTING CONNECTION ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
+        });
+    };
+    // CHECK SERVER IS ONLINE OR NOT
+    ApiService.prototype.check_server_status = function () {
+        var status;
+        return this.http.get(this.ROOT_URL).toPromise().then(function (response) {
+            return (response.status);
+            // IF CANNOT GET RESPONSE FROM SERVER
         }).catch(function () {
-            console.error('POST TESTING CONNECTION ERROR!');
+            status = 500;
+            return status;
+        });
+    };
+    ApiService.prototype.home_robot_axes = function () {
+        return this.http.get(this.ROOT_URL + 'homes/').toPromise().then(function (response) {
+            var resp = JSON.parse(response._body);
+            resp['status'] = 'success';
+            return resp;
+            // IF CANNOT GET RESPONSE FROM SERVER
+        }).catch(function (error) {
+            return { 'status': 'error', 'error': error };
         });
     };
     return ApiService;
 }());
 ApiService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object])
 ], ApiService);
 
 var _a;
 //# sourceMappingURL=api.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/authentication.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Angular Module
+
+
+
+// Api Service
+
+var AuthenticationService = (function () {
+    function AuthenticationService(http, ApiService) {
+        this.http = http;
+        this.ApiService = ApiService;
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
+        // private ROOT_URL = `http://localhost:8000/`;
+        this.ROOT_URL = "http://192.168.60.103:80/";
+        // set token if saved in local storage
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.token = currentUser && currentUser.token;
+    }
+    // Login
+    AuthenticationService.prototype.login = function (username, password) {
+        var _this = this;
+        return this.http.post(this.ROOT_URL + 'get_auth_token/', { username: username, password: password }, this.options).toPromise().then(function (response) {
+            response = JSON.parse(response._body);
+            // login successful if there's a jwt token in the response
+            var token = response && response['token'];
+            if (token) {
+                // set token property
+                _this.token = token;
+                // store username and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+                // set token for Api Service
+                localStorage.setItem('token', JSON.stringify({ token: token }));
+                // return true to indicate successful login
+                return true;
+            }
+            else {
+                // return false to indicate failed login
+                return false;
+            }
+        }).catch(function () {
+            return { 'error': 'wrong username or password' };
+        });
+    };
+    // Logout
+    AuthenticationService.prototype.logout = function () {
+        // clear token remove user from local storage to log user out
+        this.token = null;
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+    };
+    return AuthenticationService;
+}());
+AuthenticationService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_api_service__["a" /* ApiService */]) === "function" && _b || Object])
+], AuthenticationService);
+
+var _a, _b;
+//# sourceMappingURL=authentication.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/user.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__authentication_service__ = __webpack_require__("../../../../../src/app/services/authentication.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Angular Module
+
+
+ // <-- Not using right now
+// Service
+
+var UserService = (function () {
+    function UserService(http, authenticationService) {
+        this.http = http;
+        this.authenticationService = authenticationService;
+        this.ROOT_URL = "http://localhost:8000/";
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
+    }
+    // getUsers(): Observable<User[]> {
+    //   // add authorization header with jwt token
+    //   const headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token });
+    //   const options = new RequestOptions({ headers: headers });
+    //   // get users from api
+    //   return this.http.get(this.ROOT_URL + 'get_auth_token/', options)
+    //     .map((response: Response) => response.json());
+    // }
+    // GET CONNECTION HISTORYS
+    UserService.prototype.getUsers = function () {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        // IF currentUser no data
+        if (currentUser == null) {
+            return { 'detail': 'no user is active !' };
+            //  IF currentUser have data
+        }
+        else {
+            var username = currentUser['username'];
+            var token = currentUser['token'];
+            this.username = username;
+            return { 'username': username };
+        }
+    };
+    return UserService;
+}());
+UserService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
+], UserService);
+
+var _a, _b;
+//# sourceMappingURL=user.service.js.map
 
 /***/ }),
 
@@ -2449,7 +3487,7 @@ SideNavComponent = __decorate([
 /***/ "../../../../../src/app/testing-mode/testing-mode.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\n<div class=\"main-container\">\n  <!-- BEGIN TAB-GROUP -->\n  <md-tab-group>\n    <!-- BEGIN CONNECTION-TAB -->\n    <md-tab label=\"Connection\">\n      <!-- BEGIN CREATE CONNECTION -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title>\n            Create connection in database\n          </md-panel-title>\n          <md-panel-description>\n            Type East port and West port\n          </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-form-field>\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\" maxlength=\"3\" pattern=\"[0-9]{1,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\" maxlength=\"3\" pattern=\"[0-9]{1,3}\">\n        </md-form-field>\n\n        <md-action-row>\n          <button md-button color=\"primary\" (click)=\"create_connection()\">Send Data</button>\n        </md-action-row>\n      </md-expansion-panel>\n      <!-- END CREATE CONNECTION -->\n    </md-tab>\n    <!-- END CONNECTION-TAB -->\n    <!-- BEGIN SOME FUNCTION -->\n    <md-tab label=\"Some function in future\">Some test function</md-tab>\n    <!-- END SOME FUNCTION -->\n  </md-tab-group>\n  <!-- END TAB-GROUP -->\n</div>\n<!-- END MAIN-CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN TAB-GROUP -->\r\n  <md-tab-group>\r\n    <!-- BEGIN ROBOT-TAB -->\r\n    <md-tab label=\"Robot Handler\">\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title> Home </md-panel-title>\r\n          <md-panel-description> Home all axes </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\r\n      </md-expansion-panel>\r\n\r\n      <md-action-row>\r\n        <!--<md-error [(ngModel)]=\"errorRobot\">error message</md-error>-->\r\n        <md-error>{{errorRobot}}</md-error>\r\n      </md-action-row>\r\n      <!--<div>-->\r\n      <!--<br />-->\r\n      <!--</div>-->\r\n    </md-tab>\r\n    <!-- END ROBOT-TAB -->\r\n    <!-- BEGIN CONNECTION-TAB -->\r\n    <md-tab label=\"Connection\">\r\n      <!-- BEGIN CREATE CONNECTION -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in database\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"create_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION -->\r\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in debug mode\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port and stops\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field class=\"event-prevent\">\r\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION DEBUG MODE -->\r\n    </md-tab>\r\n    <!-- END CONNECTION-TAB -->\r\n  </md-tab-group>\r\n  <!-- END TAB-GROUP -->\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
 
 /***/ }),
 
@@ -2461,7 +3499,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".main-container {\n  width: 100%;\n  height: 94%; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/* Global\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.main-container {\n  width: 100%;\n  height: 94%; }\n\n.event-prevent {\n  pointer-events: none; }\n", ""]);
 
 // exports
 
@@ -2476,7 +3514,7 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TestingModeComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2488,28 +3526,84 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// ANGULAR MODULE
 
 
+// Api Service
 
 var TestingModeComponent = (function () {
-    function TestingModeComponent(http, ApiService) {
-        this.http = http;
+    function TestingModeComponent(ApiService, router) {
         this.ApiService = ApiService;
+        this.router = router;
+        this.errorRobot = '';
     }
     TestingModeComponent.prototype.ngOnInit = function () {
+        // CHECK SERVER STATUS
+        this.check_server_status();
+        // SET debug_button = true
+        this.debug_button = true;
     };
+    // CHECK SERVER STATUS
+    TestingModeComponent.prototype.check_server_status = function () {
+        var _this = this;
+        this.ApiService.check_server_status().then(function (status) {
+            if (status === 500) {
+                _this.router.navigateByUrl('/500');
+            }
+        });
+    };
+    // CREATE CONNECTION
     TestingModeComponent.prototype.create_connection = function () {
-        if (this.east_port_number && this.west_port_number && this.east_port_number[0] !== '0' && this.west_port_number[0] !== '0'
-            && !document.getElementById('east_port_input').classList.contains('ng-invalid')
-            && !document.getElementById('west_port_input').classList.contains('ng-invalid')) {
+        if (this.east_port_number && this.west_port_number) {
             this.ApiService.create_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then(function (data) {
                 console.log(data);
             });
         }
         else {
             alert('error input !');
-            console.log('error input !');
+            console.error('error input !');
         }
+    };
+    // VALIDATE CONNECT BUTTON
+    TestingModeComponent.prototype.validate_connect_button = function () {
+        if ((this.east_port_number <= 144 && this.west_port_number <= 144)
+            && (!document.getElementById('east_port_input').classList.contains('ng-invalid')
+                && !document.getElementById('west_port_input').classList.contains('ng-invalid'))
+            && (this.east_port_number !== '' && this.west_port_number !== '')) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    // CREATE CONNECTION DEBUG MODE
+    TestingModeComponent.prototype.create_connection_debug_mode = function () {
+        // TODO
+    };
+    // VALIDATE DEBUG BUTTON
+    TestingModeComponent.prototype.validate_debug_button = function () {
+        if ((this.east_port_number <= 144 && this.west_port_number <= 144)
+            && (!document.getElementById('east_port_input').classList.contains('ng-invalid')
+                && !document.getElementById('west_port_input').classList.contains('ng-invalid'))
+            && (this.east_port_number !== '' && this.west_port_number !== '')
+            && (this.stops !== undefined && this.stops !== '' && !document.getElementById('stops').classList.contains('ng-invalid'))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    TestingModeComponent.prototype.home_motor = function () {
+        var _this = this;
+        this.ApiService.home_robot_axes().then(function (data) {
+            if (data['status'] === 'success') {
+                console.log(data);
+            }
+            else {
+                console.error(data);
+                _this.errorRobot = data['status'];
+            }
+        });
     };
     return TestingModeComponent;
 }());
@@ -2519,7 +3613,7 @@ TestingModeComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.html"),
         styles: [__webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _b || Object])
 ], TestingModeComponent);
 
 var _a, _b;
