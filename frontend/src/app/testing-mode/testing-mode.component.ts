@@ -18,6 +18,8 @@ export class TestingModeComponent implements OnInit {
   west_port_number; // WEST PORT NUMBER
   stops; // STOP NUMBER
   sequence; // CURRENT SEQUENCE NUM
+  robot_number; // ROBOT NUMBER
+  continue_mode; // CONTINUE MODE
 
   // LOCK BUTTON UTILITIES
   debug_button;
@@ -104,6 +106,15 @@ export class TestingModeComponent implements OnInit {
         this.errorRobot = data['status'];
       }
     });
+  }
+
+  changeRobotParameter() {
+
+    localStorage.setItem('robot', this.robot_number);
+    localStorage.setItem('continue_mode', this.continue_mode);
+
+    console.log('Change robot parameter success !');
+
   }
 
 }

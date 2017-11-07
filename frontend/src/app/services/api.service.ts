@@ -18,10 +18,15 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL = `http://192.168.60.76:8000/`;
-  private ROOT_URL = `http://localhost:8000/`;
+  private ROOT_URL = `http://192.168.60.76/`;
+  // private ROOT_URL = `http://localhost:8000/`;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+
+    localStorage.setItem('robot', '1');
+    localStorage.setItem('continue_mode', 'reload');
+
+  }
 
   // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
   getAllPort() {
@@ -563,6 +568,28 @@ export class ApiService {
     }).catch((error) => {
       return { 'status': 'error', 'error': error };
     });
+  }
+
+  cancel_robot_operations(east?, west?, action?) {
+
+    const mode = 'robot';
+    const robot = localStorage.getItem('robot');
+    const continue_mode = localStorage.getItem('continue_mode');
+
+    return this.http.post(this.ROOT_URL + 'rico/reset', { mode, robot, continue_mode },
+      this.options).toPromise().then((response: any) => {
+        response = JSON.parse(response._body);
+
+        console.log(mode, robot, continue_mode);
+
+      }).catch((error: any) => {
+
+        const response = this.parseErrorBody(error);
+
+        return response;
+
+      });
+
   }
 
 }

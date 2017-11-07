@@ -20,6 +20,32 @@
       <!--<div>-->
       <!--<br />-->
       <!--</div>-->
+
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title>
+            Change Robot
+          </md-panel-title>
+          <md-panel-description>
+            Change robot parameter
+          </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input mdInput id="robot_number" placeholder="Robot number" value="robot_number" [(ngModel)]="robot_number">
+        </md-form-field>
+
+        <md-form-field>
+          <input mdInput id="continue_mode" placeholder="Continue mode" value="continue_mode" [(ngModel)]="continue_mode">
+        </md-form-field>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="changeRobotParameter()">Change Parameter</button>
+        </md-action-row>
+
+      </md-expansion-panel>
+
+
     </md-tab>
     <!-- END ROBOT-TAB -->
     <!-- BEGIN CONNECTION-TAB -->

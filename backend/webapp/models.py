@@ -153,6 +153,23 @@ class Role(models.Model):
         return str(self.user) + ' (' + str(self.role) + ')'
 
 
+class Tasktranslation(models.Model):
+    
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    mode = models.CharField(max_length=64)
+    robot = models.CharField(max_length=64)
+    continue_mode = models.CharField(max_length=64)
+    response = models.CharField(max_length=256)
+
+    @classmethod
+    def create(cls, uuid, mode, robot, continue_mode, response):
+        tasktranslation = cls(uuid=uuid, mode=mode, robot=robot, continue_mode=continue_mode, response=response)
+        return tasktranslation
+
+    def __str__(self):
+        return 'UUID: ' + str(self.uuid) + ' Mode: ' + str(self.mode) + ' Robot: ' + str(self.robot) + ' Continue mode: ' + str(self.continue_mode) + ' Response: ' + str(self.response)
+
+
 # This code is triggered whenever a new user has been created and saved to the database
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

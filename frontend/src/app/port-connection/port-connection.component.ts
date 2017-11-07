@@ -565,7 +565,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     // LOCK TABLE AFTER POST
     this.unselectable_table = true;
     // LOCK CONTINUE BUTTON AFTER POST
-    this.disabled_continue_button = true;
+    // this.disabled_continue_button = true;
     // LOCK STOPS INPUT AFTER POST
     this.disable_stops_input = true;
 
@@ -581,6 +581,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
       this.ApiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
         this.action, JSON.parse(stops), this.sequence)
         .then((data) => {
+
+          // LOCK CONTINUE BUTTON AFTER POST
+          this.disabled_continue_button = true;
+
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
 
@@ -795,6 +799,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
       card[0].setAttribute('style', 'height: 80px');  // <-- set height 80px
 
     }
+
+  }
+  // CANCEL ROBOBT OPERATION TASK
+  cancelRobotOperation() {
+
+    this.ApiService.cancel_robot_operations().then((data) => {
+
+      this.error_message = data.status + ' ' + data.error;
+      this.checkMessageLength();  // <-- check message length
+      document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
+    });
 
   }
 

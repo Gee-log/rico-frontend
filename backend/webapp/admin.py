@@ -1,5 +1,5 @@
 from django.contrib import admin
-from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role
+from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role, Tasktranslation
 
 
 class PortModelAdmin(admin.ModelAdmin):
@@ -51,3 +51,9 @@ class OperationHistoryModelAdmin(admin.ModelAdmin):
 
 admin.site.register(OperationHistory, OperationHistoryModelAdmin)
 
+class TasktranslationModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "uuid", "mode", "robot", "continue_mode", "response"]
+    class Meta:
+        model = Tasktranslation
+
+admin.site.register(Tasktranslation, TasktranslationModelAdmin)

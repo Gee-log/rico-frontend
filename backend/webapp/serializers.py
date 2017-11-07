@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role
+from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role, Tasktranslation
 
 
 class PortSerializer(serializers.ModelSerializer):
@@ -51,3 +51,10 @@ class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = ('id', 'username', 'email', 'role')
+
+
+class TasktranslationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Tasktranslation
+        fields = ('uuid', 'robot', 'mode', 'continue_mode', 'response')
