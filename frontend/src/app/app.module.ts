@@ -20,7 +20,6 @@ import { PortConnectionMobileComponent } from './port-connection-mobile/port-con
 import { PortHistoryComponent } from './port-history/port-history.component';
 import { AlarmComponent } from './alarm/alarm.component';
 import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PortPipe } from './port.pipe';
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -55,7 +54,6 @@ enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
     PortHistoryComponent,
     AlarmComponent,
     AlarmHistoryComponent,
-    NavBarComponent,
     PortPipe,
     TestingModeComponent,
     PortConnectionMobileComponent,
