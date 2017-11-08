@@ -1,12 +1,13 @@
 """tasktranslation api
 """
 import requests
+import ast
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
 # from rest_framework.authtoken.models import Token
 from django.http import HttpResponse, JsonResponse
 
-from webapp.models import Taskcancelation, Robot
+from webapp.models import Taskcancelation, Robot, Operation, Connection, ConnectionHistory
 from webapp.serializers import TaskcancelationSerializer
 from webapp.views import logger, CELERY_APP
 
@@ -63,18 +64,33 @@ class TaskcancelationList(APIView):
 
                 response = response.json()
 
-                if continue_mode == 'restart':
+                operations = Operation.objects.all()
+                for i in operations:
+                    obj = ast.literal_eval(i.request)
+                    east = obj['east']
+                    west = obj['west']
 
-                    Tasktranslation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)            
-                
-                elif continue_mode == 'reload':
-                    
-                    Tasktranslation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)            
+                    if continue_mode == 'restart':
 
-                elif continue_mode == 'continue':  
+                        Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                        Connection.objects.filter(status='started').update(status='success')
+                        ConnectionHistory.objects.filter(status=['pending', 'started']).update(status='success')
+                        Operation.objects.update(uuid=uuid, robotnumber=robot, status='success', response=None)
 
-                    Tasktranslation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)                                                  
-                    
+                    elif continue_mode == 'reload':
+
+                        Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                        Connection.objects.filter(status='started').update(status='success')
+                        ConnectionHistory.objects.filter(status=['pending', 'started']).update(status='success')
+                        Operation.objects.update(uuid=uuid, robotnumber=robot, status='success', response=None)
+
+                    elif continue_mode == 'continue':
+
+                        Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                        Connection.objects.filter(status='started').update(status='success')
+                        ConnectionHistory.objects.filter(status=['pending', 'started']).update(status='success')
+                        Operation.objects.update(uuid=uuid, robotnumber=robot, status='success', response=None)
+
                 return HttpResponse('Success', status=status.HTTP_200_OK)
 
             return HttpResponse('This robot number {} not available.'.format(robot), status=status.HTTP_400_BAD_REQUEST)
@@ -122,4 +138,3 @@ class TaskcancelationList(APIView):
         
         error_detail = {'detail': 'Method "DELETE" not allowed.'}
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        

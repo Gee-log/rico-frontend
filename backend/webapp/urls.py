@@ -38,7 +38,7 @@ urlpatterns = [
     # user api
     url(r'^users/', userlist.RoleList.as_view()),
     # tasktranslation api
-    url(r'^tasktranslations', taskcancelation.TaskcancelationList.as_view()),
+    url(r'^taskcancelations', taskcancelation.TaskcancelationList.as_view()),
     # redirect to landing page
     url(r'^$', views.landing, name='landing'),
     # Session Login
