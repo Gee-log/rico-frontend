@@ -11,7 +11,7 @@ from rest_framework.authtoken.models import Token
 from django.http import HttpResponse, JsonResponse
 from django.db.models import F
 
-from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory
+from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory, Robot
 from webapp.serializers import ConnectionSerializer
 from webapp.views import walk, CELERY_APP
 
@@ -365,14 +365,19 @@ class ConnectionList(APIView):
 
         uuid = resp.text
         logger.info('%s %s E%s W%s stops:%s no:%s', uuid, action, east.number, west.number, stops, number)
-        operations = Operation.objects.filter(robotnumber='1')
+        operations = Operation.objects.all()
+        robots = Robot.objects.all()
+        
+        for o in robots:
+            robotnumber = o.robot_number
 
         if len(operations) == 1:
             operations.update(uuid=uuid, status='pending', request=str(payload))
 
         else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
+
+        OperationHistory.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
 
     def connection(self, request):
         """Connection Process
@@ -440,15 +445,19 @@ class ConnectionList(APIView):
             resp = requests.post(CELERY_APP + '/connect', data=payload)
 
         uuid = resp.text
-        operations = Operation.objects.filter(robotnumber='1')
+        operations = Operation.objects.all()
+        robots = Robot.objects.all()
+        
+        for o in robots:
+            robotnumber = o.robot_number
 
         if len(operations) == 1:
             operations.update(uuid=uuid, status='pending', request=str(payload))
 
         else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+            Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
 
-        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        OperationHistory.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
         logger.info('%s connect E%s W%s stops:%s', uuid, east.number, west.number, stops)
         
         #  connection counter        
@@ -527,15 +536,19 @@ class ConnectionList(APIView):
                     resp = requests.post(CELERY_APP + '/disconnect', data=payload)
 
                 uuid = resp.text
-                operations = Operation.objects.filter(robotnumber='1')
+                operations = Operation.objects.all()
+                robots = Robot.objects.all()
+                
+                for o in robots:
+                    robotnumber = o.robot_number
 
                 if len(operations) == 1:
                     operations.update(uuid=uuid, status='pending', request=str(payload))
 
                 else:
-                    Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+                    Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
 
-                OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+                OperationHistory.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
                 logger.info('%s disconnection E%s W%s stops:%s', uuid, east.number, west.number, stops)
                 
                 #  connection counter

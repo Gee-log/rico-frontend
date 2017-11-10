@@ -2,12 +2,13 @@
 """
 import requests
 import ast
+from datetime import datetime
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
 # from rest_framework.authtoken.models import Token
 from django.http import HttpResponse, JsonResponse
 
-from webapp.models import Taskcancelation, Robot, Operation, Connection, ConnectionHistory
+from webapp.models import Taskcancelation, Robot, Operation, OperationHistory, Connection, ConnectionHistory
 from webapp.serializers import TaskcancelationSerializer
 from webapp.views import logger, CELERY_APP
 
@@ -46,14 +47,25 @@ class TaskcancelationList(APIView):
                 continue_mode (string) : continue mode
         """
 
-        if 'mode' in request.data and 'robot' in request.data and 'continue_mode' in request.data:
+        if 'mode' in request.data and 'robot' in request.data and 'continue_mode' in request.data and 'action' in request.data and 'east' in request.data and 'west' in request.data:
 
             mode = request.data['mode']
             robot = request.data['robot']
             continue_mode = request.data['continue_mode']
+            action = request.data['action']
+            east = request.data['east']
+            west = request.data['west']
+            sequence = '1'
+            
+            # Query to get error sequence
+            operations = Operation.objects.all()
+            for o in operations:
+                obj = ast.literal_eval(o.response)
+                sequence = obj['sequence']
 
-            payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode}
+            payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence}
 
+            # Check this robot number available or not
             if Robot.objects.filter(robot_number=robot):
                 
                 resp = requests.post(CELERY_APP + '/reset', data=payload)
@@ -64,52 +76,55 @@ class TaskcancelationList(APIView):
 
                 response = response.json()
 
-                operations = Operation.objects.all()
-                for i in operations:
-                    obj = ast.literal_eval(i.request)
-                    east = obj['east']
-                    west = obj['west']
+                if continue_mode == 'restart':
 
-                    if continue_mode == 'restart':
+                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                    Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data, response=response)                    
 
-                        Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
-                        Connection.objects.filter(status='started').update(status='success')
-                        ConnectionHistory.objects.filter(status=['pending', 'started']).update(status='success')
-                        Operation.objects.update(uuid=uuid, robotnumber=robot, status='success', response=None)
+                elif continue_mode == 'reload':
+                    
+                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                    Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload', request=request.data, response=response)                    
 
-                    elif continue_mode == 'reload':
+                elif continue_mode == 'continue':
 
-                        Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
-                        Connection.objects.filter(status='started').update(status='success')
-                        ConnectionHistory.objects.filter(status=['pending', 'started']).update(status='success')
-                        Operation.objects.update(uuid=uuid, robotnumber=robot, status='success', response=None)
+                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                    Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data, response=response)                    
 
-                    elif continue_mode == 'continue':
+                return JsonResponse({'status': 'success'}, status=status.HTTP_200_OK)
 
-                        Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
-                        Connection.objects.filter(status='started').update(status='success')
-                        ConnectionHistory.objects.filter(status=['pending', 'started']).update(status='success')
-                        Operation.objects.update(uuid=uuid, robotnumber=robot, status='success', response=None)
+            return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)}, status=status.HTTP_400_BAD_REQUEST)
 
-                return HttpResponse('Success', status=status.HTTP_200_OK)
-
-            return HttpResponse('This robot number {} not available.'.format(robot), status=status.HTTP_400_BAD_REQUEST)
-        
         elif 'mode' not in request.data:
             
-            return HttpResponse('No mode input', status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'robot' not in request.data:
             
-            return HttpResponse('No robot input', status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No robot input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'continue_mode' not in request.data:
             
-            return HttpResponse('No continue mode input', status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No continue mode input'}, status=status.HTTP_400_BAD_REQUEST)
+
+        elif 'action' not in request.data:
+            
+            return JsonResponse({'status': 'error', 'error': 'No action mode input'}, status=status.HTTP_400_BAD_REQUEST)
+
+        elif 'east' not in request.data:
+            
+            return JsonResponse({'status': 'error', 'error': 'No east mode input'}, status=status.HTTP_400_BAD_REQUEST)       
+
+        elif 'west' not in request.data:
+                
+            return JsonResponse({'status': 'error', 'error': 'No west mode input'}, status=status.HTTP_400_BAD_REQUEST)         
 
         else:
             
-            return HttpResponse('Error input', status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'Invalid input.'}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT TasktranslationList API

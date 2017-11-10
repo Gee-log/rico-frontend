@@ -207,7 +207,7 @@
         <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->
         <div class="item-1-container-shadow">
           <!-- BEGIN BUTTON-CONTAINER -->
-          <div class="button-container">
+          <div class="button-container fix-width">
             <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
             <div class="button-container-item-1">
               <!-- BEGIN TOOLTIP -->
@@ -216,7 +216,7 @@
                 <div class="cancel-button-circle Blink"></div>
                 <!-- END CANCEL-BUTTON-CIRCLE BLINK -->
                 <!-- BEGIN TOOLTIPTEXT -->
-                <span class="tooltiptext">Hint! cancel button will available when robot's operation is an error.</span>
+                <span class="tooltiptext">Hint! "c" means continue robot operations. <br> "s" means restart robot operations. <br> "l" means reload robot operations.</span>
                 <!-- END TOOLTIPTEXT -->
               </div>
               <!-- END TOOLTIP -->
@@ -225,8 +225,13 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Cancel" class="button-width" (click)="cancelRobotOperation()" color="primary" [attr.disabled]="this.disabled_cancel_button == true ? false : null"
-                >Cancel</button>
+              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="continueRobotOperation()" color="primary" [attr.disabled]="this.disabled_continue_restart_reload_button == false ? true : null" disabled>c</button>
+              <!-- END CANCEL BUTTON -->
+              <!-- BEGIN CANCEL BUTTON -->
+              <button md-raised-button id="Restart" class="cancel-button-width" (click)="restartRobotOperation()" color="primary" [attr.disabled]="this.disabled_continue_restart_reload_button == false ? true : null" disabled>s</button>
+              <!-- END CANCEL BUTTON -->
+              <!-- BEGIN CANCEL BUTTON -->
+              <button md-raised-button id="Reload" class="cancel-button-width" (click)="reloadRobotOperation()" color="primary" [attr.disabled]="this.disabled_continue_restart_reload_button == false ? true : null" disabled>l</button>
               <!-- END CANCEL BUTTON -->
             </div>
             <!-- END BUTTON-CONTAINER-ITEM-2 -->

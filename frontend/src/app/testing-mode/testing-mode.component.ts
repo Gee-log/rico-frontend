@@ -113,7 +113,7 @@ export class TestingModeComponent implements OnInit {
     localStorage.setItem('robot', this.robot_number);
     localStorage.setItem('continue_mode', this.continue_mode);
 
-    console.log('Change robot parameter success !');
+    alert('Change robot parameter success !');
 
   }
 

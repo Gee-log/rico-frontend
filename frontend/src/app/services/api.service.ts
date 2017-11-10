@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Rx';
 // Third-Party
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
+import { PACKAGE_ROOT_URL } from '@angular/core/src/application_tokens';
 
 
 @Injectable()
@@ -18,8 +19,8 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://192.168.60.76/`;
-  // private ROOT_URL = `http://localhost:8000/`;
+  // private ROOT_URL = `http://192.168.60.103:8000/`;
+  private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) {
 
@@ -570,17 +571,88 @@ export class ApiService {
     });
   }
 
-  cancel_robot_operations(east?, west?, action?) {
+  continue_robot_operations() {
 
     const mode = 'robot';
-    const robot = localStorage.getItem('robot');
-    const continue_mode = localStorage.getItem('continue_mode');
+    // const robot = localStorage.getItem('robot');
+    const robot = '2';
+    const continue_mode = 'continue';
+    const action = JSON.parse(localStorage.getItem('action'))['action'];
+    const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
+    const west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
 
-    return this.http.post(this.ROOT_URL + 'rico/reset', { mode, robot, continue_mode },
+    // const continue_mode = localStorage.getItem('continue_mode');
+
+    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, robot, continue_mode, action, east, west },
       this.options).toPromise().then((response: any) => {
         response = JSON.parse(response._body);
+        // response = response;
+        console.log(response);
 
-        console.log(mode, robot, continue_mode);
+        // return response;
+        // console.log(mode, robot, continue_mode);
+
+      }).catch((error: any) => {
+
+        const response = this.parseErrorBody(error);
+
+        return response;
+
+      });
+
+  }
+
+  reload_robot_operations() {
+
+    const mode = 'robot';
+    // const robot = localStorage.getItem('robot');
+    const robot = '2';
+    const continue_mode = 'reload';
+    const action = JSON.parse(localStorage.getItem('action'))['action'];
+    const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
+    const west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
+
+    // const continue_mode = localStorage.getItem('continue_mode');
+
+    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, robot, continue_mode, action, east, west },
+      this.options).toPromise().then((response: any) => {
+        response = JSON.parse(response._body);
+        // response = response;
+        console.log(response);
+
+        // return response;
+        // console.log(mode, robot, continue_mode);
+
+      }).catch((error: any) => {
+
+        const response = this.parseErrorBody(error);
+
+        return response;
+
+      });
+
+  }
+
+  restart_robot_operations() {
+
+    const mode = 'robot';
+    // const robot = localStorage.getItem('robot');
+    const robot = '2';
+    const continue_mode = 'restart';
+    const action = JSON.parse(localStorage.getItem('action'))['action'];
+    const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
+    const west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
+
+    // const continue_mode = localStorage.getItem('continue_mode');
+
+    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, robot, continue_mode, action, east, west },
+      this.options).toPromise().then((response: any) => {
+        response = JSON.parse(response._body);
+        // response = response;
+        console.log(response);
+
+        // return response;
+        // console.log(mode, robot, continue_mode);
 
       }).catch((error: any) => {
 

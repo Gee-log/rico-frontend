@@ -53,6 +53,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   disabled_disconnect_button: boolean = false; // DISABLED DISCONNECT BUTTON
   disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
   disabled_cancel_button: boolean = false; // DISABLED CANCEL BUTTON
+  disabled_continue_restart_reload_button: boolean = false; // DISABLED CONTINUE RESTART RELOAD BUTTON
   availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
   disableEastPortArray = [
@@ -170,6 +171,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
       this.sequence = data.sequence;
       this.status = data.status;
       this.action = data.action;
+      localStorage.setItem('action', JSON.stringify({ action: this.action }));
       console.log('Cuurent sequence :', this.sequence, 'Current status :', this.status, 'Current action :', this.action);
       this.setConnectedPort(); // SET PORT COLOR BY STATUS
       this.unlockButton(this.eValue, this.wValue, this.status); // UNLOCK OR LOCK BUTTON BY CURRENT STATUS
@@ -181,6 +183,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = false; // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
+        this.disabled_continue_restart_reload_button = false; // LOCK CONTINUE RESTART RELOAD BUTTON
+        document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
+
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
@@ -188,6 +193,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
+        this.disabled_continue_restart_reload_button = false; // LOCK CONTINUE RESTART RELOAD BUTTON
 
         // WHEN CURRENT STATUS IS ERRROR
       } else if (this.status === 'error') {
@@ -195,6 +201,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
+        this.disabled_continue_restart_reload_button = true; // UNLOCK CONTINUE RESTART RELOAD BUTTON
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
@@ -215,6 +222,11 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         // WHEN CURRENT STATUS IS ALARM
       } else if (this.status === 'alarm') {
 
+        this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
+        this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
+        this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
+        this.disabled_continue_restart_reload_button = true; // UNLOCK CONTINUE RESTART RELOAD BUTTON
+
         // IF data['code'] is not null
         if (data['code'] !== null) {
 
@@ -223,7 +235,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
           // IF data['code] is null
         } else {
-
           this.error_message = data['status'] + ' ' + data['error'];  // <-- set error_message
           this.checkMessageLength(); // <-- check message length
 
@@ -801,16 +812,58 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
   }
-  // CANCEL ROBOBT OPERATION TASK
-  cancelRobotOperation() {
+  // CONTINUE ROBOBT OPERATION TASK
+  continueRobotOperation() {
 
-    this.ApiService.cancel_robot_operations().then((data) => {
+    this.ApiService.continue_robot_operations().then((data) => {
 
-      this.error_message = data.status + ' ' + data.error;
-      this.checkMessageLength();  // <-- check message length
-      document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+      if (data.status !== 'success') {
+
+        this.error_message = data.status + ' ' + data.error;
+        this.checkMessageLength();  // <-- check message length
+        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
+      }
 
     });
+
+    document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
+
+  }
+  // RELOAD ROBOT OPERATION TASK
+  reloadRobotOperation() {
+
+    this.ApiService.reload_robot_operations().then((data) => {
+
+      if (data.status !== 'success') {
+
+        this.error_message = data.status + ' ' + data.error;
+        this.checkMessageLength();  // <-- check message length
+        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
+      }
+
+    });
+
+    document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
+
+  }
+  // RESTART ROBOT OPERATION TASK
+  restartRobotOperation() {
+
+    this.ApiService.restart_robot_operations().then((data) => {
+
+      if (data.status !== 'success') {
+
+        this.error_message = data.status + ' ' + data.error;
+        this.checkMessageLength();  // <-- check message length
+        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
+
+      }
+
+    });
+
+    document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
   }
 
