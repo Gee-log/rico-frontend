@@ -2,15 +2,14 @@
 """
 import requests
 import ast
-from datetime import datetime
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
-# from rest_framework.authtoken.models import Token
 from django.http import HttpResponse, JsonResponse
 
-from webapp.models import Taskcancelation, Robot, Operation, OperationHistory, Connection, ConnectionHistory
+from webapp.models import Taskcancelation, Robot, Operation, OperationHistory
 from webapp.serializers import TaskcancelationSerializer
 from webapp.views import logger, CELERY_APP
+
 
 class TaskcancelationList(APIView):
 
@@ -47,7 +46,8 @@ class TaskcancelationList(APIView):
                 continue_mode (string) : continue mode
         """
 
-        if 'mode' in request.data and 'robot' in request.data and 'continue_mode' in request.data and 'action' in request.data and 'east' in request.data and 'west' in request.data:
+        if 'mode' in request.data and 'robot' in request.data and 'continue_mode' in request.data and 'action' \
+                in request.data and 'east' in request.data and 'west' in request.data:
 
             mode = request.data['mode']
             robot = request.data['robot']
@@ -63,7 +63,8 @@ class TaskcancelationList(APIView):
                 obj = ast.literal_eval(o.response)
                 sequence = obj['sequence']
 
-            payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence}
+            payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west,
+                       'action': action, 'no': sequence}
 
             # Check this robot number available or not
             if Robot.objects.filter(robot_number=robot):
@@ -78,25 +79,32 @@ class TaskcancelationList(APIView):
 
                 if continue_mode == 'restart':
 
-                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode,
+                                                   response=response)
                     Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data, response=response)                    
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data
+                                                    , response=response)
 
                 elif continue_mode == 'reload':
                     
-                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode,
+                                                   response=response)
                     Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload', request=request.data, response=response)                    
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload', request=request.data,
+                                                    response=response)
 
                 elif continue_mode == 'continue':
 
-                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode,
+                                                   response=response)
                     Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data, response=response)                    
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data
+                                                    , response=response)
 
                 return JsonResponse({'status': 'success'}, status=status.HTTP_200_OK)
 
-            return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         elif 'mode' not in request.data:
             

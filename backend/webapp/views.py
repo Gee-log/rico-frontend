@@ -15,7 +15,6 @@ from django.shortcuts import render, redirect
 from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory, Robot
 from webapp.serializers import OperationSerializer, OperationHistorySerializer
 # from django.contrib.auth import authenticate, get_user_model, login, logout
-# from personal.forms import UserLoginForm
 # from django.contrib.auth.decorators import login_required
 # from django.views.decorators.csrf import csrf_protect, csrf_exempt
 # from django.utils.decorators import method_decorator
@@ -39,15 +38,12 @@ handler.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(handler)
 
-# utilities
-# @login_required(login_url='/login/') If want validations user
-
 
 if 'CELERY_APP' in os.environ and os.environ['CELERY_APP']:
     CELERY_APP = os.environ['CELERY_APP']
     logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
 else:
-    CELERY_APP = "http://192.168.60.76:80/rico"     # embest
+    CELERY_APP = "http://192.168.60.103:8000/rico"     # embest
     logger.info('CELERY_APP: {}'.format(CELERY_APP))
 
 
@@ -117,6 +113,10 @@ def checkstatus(request, uuid):
         data = checkrevoked(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
 
+    elif status == 'failure':
+        data = checkfailure(request, data_dict, uuid)
+        logger.info('checktask end: %s', data)
+
     elif status == 'error':
         data = checkerror(request, data_dict, uuid)
         logger.info('checktask end: %s', data)
@@ -126,7 +126,8 @@ def checkstatus(request, uuid):
         logger.info('checktask end: %s', data)
 
     else:
-        return JsonResponse({'status': str(status), 'sequence': None, 'action': None}, status=200)
+        data = JsonResponse({'status': str(status), 'sequence': None, 'action': None}, status=200)
+        logger.info('checktask end: %s', data)
 
     return data
 
@@ -148,6 +149,7 @@ def checksuccess(request, data_dict, uuid):
 
     status = data_dict['status']
     response = data_dict['response']
+    request_data = data_dict['request']
     east = data_dict['request']['east']
     west = data_dict['request']['west']
     action = data_dict['request']['action']
@@ -166,7 +168,7 @@ def checksuccess(request, data_dict, uuid):
 
         checksuccess_checkcondition(request, action, east, west, status, uuid)
 
-    if response is None and 'reload' in data_dict:
+    elif response is None and 'reload' in data_dict:
         
         ports = Port.objects.all()
         for i in ports:
@@ -177,21 +179,7 @@ def checksuccess(request, data_dict, uuid):
             if i.direction == 'W' and i.number == west:
                 west = i
         
-        robots = Robot.objects.all()
-        for o in robots:
-                robot = o.robot_number
-
-        if action == 'connect':
-            Connection.objects.filter(east=east, west=west, disconnected_date=None).delete()
-            ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').update(status='reload')
-            Operation.objects.filter(uuid=uuid).update(robotnumber=robot, request=data_dict['request'], response=data_dict)
-            OperationHistory.objects.filter(uuid=uuid).update(robotnumber=robot, request=data_dict['request'], response=data_dict)
-        
-        else:
-            Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status='success')
-            ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='D').update(status='reload')
-            Operation.objects.filter(uuid=uuid).update(robotnumber=robot, request=data_dict['request'], response=data_dict)
-            OperationHistory.objects.filter(uuid=uuid).update(robotnumber=robot, request=data_dict['request'], response=data_dict)
+        checksuccess_reload(request, action, east, west, uuid, request_data, data_dict)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action}, status=200)
 
@@ -232,6 +220,42 @@ def checksuccess_checkcondition(request, action, east, west, status, uuid):
 
             elif c.status == 'started':
                 savedata_startedtosuccess_disconnect(request, east, west, status, uuid)
+
+
+def checksuccess_reload(request, action, east, west, uuid, request_data, data_dict):
+    """Check success reload mode for update database
+
+      Args:
+          request: request data
+          action (string): robot's action from checksuccess()
+          east (integer): east port's number from checksuccess()
+          west (integer): west port's number from checksuccess()
+          uuid (uuid4): uuid from checksuccess()
+          request_data (string): request data from checksuccess()
+          data_dict (request): response data from checksuccess()
+
+    """
+
+    robot = ''
+
+    robots = Robot.objects.all()
+    for o in robots:
+        robot = o.robot_number
+
+    if action == 'connect':
+        Connection.objects.filter(east=east, west=west, disconnected_date=None).delete()
+        ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').update(
+            status='reload')
+        Operation.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data, response=data_dict)
+        OperationHistory.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data, response=data_dict)
+
+    else:
+        Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status='success')
+        ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='D').update(
+            status='reload')
+        Operation.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data, response=data_dict)
+        OperationHistory.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data,
+                                                          response=data_dict)
 
 
 def checkbreak(request, data_dict, uuid):
@@ -354,6 +378,46 @@ def checkrevoked(request, data_dict, uuid):
     return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']}, status=200)
 
 
+def checkfailure(request, data_dict, uuid):
+    """If current status is revoked then update database
+
+    Args:
+        request: request data
+        data_dict (dictionary): dictionary's data from checkstatus()
+        uuid (uuid4): uuid from checkstatus()
+
+    Returns:
+        json:
+            status (string): status code
+            sequence (string): None
+            action (string): None
+        Json: ({'status': status, 'sequence': None, 'action': None})
+    """
+
+    obj = {'action': 'connect'}
+    status = data_dict['status']
+    east = data_dict['request']['east']
+    west = data_dict['request']['west']
+
+    Operation.objects.filter(uuid=uuid).update(status=status)
+
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+
+        obj = ast.literal_eval(i.request)
+        east = obj['east']
+        west = obj['west']
+
+    if obj['action'] == 'connect':
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').delete()
+
+    else:
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').update(
+            status='success', disconnected_date=None)
+
+    return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']}, status=200)
+
+
 def checkerror(request, data_dict, uuid):
     """If current status is error then update database
 
@@ -432,7 +496,6 @@ def checkalarm(request, data_dict, uuid):
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
                                                       response=response_error)
 
-    
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
 
 

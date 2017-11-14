@@ -16,8 +16,6 @@ from webapp.serializers import ConnectionSerializer
 from webapp.views import walk, CELERY_APP
 
 
-
-
 # set logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
@@ -504,14 +502,14 @@ class ConnectionList(APIView):
             request: request data
             east(string): east's port from get_available_ports()
             west(string): west's port from get_available_ports()
+            username (string): username from post method
         """
 
         conns = Connection.objects.all().filter(disconnected_date=None)
         for c in conns:
 
             if c.east == east and c.west == west:
-                Connection.objects.filter(east=east, west=west, disconnected_date=None, status='success').update(
-                    status='pending')
+                Connection.objects.filter(east=east, west=west, disconnected_date=None, status='success').update(status='pending')
                 ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending', username=username)
                 logger.info('connection_history %s - %s', east, west)
 
@@ -554,7 +552,6 @@ class ConnectionList(APIView):
                 #  connection counter
                 Port.objects.all().filter(direction='E', number=str(east.number)).update(connection_counter=F('connection_counter')+1)
                 Port.objects.all().filter(direction='W', number=str(west.number)).update(connection_counter=F('connection_counter')+1)
-
 
     def get_available_ports(self, request):
         """Query available port in database
