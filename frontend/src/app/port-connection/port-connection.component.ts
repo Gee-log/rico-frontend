@@ -53,17 +53,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   disabled_disconnect_button: boolean = false; // DISABLED DISCONNECT BUTTON
   disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
   disabled_cancel_button: boolean = false; // DISABLED CANCEL BUTTON
+  disabled_continue_mode_all_button: boolean = false;
   availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
   availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
   disableEastPortArray = [
-    'E25', 'E26', 'E27', 'E28', 'E29', 'E30', 'E31', 'E32', 'E33', 'E34',
-    'E35', 'E36', 'E37', 'E38', 'E39', 'E40', 'E41', 'E42', 'E43', 'E44',
+    'E25', 'E26', 'E27', 'E28', 'E30', 'E31', 'E32', 'E33', 'E34',
+    'E35', 'E36', 'E37', 'E38', 'E39', 'E41', 'E42', 'E43', 'E44',
     'E45', 'E46', 'E47', 'E48', 'E49', 'E50', 'E51', 'E52', 'E53', 'E54',
     'E55', 'E56', 'E57', 'E58', 'E59', 'E60'
   ]; // SET UNVAILABLE EAST PORT ARRAY
   disableWestPortArray = [
-    'W25', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34',
-    'W35', 'W36', 'W37', 'W38', 'W39', 'W40', 'W41', 'W42', 'W43', 'W44',
+    'W25', 'W26', 'W27', 'W28', 'W30', 'W31', 'W32', 'W33', 'W34',
+    'W35', 'W36', 'W37', 'W38', 'W39', 'W41', 'W42', 'W43', 'W44',
     'W45', 'W46', 'W47', 'W48', 'W49', 'W50', 'W51', 'W52', 'W53', 'W54',
     'W55', 'W56', 'W57', 'W58', 'W59', 'W60'
   ]; // SET UNVAILABLE WEST PORT ARRAY
@@ -87,12 +88,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     this.fetchData();
     // SET COLOR OF PORT CONNECTION
     this.setConnectedPort();
-    // PUSH UNAVAILABLE PORT ARRAY
-    this.pushNotAvailablePort();
     // CHECK STATUS EVERY 5 SEC.
     this.timerInterval = setInterval(() => {
       this.checkStatus();
-    }, 1000);
+    }, 1500);
 
   }
 
@@ -183,6 +182,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
         document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
+        this.disabled_continue_mode_all_button = false;
 
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
@@ -191,6 +191,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
+        this.disabled_continue_mode_all_button = false;
 
         // WHEN CURRENT STATUS IS ERRROR
       } else if (this.status === 'error') {
@@ -221,6 +222,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
+        this.disabled_continue_mode_all_button = true;
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
@@ -769,17 +771,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     return (this.disableWestPortArray.includes(id)) ? 'port-unselectable' : '';
 
   }
-  // PUSH NOT AVAILABLE PORT ARRAY
-  pushNotAvailablePort() {
-
-    for (let i = 25; i <= 60; i++) {
-
-      this.disableEastPortArray.push('E' + i);
-      this.disableWestPortArray.push('W' + i);
-
-    }
-
-  }
   // CHECK MESSAGE LENGTH FOR ADJUST DIALOG BOX HEIGHT
   checkMessageLength() {
 
@@ -866,6 +857,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     document.getElementById('Cancel').setAttribute('disabled', 'disabled');
     document.getElementById('Restart').setAttribute('disabled', 'disabled');
     document.getElementById('Reload').setAttribute('disabled', 'disabled');
+
+  }
+  // VALIDATION TO ENABLE OR DISABLE BUTTONS
+  validate_continue_mode_all_button() {
+
+    if (this.status === 'alarm') {
+
+      document.getElementById('Cancel').removeAttribute('disabled');
+      document.getElementById('Restart').removeAttribute('disabled');
+      document.getElementById('Reload').removeAttribute('disabled');
+
+    }
 
   }
 

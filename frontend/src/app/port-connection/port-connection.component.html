@@ -225,13 +225,13 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.status === 'started' || this.status === 'success' || this.status === 'break' || this.status === 'canceled' || this.status === 'revoked' ? this.status === 'alarm' || this.status === 'error' : null" disabled>c</button>
+              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>c</button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.status === 'started' || this.status === 'success' || this.status === 'break' || this.status === 'canceled' || this.status === 'revoked' ? this.status === 'alarm' || this.status === 'error' : null" disabled>s</button>
+              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>s</button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.status === 'started' || this.status === 'success' || this.status === 'break' || this.status === 'canceled' || this.status === 'revoked' ? this.status === 'alarm' || this.status === 'error' : null" disabled>l</button>
+              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>l</button>
               <!-- END CANCEL BUTTON -->
             </div>
             <!-- END BUTTON-CONTAINER-ITEM-2 -->
@@ -256,7 +256,7 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CONTINUE BUTTON -->
-              <button md-raised-button id="Continue" class="button-width" (click)="[postDebug(), force_disable_continue_button()]" color="primary" [attr.disabled]="this.status !== 'break' ? this.status === 'break' : null"
+              <button md-raised-button id="Continue" class="button-width" (click)="[postDebug(), force_disable_continue_button()]" color="primary" [attr.disabled]="this.status !== 'break' ? 'break' : null"
                 disabled>Continue</button>
               <!-- END CONTINUE BUTTON -->
             </div>

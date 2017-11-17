@@ -43,7 +43,7 @@ if 'CELERY_APP' in os.environ and os.environ['CELERY_APP']:
     CELERY_APP = os.environ['CELERY_APP']
     logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
 else:
-    CELERY_APP = "http://192.168.60.103:8000/rico"     # embest
+    CELERY_APP = "http://192.168.60.76:8000/rico"     # embest
     logger.info('CELERY_APP: {}'.format(CELERY_APP))
 
 
@@ -236,26 +236,27 @@ def checksuccess_reload(request, action, east, west, uuid, request_data, data_di
 
     """
 
-    robot = ''
-
-    robots = Robot.objects.all()
-    for o in robots:
-        robot = o.robot_number
+    status = data_dict['status']
 
     if action == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None).delete()
-        ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').update(
-            status='reload')
-        Operation.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data, response=data_dict)
-        OperationHistory.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data, response=data_dict)
+
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status='started', timestamp=o.timestamp).update(status='reload', timestamp=datetime.now())
+
+        Operation.objects.update(uuid=uuid, status=status, request=request_data, response=data_dict)
+        OperationHistory.objects.filter(uuid=uuid).update(request=request_data, status='reload', response=data_dict, finished_time=datetime.now())
 
     else:
-        Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status='success')
-        ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='D').update(
-            status='reload')
-        Operation.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data, response=data_dict)
-        OperationHistory.objects.filter(uuid=uuid).update(robotnumber=robot, request=request_data,
-                                                          response=data_dict)
+        Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status='success', disconnected_date=None)
+
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='D').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', status='started', timestamp=o.timestamp).update(status='reload', timestamp=datetime.now())
+            
+        Operation.objects.update(uuid=uuid, status=status, request=request_data, response=data_dict)
+        OperationHistory.objects.filter(uuid=uuid).update(request=request_data, status='reload', response=data_dict, finished_time=datetime.now())
 
 
 def checkbreak(request, data_dict, uuid):
@@ -291,7 +292,7 @@ def checkbreak(request, data_dict, uuid):
             if i.direction == 'W' and i.number == west:
                 west = i
 
-        conns = Connection.objects.all()
+        conns = Connection.objects.filter(disconnected_date=None)
         for c in conns:
 
             if east == c.east and west == c.west and c.status == 'break':
@@ -320,10 +321,9 @@ def checkstarted(request, data_dict, uuid):
             sequence (string): current sequence
             action (action): action type
     """
-
     status = data_dict['status']
 
-    conns = Connection.objects.all()
+    conns = Connection.objects.filter(disconnected_date=None)
     for c in conns:
 
         if c.status == 'break':
@@ -353,27 +353,44 @@ def checkrevoked(request, data_dict, uuid):
             action (string): None
         Json: ({'status': status, 'sequence': None, 'action': None})
     """
-
-    obj = {'action': 'connect'}
+    obj = ''
     status = data_dict['status']
-    east = data_dict['request']['east']
-    west = data_dict['request']['west']
+    east = ''
+    west = ''
 
-    Operation.objects.filter(uuid=uuid).update(status=status)
+    Operation.objects.all().update(status=status)
 
-    operations = Operation.objects.filter(uuid=uuid)
+    operations = Operation.objects.all()
     for i in operations:
 
         obj = ast.literal_eval(i.request)
         east = obj['east']
         west = obj['west']
 
+    ports = Port.objects.all()
+    for i in ports:
+
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
     if obj['action'] == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').delete()
 
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', timestamp=o.timestamp).update(status=status)
+
     else:
-        Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').update(
-            status='success', disconnected_date=None)
+        Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').update(status='success', disconnected_date=None)
+
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='D').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=o.timestamp).update(status=status)
+
+    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status)
 
     return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']}, status=200)
 
@@ -394,10 +411,10 @@ def checkfailure(request, data_dict, uuid):
         Json: ({'status': status, 'sequence': None, 'action': None})
     """
 
-    obj = {'action': 'connect'}
+    obj = ''
     status = data_dict['status']
-    east = data_dict['request']['east']
-    west = data_dict['request']['west']
+    east = ''
+    west = ''
 
     Operation.objects.filter(uuid=uuid).update(status=status)
 
@@ -408,12 +425,35 @@ def checkfailure(request, data_dict, uuid):
         east = obj['east']
         west = obj['west']
 
+    ports = Port.objects.all()
+    for i in ports:
+
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
     if obj['action'] == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').delete()
+        
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', timestamp=o.timestamp).update(status=status)
+        
+        Operation.objects.update(uuid=uuid, status=status, response=data_dict)
+        OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=data_dict)
 
     else:
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').update(
             status='success', disconnected_date=None)
+
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='D').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=o.timestamp).update(status=status)
+
+        Operation.objects.update(uuid=uuid, status=status, response=data_dict)
+        OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=data_dict)
 
     return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']}, status=200)
 
@@ -445,17 +485,32 @@ def checkerror(request, data_dict, uuid):
     error = data_dict['error']
     code = None
 
+    ports = Port.objects.all()
+    for i in ports:
+
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
     if action == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
+        
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status=['pending', 'started']).order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', timestamp=o.timestamp).update(status=status)
 
     else:
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).update(
             status='success', disconnected_date=None)
+        
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', status=['pending', 'started']).order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=o.timestamp).update(status=status)
 
-    ConnectionHistory.objects.filter(east=east, west=west, status=['pending', 'started']).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(status=status, response=error)
-    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
-                                                      response=error)
+    Operation.objects.update(uuid=uuid, status=status, response=error)
+    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=error)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
 
@@ -479,24 +534,39 @@ def checkalarm(request, data_dict, uuid):
     status = data_dict['status']
     response_error = data_dict['response']
     sequence = None
+    request_obj = data_dict['request']
     east = data_dict['request']['east']
     west = data_dict['request']['west']
     error = data_dict['response']['message']
     code = data_dict['response']['code']
+    error_sequence = ''
+    
+    if data_dict['response']['sequence']:
+        error_sequence = data_dict['response']['sequence']
+
+    ports = Port.objects.all()
+    for i in ports:
+
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
 
     if action == 'connect':
-        Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', timestamp=o.timestamp).update(status=status)
 
     else:
-        Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).update(
-            status='success', disconnected_date=None)
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='D').order_by('-timestamp')[:1]
+        for o in connectionhistorys:
+            ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=o.timestamp).update(status=status)
 
-    ConnectionHistory.objects.filter(east=east, west=west, status=['pending', 'started']).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(status=status, response=response_error)
-    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
-                                                      response=response_error)
+    Operation.objects.update(uuid=uuid, status=status, request=request_obj, response=response_error)
+    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response_error)
 
-    return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
+    return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': str(error) + ' ' + 'S' + str(error_sequence), 'code': code}, status=500)
 
 
 def checktask(request):
@@ -537,9 +607,33 @@ def savedata_pendingtosuccess_connect(request, east, west, status, uuid):
 
     response = None
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='pending').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='pending', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -557,9 +651,33 @@ def savedata_breaktosuccess_connect(request, east, west, status, uuid):
 
     response = None
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='break').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='break', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -577,9 +695,33 @@ def savedata_startedtosuccess_connect(request, east, west, status, uuid):
 
     response = None
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='started').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='started', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(east=east, west=west, status='started').update(status=status)
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -595,12 +737,37 @@ def savedata_pendingtosuccess_disconnect(request, east, west, status, uuid):
         uuid (uuid4): uuid from checksuccess_checkcondition()
     """
 
+    switching_type = 'D'
+    action = 'Disconnect'
+    error = 'Action not match in database'
+    code = None
+    sequence = None
     response = None
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
+        
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+    
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='pending').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='pending', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('disconnect pending -> success: %s %s', east, west)
-    Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(
-        status=status, disconnected_date=datetime.now())
-    ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
+    Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -618,10 +785,33 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
 
     response = None
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='break').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='break', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('disconnect break -> success: %s %s', east, west)
-    Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(
-        status=status, disconnected_date=datetime.now())
-    ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
+    Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -639,10 +829,33 @@ def savedata_startedtosuccess_disconnect(request, east, west, status, uuid):
 
     response = None
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='started').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='started', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('disconnect started -> success: %s %s', east, west)
-    Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(
-        status=status, disconnected_date=datetime.now())
-    ConnectionHistory.objects.filter(east=east, west=west, status='started').update(status=status)
+    Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -659,9 +872,33 @@ def savedata_breaktobreak(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='break').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='break', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('break -> break: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(east=east, west=west, status='break').update(status=status)
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -678,13 +915,35 @@ def savedata_breaktopending(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='pending').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status='pending', timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('break -> pending: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(east=east, west=west, status='pending').update(status=status)
-    Operation.objects.update(uuid=uuid, status=status,
-                                                     response=response)
-    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status,
-                                                      response=response)
+    Operation.objects.update(uuid=uuid, status=status, response=response)
+    OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
 def savedata_breaktostarted(request, east, west, status, response, uuid):
@@ -699,9 +958,33 @@ def savedata_breaktostarted(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='started').order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, status=c.status, timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('break -> started: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(east=east, west=west, status='started').update(status=status)
     Operation.objects.update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
@@ -715,10 +998,34 @@ def savedata_startedtobreak(request, status, uuid):
         uuid (uuid4): uuid from checkstarted()
     """
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type=switching_type).order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('started -> break')
-    Connection.objects.filter(status='break', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(status='break').update(status=status)
-    Operation.objects.update(status=status)
+    Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)
+    Operation.objects.update(uuid=uuid, status=status)
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 
@@ -731,10 +1038,34 @@ def savedata_startedtopending(request, status, uuid):
         uuid (uuid4): uuid from checkstarted()
     """
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+    
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type).order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('started -> pending')
-    Connection.objects.filter(status='pending', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(status='pending').update(status=status)
-    Operation.objects.update(status=status)
+    Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)
+    Operation.objects.update(uuid=uuid, status=status)
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 
@@ -747,10 +1078,34 @@ def savedata_startedtostarted(request, status, uuid):
         uuid (uuid4): uuid from checkstarted()
     """
 
+    operations = Operation.objects.filter(uuid=uuid)
+    for i in operations:
+        data_dict = ast.literal_eval(i.request)        
+        east = data_dict['east']
+        west = data_dict['west']
+        
+        if data_dict['action'] == 'connect':
+            switching_type = 'C'
+        
+        else:
+            switching_type = 'D'
+
+    ports = Port.objects.all()
+    for i in ports:
+    
+        if i.direction == 'E' and i.number == east:
+            east = i
+
+        if i.direction == 'W' and i.number == west:
+            west = i
+    
+    connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type).order_by('-timestamp')[:1]
+    for c in connectionhistorys:
+        ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, timestamp=c.timestamp).update(status=status, timestamp=datetime.now())
+
     logger.info('started -> started')
-    Connection.objects.filter(status='started', disconnected_date=None).update(status=status)
-    ConnectionHistory.objects.filter(status='started').update(status=status)
-    Operation.objects.update(status=status)
+    Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)    
+    Operation.objects.update(uuid=uuid, status=status)
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 

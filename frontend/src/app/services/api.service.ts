@@ -575,7 +575,7 @@ export class ApiService {
 
     const mode = 'robot';
     // const robot = localStorage.getItem('robot');
-    const robot = '2';
+    const robot = '3';
     const continue_mode = 'continue';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
@@ -606,7 +606,7 @@ export class ApiService {
 
     const mode = 'robot';
     // const robot = localStorage.getItem('robot');
-    const robot = '2';
+    const robot = '3';
     const continue_mode = 'reload';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
@@ -637,7 +637,7 @@ export class ApiService {
 
     const mode = 'robot';
     // const robot = localStorage.getItem('robot');
-    const robot = '2';
+    const robot = '3';
     const continue_mode = 'restart';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);

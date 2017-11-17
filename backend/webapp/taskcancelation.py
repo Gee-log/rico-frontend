@@ -2,6 +2,7 @@
 """
 import requests
 import ast
+import ctypes
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from django.http import HttpResponse, JsonResponse
@@ -56,12 +57,14 @@ class TaskcancelationList(APIView):
             east = request.data['east']
             west = request.data['west']
             sequence = '1'
+            operations_request = ''
             
             # Query to get error sequence
             operations = Operation.objects.all()
             for o in operations:
                 obj = ast.literal_eval(o.response)
                 sequence = obj['sequence']
+                operations_request = o.request
 
             payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west,
                        'action': action, 'no': sequence}
@@ -77,34 +80,21 @@ class TaskcancelationList(APIView):
 
                 response = response.json()
 
-                if continue_mode == 'restart':
-
-                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode,
-                                                   response=response)
-                    Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data
-                                                    , response=response)
-
-                elif continue_mode == 'reload':
+                operations.delete()
                     
-                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode,
-                                                   response=response)
-                    Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload', request=request.data,
-                                                    response=response)
+                if continue_mode == 'reload': 
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload', request=request.data, response=response)
+                
+                else:
+                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data, response=response)
 
-                elif continue_mode == 'continue':
-
-                    Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode,
-                                                   response=response)
-                    Operation.objects.update(uuid=uuid, robotnumber=robot, status='started', response=response)
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data
-                                                    , response=response)
+                Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
+                operations.create(uuid=uuid, robotnumber=robot, status='started', response=response, request=operations_request)
 
                 return JsonResponse({'status': 'success'}, status=status.HTTP_200_OK)
 
-            return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)},
-                                status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'mode' not in request.data:
             

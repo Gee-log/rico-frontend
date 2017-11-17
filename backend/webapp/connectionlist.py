@@ -352,7 +352,7 @@ class ConnectionList(APIView):
                        'no': str(number)}
 
         else:
-            return False
+            return JsonResponse({'status': 'error', 'error': 'Invalid Debug Input'})
 
         # Validate using dummy
         if walk.is_dummy():

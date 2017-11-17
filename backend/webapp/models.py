@@ -175,7 +175,7 @@ class Taskcancelation(models.Model):
         return tasktranslation
 
     def __str__(self):
-        return 'UUID: ' + str(self.uuid) + ' Mode: ' + str(self.mode) + ' Robot: ' + str(self.robot) + ' Continue mode: ' + str(self.continue_mode) + ' Response: ' + str(self.response)
+        return self.uuid
 
     class Meta:
         ordering = ['-id']
