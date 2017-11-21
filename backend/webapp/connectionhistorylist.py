@@ -1,16 +1,17 @@
 """connectionhistorylist api
 """
-from rest_framework.views import APIView
-from rest_framework.views import status as drf_status
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from django.http import JsonResponse, HttpResponse
-from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
-#  from webapp.serializers import ConnectionHistorySerializer
 from celery.task.control import revoke
 from datetime import datetime
 from django.utils import timezone
+from django.http import JsonResponse, HttpResponse
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.views import status as drf_status
+
+from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
 from webapp.views import logger
+#  from webapp.serializers import ConnectionHistorySerializer
 
 
 class ConnectionHistoryList(APIView):
@@ -106,7 +107,7 @@ class ConnectionHistoryList(APIView):
 
                     ConnectionHistory.objects.filter(id=historyid).update(status=status)
 
-                    operations = Operation.objects.filter(robotnumber='1')
+                    operations = Operation.objects.all()
                     for o in operations:
                         revoke(o.uuid, terminate=True)
 

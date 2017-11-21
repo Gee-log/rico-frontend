@@ -1,11 +1,12 @@
 """alarmlist api
 """
-from rest_framework.views import APIView, status
-from rest_framework.response import Response
+from datetime import datetime
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView, status
+
 from webapp.models import Alarm
 from webapp.serializers import AlarmSerializer
-from datetime import datetime
 
 
 class AlarmList(APIView):
@@ -23,8 +24,6 @@ class AlarmList(APIView):
                 detail (string): alarm's detail
                 severity (string): severity
         """
-
-        print(request.GET)
 
         if 'since' in request.GET:
             since = datetime.fromtimestamp(float(request.GET['since']))

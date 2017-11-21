@@ -56,18 +56,27 @@ class TaskcancelationList(APIView):
             action = request.data['action']
             east = request.data['east']
             west = request.data['west']
-            sequence = '1'
+            sequence = ''
+            stop = ''
             operations_request = ''
-            
+
             # Query to get error sequence
             operations = Operation.objects.all()
             for o in operations:
-                obj = ast.literal_eval(o.response)
-                sequence = obj['sequence']
+                obj_response = ast.literal_eval(o.response)
+                obj_request = ast.literal_eval(o.request)
+                sequence = obj_response['sequence']
+                run_value = obj_request['options']['run']
                 operations_request = o.request
 
-            payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west,
-                       'action': action, 'no': sequence}
+            # run_value = false when debug mode
+            if run_value is False:
+                stop = obj_request['options']['stops']
+                payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence, 'stops': stop}
+            
+            # run_value = true when not debug mode
+            else:
+                payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence} 
 
             # Check this robot number available or not
             if Robot.objects.filter(robot_number=robot):
@@ -97,31 +106,24 @@ class TaskcancelationList(APIView):
                 return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'mode' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'No mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'robot' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'No robot input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'continue_mode' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'No continue mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'action' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'No action mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'east' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'No east mode input'}, status=status.HTTP_400_BAD_REQUEST)       
 
         elif 'west' not in request.data:
-                
             return JsonResponse({'status': 'error', 'error': 'No west mode input'}, status=status.HTTP_400_BAD_REQUEST)         
 
         else:
-            
             return JsonResponse({'status': 'error', 'error': 'Invalid input.'}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):

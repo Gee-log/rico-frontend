@@ -5,11 +5,11 @@ import ast
 import logging
 import logging.handlers
 import requests
-from rest_framework.views import APIView, status
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from django.http import HttpResponse, JsonResponse
 from django.db.models import F
+from django.http import HttpResponse, JsonResponse
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView, status
 
 from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory, Robot
 from webapp.serializers import ConnectionSerializer
@@ -57,7 +57,7 @@ class ConnectionList(APIView):
 
         # Get connected port data
         if 'action' in request.GET and request.GET['action'] == 'connected':
-            operations = Operation.objects.filter(robotnumber='1')
+            operations = Operation.objects.all()
             conns = Connection.objects.all().filter(disconnected_date=None)
             data = []
 
@@ -65,8 +65,8 @@ class ConnectionList(APIView):
                 obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status, 'connected_date': c.connected_date}
                 data.append(obj)
 
-            if len(operations) > 0:
-                logger.info('operation: %s conn: %s', operations[0], data)
+            if len(operations) == 1:
+                logger.info('operation: %s conn: %s', operations, data)
 
             else:
                 logger.info('conn: %s', data)
@@ -339,9 +339,9 @@ class ConnectionList(APIView):
 
         # Validate input
         if 'number' in request.data and 'stops' in request.data:
+            action = request.data['action']            
             number = request.data['number']
             stops = request.data['stops']
-            action = request.data['action']
 
         else:
             number = None
@@ -364,10 +364,10 @@ class ConnectionList(APIView):
         uuid = resp.text
         logger.info('%s %s E%s W%s stops:%s no:%s', uuid, action, east.number, west.number, stops, number)
         operations = Operation.objects.all()
-        robots = Robot.objects.all()
         
-        for o in robots:
-            robotnumber = o.robot_number
+        robots = Robot.objects.all()
+        for r in robots:
+            robotnumber = r.robot_number
 
         if len(operations) == 1:
             operations.update(uuid=uuid, status='pending', request=str(payload))
@@ -446,8 +446,8 @@ class ConnectionList(APIView):
         operations = Operation.objects.all()
         robots = Robot.objects.all()
         
-        for o in robots:
-            robotnumber = o.robot_number
+        for r in robots:
+            robotnumber = r.robot_number
 
         if len(operations) == 1:
             operations.update(uuid=uuid, status='pending', request=str(payload))
@@ -537,8 +537,8 @@ class ConnectionList(APIView):
                 operations = Operation.objects.all()
                 robots = Robot.objects.all()
                 
-                for o in robots:
-                    robotnumber = o.robot_number
+                for r in robots:
+                    robotnumber = r.robot_number
 
                 if len(operations) == 1:
                     operations.update(uuid=uuid, status='pending', request=str(payload))
@@ -593,12 +593,11 @@ class ConnectionList(APIView):
             status (string): status
         """
 
-        uuid = None
         status = 'no_uuid'
+        uuid = ''
 
         operations = Operation.objects.all()
         for i in operations:
-
             uuid = str(i.uuid)
 
         if uuid is not None:
@@ -622,18 +621,19 @@ class ConnectionList(APIView):
             status (string): status
         """
 
-        status = ''
-        error = ''
+        status = 'error'
+        error = 'no uuid in operations table'
 
         operations = Operation.objects.all()
         for i in operations:
-
             uuid = str(i.uuid)
+        
+        if uuid is not None:
             resp = requests.get(CELERY_APP + '/result?id=' + uuid)
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
-            status = data_dict['status']
             error = data_dict['error']
+            status = data_dict['status']
             
         return JsonResponse({'status': status, 'error': error})
 
@@ -647,9 +647,8 @@ class ConnectionList(APIView):
             Json = ({'status': 'success', 'east': str(east), 'west': str(west)})
         """
 
+        connected_east, connected_west = [], []
         east, west = self.get_available_ports(request)
-        connected_east = []
-        connected_west = []
 
         conns = Connection.objects.filter(disconnected_date=None)
         if conns is not None:
@@ -667,7 +666,7 @@ class ConnectionList(APIView):
                 return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
             
             else:
-                return JsonResponse({'status': 'error', 'error': 'one of this ports is connected'})
+                return JsonResponse({'status': 'error', 'error': 'one or two of these ports is connected'})
 
         else:
             Connection.objects.create(east=east, west=west, status='success')

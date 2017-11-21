@@ -1,8 +1,9 @@
 """portlist api
 """
-from rest_framework.views import APIView, status
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView, status
+
 from webapp.models import Port
 from webapp.serializers import PortSerializer
 
@@ -63,6 +64,7 @@ class PortList(APIView):
                     
                     else: 
                         serializer.save()        
+
                         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -70,11 +72,13 @@ class PortList(APIView):
             else:
 
                 error_detail = {'detail': 'Permission denied'}
+
                 return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
 
         else:
                     
             error_detail = {'detail': 'Permission denied'}
+            
             return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)   
 
     def put(self, request):

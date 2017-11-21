@@ -1,7 +1,8 @@
 """operationhistorylist api
 """
-from rest_framework.views import APIView, status
 from rest_framework.response import Response
+from rest_framework.views import APIView, status
+
 from webapp.models import OperationHistory
 from webapp.serializers import OperationHistorySerializer
 

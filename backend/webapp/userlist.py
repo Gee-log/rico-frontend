@@ -1,8 +1,9 @@
 """portlist api
 """
-from rest_framework.views import APIView, status
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView, status
+
 from webapp.models import Role
 from webapp.serializers import RoleSerializer
 
