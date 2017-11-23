@@ -65,22 +65,27 @@ class TaskcancelationList(APIView):
             for o in operations:
                 obj_response = ast.literal_eval(o.response)
                 obj_request = ast.literal_eval(o.request)
-                sequence = obj_response['sequence']
+                try:
+                    sequence = obj_response['sequence']
+                except:
+                    sequence = obj_request['options']['current_sequence']
+                else:
+                    sequence = '1'
                 run_value = obj_request['options']['run']
                 operations_request = o.request
 
-            # run_value = false when debug mode
+            # run_value is false when debug mode
             if run_value is False:
                 stop = obj_request['options']['stops']
                 payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence, 'stops': stop}
             
-            # run_value = true when not debug mode
+            # run_value is true when not debug mode
             else:
                 payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence} 
 
             # Check this robot number available or not
             if Robot.objects.filter(robot_number=robot):
-                
+
                 resp = requests.post(CELERY_APP + '/reset', data=payload)
 
                 uuid = resp.text

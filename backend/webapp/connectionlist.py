@@ -262,7 +262,7 @@ class ConnectionList(APIView):
         elif request.data['action'] == 'disconnect':
 
             # If current status is success or revoked or no_uuid then making disconnection
-            if self.check_current_status(request) in ['success', 'revoked', 'no_uuid']:
+            if self.check_current_status(request) in ['success', 'revoked', 'no_uuid', 'failure']:
                 return self.disconnect(request)
 
             # If current status is started or pending or break then return error_robotworking message
@@ -277,7 +277,7 @@ class ConnectionList(APIView):
         elif request.data['action'] == 'connect':
 
             # If current status is success or revoked or no_uuid then making connection
-            if self.check_current_status(request) in ['success', 'revoked', 'no_uuid']:
+            if self.check_current_status(request) in ['success', 'revoked', 'no_uuid', 'failure']:
                 return self.connection(request)
 
             # If current status is started or pending or break then return error_robotworking message
@@ -353,7 +353,7 @@ class ConnectionList(APIView):
 
         else:
             return JsonResponse({'status': 'error', 'error': 'Invalid Debug Input'})
-
+        
         # Validate using dummy
         if walk.is_dummy():
             resp = walk.debug(payload)
@@ -370,7 +370,8 @@ class ConnectionList(APIView):
             robotnumber = r.robot_number
 
         if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
+            operations.delete()
+            Operation.objects.all().create(uuid=uuid, robotnumber=robotnumber, status='pending', request=str(payload))
 
         else:
             Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
@@ -594,7 +595,7 @@ class ConnectionList(APIView):
         """
 
         status = 'no_uuid'
-        uuid = ''
+        uuid = None
 
         operations = Operation.objects.all()
         for i in operations:

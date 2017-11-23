@@ -44,6 +44,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   status: string; // CURRENT STATUS TASK OF ROBOT
   action: string; // CURRENT ACTION IN DEBUG MODE
   error_message: string = undefined; // ERROR MESSAGE
+  hide_error_dialog: boolean = false;
 
   // DISABLE ULITIES
   unselectable_table: boolean = false; // DISABLED TABLE
@@ -79,7 +80,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
-
     // CHECK SERVER STATUS
     this.check_server_status();
     // DEVICE DETECT
@@ -183,7 +183,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
         document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
         this.disabled_continue_mode_all_button = false;
-
+        this.hide_error_dialog = true;
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
@@ -192,6 +192,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
         this.disabled_continue_mode_all_button = false;
+        this.hide_error_dialog = true;
 
         // WHEN CURRENT STATUS IS ERRROR
       } else if (this.status === 'error') {
@@ -199,6 +200,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
+        this.hide_error_dialog = false;
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
@@ -213,8 +215,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
           this.checkMessageLength(); // <-- check message length
 
         }
-
-        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
         // WHEN CURRENT STATUS IS ALARM
       } else if (this.status === 'alarm') {
@@ -223,6 +223,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
         this.disabled_continue_mode_all_button = true;
+        this.hide_error_dialog = false;
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
@@ -236,8 +237,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
           this.checkMessageLength(); // <-- check message length
 
         }
-
-        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
       }
 
@@ -463,12 +462,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
-            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
-            document.getElementById('error-dialog').classList.add('hide');   // <-- add class hide
 
           }
 
@@ -482,12 +478,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
-            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
-            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
         });
@@ -522,12 +515,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
-            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
-            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
 
@@ -541,12 +531,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
             this.error_message = data.status + ' ' + data.error;
             this.checkMessageLength();  // <-- check message length
-            document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
-            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
 
@@ -589,12 +576,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
-            document.getElementById('error-dialog').classList.remove('hide'); // <-- remove class hide
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
-            document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
           }
 
@@ -645,7 +629,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.error_message = data.status + ' ' + data.error;  // <-- set error_message
         this.checkMessageLength();  // <-- check message length
-        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
       }
 
@@ -800,13 +783,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.error_message = data.status + ' ' + data.error;
         this.checkMessageLength();  // <-- check message length
-        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
       }
 
     });
-
-    document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
   }
   // RELOAD ROBOT OPERATION TASK
@@ -818,13 +798,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.error_message = data.status + ' ' + data.error;
         this.checkMessageLength();  // <-- check message length
-        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
       }
 
     });
-
-    document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
   }
   // RESTART ROBOT OPERATION TASK
@@ -836,13 +813,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.error_message = data.status + ' ' + data.error;
         this.checkMessageLength();  // <-- check message length
-        document.getElementById('error-dialog').classList.remove('hide');  // <-- remove class hide
 
       }
 
     });
-
-    document.getElementById('error-dialog').classList.add('hide');  // <-- add class hide
 
   }
   // FORCE DISABLE CONTINUE BUTTON

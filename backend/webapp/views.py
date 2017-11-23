@@ -44,7 +44,7 @@ if 'CELERY_APP' in os.environ and os.environ['CELERY_APP']:
     CELERY_APP = os.environ['CELERY_APP']
     logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
 else:
-    CELERY_APP = "http://192.168.60.103:8000/rico"     # embest
+    CELERY_APP = "http://192.168.60.76:80/rico"     # embest
     logger.info('CELERY_APP: {}'.format(CELERY_APP))
 
 
@@ -510,10 +510,14 @@ def checkalarm(request, data_dict, uuid):
     response_error = data_dict['response']
     code = data_dict['response']['code']
     error = data_dict['response']['message']
-    error_sequence = None
-    
-    if data_dict['response']['sequence']:
+    error_sequence = ''
+
+    try:
         error_sequence = data_dict['response']['sequence']
+    except:
+        error_sequence = data_dict['request']['options']['current_sequence']
+    else:
+        error_sequence = ''
 
     east, west = matching_port_object_in_database(request, east, west)   
 
@@ -586,7 +590,7 @@ def savedata_pendingtosuccess_connect(request, east, west, status, uuid):
 
     logger.info('pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -618,7 +622,7 @@ def savedata_breaktosuccess_connect(request, east, west, status, uuid):
 
     logger.info('break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -650,7 +654,7 @@ def savedata_startedtosuccess_connect(request, east, west, status, uuid):
 
     logger.info('started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -682,7 +686,7 @@ def savedata_pendingtosuccess_disconnect(request, east, west, status, uuid):
 
     logger.info('disconnect pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -714,7 +718,7 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
 
     logger.info('disconnect break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -746,7 +750,7 @@ def savedata_startedtosuccess_disconnect(request, east, west, status, uuid):
 
     logger.info('disconnect started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -762,15 +766,18 @@ def savedata_breaktobreak(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
+    action = 'connect'
+
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
-        data_dict = ast.literal_eval(i.request)        
+        data_dict = ast.literal_eval(i.request)  
+        action = data_dict['action']      
         east = data_dict['east']
         west = data_dict['west']
 
     east, west = matching_port_object_in_database(request, east, west)   
 
-    if data_dict['action'] == 'connect':
+    if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status='break').order_by('-timestamp')[:1]
     
     else:
@@ -781,7 +788,7 @@ def savedata_breaktobreak(request, east, west, status, response, uuid):
 
     logger.info('break -> break: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -816,7 +823,7 @@ def savedata_breaktopending(request, east, west, status, response, uuid):
 
     logger.info('break -> pending: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -851,7 +858,7 @@ def savedata_breaktostarted(request, east, west, status, response, uuid):
 
     logger.info('break -> started: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=response)
 
 
@@ -883,7 +890,7 @@ def savedata_startedtobreak(request, status, uuid):
 
     logger.info('started -> break')
     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status)
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 
@@ -915,7 +922,7 @@ def savedata_startedtopending(request, status, uuid):
 
     logger.info('started -> pending')
     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)
-    Operation.objects.update(uuid=uuid, status=status)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status)
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 
@@ -947,7 +954,7 @@ def savedata_startedtostarted(request, status, uuid):
 
     logger.info('started -> started')
     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)    
-    Operation.objects.update(uuid=uuid, status=status)
+    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status)
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 

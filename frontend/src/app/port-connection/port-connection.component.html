@@ -186,7 +186,7 @@
       <!-- BEGIN ITEM-1 -->
       <div class="item-1">
         <!-- BEGIN ERROR-DIALOG -->
-        <div id="error-dialog" class="hide" [ngClass]="{'hide': this.status !== 'alarm', 'hide': this.alarm !== 'error'}">
+        <div id="error-dialog" [ngClass]="{'hide': [this.hide_error_dialog === true && [this.status !== 'alarm' || this.status !== 'error']] ? false : null}">
           <md-card class="Blink">
             <p>{{ error_message }}</p>
           </md-card>
@@ -329,7 +329,7 @@
             <div style="transform: translateY(-20%);">
               <!-- BEGIN STOP INPUT -->
               <md-input-container>
-                <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" pattern="[0-9,]{1,20}"
+                <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" pattern="[0-9,]{1,100}"
                   [attr.disabled]="this.disable_stops_input == true ? false : null" hidden>
               </md-input-container>
               <!-- END STOP INPUT -->
