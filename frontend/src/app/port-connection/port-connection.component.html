@@ -106,12 +106,12 @@
           <div class="flex-item-1">
             <!-- BEGIN CONTENT-1 -->
             <div class="content-1">
-              <span>54 sec.</span>
+              <span>{{ this.operation_task_time }}</span>
             </div>
             <!-- END CONTENT-1 -->
             <!-- BEGIN CONTENT-2 -->
             <div class="content-2">
-              <span>Avg times</span>
+              <span>Operations times</span>
             </div>
             <!-- END CONTENT-2 -->
           </div>
@@ -186,7 +186,7 @@
       <!-- BEGIN ITEM-1 -->
       <div class="item-1">
         <!-- BEGIN ERROR-DIALOG -->
-        <div id="error-dialog" [ngClass]="{'hide': [this.hide_error_dialog === true && [this.status !== 'alarm' || this.status !== 'error']] ? false : null}">
+        <div id="error-dialog" [ngClass]="check_status_for_hide_dialog()">
           <md-card class="Blink">
             <p>{{ error_message }}</p>
           </md-card>

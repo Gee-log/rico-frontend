@@ -1,5 +1,5 @@
 // ANGULAR MODULE
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Api Service
@@ -17,7 +17,7 @@ import 'rxjs/Rx';
   styleUrls: ['./port-connection.component.scss'],
   providers: []
 })
-export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PortConnectionComponent implements OnInit, OnDestroy {
 
   // PORTS DATA
   eports: Object = []; // 144 EAST PORTS
@@ -44,7 +44,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   status: string; // CURRENT STATUS TASK OF ROBOT
   action: string; // CURRENT ACTION IN DEBUG MODE
   error_message: string = undefined; // ERROR MESSAGE
-  hide_error_dialog: boolean = false;
+  operation_task_time: string;
 
   // DISABLE ULITIES
   unselectable_table: boolean = false; // DISABLED TABLE
@@ -82,6 +82,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
   ngOnInit() {
     // CHECK SERVER STATUS
     this.check_server_status();
+    // VERIFY USER
+    this.verify_user();
     // DEVICE DETECT
     this.deviceDetect();
     // FETCH DATA
@@ -92,12 +94,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     this.timerInterval = setInterval(() => {
       this.checkStatus();
     }, 1500);
-
-  }
-
-  ngAfterViewInit() {
-
-
 
   }
 
@@ -113,6 +109,16 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
     this.ApiService.check_server_status().then((status) => {
       if (status === 500) {
         this.router.navigateByUrl('/500');
+      }
+    });
+
+  }
+  // VERIFY USER WITH CURRENT BACKEND
+  verify_user() {
+
+    this.ApiService.verify_user_with_backend().then((data) => {
+      if (data['status'] === 'unverified') {
+        this.router.navigateByUrl('/login');
       }
     });
 
@@ -182,8 +188,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
         document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
-        this.disabled_continue_mode_all_button = false;
-        this.hide_error_dialog = true;
+        this.disabled_continue_mode_all_button = false; // LOCK ALL CONTINUE MODE BUTTONS
+        this.get_lastest_task_time(); // GET AVERAGE LASTEST TASK TIME
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
@@ -191,8 +197,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
-        this.disabled_continue_mode_all_button = false;
-        this.hide_error_dialog = true;
+        this.disabled_continue_mode_all_button = false; // LOCK ALL CONTINUE MODE BUTTONS
 
         // WHEN CURRENT STATUS IS ERRROR
       } else if (this.status === 'error') {
@@ -200,7 +205,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
-        this.hide_error_dialog = false;
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
@@ -222,8 +226,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
-        this.disabled_continue_mode_all_button = true;
-        this.hide_error_dialog = false;
+        this.disabled_continue_mode_all_button = true; // LOCK ALL CONTINUE MODE BUTTONS
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
@@ -843,6 +846,42 @@ export class PortConnectionComponent implements OnInit, OnDestroy, AfterViewInit
       document.getElementById('Reload').removeAttribute('disabled');
 
     }
+
+  }
+  // CHECK STATUS FOR VALIDATION TO ADD CLASS TO ERROR DIALOG
+  check_status_for_hide_dialog() {
+
+    if (this.status === 'alarm' || this.status === 'error') {
+
+      return null;
+
+    } else {
+
+      return 'hide';
+
+    }
+
+  }
+  // GET LASTEST TASK TIME
+  get_lastest_task_time() {
+
+    this.ApiService.get_operation_task_time().then((data) => {
+
+      if (data['average_minute'] === 0 && data['average_second'] !== 0) {
+
+        this.operation_task_time = data['average_second'] + 'sec';
+
+      } else if (data['average_minute'] === 0 && data['average_second'] === 0) {
+
+        this.operation_task_time = 'empty task';
+
+      } else {
+
+        this.operation_task_time = data['average_minute'] + 'min ' + data['average_second'] + 'sec';
+
+      }
+
+    });
 
   }
 

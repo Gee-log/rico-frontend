@@ -75,7 +75,7 @@ class ConnectionHistoryList(APIView):
 
         # Validate authorization
         if request.META.get('HTTP_AUTHORIZATION'):
-    
+
             # Set token
             token = request.META.get('HTTP_AUTHORIZATION')
 
@@ -98,12 +98,9 @@ class ConnectionHistoryList(APIView):
                                 Connection.objects.filter(east=i.east, west=i.west, status='started').delete()
 
                             elif i.switching_type == 'D' and c.disconnected_date is None:
-                                Connection.objects.filter(east=i.east, west=i.west, status='pending').update(
-                                    status='success', disconnected_date=None)
-                                Connection.objects.filter(east=i.east, west=i.west, status='break').update(
-                                    status='success', disconnected_date=None)
-                                Connection.objects.filter(east=i.east, west=i.west, status='started').update(
-                                    status='success', disconnected_date=None)
+                                Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success', disconnected_date=None)
+                                Connection.objects.filter(east=i.east, west=i.west, status='break').update(status='success', disconnected_date=None)
+                                Connection.objects.filter(east=i.east, west=i.west, status='started').update(status='success', disconnected_date=None)
 
                     ConnectionHistory.objects.filter(id=historyid).update(status=status)
 
@@ -133,7 +130,7 @@ class ConnectionHistoryList(APIView):
 
                 error_detail = {'detail': 'Permission denied'}
                 return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
-        
+
         else:
 
             error_detail = {'detail': 'Permission denied'}
@@ -163,7 +160,7 @@ class ConnectionHistoryList(APIView):
             content (string): error detail
             status (string): HTTP status
         """
-        
+
         error_detail = {'detail': 'Method "DELETE" not allowed.'}
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 

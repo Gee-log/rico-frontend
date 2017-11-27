@@ -10,7 +10,6 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory, Robot
 from webapp.serializers import OperationSerializer, OperationHistorySerializer

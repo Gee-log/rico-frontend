@@ -663,5 +663,32 @@ export class ApiService {
       });
 
   }
+  // GET OPERATION TASK TIME
+  get_operation_task_time() {
+
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
+    return this.http.get(this.ROOT_URL + 'operationhistorys?action=connection_time').toPromise().then((response: any) => {
+      response = JSON.parse(response._body);
+      return response;
+
+    });
+
+  }
+  // VERIFY USER WITH CURRENT BACKEND
+  verify_user_with_backend() {
+
+    const token = JSON.parse(localStorage.getItem('token')); // Set sample token
+
+    return this.http.post(this.ROOT_URL + 'verify_user/', { token }, this.options).toPromise().then((response: any) => {
+      response = JSON.parse(response._body);
+      return response;
+
+    });
+
+  }
 
 }

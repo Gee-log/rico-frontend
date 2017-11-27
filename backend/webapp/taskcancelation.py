@@ -65,12 +65,12 @@ class TaskcancelationList(APIView):
             for o in operations:
                 obj_response = ast.literal_eval(o.response)
                 obj_request = ast.literal_eval(o.request)
+                
                 try:
                     sequence = obj_response['sequence']
                 except:
                     sequence = obj_request['options']['current_sequence']
-                else:
-                    sequence = '1'
+
                 run_value = obj_request['options']['run']
                 operations_request = o.request
 

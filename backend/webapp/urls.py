@@ -10,6 +10,7 @@ from webapp import portlist
 from webapp import taskcancelation
 from webapp import userlist
 from webapp import views
+from webapp import verify_backend
 
 
 urlpatterns = [
@@ -43,5 +44,6 @@ urlpatterns = [
     url(r'^taskcancelations', taskcancelation.TaskcancelationList.as_view()),
     # user api
     url(r'^users/', userlist.RoleList.as_view()),
-   
+    # verify user with backend
+    url(r'^verify_user/', verify_backend.Verify_user.as_view())
 ]
