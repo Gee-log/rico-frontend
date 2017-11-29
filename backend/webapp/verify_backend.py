@@ -6,10 +6,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
 
-class Verify_user(APIView):
+class VerifyUser(APIView):
     
     def get(self, request):
-        """GET Validation backend API
+        """GET Verify User API
 
         Args:
             request: request data
@@ -23,13 +23,13 @@ class Verify_user(APIView):
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def post(self, request):
-        """POST Validation backend API
+        """POST Verify User API
 
         Args:
             request: request data
 
         Returns:
-            Json: OperationHistory data
+            Json: verify's status
         """
         if 'token' in request.data:
             
@@ -50,7 +50,7 @@ class Verify_user(APIView):
             return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
     def put(self, request):
-        """PUT Validation API
+        """PUT Verify User API
 
         Args:
             request: request data
@@ -64,7 +64,7 @@ class Verify_user(APIView):
         return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
-        """DELETE Validation API
+        """DELETE Verify User API
 
         Args:
             request: request data

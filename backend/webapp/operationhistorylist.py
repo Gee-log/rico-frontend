@@ -26,8 +26,12 @@ class OperationHistoryList(APIView):
             if operationhistorys.exists():
 
                 lastest_obj = OperationHistory.objects.all().order_by('-finished_time')[:1]
-
+                
                 for i in lastest_obj:
+                
+                    if i.finished_time is None:
+                        return JsonResponse({'average_hours': 0, 'average_minute': 0, 'average_second': 0})
+                    
                     created_time = i.created_time
                     created_time = datetime.time(created_time)
                     created_time = str(created_time)
@@ -53,7 +57,7 @@ class OperationHistoryList(APIView):
                     if (average_second < 0):
                         average_minute = average_minute - 1
                         average_second = (finished_second + 60) - created_second
-                print('huuuuuuuuuuuuuuuuuuuuuuuuuu')
+
                 return JsonResponse({'average_hours': average_hours, 'average_minute': average_minute, 'average_second': average_second})
             
             else:

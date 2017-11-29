@@ -957,7 +957,6 @@ def savedata_startedtostarted(request, status, uuid):
     OperationHistory.objects.filter(uuid=uuid).update(status=status)
 
 
-# TODO
 def pendingtask(request):
     """Continue task's status pending
 

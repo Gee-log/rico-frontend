@@ -2,6 +2,8 @@
 import { Component } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Router } from '@angular/router';
+
+// Third-party
 import * as $ from 'jquery';
 
 // Api Service
@@ -96,7 +98,7 @@ export class AppComponent {
   // SHOW NAVBAR
   showNavbar() {
 
-    if (this.router.url === '/login') {
+    if (this.router.url === '/login' || this.router.url === '/register') {
       return false;
     } else {
       return true;

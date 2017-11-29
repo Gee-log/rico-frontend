@@ -369,7 +369,7 @@ class ConnectionList(APIView):
         for r in robots:
             robotnumber = r.robot_number
 
-        if len(operations) == 1:
+        if len(operations) > 0:
             operations.delete()
             Operation.objects.all().create(uuid=uuid, robotnumber=robotnumber, status='pending', request=str(payload))
 
@@ -450,7 +450,8 @@ class ConnectionList(APIView):
         for r in robots:
             robotnumber = r.robot_number
 
-        if len(operations) == 1:
+        if len(operations) > 0:
+            operations.delete()
             operations.update(uuid=uuid, status='pending', request=str(payload))
 
         else:
@@ -541,7 +542,8 @@ class ConnectionList(APIView):
                 for r in robots:
                     robotnumber = r.robot_number
 
-                if len(operations) == 1:
+                if len(operations) > 0:
+                    operations.delete()
                     operations.update(uuid=uuid, status='pending', request=str(payload))
 
                 else:

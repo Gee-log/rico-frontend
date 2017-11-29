@@ -118,6 +118,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     this.ApiService.verify_user_with_backend().then((data) => {
       if (data['status'] === 'unverified') {
+        localStorage.setItem('currentUser', null);
         this.router.navigateByUrl('/login');
       }
     });
@@ -871,7 +872,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
         this.operation_task_time = data['average_second'] + 'sec';
 
-      } else if (data['average_minute'] === 0 && data['average_second'] === 0) {
+      } else if ((data['average_minute'] === 0 && data['average_second'] === 0)
+        || ((data['average_minute'] === undefined && data['average_second'] === undefined))) {
 
         this.operation_task_time = 'empty task';
 

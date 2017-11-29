@@ -1,69 +1,84 @@
+/*****Container*****/
 .container {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    height: 280px;
-    margin: 0 auto;
-    margin-top: 2rem;
+    margin: 2rem auto;
+
+    // Labtop screen
+    @media only screen and (min-device-width : 640px) {
+        width: 400px;
+        height: 280px;
+    }
+    // Mobile screen
+    @media only screen and (max-device-width : 640px) {
+        width: 80vw;
+        height: 280px;
+    }
+    /*****Flex-1*****/
     .flex-1 {
-        // background: greenyellow;
         div {
             width: 100%;
             height: 60px;
             background: rgb(63,81,181);
             box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
             p {
-                margin-top: 0;
-                padding-top: 20px;
-                padding-left: 20px;
+                margin: 0 auto;
+                padding: 20px 0 0 20px;
                 font-size: 20px;
                 color: white;
                 cursor: default;
             }
         }
     }
+    /*****Flex-2*****/
     .flex-2 {
-        // background: lightcoral;
         div {
             width: 100%;
             height: 70px;
-            md-form-field {
-                padding-top: 20px;
-                width: 100%;
-            }
+            md-form-field { padding-top: 20px; width: 100%; }
         }
     }
+    /*****Flex-3*****/    
     .flex-3 {
-        // background: lightcyan;
         div {
             width: 100%;
             height: 70px;
-            md-form-field {
-                padding-top: 20px;
-                width: 100%;
-            }
+            md-form-field { padding-top: 20px; width: 100%; }
         }
     }
+    /*****Flex-4*****/
     .flex-4 {
+        display: inline-flex;        
         padding-top: 2rem;
-        display: inline-flex;
-        // background: lightgreen;
+        .item-1 {
+            margin-right: 5px;
+        }
         .item-2 {
-            margin: 0 auto;
+            margin-left: 5px;
+        }
+        .item-3 {
+            margin-left: 5px;
             md-card {
-                width: 220px;
-                height: 10px;
-                background: #ec407a;
-                p {
-                    font-size: 14px;
-                    color: white;
-                    cursor: default;
+                background: #ec407a;                
+            }
+            p {
+                color: white;
+                cursor: default;
+                // Labtop screen
+                @media only screen and (min-device-width : 640px) {
+                    font-size: 10px;
+                }
+                // Mobile screen
+                @media only screen and (max-device-width : 640px) {
+                    font-size: 8px;
                 }
             }
         }
     }
 }
 
-.hide {
-    visibility: hidden;
-  }
+
+/*-----------Global Class*-----------/
+
+/*****Hide*****/
+.hide { visibility: hidden; }

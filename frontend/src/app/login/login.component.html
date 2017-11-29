@@ -3,7 +3,7 @@
   <!-- BEGIN FLEX-1 -->
   <div class="flex-1">
     <div>
-      <p>Login</p>
+      <p>XENOPTICS</p>
     </div>
   </div>
   <!-- END FLEX-1 -->
@@ -27,7 +27,7 @@
 
       <md-form-field>
         <input mdInput placeholder="Password" type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel"
-        (keyup)="catchEnter($event)" />
+          (keyup)="catchEnter($event)" />
       </md-form-field>
 
     </div>
@@ -38,15 +38,17 @@
   <div class="flex-4">
     <div class="item-1">
       <button md-raised-button color="primary" (click)="login()" [attr.disabled]="validate_login_button() === false ? true : null"
-        disabled>LOGIN</button>
+        disabled>Log In</button>
     </div>
     <div class="item-2">
+      <button md-raised-button color="primary" (click)="registerRoute()">Register</button>
+    </div>
+    <div class="item-3">
       <md-card id="error" class="hide">
         <p>{{ this.error }}</p>
       </md-card>
     </div>
   </div>
   <!-- END FLEX-4 -->
-
 </md-card>
 <!-- END CONTAINER -->

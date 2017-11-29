@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     // check current user
     this.checkCurrentUser();
-
     // reset login status
     // this.authenticationService.logout();
   }
@@ -40,7 +39,7 @@ export class LoginComponent implements OnInit {
 
     localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
 
-    if (this.current_user) {
+    if (this.current_user['username'] && this.current_user['username'] !== null) {
       this.router.navigate(['/']);
     }
   }
@@ -85,6 +84,12 @@ export class LoginComponent implements OnInit {
       }
 
     }
+
+  }
+
+  registerRoute() {
+
+    this.router.navigate(['/register']);
 
   }
 

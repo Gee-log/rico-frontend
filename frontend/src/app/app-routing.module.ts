@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PortConnectionComponent } from './port-connection/port-connection.component';
 import { PortConnectionMobileComponent } from './port-connection-mobile/port-connection-mobile.component';
 import { PortHistoryComponent } from './port-history/port-history.component';
+import { RegisterComponent } from './register/register.component';
 import { ServerStatusErrorComponent } from './server-status-error/server-status-error.component';
 import { TestingModeComponent } from './testing-mode/testing-mode.component';
 import { LoginComponent } from './login/login.component';
@@ -52,6 +53,10 @@ export const appRoutes: Routes = [
     path: 'testing_mode',
     component: TestingModeComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: 'login',
