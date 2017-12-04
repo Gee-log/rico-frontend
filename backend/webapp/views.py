@@ -43,7 +43,7 @@ if 'CELERY_APP' in os.environ and os.environ['CELERY_APP']:
     CELERY_APP = os.environ['CELERY_APP']
     logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
 else:
-    CELERY_APP = "http://192.168.60.76:80/rico"     # embest
+    CELERY_APP = "http://192.168.60.103:8000/rico"     # embest
     logger.info('CELERY_APP: {}'.format(CELERY_APP))
 
 

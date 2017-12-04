@@ -99,8 +99,13 @@ export class PortHistoryComponent implements OnInit {
   // CANCEL TASK
   cancelTask(id) {
 
-    this.ApiService.cancelTask(id, 'canceled');
-    window.location.reload();
+    this.ApiService.cancelTask(id, 'canceled').then((data) => {
+
+      if (data['status'] !== 'error' && data['historyid'] !== null) {
+        location.reload();
+      }
+
+    });
 
   }
   // SAVE DATA

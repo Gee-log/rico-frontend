@@ -38,11 +38,11 @@ class CreateUser(APIView):
             username = request.data['username']
             password = request.data['password']
 
-            if User.objects.filter(username=username):
-                return JsonResponse({'status': 'error', 'error': 'this user already exist'})
-
             if User.objects.filter(email=email):
                 return JsonResponse({'status': 'error', 'error': 'this email has been used'})
+
+            if User.objects.filter(username=username):
+                return JsonResponse({'status': 'error', 'error': 'this user already exist'})
 
             if '@' not in email and '.' not in email:
                 
@@ -50,7 +50,8 @@ class CreateUser(APIView):
 
             if re.match("^[A-Za-z0-9_-]*$", username) and re.match("^[A-Za-z0-9_-]*$", password):
 
-                User.objects.create(email=email, username=username, password=password)
+                user = User.objects.create_user(username, email, password, is_staff=True)
+                user.save()
 
                 return JsonResponse({'status': 'success', 'detail': 'user created'})
 

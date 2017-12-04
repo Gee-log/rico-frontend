@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
           document.getElementById('error-box').classList.remove('hide');
           this.error_message = data['error'];
         } else {
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
         }
 
       });

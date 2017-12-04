@@ -1,5 +1,5 @@
 celery==4.0.2
-django==1.11.3
+django==1.11.8
 django-cors-headers==2.1.0
 django-celery-results==1.0.1
 djangorestframework==3.6.3

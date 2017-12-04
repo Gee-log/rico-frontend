@@ -73,8 +73,8 @@
 
   <div class="checking-email-container">
     <div>
-      <md-checkbox id="username_checkbox" [ngClass]="check_username_length()">username must be at least 8 characters</md-checkbox>
-      <md-checkbox id="password_checkbox" [ngClass]="check_password_length()">password must be at least 8 characters</md-checkbox>
+      <md-checkbox id="username_checkbox" class="disabled-click" [ngClass]="check_username_length()">username must be at least 8 characters</md-checkbox>
+      <md-checkbox id="password_checkbox" class="disabled-click" [ngClass]="check_password_length()">password must be at least 8 characters</md-checkbox>
     </div>
   </div>
 

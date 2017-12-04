@@ -19,7 +19,7 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL = `http://192.168.60.76:8000/`;
+  // private ROOT_URL = `http://192.168.60.76:80/`;
   private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) {
@@ -407,7 +407,7 @@ export class ApiService {
     const options = new RequestOptions({ headers: headers });
 
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id, action }, options).toPromise().then((response: any) => {
-      console.log(response._body);
+      response = JSON.parse(response._body);
 
       return response;
 
@@ -575,7 +575,7 @@ export class ApiService {
 
     const mode = 'robot';
     // const robot = localStorage.getItem('robot');
-    const robot = '3';
+    const robot = '2';
     const continue_mode = 'continue';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
@@ -606,7 +606,7 @@ export class ApiService {
 
     const mode = 'robot';
     // const robot = localStorage.getItem('robot');
-    const robot = '3';
+    const robot = '2';
     const continue_mode = 'reload';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
@@ -637,7 +637,7 @@ export class ApiService {
 
     const mode = 'robot';
     // const robot = localStorage.getItem('robot');
-    const robot = '3';
+    const robot = '2';
     const continue_mode = 'restart';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);

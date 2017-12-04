@@ -209,29 +209,35 @@
           <!-- BEGIN BUTTON-CONTAINER -->
           <div class="button-container fix-width">
             <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
-            <div class="button-container-item-1">
+            <!-- <div class="button-container-item-1"> -->
               <!-- BEGIN TOOLTIP -->
-              <div class="tooltip">
+              <!-- <div class="tooltip"> -->
                 <!-- BEGIN CANCEL-BUTTON-CIRCLE BLINK -->
-                <div class="cancel-button-circle Blink"></div>
+                <!-- <div class="cancel-button-circle Blink"></div> -->
                 <!-- END CANCEL-BUTTON-CIRCLE BLINK -->
                 <!-- BEGIN TOOLTIPTEXT -->
-                <span class="tooltiptext">Hint! "c" means continue robot operations. <br> "s" means restart robot operations. <br> "l" means reload robot operations.</span>
+                <!-- <span class="tooltiptext">Hint! "c" means continue robot operations. <br> "s" means restart robot operations. <br> "l" means reload robot operations.</span> -->
                 <!-- END TOOLTIPTEXT -->
-              </div>
+              <!-- </div> -->
               <!-- END TOOLTIP -->
-            </div>
+            <!-- </div> -->
             <!-- END BUTTON-CONTAINER-ITEM-1 -->
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>c</button>
+              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+                <md-icon>autorenew</md-icon>
+              </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>s</button>
+              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+                <md-icon>replay</md-icon>
+              </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>l</button>
+              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+                <md-icon>clear</md-icon>
+              </button>
               <!-- END CANCEL BUTTON -->
             </div>
             <!-- END BUTTON-CONTAINER-ITEM-2 -->

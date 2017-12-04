@@ -1,17 +1,36 @@
 """connectionhistorylist api
 """
-from celery.task.control import revoke
-from datetime import datetime
-from django.utils import timezone
+import logging.handlers
+
 from django.http import JsonResponse, HttpResponse
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.views import status as drf_status
 
-from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
-from webapp.views import logger
-#  from webapp.serializers import ConnectionHistorySerializer
+from webapp.models import ConnectionHistory
+from webapp.libs import authorization, connectionhistory_action_database
+
+# set validate_user
+validate_user = authorization.ValidationUser
+
+# set connectionhistoryaction
+connectionhistory_action = connectionhistory_action_database.ConnectionHistoryAction
+
+# set logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('connectionhistorylist')
+
+# create a file handler
+handler = logging.handlers.RotatingFileHandler('connectionhistorylist.log', maxBytes=10485760,
+                                               backupCount=10, encoding='utf-8')
+handler.setLevel(logging.INFO)
+
+# create a logging format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# add the handlers to the logger
+logger.addHandler(handler)
 
 
 class ConnectionHistoryList(APIView):
@@ -38,10 +57,11 @@ class ConnectionHistoryList(APIView):
         for ch in connh:
 
             obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
-                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status), 'username': str(ch.username)}
+                   'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status),
+                   'username': str(ch.username)}
             data.append(obj)
 
-        return Response(data)
+        return Response(data, status=drf_status.HTTP_200_OK)
 
     def post(self, request):
         """POST ConnectionHistoryList API,
@@ -73,67 +93,45 @@ class ConnectionHistoryList(APIView):
                 csv: csv file
         """
 
-        # Validate authorization
-        if request.META.get('HTTP_AUTHORIZATION'):
-
-            # Set token
-            token = request.META.get('HTTP_AUTHORIZATION')
-
-            # Check token is exist in database or not
-            if Token.objects.all().filter(key=token):
+        if validate_user.validate_http_authorization(request) is True:
 
                 if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
-                    historyid = request.data['id']
-                    status = request.data['action']
 
-                    connh = ConnectionHistory.objects.all().filter(id=historyid)
-                    conn = Connection.objects.all()
-                    for i in connh:
+                    if connectionhistory_action.cancel_task(request) is False:
 
-                        for c in conn:
+                        history_id = request.data['id']
+                        error_detail = ({'detail': 'Not found this {} id in connectionhistory table'.format(
+                            history_id)})
+                        logger.error('connectionhistory_action.cancel_task method: error:{} request:{}'.format(
+                            error_detail, request.META.get('HTTP_AUTHORIZATION')))
 
-                            if i.switching_type == 'C' and c.disconnected_date is None:
-                                Connection.objects.filter(east=i.east, west=i.west, status='pending').delete()
-                                Connection.objects.filter(east=i.east, west=i.west, status='break').delete()
-                                Connection.objects.filter(east=i.east, west=i.west, status='started').delete()
+                        return JsonResponse({'historyid': None, 'status': 'error'},
+                                            status=drf_status.HTTP_400_BAD_REQUEST)
 
-                            elif i.switching_type == 'D' and c.disconnected_date is None:
-                                Connection.objects.filter(east=i.east, west=i.west, status='pending').update(status='success', disconnected_date=None)
-                                Connection.objects.filter(east=i.east, west=i.west, status='break').update(status='success', disconnected_date=None)
-                                Connection.objects.filter(east=i.east, west=i.west, status='started').update(status='success', disconnected_date=None)
+                    else:
 
-                    ConnectionHistory.objects.filter(id=historyid).update(status=status)
-
-                    operations = Operation.objects.all()
-                    for o in operations:
-                        revoke(o.uuid, terminate=True)
-
-                    Operation.objects.all().delete()
-
-                    return JsonResponse({'historyid': historyid, 'action': status})
+                        return connectionhistory_action.cancel_task(request)
 
                 elif 'action' in request.data and request.data['action'] == 'cleardatabase':
 
-                    Connection.objects.all().delete()
-                    # ConnectionHistory.objects.all().delete()
-                    Operation.objects.all().delete()
-                    OperationHistory.objects.all().delete()
-
-                    return HttpResponse('Clear database success !')
+                    return connectionhistory_action.cleardatabase()
 
                 # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-                if 'type' in request.data and request.data['type'] == 'connectionhistory':
+                elif 'type' in request.data and request.data['type'] == 'connectionhistory':
 
-                    return self.savedata(request)
+                    return connectionhistory_action.savedata()
 
-            else:
+                else:
 
-                error_detail = {'detail': 'Permission denied'}
-                return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
+                    error_detail = ({'detail': 'Invalid input data'})
+                    logger.error('post method: error:{} request:{}'.format(error_detail, request))
+                    return Response(error_detail, status=drf_status.HTTP_400_BAD_REQUEST)
 
         else:
+            error_detail = ({'detail': 'Permission denied'})
+            logger.error('validate_user.validate_http_authorization method: error:{} request:{}'.format(
+                error_detail, request.META.get('HTTP_AUTHORIZATION')))
 
-            error_detail = {'detail': 'Permission denied'}
             return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
@@ -148,7 +146,7 @@ class ConnectionHistoryList(APIView):
         """
 
         error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response(error_detail, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE ConnectionHistoryList API
@@ -162,55 +160,4 @@ class ConnectionHistoryList(APIView):
         """
 
         error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-    # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-    def savedata(self, request):
-        """Save CSV files
-
-        Args:
-            request: request data
-
-        Returns:
-            csv: csv file
-        """
-
-        # for Python 3.x use below !
-        from io import StringIO
-        # for Python 2.7 or earlier use below !
-        # import StringIO
-        import csv
-        timestamp = datetime.now()
-        qus = '1'
-
-        logger.info('question_id', '1', 'timestamp', timestamp)
-
-        # write file
-        # for WINDOW OS use below !
-        data = StringIO()
-
-        # for Linux OS use below !
-        # data = StringIO.StringIO()
-
-        # load file
-        data.seek(0)
-        response = HttpResponse(data, content_type='text/csv')
-
-        if qus == '1':  # connection_log
-            download_name = 'connection_log.csv'
-            response['Content-Disposition'] = "attachment; filename=%s" % download_name
-            writer = csv.writer(response)
-            writer.writerow(['Time', 'Type', 'East Port', 'West Port'])
-
-            connection = ConnectionHistory.objects.all()
-            for con in connection:
-
-                if con.switching_type == 'C':
-                    writer.writerow(
-                        [timezone.localtime(con.timestamp), 'connected', con.east, con.west])
-
-                else:
-                    writer.writerow(
-                        [timezone.localtime(con.timestamp), 'disconnected', con.east, con.west])
-
-        return response
+        return Response(error_detail, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
