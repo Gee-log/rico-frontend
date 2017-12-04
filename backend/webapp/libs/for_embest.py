@@ -65,17 +65,17 @@ class ForEmbest(object):
         # Validate errors inputs
         if 'action' not in request.data:
             error_detail = {'error': 'No action'}
-            logger.error('for_embest: error:{} request:{}'.format(error_detail, request))
+            logger.error('validate_input method: error:{} request:{}'.format(error_detail, request))
             return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         if 'east' not in request.data:
             error_detail = {'error': 'No east'}
-            logger.error('for_embest: error:{} request:{}'.format(error_detail, request))
+            logger.error('validate_input method: error:{} request:{}'.format(error_detail, request))
             return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         if 'west' not in request.data:
             error_detail = {'error': 'No west'}
-            logger.error('for_embest: error:{} request:{}'.format(error_detail, request))
+            logger.error('validate_input method: error:{} request:{}'.format(error_detail, request))
             return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         # Debug mode checking condition
@@ -87,12 +87,14 @@ class ForEmbest(object):
 
             # If current status is started or pending then return error_robotworking message
             elif validation_errors.check_current_status() in ['started', 'pending']:
-                logger.error('for_embest Debug mode: error:robotworking request:{}'.format(request))
+                logger.error('validation_errors.check_current_status debug mode method: error:robotworking request:{}'
+                             .format(request))
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_status message
             else:
-                logger.error('for_embest Debug mode: error:status request:{}'.format(request))
+                logger.error('validation_errors.check_current_status debug mode method: error:status unknown request:{}'
+                             .format(request))
                 return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Disconnection checking condition
@@ -104,12 +106,14 @@ class ForEmbest(object):
 
             # If current status is started or pending or break then return error_robotworking message
             elif validation_errors.check_current_status() in ['started', 'pending', 'break']:
-                logger.error('for_embest Disconnection: error:robotworking request:{}'.format(request))
+                logger.error('validation_errors.check_current_status disconnection method: '
+                             'error:robotworking request:{}'.format(request))
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_status message
             else:
-                logger.error('for_embest Disconnection: error:status request:{}'.format(request))
+                logger.error('validation_errors.check_current_status disconnection method:'
+                             ' error:status unknown request:{}'.format(request))
                 return JsonResponse({'status': 'error', 'error': 'status'})
 
         # Connection checking condition
@@ -121,13 +125,15 @@ class ForEmbest(object):
 
             # If current status is started or pending or break then return error_robotworking message
             elif validation_errors.check_current_status() in ['started', 'pending', 'break']:
-                logger.error('for_embest Connection: error:robotworking request:{}'.format(request))
+                logger.error('validation_errors.check_current_status connection method: error:robotworking request:{}'
+                             .format(request))
                 return JsonResponse({'status': 'error', 'error': 'robotworking'})
 
             # Else return error_status message
             else:
-                logger.error('for_embest Connection: error:status request:{}'.format(request))
-                return JsonResponse({'status': 'error', 'error': 'status'})
+                logger.error('validation_errors.check_current_status connection method: error:status request:{}'
+                             .format(request))
+                return JsonResponse({'status': 'error', 'error': 'status unknown'})
 
         # Create connection in connection table
         elif request.data['action'] == 'test_connect':
@@ -136,5 +142,6 @@ class ForEmbest(object):
 
         # Else return error_operation message
         else:
-            logger.error('for_embest: error:operation request:{}'.format(request))
+            logger.error('validation_errors.check_current_status connection method: error:action unknown request:{}'
+                         .format(request))
             return JsonResponse({'status': 'error', 'error': 'operation'})

@@ -136,13 +136,11 @@ class ConnectionList(APIView):
                         return validation_errors.query_status_error()
             
             else:
-
                 error_detail = {'detail': 'Permission denied'}
                 logger.error('post: error:{} request:{}'.format(error_detail, request))
                 return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
                 
         else:
-            
             error_detail = {'detail': 'Permission denied'}
             logger.error('post: error:{} request:{}'.format(error_detail, request))
             return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)

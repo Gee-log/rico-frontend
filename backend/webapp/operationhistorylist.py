@@ -27,11 +27,9 @@ class OperationHistoryList(APIView):
             return operationhistory_action.calculation_latest_operation_time()
 
         else:
-
             operationhistorys = OperationHistory.objects.all()
             serializer = OperationHistorySerializer(
                 operationhistorys, many=True)
-
             return Response(serializer.data)
 
     def post(self, request):
