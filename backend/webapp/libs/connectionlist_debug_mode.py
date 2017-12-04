@@ -105,8 +105,8 @@ class CreateDebugMode(object):
         uuid = resp.text
         logger.info('%s %s E%s W%s stops:%s no:%s', uuid, action, east.number, west.number, stops, number)
         operations = Operation.objects.all()
-
         robotnumber = ''
+
         robots = Robot.objects.all()
         for r in robots:
             robotnumber = r.robot_number

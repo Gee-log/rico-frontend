@@ -31,10 +31,8 @@ class ConnectionHistoryAction(object):
 
     @staticmethod
     def cancel_task(request):
-
         historyid = int(request.data['id'])
         status = request.data['action']
-
         action = ''
         east = ''
         west = ''
@@ -42,11 +40,9 @@ class ConnectionHistoryAction(object):
         connectionhistorys = ConnectionHistory.objects.filter(id=historyid)
 
         if connectionhistorys is None:
-
             return False
 
         for c in connectionhistorys:
-
             action = c.switching_type
             east = c.east
             west = c.west
@@ -55,11 +51,9 @@ class ConnectionHistoryAction(object):
                                                 disconnected_date=None)
 
         if action == 'C':
-
             connections.delete()
 
         else:
-
             connections.update(status='success', disconnected_date=None)
 
         connectionhistorys = ConnectionHistory.objects.filter(id=historyid)
@@ -67,7 +61,6 @@ class ConnectionHistoryAction(object):
 
         operations = Operation.objects.all()
         for o in operations:
-
             revoke(o.uuid, terminate=True)
 
         return JsonResponse({'historyid': historyid, 'status': status}, status=drf_status.HTTP_200_OK)
@@ -76,21 +69,18 @@ class ConnectionHistoryAction(object):
     def cleardatabase():
 
         try:
-
             status = 'success'
 
             Connection.objects.all().delete()
             # ConnectionHistory.objects.all().delete()
             Operation.objects.all().delete()
             OperationHistory.objects.all().delete()
-
             return JsonResponse({'status': status}, status=drf_status.HTTP_200_OK)
 
         except ValueError:
-
             status = 'failed'
-            logger.error('cleardatabase method: error:{}'.format(ValueError))
 
+            logger.error('cleardatabase method: error:{}'.format(ValueError))
             return JsonResponse({'status': status}, status=drf_status.HTTP_400_BAD_REQUEST)
 
     # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND

@@ -1,12 +1,15 @@
 """alarmlist api
 """
 from datetime import datetime
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
+from webapp.libs import authorization
 from webapp.models import Alarm
 from webapp.serializers import AlarmSerializer
+
+# set authorization
+is_authorization = authorization.ValidationUser
 
 
 class AlarmList(APIView):
@@ -29,13 +32,11 @@ class AlarmList(APIView):
             since = datetime.fromtimestamp(float(request.GET['since']))
             now = datetime.now()
             alarms = Alarm.objects.filter(timestamp__range=(since, now))
-            print('alarms', len(alarms))
 
         else:
             alarms = Alarm.objects.all()
 
         serializer = AlarmSerializer(alarms, many=True)
-
         return Response(serializer.data)
 
     def post(self, request):
@@ -52,27 +53,14 @@ class AlarmList(APIView):
                 severity (string): severity
         """
 
-        # Validate authorization
-        if request.META.get('HTTP_AUTHORIZATION'):
-    
-            # Set token
-            token = request.META.get('HTTP_AUTHORIZATION')
+        if is_authorization.validate_http_authorization(request) is True:
 
-            # Check token is exist in database or not
-            if Token.objects.all().filter(key=token):
+            alarms = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
+            alarms.save()
 
-                alarms = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
-                alarms.save()
+            return Response(request.data)
 
-                return Response(request.data)
-            
-            else:
-                    
-                error_detail = {'detail': 'Permission denied'}
-                return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
-                
         else:
-            
             error_detail = {'detail': 'Permission denied'}
             return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
 

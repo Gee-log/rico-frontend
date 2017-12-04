@@ -21,7 +21,6 @@ class OperationList(APIView):
 
         operations = Operation.objects.all()
         serializer = OperationSerializer(operations, many=True)
-
         return Response(serializer.data)
 
     def post(self, request):

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
+
 class CreateUser(APIView):
 
     def get(self, request):
@@ -33,7 +34,6 @@ class CreateUser(APIView):
         """
 
         if 'email' in request.data and 'username' in request.data and 'password' in request.data:
-            
             email = request.data['email']
             username = request.data['username']
             password = request.data['password']
@@ -45,29 +45,23 @@ class CreateUser(APIView):
                 return JsonResponse({'status': 'error', 'error': 'this user already exist'})
 
             if '@' not in email and '.' not in email:
-                
                 return JsonResponse({'status': 'error', 'error': 'invalid email format'})
 
             if re.match("^[A-Za-z0-9_-]*$", username) and re.match("^[A-Za-z0-9_-]*$", password):
-
                 user = User.objects.create_user(username, email, password, is_staff=True)
                 user.save()
-
                 return JsonResponse({'status': 'success', 'detail': 'user created'})
 
             else:
                 return JsonResponse({'status': 'error', 'error': 'invalid username or password format'})
 
         elif 'email' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'no email data'})
         
         elif 'username' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'no username data'})
             
         elif 'password' not in request.data:
-            
             return JsonResponse({'status': 'error', 'error': 'no password data'})
             
         else:

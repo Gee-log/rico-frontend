@@ -31,7 +31,6 @@ class ValidateError(object):
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
             status = data_dict['status']
-
             return status
 
         else:

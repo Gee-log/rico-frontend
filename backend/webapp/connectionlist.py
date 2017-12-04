@@ -78,7 +78,8 @@ class ConnectionList(APIView):
             data = []
 
             for c in conns:
-                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status, 'connected_date': c.connected_date}
+                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status, 'connected_date':
+                       c.connected_date}
                 data.append(obj)
 
             if len(operations) == 1:
@@ -93,7 +94,6 @@ class ConnectionList(APIView):
         else:
             conns = Connection.objects.all().filter(disconnected_date=None)
             serializer = ConnectionSerializer(conns, many=True)
-
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -123,8 +123,8 @@ class ConnectionList(APIView):
 
                 # If using white walker dummy
                 if walk.is_dummy():
-                    # return self.for_whitewalker(request)
                     return is_whitewalker.validate_input(request)
+
                 # If not using white walker dummy
                 else:
                     # Check if current status is not error then call for_embest()
@@ -190,7 +190,6 @@ class ConnectionList(APIView):
         if conns is not None:
 
             for i in conns:
-
                 obj_east = i.east
                 obj_west = i.west
                 connected_east.append(obj_east)
@@ -198,7 +197,6 @@ class ConnectionList(APIView):
 
             if east not in connected_east and west not in connected_west:
                 Connection.objects.create(east=east, west=west, status='success')
-
                 return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
             
             else:
@@ -206,5 +204,4 @@ class ConnectionList(APIView):
 
         else:
             Connection.objects.create(east=east, west=west, status='success')
-
             return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})

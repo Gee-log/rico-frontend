@@ -56,11 +56,6 @@ class ForWhitewalker(object):
                 action (string): action type
         """
 
-        # Angular2 cannot access database if request superuser
-        # If request.user.is_superuser or request.user.is_staff:
-
-        logger.info(request.data)
-
         # Validate errors inputs
         if 'action' not in request.data:
             error_detail = {'error': 'No action'}

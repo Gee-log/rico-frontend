@@ -1,15 +1,15 @@
 """tasktranslation api
 """
-import requests
-import ast
-import ctypes
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 
-from webapp.models import Taskcancelation, Robot, Operation, OperationHistory
+from webapp.libs import continue_mode
+from webapp.models import Taskcancelation
 from webapp.serializers import TaskcancelationSerializer
-from webapp.views import logger, CELERY_APP
+
+# set continue_mode
+is_continue_mode = continue_mode.ContinueMode
 
 
 class TaskcancelationList(APIView):
@@ -31,7 +31,6 @@ class TaskcancelationList(APIView):
 
         tasktranslations = Taskcancelation.objects.all()
         serializer = TaskcancelationSerializer(tasktranslations, many=True)
-
         return Response(serializer.data)
 
     def post(self, request):
@@ -50,65 +49,7 @@ class TaskcancelationList(APIView):
         if 'mode' in request.data and 'robot' in request.data and 'continue_mode' in request.data and 'action' \
                 in request.data and 'east' in request.data and 'west' in request.data:
 
-            mode = request.data['mode']
-            robot = request.data['robot']
-            continue_mode = request.data['continue_mode']
-            action = request.data['action']
-            east = request.data['east']
-            west = request.data['west']
-            sequence = ''
-            stop = ''
-            operations_request = ''
-
-            # Query to get error sequence
-            operations = Operation.objects.all()
-            for o in operations:
-                obj_response = ast.literal_eval(o.response)
-                obj_request = ast.literal_eval(o.request)
-                
-                try:
-                    sequence = obj_response['sequence']
-                except:
-                    sequence = obj_request['options']['current_sequence']
-
-                run_value = obj_request['options']['run']
-                operations_request = o.request
-
-            # run_value is false when debug mode
-            if run_value is False:
-                stop = obj_request['options']['stops']
-                payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence, 'stops': stop}
-            
-            # run_value is true when not debug mode
-            else:
-                payload = {'mode': mode, 'robot': robot, 'continue_mode': continue_mode, 'east': east, 'west': west, 'action': action, 'no': sequence} 
-
-            # Check this robot number available or not
-            if Robot.objects.filter(robot_number=robot):
-
-                resp = requests.post(CELERY_APP + '/reset', data=payload)
-
-                uuid = resp.text
-
-                response = requests.get(CELERY_APP + '/result?id=' + uuid)
-
-                response = response.json()
-
-                operations.delete()
-                    
-                if continue_mode == 'reload': 
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload', request=request.data, response=response)
-                
-                else:
-                    OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started', request=request.data, response=response)
-
-                Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode, continue_mode=continue_mode, response=response)
-                operations.create(uuid=uuid, robotnumber=robot, status='started', response=response, request=operations_request)
-
-                return JsonResponse({'status': 'success'}, status=status.HTTP_200_OK)
-
-            else:
-                return JsonResponse({'status': 'error', 'error': 'This robot number {} not available.'.format(robot)}, status=status.HTTP_400_BAD_REQUEST)
+            return is_continue_mode.validate_input_for_continue_mode(request)
 
         elif 'mode' not in request.data:
             return JsonResponse({'status': 'error', 'error': 'No mode input'}, status=status.HTTP_400_BAD_REQUEST)
@@ -123,10 +64,10 @@ class TaskcancelationList(APIView):
             return JsonResponse({'status': 'error', 'error': 'No action mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'east' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No east mode input'}, status=status.HTTP_400_BAD_REQUEST)       
+            return JsonResponse({'status': 'error', 'error': 'No east mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'west' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No west mode input'}, status=status.HTTP_400_BAD_REQUEST)         
+            return JsonResponse({'status': 'error', 'error': 'No west mode input'}, status=status.HTTP_400_BAD_REQUEST)
 
         else:
             return JsonResponse({'status': 'error', 'error': 'Invalid input.'}, status=status.HTTP_400_BAD_REQUEST)

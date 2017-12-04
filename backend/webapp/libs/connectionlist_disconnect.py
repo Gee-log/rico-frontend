@@ -121,8 +121,8 @@ class CreateDisconnect(object):
         uuid = resp.text
         operations = Operation.objects.all()
         robots = Robot.objects.all()
-
         robotnumber = ''
+
         for r in robots:
             robotnumber = r.robot_number
 

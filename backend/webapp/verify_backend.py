@@ -32,20 +32,16 @@ class VerifyUser(APIView):
             Json: verify's status
         """
         if 'token' in request.data:
-            
             token = request.data['token']
             token = token['token']
 
             if Token.objects.all().filter(key=token):
-                
                 return JsonResponse({'status': 'verified'})
 
             else:
-                
                 return JsonResponse({'status': 'unverified'})
         
         else:
-
             error_detail = {'detail': 'Method "POST" not allowed.'}
             return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     

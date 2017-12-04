@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.views import status as drf_status
 
-from webapp.models import ConnectionHistory
 from webapp.libs import authorization, connectionhistory_action_database
+from webapp.models import ConnectionHistory
 
 # set validate_user
 validate_user = authorization.ValidationUser
@@ -104,25 +104,20 @@ class ConnectionHistoryList(APIView):
                             history_id)})
                         logger.error('connectionhistory_action.cancel_task method: error:{} request:{}'.format(
                             error_detail, request.META.get('HTTP_AUTHORIZATION')))
-
                         return JsonResponse({'historyid': None, 'status': 'error'},
                                             status=drf_status.HTTP_400_BAD_REQUEST)
 
                     else:
-
                         return connectionhistory_action.cancel_task(request)
 
                 elif 'action' in request.data and request.data['action'] == 'cleardatabase':
-
                     return connectionhistory_action.cleardatabase()
 
                 # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
                 elif 'type' in request.data and request.data['type'] == 'connectionhistory':
-
                     return connectionhistory_action.savedata()
 
                 else:
-
                     error_detail = ({'detail': 'Invalid input data'})
                     logger.error('post method: error:{} request:{}'.format(error_detail, request))
                     return Response(error_detail, status=drf_status.HTTP_400_BAD_REQUEST)
@@ -131,7 +126,6 @@ class ConnectionHistoryList(APIView):
             error_detail = ({'detail': 'Permission denied'})
             logger.error('validate_user.validate_http_authorization method: error:{} request:{}'.format(
                 error_detail, request.META.get('HTTP_AUTHORIZATION')))
-
             return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
