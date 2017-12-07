@@ -134,7 +134,6 @@ class CreateConnection(object):
             operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',
                                                   request=str(payload))
             operations.save()
-            # operations.update(uuid=uuid, status='pending', request=str(payload))
 
         else:
             operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',

@@ -1,15 +1,33 @@
 """tasktranslation api
 """
+import logging.handlers
+
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from django.http import JsonResponse
 
 from webapp.libs import continue_mode
-from webapp.models import Taskcancelation
+from webapp.models import Taskcancelation, Robot
 from webapp.serializers import TaskcancelationSerializer
 
 # set continue_mode
 is_continue_mode = continue_mode.ContinueMode
+
+# set logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('taskcancelation')
+
+# create a file handler
+handler = logging.handlers.RotatingFileHandler('taskcancelation.log', maxBytes=10485760,
+                                               backupCount=10, encoding='utf-8')
+handler.setLevel(logging.INFO)
+
+# create a logging format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# add the handlers to the logger
+logger.addHandler(handler)
 
 
 class TaskcancelationList(APIView):
@@ -46,16 +64,13 @@ class TaskcancelationList(APIView):
                 continue_mode (string) : continue mode
         """
 
-        if 'mode' in request.data and 'robot' in request.data and 'continue_mode' in request.data and 'action' \
-                in request.data and 'east' in request.data and 'west' in request.data:
+        if 'mode' in request.data and 'continue_mode' in request.data and 'action' in request.data \
+                and 'east' in request.data and 'west' in request.data:
 
             return is_continue_mode.validate_input_for_continue_mode(request)
 
         elif 'mode' not in request.data:
             return JsonResponse({'status': 'error', 'error': 'No mode input'}, status=status.HTTP_400_BAD_REQUEST)
-
-        elif 'robot' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No robot input'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'continue_mode' not in request.data:
             return JsonResponse({'status': 'error', 'error': 'No continue mode input'}, status=status.HTTP_400_BAD_REQUEST)

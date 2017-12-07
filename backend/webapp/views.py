@@ -4,10 +4,13 @@ import ast
 import logging.handlers
 import os
 import requests
+
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
+from rest_framework.response import Response
+from rest_framework.views import status as drf_status
 
 from webapp.models import Connection, Port, Alarm, ConnectionHistory, Operation, OperationHistory, Robot
 from webapp.white import Walker
@@ -36,7 +39,7 @@ if 'CELERY_APP' in os.environ and os.environ['CELERY_APP']:
     CELERY_APP = os.environ['CELERY_APP']
     logger.info('CELERY_APP from os.environ: {}'.format(CELERY_APP))
 else:
-    CELERY_APP = "http://192.168.60.103:8000/rico"     # embest
+    CELERY_APP = "http://192.168.60.103:80/rico"     # embest
     logger.info('CELERY_APP: {}'.format(CELERY_APP))
 
 
@@ -60,11 +63,10 @@ def landing(request):
     return render(request, template_name='webapp/landing.html')
 
 
-def checkstatus(request, uuid): 
+def checkstatus(uuid):
     """Check current status from celery and check condition for calling sub function
 
     Args:
-        request: request data
         uuid (uuid4): uuid from celery
 
     Returns:
@@ -83,39 +85,35 @@ def checkstatus(request, uuid):
 
     else:
         resp = requests.get(CELERY_APP + '/result?id=' + uuid)
-        logger.info('checktask: %s : %s', uuid, resp)
         data = str(resp.json())
-        logger.info('checktask data: %s', data)
         data_dict = ast.literal_eval(data)
 
     status = data_dict['status']
 
     if status == 'success':
-        data = checksuccess(request, data_dict, uuid)
-        logger.info('checktask end: %s', data)
+        data = checksuccess(data_dict, uuid)
 
     elif status == 'break':
-        data = checkbreak(request, data_dict, uuid)
+        data = checkbreak(data_dict, uuid)
         logger.info('checktask end: %s', data)
 
     elif status == 'started':
-        data = checkstarted(request, data_dict, uuid)
-        logger.info('checktask end: %s', data)
+        data = checkstarted(data_dict, uuid)
 
     elif status == 'revoked':
-        data = checkrevoked(request, data_dict, uuid)
+        data = checkrevoked(data_dict, uuid)
         logger.info('checktask end: %s', data)
 
     elif status == 'failure':
-        data = checkfailure(request, data_dict, uuid)
+        data = checkfailure(data_dict, uuid)
         logger.info('checktask end: %s', data)
 
     elif status == 'error':
-        data = checkerror(request, data_dict, uuid)
+        data = checkerror(data_dict, uuid)
         logger.info('checktask end: %s', data)
 
     elif status == 'alarm':
-        data = checkalarm(request, data_dict, uuid)
+        data = checkalarm(data_dict, uuid)
         logger.info('checktask end: %s', data)
 
     else:
@@ -125,7 +123,7 @@ def checkstatus(request, uuid):
     return data
 
 
-def matching_port_object_in_database(request, east, west):
+def matching_port_object_in_database(east, west):
     
     ports = Port.objects.all()
     for i in ports:
@@ -139,11 +137,10 @@ def matching_port_object_in_database(request, east, west):
     return east, west
 
 
-def checksuccess(request, data_dict, uuid):
+def checksuccess(data_dict, uuid):
     """If current status is success then calling checksuccess_checkcondition() to check condition
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -162,22 +159,21 @@ def checksuccess(request, data_dict, uuid):
     sequence = None
     status = data_dict['status']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
 
     if response is None and 'reload' in data_dict:        
-        checksuccess_reload(request, action, east, west, uuid, request_data, data_dict)
+        checksuccess_reload(action, east, west, uuid, request_data, data_dict)
 
     else:
-        checksuccess_checkcondition(request, action, east, west, status, uuid)    
+        checksuccess_checkcondition(action, east, west, status, uuid)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action}, status=200)
 
 
-def checksuccess_checkcondition(request, action, east, west, status, uuid):
+def checksuccess_checkcondition(action, east, west, status, uuid):
     """Check condition for calling sub functions to update database
 
     Args:
-        request: request data
         action (string): robot's action from checksuccess()
         east (integer): east port's number from checksuccess()
         west (integer): west port's number from checksuccess()
@@ -191,31 +187,30 @@ def checksuccess_checkcondition(request, action, east, west, status, uuid):
         if east == c.east and west == c.west and action == 'connect':
 
             if c.status == 'pending':
-                savedata_pendingtosuccess_connect(request, east, west, status, uuid)
+                savedata_pendingtosuccess_connect(east, west, status, uuid)
 
             elif c.status == 'break':
-                savedata_breaktosuccess_connect(request, east, west, status, uuid)
+                savedata_breaktosuccess_connect(east, west, status, uuid)
 
             elif c.status == 'started':
-                savedata_startedtosuccess_connect(request, east, west, status, uuid)
+                savedata_startedtosuccess_connect(east, west, status, uuid)
 
         elif east == c.east and west == c.west and action == 'disconnect':
 
             if c.status == 'pending':
-                savedata_pendingtosuccess_disconnect(request, east, west, status, uuid)
+                savedata_pendingtosuccess_disconnect(east, west, status, uuid)
 
             elif c.status == 'break':
-                savedata_breaktosuccess_disconnect(request, east, west, status, uuid)
+                savedata_breaktosuccess_disconnect(east, west, status, uuid)
 
             elif c.status == 'started':
-                savedata_startedtosuccess_disconnect(request, east, west, status, uuid)
+                savedata_startedtosuccess_disconnect(east, west, status, uuid)
 
 
-def checksuccess_reload(request, action, east, west, uuid, request_data, data_dict):
+def checksuccess_reload(action, east, west, uuid, request_data, data_dict):
     """Check success reload mode for update database
 
       Args:
-          request: request data
           action (string): robot's action from checksuccess()
           east (integer): east port's number from checksuccess()
           west (integer): west port's number from checksuccess()
@@ -228,14 +223,12 @@ def checksuccess_reload(request, action, east, west, uuid, request_data, data_di
     status = data_dict['status']
 
     if action == 'connect':
-        Connection.objects.filter(east=east, west=west, disconnected_date=None).delete()
+        connections = Connection.objects.filter(east=east, west=west, disconnected_date=None)
+        connections.delete()
 
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').order_by('-timestamp')[:1]
         for o in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status='started', timestamp=o.timestamp).update(status='reload', timestamp=datetime.now())
-
-        Operation.objects.update(uuid=uuid, status=status, request=request_data, response=data_dict)
-        OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(request=request_data, status='reload', response=data_dict, finished_time=datetime.now())
 
     else:
         Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status='success', disconnected_date=None)
@@ -243,16 +236,15 @@ def checksuccess_reload(request, action, east, west, uuid, request_data, data_di
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='D').order_by('-timestamp')[:1]
         for o in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', status='started', timestamp=o.timestamp).update(status='reload', timestamp=datetime.now())
-            
-        Operation.objects.update(uuid=uuid, status=status, request=request_data, response=data_dict)
-        OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(request=request_data, status='reload', response=data_dict, finished_time=datetime.now())
+
+    Operation.objects.filter(uuid=uuid).update(status=status, request=request_data, response=data_dict)
+    OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(request=request_data, status='reload', response=data_dict, finished_time=datetime.now())
 
 
-def checkbreak(request, data_dict, uuid):
+def checkbreak(data_dict, uuid):
     """If current status is break then checking conditions for calling sub functions to update database
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -272,28 +264,27 @@ def checkbreak(request, data_dict, uuid):
     logger.info('Current sequence: %s', data_dict['response']['sequence'])
 
     if response:
-        east, west = matching_port_object_in_database(request, east, west)
+        east, west = matching_port_object_in_database(east, west)
 
         conns = Connection.objects.filter(disconnected_date=None)
         for c in conns:
 
             if east == c.east and west == c.west and c.status == 'break':
-                savedata_breaktobreak(request, east, west, status, response, uuid)
+                savedata_breaktobreak(east, west, status, response, uuid)
 
             elif east == c.east and west == c.west and c.status == 'pending':
-                savedata_breaktopending(request, east, west, status, response, uuid)
+                savedata_breaktopending(east, west, status, response, uuid)
 
             elif east == c.east and west == c.west and c.status == 'started':
-                savedata_breaktostarted(request, east, west, status, response, uuid)
+                savedata_breaktostarted(east, west, status, response, uuid)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action}, status=200)
 
 
-def checkstarted(request, data_dict, uuid):
+def checkstarted(data_dict, uuid):
     """If current status is started then checking conditions for calling sub functions to update database
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -304,28 +295,33 @@ def checkstarted(request, data_dict, uuid):
             action (action): action type
     """
 
+    operations = Operation.objects.all()
+    for i in operations:
+        dict_operations = ast.literal_eval(i.request)
+        east = dict_operations['east']
+        west = dict_operations['west']
+
     status = data_dict['status']
 
     conns = Connection.objects.filter(disconnected_date=None)
     for c in conns:
 
         if c.status == 'break':
-            savedata_startedtobreak(request, status, uuid)
+            savedata_startedtobreak(east, west, status, uuid)
 
         elif c.status == 'pending':
-            savedata_startedtopending(request, status, uuid)
+            savedata_startedtopending(east, west, status, uuid)
 
         elif c.status == 'started':
-            savedata_startedtostarted(request, status, uuid)
+            savedata_startedtostarted(east, west, status, uuid)
 
     return JsonResponse({'status': status, 'sequence': None, 'action': None}, status=200)
 
 
-def checkrevoked(request, data_dict, uuid):
+def checkrevoked(data_dict, uuid):
     """If current status is revoked then update database
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -342,8 +338,6 @@ def checkrevoked(request, data_dict, uuid):
     west = ''
     status = data_dict['status']
 
-    Operation.objects.all().update(status=status)
-
     operations = Operation.objects.all()
     for i in operations:
 
@@ -352,10 +346,11 @@ def checkrevoked(request, data_dict, uuid):
         west = obj['west']
         action = obj['action']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
 
     if action == 'connect':
-        Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').delete()
+        connections = Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started')
+        connections.delete()
 
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
         for o in connectionhistorys:
@@ -368,16 +363,16 @@ def checkrevoked(request, data_dict, uuid):
         for o in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=o.timestamp).update(status=status)
 
+    Operation.objects.filter(uuid=uuid).update(status=status)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status)
 
     return JsonResponse({'status': status, 'sequence': None, 'action': action}, status=200)
 
 
-def checkfailure(request, data_dict, uuid):
+def checkfailure(data_dict, uuid):
     """If current status is revoked then update database
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -389,31 +384,33 @@ def checkfailure(request, data_dict, uuid):
         Json: ({'status': status, 'sequence': None, 'action': None})
     """
 
-    obj = ''
+    action = ''
+    default_action = 'connect'
     east = ''
     west = ''
     status = data_dict['status']
 
-    Operation.objects.filter(uuid=uuid).update(status=status)
-
-    operations = Operation.objects.filter(uuid=uuid)
+    operations = Operation.objects.all()
     for i in operations:
 
         obj = ast.literal_eval(i.request)
         east = obj['east']
         west = obj['west']
 
-    east, west = matching_port_object_in_database(request, east, west)   
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_action
 
-    if obj['action'] == 'connect':
-        Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').delete()
+    east, west = matching_port_object_in_database(east, west)
+
+    if action == 'connect':
+        connections = Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started')
+        connections.delete()
         
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
         for o in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', timestamp=o.timestamp).update(status=status)
-        
-        Operation.objects.update(uuid=uuid, status=status, response=data_dict)
-        OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status=status, response=data_dict)
 
     else:
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status='started').update(
@@ -423,17 +420,16 @@ def checkfailure(request, data_dict, uuid):
         for o in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=o.timestamp).update(status=status)
 
-        Operation.objects.update(uuid=uuid, status=status, response=data_dict)
-        OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=data_dict)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=data_dict)
+    OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=data_dict)
 
-    return JsonResponse({'status': status, 'sequence': None, 'action': obj['action']}, status=200)
+    return JsonResponse({'status': status, 'sequence': None, 'action': action}, status=200)
 
 
-def checkerror(request, data_dict, uuid):
+def checkerror(data_dict, uuid):
     """If current status is error then update database
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -456,7 +452,7 @@ def checkerror(request, data_dict, uuid):
     if data_dict['request']['options']['current_sequence']:
         sequence = data_dict['request']['options']['current_sequence']
     
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
 
     if action == 'connect':
         Connection.objects.filter(east=east, west=west, disconnected_date=None, status=['started', 'pending']).delete()
@@ -472,17 +468,16 @@ def checkerror(request, data_dict, uuid):
         for c in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=c.timestamp).update(status=status)
 
-    Operation.objects.update(uuid=uuid, status=status, response=error)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=error)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=error)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': error, 'code': code}, status=500)
 
 
-def checkalarm(request, data_dict, uuid):
+def checkalarm(data_dict, uuid):
     """If current status is alarm then update database
 
     Args:
-        request: request data
         data_dict (dictionary): dictionary's data from checkstatus()
         uuid (uuid4): uuid from checkstatus()
 
@@ -510,7 +505,7 @@ def checkalarm(request, data_dict, uuid):
     except ValueError:
         error_sequence = data_dict['request']['options']['current_sequence']
 
-    east, west = matching_port_object_in_database(request, east, west)   
+    east, west = matching_port_object_in_database(east, west)
 
     if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
@@ -522,7 +517,7 @@ def checkalarm(request, data_dict, uuid):
         for c in connectionhistorys:
             ConnectionHistory.objects.filter(east=east, west=west, switching_type='D', timestamp=c.timestamp).update(status=status)
 
-    Operation.objects.update(uuid=uuid, status=status, request=request_obj, response=response_error)
+    Operation.objects.filter(uuid=uuid).update(status=status, request=request_obj, response=response_error)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response_error)
 
     return JsonResponse({'status': status, 'sequence': sequence, 'action': action, 'error': str(error) + ' ' + 'S' + str(error_sequence), 'code': code}, status=500)
@@ -542,21 +537,26 @@ def checktask(request):
                 action (action): action type
     """
 
-    status = JsonResponse({'status': 'canceled'})
+    if request.method == "GET":
 
-    operations = Operation.objects.all()
-    for i in operations:
-        uuid = str(i.uuid)
-        status = checkstatus(request, uuid)
+        status = JsonResponse({'status': 'canceled'})
+
+        operations = Operation.objects.all()
+        for i in operations:
+            uuid = str(i.uuid)
+            status = checkstatus(uuid)
     
-    return status
+        return status
+
+    else:
+        error_detail = {'detail': 'Method "{}" not allowed.'.format(request.method)}
+        return Response(error_detail, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-def savedata_pendingtosuccess_connect(request, east, west, status, uuid):
+def savedata_pendingtosuccess_connect(east, west, status, uuid):
     """Update database's status pending to success, action connect
 
     Args:
-        request: request data
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
@@ -572,7 +572,7 @@ def savedata_pendingtosuccess_connect(request, east, west, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
     
     connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='pending').order_by('-timestamp')[:1]            
     for c in connectionhistorys:
@@ -580,15 +580,14 @@ def savedata_pendingtosuccess_connect(request, east, west, status, uuid):
 
     logger.info('pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktosuccess_connect(request, east, west, status, uuid):
+def savedata_breaktosuccess_connect(east, west, status, uuid):
     """Update database's status break to success, action connect
 
     Args:
-        request: request data
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
@@ -604,7 +603,7 @@ def savedata_breaktosuccess_connect(request, east, west, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
     
     connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='break').order_by('-timestamp')[:1]
     for c in connectionhistorys:
@@ -612,15 +611,14 @@ def savedata_breaktosuccess_connect(request, east, west, status, uuid):
 
     logger.info('break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_startedtosuccess_connect(request, east, west, status, uuid):
+def savedata_startedtosuccess_connect(east, west, status, uuid):
     """Update database's status started to success, action connect
 
     Args:
-        request: request data
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
@@ -636,7 +634,7 @@ def savedata_startedtosuccess_connect(request, east, west, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
 
     connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='started').order_by('-timestamp')[:1]
     for c in connectionhistorys:
@@ -644,15 +642,14 @@ def savedata_startedtosuccess_connect(request, east, west, status, uuid):
 
     logger.info('started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_pendingtosuccess_disconnect(request, east, west, status, uuid):
+def savedata_pendingtosuccess_disconnect(east, west, status, uuid):
     """Update database's status pending to success, action disconnect
 
     Args:
-        request: request data
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
@@ -668,7 +665,7 @@ def savedata_pendingtosuccess_disconnect(request, east, west, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
         
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
     
     connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='pending').order_by('-timestamp')[:1]
     for c in connectionhistorys:
@@ -676,15 +673,14 @@ def savedata_pendingtosuccess_disconnect(request, east, west, status, uuid):
 
     logger.info('disconnect pending -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
+def savedata_breaktosuccess_disconnect(east, west, status, uuid):
     """Update database's status break to success, action disconnect
 
     Args:
-        request: request data
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
@@ -700,7 +696,7 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
 
     connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='break').order_by('-timestamp')[:1]
     for c in connectionhistorys:
@@ -708,15 +704,14 @@ def savedata_breaktosuccess_disconnect(request, east, west, status, uuid):
 
     logger.info('disconnect break -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_startedtosuccess_disconnect(request, east, west, status, uuid):
+def savedata_startedtosuccess_disconnect(east, west, status, uuid):
     """Update database's status started to success, action disconnect
 
     Args:
-        request: request data
         east (integer): east port's number from checksuccess_checkcondition()
         west (integer): west port's number from checksuccess_checkcondition()
         status (string): robot's status from checksuccess_checkcondition()
@@ -732,7 +727,7 @@ def savedata_startedtosuccess_disconnect(request, east, west, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)
+    east, west = matching_port_object_in_database(east, west)
 
     connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type=switching_type, status='started').order_by('-timestamp')[:1]
     for c in connectionhistorys:
@@ -740,15 +735,14 @@ def savedata_startedtosuccess_disconnect(request, east, west, status, uuid):
 
     logger.info('disconnect started -> success: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status, disconnected_date=datetime.now())
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktobreak(request, east, west, status, response, uuid):
+def savedata_breaktobreak(east, west, status, response, uuid):
     """Update database's status break to break
 
     Args:
-        request: request data
         east (integer): east port's number from checkbreak()
         west (integer): west port's number from checkbreak()
         status (string): robot's status from checkbreak()
@@ -756,16 +750,21 @@ def savedata_breaktobreak(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
-    action = 'connect'
+    action = ''
+    default_connect = 'connect'
 
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
-        data_dict = ast.literal_eval(i.request)  
-        action = data_dict['action']      
+        data_dict = ast.literal_eval(i.request)
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)   
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_connect
+
+    east, west = matching_port_object_in_database(east, west)
 
     if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status='break').order_by('-timestamp')[:1]
@@ -778,15 +777,14 @@ def savedata_breaktobreak(request, east, west, status, response, uuid):
 
     logger.info('break -> break: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='break', disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktopending(request, east, west, status, response, uuid):
+def savedata_breaktopending(east, west, status, response, uuid):
     """Update database's status break to break
 
     Args:
-        request: request data
         east (integer): east port's number from checkbreak()
         west (integer): west port's number from checkbreak()
         status (string): robot's status from checkbreak()
@@ -794,15 +792,23 @@ def savedata_breaktopending(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
+    action = ''
+    default_action = 'connect'
+
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
         data_dict = ast.literal_eval(i.request)        
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)   
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_action
 
-    if data_dict['action'] == 'connect':
+    east, west = matching_port_object_in_database(east, west)
+
+    if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status='pending').order_by('-timestamp')[:1]
     
     else:
@@ -813,15 +819,14 @@ def savedata_breaktopending(request, east, west, status, response, uuid):
 
     logger.info('break -> pending: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='pending', disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_breaktostarted(request, east, west, status, response, uuid):
+def savedata_breaktostarted(east, west, status, response, uuid):
     """Update database's status break to started
 
     Args:
-        request: request data
         east (integer): east port's number from checkbreak()
         west (integer): west port's number from checkbreak()
         status (string): robot's status from checkbreak()
@@ -829,15 +834,23 @@ def savedata_breaktostarted(request, east, west, status, response, uuid):
         uuid (uuid4): uuid from checkbreak()
     """
 
+    action = ''
+    default_action = 'connect'
+
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
         data_dict = ast.literal_eval(i.request)        
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)   
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_action
 
-    if data_dict['action'] == 'connect':
+    east, west = matching_port_object_in_database(east, west)
+
+    if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C', status='started').order_by('-timestamp')[:1]
     
     else:
@@ -848,18 +861,22 @@ def savedata_breaktostarted(request, east, west, status, response, uuid):
 
     logger.info('break -> started: %s %s', east, west)
     Connection.objects.filter(east=east, west=west, status='started', disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status, response=response)
+    Operation.objects.filter(uuid=uuid).update(status=status, response=response)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(finished_time=datetime.now(), status=status, response=response)
 
 
-def savedata_startedtobreak(request, status, uuid):
+def savedata_startedtobreak(east, west, status, uuid):
     """Update database's status break to started
 
     Args:
-        request: request data
+        east (integer): east port's number from checkstarted()
+        west (integer): west port's number from checkstarted()
         status (string): robot's status from checkstarted()
         uuid (uuid4): uuid from checkstarted()
     """
+
+    action = ''
+    default_action = 'connect'
 
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
@@ -867,9 +884,14 @@ def savedata_startedtobreak(request, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)   
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_action
 
-    if data_dict['action'] == 'connect':
+    east, west = matching_port_object_in_database(east, west)
+
+    if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').order_by('-timestamp')[:1]
     
     else:
@@ -880,18 +902,22 @@ def savedata_startedtobreak(request, status, uuid):
 
     logger.info('started -> break')
     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status)
+    Operation.objects.filter(uuid=uuid).update(status=status)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(status=status)
 
 
-def savedata_startedtopending(request, status, uuid):
+def savedata_startedtopending(east, west, status, uuid):
     """Update database's status started to pending
 
     Args:
-        request: request data
+        east (integer): east port's number from checkstarted()
+        west (integer): west port's number from checkstarted()
         status (string): robot's status from checkstarted()
         uuid (uuid4): uuid from checkstarted()
     """
+
+    action = ''
+    default_action = 'connect'
 
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
@@ -899,9 +925,14 @@ def savedata_startedtopending(request, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_action
+
+    east, west = matching_port_object_in_database(east, west)
     
-    if data_dict['action'] == 'connect':
+    if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
     
     else:
@@ -912,18 +943,22 @@ def savedata_startedtopending(request, status, uuid):
 
     logger.info('started -> pending')
     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status)
+    Operation.objects.filter(uuid=uuid).update(status=status)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(status=status)
 
 
-def savedata_startedtostarted(request, status, uuid):
+def savedata_startedtostarted(east, west, status, uuid):
     """Update database's status started to started
 
     Args:
-        request: request data
+        east (integer): east port's number from checkstarted()
+        west (integer): west port's number from checkstarted()
         status (string): robot's status from checkstarted()
         uuid (uuid4): uuid from checkstarted()
     """
+
+    action = ''
+    default_action = 'connect'
 
     operations = Operation.objects.filter(uuid=uuid)
     for i in operations:
@@ -931,9 +966,14 @@ def savedata_startedtostarted(request, status, uuid):
         east = data_dict['east']
         west = data_dict['west']
 
-    east, west = matching_port_object_in_database(request, east, west)    
+        if data_dict['action']:
+            action = data_dict['action']
+        else:
+            action = default_action
+
+    east, west = matching_port_object_in_database(east, west)
     
-    if data_dict['action'] == 'connect':
+    if action == 'connect':
         connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, switching_type='C').order_by('-timestamp')[:1]
     
     else:
@@ -944,7 +984,7 @@ def savedata_startedtostarted(request, status, uuid):
 
     logger.info('started -> started')
     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)    
-    Operation.objects.filter(uuid=uuid).update(uuid=uuid, status=status)
+    Operation.objects.filter(uuid=uuid).update(status=status)
     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(status=status)
 
 
@@ -992,32 +1032,35 @@ def pendingtask(request):
                     else:
                         resp = requests.post(CELERY_APP + '/disconnect', data=payload)
             uuid = resp.text
-            # print('payload', payload)
-            # print('UUID:', uuid)
 
         operations = Operation.objects.all()
         robots = Robot.objects.all()
+        robotnumber = ''
 
         for o in robots:
             robotnumber = o.robot_number
 
-        if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
+        if len(operations) > 0:
+            operations.delete()
+            operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',
+                                                  request=str(payload))
+            operations.save()
 
         else:
+            operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',
+                                                  request=str(payload))
+            operations.save()
 
-            Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
-
-    OperationHistory.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
+    operationhistorys = OperationHistory.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
+    operationhistorys.save()
 
     return JsonResponse({'historyid': historyid})
 
 
-def save(request, question_id, timestamp=0):
+def save(question_id, timestamp=0):
     """Continue task's status pending
 
     Args:
-        request: request data
         question_id(string): value set and send from http in urls.py
         timestamp(integer): for use to calculate in current alarm log
 

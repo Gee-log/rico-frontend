@@ -19,7 +19,7 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL = `http://192.168.60.76:80/`;
+  // private ROOT_URL = `http://192.168.60.103:80/`;
   private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) {
@@ -288,8 +288,8 @@ export class ApiService {
   getConnectedPort() {
 
     return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return (response);
+      const response_object = JSON.parse(response._body);
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -311,8 +311,9 @@ export class ApiService {
   getConnectionHistory() {
 
     return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return (response);
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -334,8 +335,9 @@ export class ApiService {
   getAlarmHistory() {
 
     return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return (response);
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -346,8 +348,10 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('GET ALARM HISTORY ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
@@ -357,8 +361,11 @@ export class ApiService {
   postAlarm(alarm, detail, severity) {
 
     return this.http.post(this.ROOT_URL + 'alarms/', { alarm, detail, severity }, this.options).toPromise().then((response: any) => {
-      console.log(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.log(response_object);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -369,8 +376,10 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('GET ALARM ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
@@ -380,8 +389,11 @@ export class ApiService {
   pendingTask(id) {
 
     return this.http.post(this.ROOT_URL + 'pendingtask/', { id }, this.options).toPromise().then((response: any) => {
-      console.log(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.log(response_object);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -407,9 +419,12 @@ export class ApiService {
     const options = new RequestOptions({ headers: headers });
 
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id, action }, options).toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
 
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.log(response_object);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -435,8 +450,11 @@ export class ApiService {
     const options = new RequestOptions({ headers: headers });
 
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action }, options).toPromise().then((response: any) => {
-      console.log(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.log(response_object);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -447,8 +465,10 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('CLEAR DATABASE ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
@@ -458,8 +478,11 @@ export class ApiService {
   saveData_Connectionhistory(type) {
 
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type }, this.options).toPromise().then((response: any) => {
-      console.log(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.log(response_object);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -470,13 +493,18 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('SAVE DATA ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
 
   }
+  // -------------------------- //
+  // DO NOT DELETE, FOR READING //
+  // -------------------------- //
 
   // downloadFile() {
   //   let i = {'id': '1'};
@@ -516,14 +544,19 @@ export class ApiService {
     const options = new RequestOptions({ headers: headers });
 
     return this.http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
+      const response_object = JSON.parse(response._body);
 
       if (response.status === 'error') {
+
         console.error('status: ' + response.status + ', error_code: ' + response.error);
+
       } else {
+
         console.log('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
+
       }
-      return (response);
+
+      return response_object;
 
     }).catch((error: any) => {
       // ERROR FROM SERVER
@@ -534,8 +567,10 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('TESTING CONNECTION ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
@@ -552,45 +587,47 @@ export class ApiService {
 
       // IF CANNOT GET RESPONSE FROM SERVER
     }).catch(() => {
+
       status = 500;
+
       return status;
+
     });
 
   }
-
+  // HOMING ROBOT
   home_robot_axes() {
-    return this.http.get(this.ROOT_URL + 'homes/').toPromise().then((response: any) => {
 
-      const resp = JSON.parse(response._body);
-      resp['status'] = 'success';
-      return resp;
+    return this.http.get(this.ROOT_URL + 'homes/').toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+
+      response_object['status'] = 'success';
+
+      return response_object;
 
       // IF CANNOT GET RESPONSE FROM SERVER
     }).catch((error) => {
+
       return { 'status': 'error', 'error': error };
+
     });
   }
-
+  // CONTINUE OPERATION CONTINUE MODE
   continue_robot_operations() {
 
     const mode = 'robot';
-    // const robot = localStorage.getItem('robot');
-    const robot = '2';
     const continue_mode = 'continue';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
     const west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
 
-    // const continue_mode = localStorage.getItem('continue_mode');
-
-    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, robot, continue_mode, action, east, west },
+    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode, action, east, west },
       this.options).toPromise().then((response: any) => {
-        response = JSON.parse(response._body);
-        // response = response;
-        console.log(response);
+        const response_object = JSON.parse(response._body);
 
-        // return response;
-        // console.log(mode, robot, continue_mode);
+        console.log(response_object);
+
+        return response_object;
 
       }).catch((error: any) => {
 
@@ -601,27 +638,22 @@ export class ApiService {
       });
 
   }
-
+  // RELOAD OPERATION CONTINUE MODE
   reload_robot_operations() {
 
     const mode = 'robot';
-    // const robot = localStorage.getItem('robot');
-    const robot = '2';
     const continue_mode = 'reload';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
     const west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
 
-    // const continue_mode = localStorage.getItem('continue_mode');
-
-    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, robot, continue_mode, action, east, west },
+    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode, action, east, west },
       this.options).toPromise().then((response: any) => {
-        response = JSON.parse(response._body);
-        // response = response;
-        console.log(response);
+        const response_object = JSON.parse(response._body);
 
-        // return response;
-        // console.log(mode, robot, continue_mode);
+        console.log(response_object);
+
+        return response_object;
 
       }).catch((error: any) => {
 
@@ -632,27 +664,22 @@ export class ApiService {
       });
 
   }
-
+  // RESTART OPERATION CONTINUE MODE
   restart_robot_operations() {
 
     const mode = 'robot';
-    // const robot = localStorage.getItem('robot');
-    const robot = '2';
     const continue_mode = 'restart';
     const action = JSON.parse(localStorage.getItem('action'))['action'];
     const east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
     const west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
 
-    // const continue_mode = localStorage.getItem('continue_mode');
-
-    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, robot, continue_mode, action, east, west },
+    return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode, action, east, west },
       this.options).toPromise().then((response: any) => {
-        response = JSON.parse(response._body);
-        // response = response;
-        console.log(response);
+        const response_object = JSON.parse(response._body);
 
-        // return response;
-        // console.log(mode, robot, continue_mode);
+        console.log(response_object);
+
+        return response_object;
 
       }).catch((error: any) => {
 
@@ -672,8 +699,9 @@ export class ApiService {
     const options = new RequestOptions({ headers: headers });
 
     return this.http.get(this.ROOT_URL + 'operationhistorys?action=connection_time').toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
 
     });
 
@@ -684,8 +712,11 @@ export class ApiService {
     const token = JSON.parse(localStorage.getItem('token')); // Set sample token
 
     return this.http.post(this.ROOT_URL + 'verify_user/', { token }, this.options).toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.warn('Client status: ' + response_object['status']);
+
+      return response_object;
 
     });
 
@@ -694,10 +725,14 @@ export class ApiService {
   create_user(email, username, password) {
 
     return this.http.post(this.ROOT_URL + 'create_user/', { email, username, password }, this.options).toPromise().then((response: any) => {
-      response = JSON.parse(response._body);
-      return response;
+      const response_object = JSON.parse(response._body);
+
+      console.log(response_object);
+
+      return response_object;
 
     });
+
   }
 
 }

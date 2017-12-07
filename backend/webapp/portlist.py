@@ -14,10 +14,10 @@ validate_user = authorization.ValidationUser
 
 # set logger
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('connectionhistorylist')
+logger = logging.getLogger('portlist')
 
 # create a file handler
-handler = logging.handlers.RotatingFileHandler('connectionhistorylist.log', maxBytes=10485760,
+handler = logging.handlers.RotatingFileHandler('portlist.log', maxBytes=10485760,
                                                backupCount=10, encoding='utf-8')
 handler.setLevel(logging.INFO)
 
@@ -70,10 +70,12 @@ class PortList(APIView):
 
                     if Port.objects.filter(direction=request.data['direction'], number=request.data['number']):
                         error_detail = {'error': 'This port already exist in database.'}
+                        logger.error('post method: error:{} request:{}'.format(error_detail, request.data))
                         return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
                     
                     else: 
-                        serializer.save()        
+                        serializer.save()
+                        logger.info('post method: saved request:{}'.format(request.data))
                         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

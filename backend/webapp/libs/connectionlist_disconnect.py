@@ -127,9 +127,8 @@ class CreateDisconnect(object):
             robotnumber = r.robot_number
 
         if len(operations) > 0:
-            # operations.delete()
-            # Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
-            operations.update(uuid=uuid, status='pending', request=str(payload))
+            operations.delete()
+            Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
 
         else:
             operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',
