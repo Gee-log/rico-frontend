@@ -3,12 +3,10 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
+from webapp.libs.operation_action_database import OperationAction
 from webapp.models import Operation
 from webapp.serializers import OperationSerializer
-from webapp.libs import operation_action_database
 
-# set operation_action_databases
-operation_action_databases = operation_action_database.OperationAction
 
 class OperationList(APIView):
 
@@ -24,7 +22,7 @@ class OperationList(APIView):
 
         operations = Operation.objects.all()
         serializer = OperationSerializer(operations, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST OperationList API
@@ -38,7 +36,7 @@ class OperationList(APIView):
         """
 
         if 'action' in request.data and 'clear_latest_operation' in request.data['action']:
-            return operation_action_databases.clear_latest_operation()
+            return OperationAction.clear_latest_operation()
 
         else:
             error_detail = {'detail': 'Method "POST" not allowed.'}

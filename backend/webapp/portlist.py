@@ -5,12 +5,9 @@ import logging.handlers
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
-from webapp.libs import authorization
+from webapp.libs.authorization import ValidationUser
 from webapp.models import Port
 from webapp.serializers import PortSerializer
-
-# set validate_user
-validate_user = authorization.ValidationUser
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -63,7 +60,7 @@ class PortList(APIView):
                 id (integer): id of object
         """
 
-        if validate_user.validate_http_authorization(request) is True:
+        if ValidationUser.validate_http_authorization(request) is True:
                 serializer = PortSerializer(data=request.data)
                 
                 if serializer.is_valid():

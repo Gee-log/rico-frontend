@@ -2,23 +2,15 @@
 """
 
 import logging.handlers
+
 from rest_framework.response import Response
 from rest_framework.views import status
 
-from webapp.libs import connectionlist_connection, connectionlist_disconnect, connectionlist_debug_mode, \
-    validation_error
+from webapp.libs.connectionlist_connection import CreateConnection
+from webapp.libs.connectionlist_disconnect import CreateDisconnect
+from webapp.libs.connectionlist_debug_mode import CreateDebugMode
+from webapp.libs.connectionlist_utilities import ConnectionUtilities
 
-# set connectionlist_action_connection
-connectionlist_action_connection = connectionlist_connection.CreateConnection
-
-# set connectionlist_action_disconnection
-connectionlist_action_disconnection = connectionlist_disconnect.CreateDisconnect
-
-# set connectionlist_action_debug_mode
-connectionlist_action_debug_mode = connectionlist_debug_mode.CreateDebugMode
-
-# set validation_errors
-validation_errors = validation_error.ValidateError
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -74,18 +66,17 @@ class ForWhitewalker(object):
 
         # Debug mode checking condition
         if 'number' in request.data and 'stops' in request.data:
-            return connectionlist_action_debug_mode.validate_input_to_create_debug_mode(request)
+            return CreateDebugMode.validate_input_to_create_debug_mode(request)
 
         # Validate action
         if request.data['action'] == 'disconnect':
-            return connectionlist_action_disconnection.validate_input_to_create_disconnection(request)
+            return CreateDisconnect.validate_input_to_create_disconnection(request)
 
         elif request.data['action'] == 'test_connect':
-            # return self.test_connect(request)
-            return None
+            return ConnectionUtilities.create_dummy_connection(request)
 
         elif request.data['action'] == 'connect':
-            return connectionlist_action_connection.validate_input_to_create_connection(request)
+            return CreateConnection.validate_input_to_create_connection(request)
 
         else:
             error_detail = {'error': 'Invalid action'}

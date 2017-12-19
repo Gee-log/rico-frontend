@@ -1,10 +1,13 @@
 """create user
 """
 import re
+
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
+
+from webapp.models import Role
 
 
 class CreateUser(APIView):
@@ -39,33 +42,44 @@ class CreateUser(APIView):
             password = request.data['password']
 
             if User.objects.filter(email=email):
-                return JsonResponse({'status': 'error', 'error': 'this email has been used'})
+                return JsonResponse({'status': 'error', 'error': 'this email has been used'},
+                                    status=status.HTTP_400_BAD_REQUEST)
 
             if User.objects.filter(username=username):
-                return JsonResponse({'status': 'error', 'error': 'this user already exist'})
+                return JsonResponse({'status': 'error', 'error': 'this user already exist'},
+                                    status=status.HTTP_400_BAD_REQUEST)
 
             if '@' not in email and '.' not in email:
-                return JsonResponse({'status': 'error', 'error': 'invalid email format'})
+                return JsonResponse({'status': 'error', 'error': 'invalid email format'},
+                                    status=status.HTTP_400_BAD_REQUEST)
 
             if re.match("^[A-Za-z0-9_-]*$", username) and re.match("^[A-Za-z0-9_-]*$", password):
+                # default role is staff
                 user = User.objects.create_user(username, email, password, is_staff=True)
                 user.save()
-                return JsonResponse({'status': 'success', 'detail': 'user created'})
+
+                username_object = User.objects.get(username=username)
+
+                roles = Role.objects.create(user=username_object, role='Staff')
+                roles.save()
+
+                return JsonResponse({'status': 'success', 'detail': 'user created'}, status=status.HTTP_201_CREATED)
 
             else:
-                return JsonResponse({'status': 'error', 'error': 'invalid username or password format'})
+                return JsonResponse({'status': 'error', 'error': 'invalid username or password format'},
+                                    status=status.HTTP_400_BAD_REQUEST)
 
         elif 'email' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'no email data'})
+            return JsonResponse({'status': 'error', 'error': 'no email data'}, status=status.HTTP_400_BAD_REQUEST)
         
         elif 'username' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'no username data'})
+            return JsonResponse({'status': 'error', 'error': 'no username data'}, status=status.HTTP_400_BAD_REQUEST)
             
         elif 'password' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'no password data'})
+            return JsonResponse({'status': 'error', 'error': 'no password data'}, status=status.HTTP_400_BAD_REQUEST)
             
         else:
-            return JsonResponse({'status': 'error', 'error': 'invalid input data'})
+            return JsonResponse({'status': 'error', 'error': 'invalid input data'}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT Create User API

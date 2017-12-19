@@ -3,12 +3,9 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
-from webapp.libs import operationhistory_action_database
+from webapp.libs.operationhistory_action_database import GetLatestTime
 from webapp.models import OperationHistory
 from webapp.serializers import OperationHistorySerializer
-
-# set operationhistory_action
-operationhistory_action = operationhistory_action_database.GetLatestTime
 
 
 class OperationHistoryList(APIView):
@@ -24,13 +21,13 @@ class OperationHistoryList(APIView):
         """
 
         if 'action' in request.GET and request.GET['action'] == 'connection_time':
-            return operationhistory_action.calculation_latest_operation_time()
+            return GetLatestTime.calculation_latest_operation_time()
 
         else:
             operationhistorys = OperationHistory.objects.all()
             serializer = OperationHistorySerializer(
                 operationhistorys, many=True)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST OperationHistoryList API
