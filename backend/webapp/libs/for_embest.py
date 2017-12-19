@@ -6,20 +6,13 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import status
 
-from webapp.libs import connectionlist_connection, connectionlist_disconnect, connectionlist_debug_mode, \
-    validation_error
+from webapp.libs.connectionlist_connection import CreateConnection
+from webapp.libs.connectionlist_disconnect import CreateDisconnect
+from webapp.libs.connectionlist_debug_mode import CreateDebugMode
+from webapp.libs.connectionlist_utilities import ConnectionUtilities
+from webapp.libs.validation_error import ValidateError
 
-# set connectionlist_action_connection
-connectionlist_action_connection = connectionlist_connection.CreateConnection
-
-# set connectionlist_action_disconnection
-connectionlist_action_disconnection = connectionlist_disconnect.CreateDisconnect
-
-# set connectionlist_action_debug_mode
-connectionlist_action_debug_mode = connectionlist_debug_mode.CreateDebugMode
-
-# set validation_errors
-validation_errors = validation_error.ValidateError
+connectionutilies = ConnectionUtilities
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -77,66 +70,65 @@ class ForEmbest(object):
         if 'number' in request.data and 'stops' in request.data:
 
             # If current status is break then making debug mode
-            if validation_errors.check_current_status() == 'break':
-                return connectionlist_action_debug_mode.validate_input_to_create_debug_mode(request)
+            if ValidateError.check_current_status() == 'break':
+                return CreateDebugMode.validate_input_to_create_debug_mode(request)
 
             # If current status is started or pending then return error_robotworking message
-            elif validation_errors.check_current_status() in ['started', 'pending']:
+            elif ValidateError.check_current_status() in ['started', 'pending']:
                 logger.error('validation_errors.check_current_status debug mode method: error:robotworking request:{}'
                              .format(request))
-                return JsonResponse({'status': 'error', 'error': 'robotworking'})
+                return JsonResponse({'status': 'error', 'error': 'robotworking'}, status=status.HTTP_400_BAD_REQUEST)
 
             # Else return error_status message
             else:
                 logger.error('validation_errors.check_current_status debug mode method: error:status unknown request:{}'
                              .format(request))
-                return JsonResponse({'status': 'error', 'error': 'status'})
+                return JsonResponse({'status': 'error', 'error': 'status'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Disconnection checking condition
         elif request.data['action'] == 'disconnect':
 
             # If current status is success or revoked or no_uuid then making disconnection
-            if validation_errors.check_current_status() in ['success', 'revoked', 'no_uuid', 'failure']:
-                return connectionlist_action_disconnection.validate_input_to_create_disconnection(request)
+            if ValidateError.check_current_status() in ['success', 'revoked', 'no_uuid', 'failure']:
+                return CreateDisconnect.validate_input_to_create_disconnection(request)
 
             # If current status is started or pending or break then return error_robotworking message
-            elif validation_errors.check_current_status() in ['started', 'pending', 'break']:
+            elif ValidateError.check_current_status() in ['started', 'pending', 'break']:
                 logger.error('validation_errors.check_current_status disconnection method: '
                              'error:robotworking request:{}'.format(request))
-                return JsonResponse({'status': 'error', 'error': 'robotworking'})
+                return JsonResponse({'status': 'error', 'error': 'robotworking'}, status=status.HTTP_400_BAD_REQUEST)
 
             # Else return error_status message
             else:
                 logger.error('validation_errors.check_current_status disconnection method:'
                              ' error:status unknown request:{}'.format(request))
-                return JsonResponse({'status': 'error', 'error': 'status'})
+                return JsonResponse({'status': 'error', 'error': 'status'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Connection checking condition
         elif request.data['action'] == 'connect':
 
             # If current status is success or revoked or no_uuid then making connection
-            if validation_errors.check_current_status() in ['success', 'revoked', 'no_uuid', 'failure']:
-                return connectionlist_action_connection.validate_input_to_create_connection(request)
+            if ValidateError.check_current_status() in ['success', 'revoked', 'no_uuid', 'failure']:
+                return CreateConnection.validate_input_to_create_connection(request)
 
             # If current status is started or pending or break then return error_robotworking message
-            elif validation_errors.check_current_status() in ['started', 'pending', 'break']:
+            elif ValidateError.check_current_status() in ['started', 'pending', 'break']:
                 logger.error('validation_errors.check_current_status connection method: error:robotworking request:{}'
                              .format(request))
-                return JsonResponse({'status': 'error', 'error': 'robotworking'})
+                return JsonResponse({'status': 'error', 'error': 'robotworking'}, status=status.HTTP_400_BAD_REQUEST)
 
             # Else return error_status message
             else:
                 logger.error('validation_errors.check_current_status connection method: error:status request:{}'
                              .format(request))
-                return JsonResponse({'status': 'error', 'error': 'status unknown'})
+                return JsonResponse({'status': 'error', 'error': 'status unknown'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create connection in connection table
         elif request.data['action'] == 'test_connect':
-            # return self.test_connect(request)
-            return None
+            return ConnectionUtilities.create_dummy_connection(request)
 
         # Else return error_operation message
         else:
             logger.error('validation_errors.check_current_status connection method: error:action unknown request:{}'
                          .format(request))
-            return JsonResponse({'status': 'error', 'error': 'operation'})
+            return JsonResponse({'status': 'error', 'error': 'operation'}, status=status.HTTP_400_BAD_REQUEST)

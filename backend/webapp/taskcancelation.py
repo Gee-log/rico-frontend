@@ -6,12 +6,9 @@ from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from django.http import JsonResponse
 
-from webapp.libs import continue_mode
-from webapp.models import Taskcancelation, Robot
+from webapp.libs.continue_mode import ContinueMode
+from webapp.models import Taskcancelation
 from webapp.serializers import TaskcancelationSerializer
-
-# set continue_mode
-is_continue_mode = continue_mode.ContinueMode
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -67,25 +64,31 @@ class TaskcancelationList(APIView):
         if 'mode' in request.data and 'continue_mode' in request.data and 'action' in request.data \
                 and 'east' in request.data and 'west' in request.data:
 
-            return is_continue_mode.validate_input_for_continue_mode(request)
+            return ContinueMode.validate_input_for_continue_mode(request)
 
         elif 'mode' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No mode input'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No mode input'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         elif 'continue_mode' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No continue mode input'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No continue mode input'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         elif 'action' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No action mode input'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No action mode input'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         elif 'east' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No east mode input'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No east mode input'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         elif 'west' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No west mode input'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'No west mode input'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         else:
-            return JsonResponse({'status': 'error', 'error': 'Invalid input.'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'status': 'error', 'error': 'Invalid input.'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT TasktranslationList API

@@ -4,12 +4,9 @@ from datetime import datetime
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
-from webapp.libs import authorization
+from webapp.libs.authorization import ValidationUser
 from webapp.models import Alarm
 from webapp.serializers import AlarmSerializer
-
-# set authorization
-is_authorization = authorization.ValidationUser
 
 
 class AlarmList(APIView):
@@ -53,7 +50,7 @@ class AlarmList(APIView):
                 severity (string): severity
         """
 
-        if is_authorization.validate_http_authorization(request) is True:
+        if ValidationUser.validate_http_authorization(request) is True:
 
             alarms = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
             alarms.save()

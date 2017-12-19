@@ -2,19 +2,14 @@
 """
 import logging.handlers
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.views import status as drf_status
 
-from webapp.libs import authorization, connectionhistory_action_database
+from webapp.libs.authorization import ValidationUser
+from webapp.libs.connectionhistory_action_database import ConnectionHistoryAction
 from webapp.models import ConnectionHistory
-
-# set validate_user
-validate_user = authorization.ValidationUser
-
-# set connectionhistoryaction
-connectionhistory_action = connectionhistory_action_database.ConnectionHistoryAction
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -84,20 +79,16 @@ class ConnectionHistoryList(APIView):
                         timestamp (datetime): timestamp
                         status (string): status code
 
-                HttpResponse:
-                    IF action == 'cleardatabase':
-                        HttpResponse: ('Clear database success !')
-
                 # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
                 IF type == 'connectionhistory'
                 csv: csv file
         """
 
-        if validate_user.validate_http_authorization(request) is True:
+        if ValidationUser.validate_http_authorization(request) is True:
 
                 if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
 
-                    if connectionhistory_action.cancel_task(request) is False:
+                    if ConnectionHistoryAction.cancel_task(request) is False:
 
                         history_id = request.data['id']
                         error_detail = ({'detail': 'Not found this {} id in connectionhistory table'.format(
@@ -108,14 +99,14 @@ class ConnectionHistoryList(APIView):
                                             status=drf_status.HTTP_400_BAD_REQUEST)
 
                     else:
-                        return connectionhistory_action.cancel_task(request)
+                        return ConnectionHistoryAction.cancel_task(request)
 
                 elif 'action' in request.data and request.data['action'] == 'cleardatabase':
-                    return connectionhistory_action.cleardatabase()
+                    return ConnectionHistoryAction.cleardatabase()
 
                 # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
                 elif 'type' in request.data and request.data['type'] == 'connectionhistory':
-                    return connectionhistory_action.savedata()
+                    return ConnectionHistoryAction.savedata()
 
                 else:
                     error_detail = ({'detail': 'Invalid input data'})

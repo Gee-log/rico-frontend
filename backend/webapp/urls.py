@@ -4,14 +4,15 @@ from rest_framework.authtoken import views as rest_framework_views
 from webapp import alarmlist
 from webapp import connectionlist
 from webapp import connectionhistorylist
-from webapp import operationhistorylist
+from webapp import create_user
 from webapp import operationlist
+from webapp import operationhistorylist
+from webapp import operationsequencelist
 from webapp import portlist
 from webapp import taskcancelation
 from webapp import userlist
 from webapp import verify_backend
 from webapp import views
-from webapp import create_user
 
 
 urlpatterns = [
@@ -39,8 +40,8 @@ urlpatterns = [
     url(r'^operations/', operationlist.OperationList.as_view()),
     # operationhistorys api
     url(r'^operationhistorys/', operationhistorylist.OperationHistoryList.as_view()),
-    # call pendingtask method
-    url(r'^pendingtask/', views.pendingtask, name='pendingtask'),
+    # operationsequence api
+    url(r'^operationsequences/', operationsequencelist.OperationSequencelist.as_view()),
     # ports api
     url(r'^ports/', portlist.PortList.as_view()),
     # tasktranslation api

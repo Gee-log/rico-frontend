@@ -146,8 +146,14 @@ class Role(models.Model):
         ('User', 'User'),
     )
 
+    USER_STATUS = (
+        ('Offline', 'Offline'),
+        ('Online', 'Online'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=7, choices=USER_ROLE, default='Admin')
+    role = models.CharField(max_length=7, choices=USER_ROLE, default='Staff')
+    status = models.CharField(max_length=7, choices=USER_STATUS, default='Offline')
 
     def __str__(self):
         return str(self.user) + ' (' + str(self.role) + ')'
@@ -179,6 +185,14 @@ class Taskcancelation(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+
+class OperationSequence(models.Model):
+    
+    sequence_number = models.CharField(max_length=64, default=None, blank=True, null=True)
+
+    def __str__(self):
+        return self.sequence_number
 
 # This code is triggered whenever a new user has been created and saved to the database
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

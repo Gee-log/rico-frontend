@@ -7,12 +7,9 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import status
 
-from webapp.libs import get_available_port
+from webapp.libs.get_available_port import GetAvailablePort
 from webapp.models import Operation, OperationHistory, Robot
 from webapp.views import walk, CELERY_APP
-
-# set get_available_ports
-get_available_ports = get_available_port.GetAvailablePort
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -50,7 +47,7 @@ class CreateDebugMode(object):
                 action (string): action type
         """
 
-        east, west = get_available_ports.get_available_port(request)
+        east, west = GetAvailablePort.get_available_port(request)
         logger.info('debug %s - %s', east, west)
 
         # Validate input
@@ -62,10 +59,10 @@ class CreateDebugMode(object):
             logger.error('debug: error:no west port number {} request:{}'.format(west, request))
             return Response('No west port number ' + str(west), content_type="text/plain")
 
-        logger.info('connection_history %s - %s', east, west)
         # create debug mode
         CreateDebugMode.create_debug(request, east, west)
 
+        logger.info('debug: response method return data: {}'.format(request.data))
         return Response(request.data, status=status.HTTP_200_OK)
 
     @staticmethod
