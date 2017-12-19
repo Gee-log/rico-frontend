@@ -4,6 +4,9 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+// Enviroment variables
+import { environment } from '../../environments/environment';
+
 // Api Service
 import { ApiService } from '../services/api.service';
 
@@ -14,9 +17,8 @@ export class AuthenticationService {
   public token: string;
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
+  private ROOT_URL = environment.apiUrl;
   // private ROOT_URL = `http://192.168.60.103:80/`;
-  private ROOT_URL = `http://localhost:8000/`;
-
 
   constructor(private http: Http, private ApiService: ApiService) {
     // set token if saved in local storage
@@ -54,11 +56,25 @@ export class AuthenticationService {
 
   }
   // Logout
-  logout(): void {
-    // clear token remove user from local storage to log user out
-    this.token = null;
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('token');
+  logout() {
+
+    // const action = 'logout';
+    // const token = JSON.parse(localStorage.getItem('token'));
+
+    // return this.http.post(this.ROOT_URL + 'users/', { action, token }, this.options).toPromise().then((response: any) => {
+    //   const response_object = JSON.parse(response._body);
+
+    //   console.log(response_object);
+
+      // clear token remove user from local storage to log user out
+      this.token = null;
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('token');
+
+      // return response_object;
+
+    // });
+
   }
 
 }

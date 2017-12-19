@@ -1,20 +1,65 @@
 /* Main-container
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .main-container {
-    width: 100%;
-    height: 94vh;
+     // Labtop screen
+     @media only screen and (min-device-width : 640px) {
+        width: 100%;
+        height: 94vh;
+    }
+    // Mobile screen
+    @media only screen and (max-device-width : 640px) {
+        width: 100%;
+        height: 100%;             
+    }
     background: #24C6DC;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #514A9D, #24C6DC);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #514A9D, #24C6DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
     .container {
-        padding-top: 150px;
+        padding-top: 100px;
         text-align: center;
         p {
+            // Labtop screen
+            @media only screen and (min-device-width : 640px) {
+                font-size: 150px;
+            }
+            // Mobile screen
+            @media only screen and (max-device-width : 640px) {
+                font-size: 20px;                
+            }
             color: white;
-            font-size: 150px;
             margin-top: 0;
             margin-bottom: 0;
             cursor: default;
+        }
+    }
+
+    .container-button {
+        padding-top: 0px;
+        text-align: center;
+        button {
+            // Labtop screen
+            @media only screen and (min-device-width : 640px) {
+                width: 200px;
+                height: 50px;
+            }
+            // Mobile screen
+            @media only screen and (max-device-width : 640px) {
+                width: 150px;
+                height: 50px;             
+            }
+            font-size: 16px;
+        }
+        p {
+            // Labtop screen
+            @media only screen and (min-device-width : 640px) {
+                font-size: 30px;
+            }
+            // Mobile screen
+            @media only screen and (max-device-width : 640px) {
+                font-size: 16px;                
+            }
+            cursor: default;
+            color: white;
         }
     }
 }

@@ -144,8 +144,8 @@
         <tr class="tr-style" *ngFor="let row of eportschunk">
           <td id="{{ column }}" class="East td-style" [ngClass]="[isSelectEast(column), disabledEastPort(column)]" (click)="setEastID(column)"
             *ngFor="let column of row">
-            <span id="T{{ column }}" [mdTooltip]="tooltipEast(column)" mdTooltipPosition="above">
-              <span [mdTooltip]="pushEastNote(column)" [mdTooltipPosition]="etooltipPostion(column)">{{ column }}</span>
+            <span id="T{{ column }}" [mdTooltip]="eastport_tooltip(column)" mdTooltipPosition="above">
+              <span [mdTooltip]="pushEastNote(column)" [mdTooltipPosition]="eastport_tooltip_postion(column)">{{ column }}</span>
             </span>
           </td>
         </tr>
@@ -163,8 +163,8 @@
         <tr class="tr-style" *ngFor="let row of wportschunk">
           <td id="{{ column }}" class="West td-style" [ngClass]="[isSelectWest(column), disabledWestPort(column)]" (click)="setWestID(column)"
             *ngFor="let column of row">
-            <span id="T{{ column }}" [mdTooltip]="tooltipWest(column)" mdTooltipPosition="above">
-              <span [mdTooltip]="pushWestNote(column)" [mdTooltipPosition]="wtooltipPostion(column)">{{ column }}</span>
+            <span id="T{{ column }}" [mdTooltip]="westport_tooltip(column)" mdTooltipPosition="above">
+              <span [mdTooltip]="pushWestNote(column)" [mdTooltipPosition]="westport_tooltip_postion(column)">{{ column }}</span>
             </span>
           </td>
         </tr>
@@ -225,17 +225,17 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), force_disable_continue_mode_buttons()]" color="primary" [attr.disabled]="this.validate_to_enable_continue_mode_buttons === false ? true : null" disabled>
                 <md-icon>autorenew</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restart_robot_operation(), force_disable_continue_mode_buttons()]" color="primary" [attr.disabled]="this.validate_to_enable_continue_mode_buttons === false ? true : null" disabled>
                 <md-icon>replay</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reload_robot_operation(), force_disable_continue_mode_buttons()]" color="primary" [attr.disabled]="this.validate_to_enable_continue_mode_buttons === false ? true : null" disabled>
                 <md-icon>clear</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
@@ -335,7 +335,7 @@
             <div style="transform: translateY(-20%);">
               <!-- BEGIN STOP INPUT -->
               <md-input-container>
-                <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="clearValue(stops)" pattern="[0-9,]{1,100}"
+                <input mdInput id="stops" placeholder="Stops :" value="stops" [(ngModel)]="stops" [ngClass]="validate_stops_value_to_clear_stops_value(stops)" pattern="[0-9,]{1,100}"
                   [attr.disabled]="this.disable_stops_input == true ? false : null" hidden>
               </md-input-container>
               <!-- END STOP INPUT -->

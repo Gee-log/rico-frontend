@@ -4,10 +4,9 @@
   <div class="flex-item">
     <!-- BEGIN TABLE-CONTAINER  -->
     <div class="table-container">
-      <input class="fliter" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'
-        (keyup)='updateFilter($event)' />
+      <input class="fliter" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'/>
       <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        [rowHeight]="'auto'" [limit]="100" [rows]='rows'>
         <!-- BEGIN EAST PORT COLUMN -->
         <ngx-datatable-column name="East">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -50,7 +49,7 @@
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->
   <div class="flex-fix-padding" align="center">
-    <button md-raised-button id="save" class="button-width" color="primary" (click)="saveData()" type="button">Save</button>
+    <button md-raised-button id="save" class="button-width" color="primary" type="button">Save</button>
   </div>
   <!-- END FLEX-FOOTER -->
 </div>

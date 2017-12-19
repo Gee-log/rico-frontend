@@ -108,12 +108,19 @@ export class AppComponent {
   // LOGOUT
   logOut() {
 
-    // CALL LOGOUT FUNCTION
-    this.AuthenticationService.logout();
-    // RE ROUTE TO LOGIN
-    this.router.navigateByUrl('/login');
-    // MAKE CLICK EVENT TO CLOSE SIDEBAR
-    document.getElementById('menu-icon').click();
+    // this.AuthenticationService.logout().then((data) => {
+
+      // if (data['status'] === 'success') {
+
+        // RE ROUTE TO LOGIN
+        // MAKE CLICK EVENT TO CLOSE SIDEBAR
+
+        this.router.navigateByUrl('/login');
+        document.getElementById('menu-icon').click();
+
+      // }
+
+    // });
 
   }
   // GET USERNAME
@@ -122,6 +129,12 @@ export class AppComponent {
     // SET VARIABLE
     this.user_data = this.UserService.getUsers();
     this.username = this.user_data['username'];
+
+  }
+
+  clear_latest_operation() {
+
+    this.ApiService.clearLatestOperation();
 
   }
 

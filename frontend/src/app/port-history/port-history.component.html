@@ -7,7 +7,7 @@
       <input class="fliter" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'
         (keyup)='updateFilter($event)' />
       <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        [rowHeight]="'auto'" [limit]="100" [rows]='rows'>
         <!-- BEGIN DATE COLUMN  -->
         <ngx-datatable-column name="Date">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -78,8 +78,8 @@
             <!-- <div *ngIf="value.status !== 'Pending'"> -->
             <!-- NEW VERSION -->
             <div *ngIf="value.status">{{value.status}}&nbsp;&nbsp;
-              <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'"
-                (click)="cancelTask(value.id)">Cancel</button>
+              <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status === 'Pending' || value.status === 'Break' 
+              || value.status === 'Started' || value.status === 'Alarm'" (click)="cancelTask(value.id)">Cancel</button>
             </div>
             <!-- <div class="flex-container"> -->
             <!-- REMOVE PENDING BUTTON -->

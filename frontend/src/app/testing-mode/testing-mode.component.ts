@@ -47,11 +47,11 @@ export class TestingModeComponent implements OnInit {
     });
 
   }
-  // CREATE CONNECTION
-  create_connection() {
+  // CREATE DUMMY CONNECTION
+  create_dummy_connection() {
 
     if (this.east_port_number && this.west_port_number) {
-      this.ApiService.create_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then((data) => {
+      this.ApiService.create_dummy_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then((data) => {
         console.log(data);
       });
     } else {

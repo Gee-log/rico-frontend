@@ -1,11 +1,10 @@
 // ANGULAR MODULE
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { enableProdMode } from '@angular/core'; // <-- enable production mode .❨╯°□°❩╯︵┻━┻
+// import { enableProdMode } from '@angular/core'; // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-
 
 // MATERIAL MODULE
 import { MaterialModule } from '@angular/material';
@@ -27,7 +26,9 @@ import { ServerStatusErrorComponent } from './server-status-error/server-status-
 
 // Third-Party
 import { ChartsModule } from 'ng2-charts';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+// import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableStubModule } from '../ngx-datatable';
+// import { DatatableRowDetailTemplateDirectiv } from ''
 import 'hammerjs';
 import * as _ from 'lodash';
 
@@ -35,6 +36,7 @@ import * as _ from 'lodash';
 import { ApiService } from './services/api.service';
 import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
+import { PortService } from './services/port.service';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
@@ -45,7 +47,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { CurrentConnectionComponent } from './current-connection/current-connection.component';
 import { RegisterComponent } from './register/register.component';
 
-enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
+// enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
 @NgModule({
   declarations: [
@@ -73,10 +75,10 @@ enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
     HttpModule,
     FormsModule,
     CdkTableModule,
-    NgxDatatableModule,
+    NgxDatatableStubModule,
     ChartsModule
   ],
-  providers: [ApiService, AuthGuard, AuthenticationService, UserService],
+  providers: [ApiService, AuthGuard, AuthenticationService, UserService, PortService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

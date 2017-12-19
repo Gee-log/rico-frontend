@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 // Api Service
 import { ApiService } from '../services/api.service';
 
+// Enviroment variables
+import { environment } from '../../environments/environment';
+
 // Third-party
 import { ChartsModule } from 'ng2-charts';
 import * as _ from 'lodash';
@@ -70,8 +73,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   constructor(private ApiService: ApiService, private router: Router) { }
 
   ngOnInit() {
-    // CHECK SERVER STATUS
-    this.check_server_status();
+
     // VERIFY USER
     this.verify_user();
     // DEVICE DETECT
@@ -83,7 +85,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     // CHECK STATUS EVERY 5 SEC.
     this.timerInterval = setInterval(() => {
       this.checkStatus();
-    }, 1500);
+
+      // CHECK SERVER STATUS
+      this.check_server_status();
+    }, 5000);
 
   }
 
@@ -104,6 +109,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       if (status === 500) {
         this.router.navigateByUrl('/500');
       }
+
     });
 
   }
@@ -111,10 +117,14 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   verify_user() {
 
     this.ApiService.verify_user_with_backend().then((data) => {
+
       if (data['status'] === 'unverified') {
+
         localStorage.setItem('currentUser', null);
         this.router.navigateByUrl('/login');
+
       }
+
     });
 
   }
@@ -134,7 +144,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   deviceDetect() {
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+
       this.router.navigateByUrl('/port_connection_mobile');
+
     }
 
   }
@@ -142,6 +154,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   fetchData() {
 
     this.ApiService.getAllPort().then((data) => {
+
       this.eports = data.eports;
       this.eportschunk = data.eportschunk;
       this.wports = data.wports;
@@ -149,6 +162,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       this.eportNote = data.eportNote;
       this.wportNote = data.wportNote;
       this.portID = data.id;
+
     });
 
   }
@@ -159,7 +173,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     const index = parseInt(i, 10) - 1;
 
     if (id === 'E' + id.substring(1)) {
+
       return this.eportNote[index];
+
     }
 
   }
@@ -170,7 +186,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     const index = parseInt(i, 10) - 1;
 
     if (id === 'W' + id.substring(1)) {
+
       return this.wportNote[index];
+
     }
 
   }
@@ -194,9 +212,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         this.unselectable_table = false; // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
-        document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
         this.disabled_continue_mode_all_button = false; // LOCK ALL CONTINUE MODE BUTTONS
-        this.get_lastest_task_time(); // GET AVERAGE LASTEST TASK TIME
+        document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
+        this.get_latest_operation_task_time(); // GET AVERAGE LASTEST TASK TIME
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
@@ -264,8 +282,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       || (!document.getElementById(west).classList.contains('selected')))) {
 
       for (let i = 0; i < 144; i++) {
+
         this.all_east[i].classList.remove('current-selected', 'Blink');
         this.all_west[i].classList.remove('current-selected', 'Blink');
+
       }
 
       document.getElementById(east).classList.add('current-selected', 'Blink');
@@ -278,8 +298,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   setEastID(eastID) {
 
     this.selectedEastPortID = eastID; // SET EASTPORT ID
-    this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED EAST PORT
     localStorage.setItem('selectedEastPortID', JSON.stringify(eastID)); // SET LOCALSTORAGE VALUE OF selectedEastPortID
+
+    this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED EAST PORT
 
     console.log('Current East Port :', this.selectedEastPortID);
 
@@ -327,8 +348,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     if (document.getElementById(westID).classList.contains('connected')) {
 
       for (let i = 0; i < 144; i++) {
+
         this.all_east[i].classList.remove('selected', 'pair', 'selected-pair');
         this.all_west[i].classList.remove('selected', 'pair', 'selected-pair');
+
       }
 
       this.wValue = 1;
@@ -342,8 +365,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     } else {
 
       for (let i = 0; i < 144; i++) {
+
         this.all_east[i].classList.remove('pair', 'selected-pair');
         this.all_west[i].classList.remove('pair', 'selected-pair');
+
       }
 
       this.wValue = 0;
@@ -351,6 +376,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       this.unlockConnection(this.availableEastPort, this.availableWestPort);
       this.unlockButton(this.eValue, this.wValue, this.status);
       this.disabled_disconnect_button = true;
+
     }
 
   }
@@ -379,6 +405,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         document.getElementById(east).classList.add('selected-pair');
         document.getElementById(west).classList.add('selected-pair');
         this.disabled_disconnect_button = false;
+
       } else if (east === this.selectedEastPortID) {
         document.getElementById(east).classList.add('pair');
         document.getElementById(west).classList.add('pair');
@@ -393,10 +420,13 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       const east = 'E' + obj.east;
       const west = 'W' + obj.west;
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
+
         document.getElementById(east).classList.add('selected-pair');
         document.getElementById(west).classList.add('selected-pair');
         this.disabled_disconnect_button = false;
+
       } else if (west === this.selectedWestPortID) {
+
         document.getElementById(east).classList.add('pair');
         document.getElementById(west).classList.add('pair');
       }
@@ -413,12 +443,14 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
      UNLOCK CONNECT BUTTON
      LOCK CONTINUE */
     if (sumValue === 0 && status === 'success' || sumValue === 0 && status === 'error' || sumValue === 0 && status === undefined) {
+
       this.disable_stops_input = false;
       this.disabled_continue_button = true;
       console.log('UNLOCK CONNECT BUTTON | STATUS: ', status);
 
       // SUM = 1 LOCK ALL BUTTONS
     } else if (sumValue === 1) {
+
       this.disabled_connect_button = true;
       this.disabled_disconnect_button = true;
       this.disabled_continue_button = true;
@@ -426,6 +458,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
       // STATUS = STARTED OR STATUS = PENDING OR STATUS = UNDEFINED
     } else if (status === 'started' || status === 'pending' || status === undefined) {
+
       this.disabled_connect_button = true;
       this.disabled_disconnect_button = true;
       this.disabled_continue_button = true;
@@ -433,10 +466,12 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
       // STATUS = BREAK
     } else if (status === 'break' && this.sequence !== null && this.sequence !== undefined) {
+
       this.disabled_connect_button = true;
       this.disabled_disconnect_button = true;
       this.disabled_continue_button = false;
       console.log('LOCK CONNECT & DISCONNECT | STATUS: ', status);
+
     }
 
   }
@@ -500,13 +535,16 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
     for (let i = 0; i < 144; i++) {
+
       this.all_east[i].classList.remove('selected', 'pair', 'selected-pair');
       this.all_west[i].classList.remove('selected', 'pair', 'selected-pair');
+
     }
 
   }
   // POST DISCONNECTION
   postDisconnection() {
+
     // LOCK STOPS INPUT AFTER POST
     this.disable_stops_input = true;
     // LOCK DISCONNECT BUTTON AFTER POST
@@ -550,12 +588,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
       // LOCK DISCONTINUE BUTTON AFTER POST
       this.disabled_disconnect_button = true;
+
     }
 
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
     for (let i = 0; i < 144; i++) {
+
       this.all_east[i].classList.remove('selected', 'pair', 'selected-pair');
       this.all_west[i].classList.remove('selected', 'pair', 'selected-pair');
+
     }
 
   }
@@ -601,8 +642,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
     for (let i = 0; i < 144; i++) {
+
       this.all_east[i].classList.remove('selected', 'pair', 'selected-pair');
       this.all_west[i].classList.remove('selected', 'pair', 'selected-pair');
+
     }
 
   }
@@ -627,12 +670,17 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       const west_td = document.getElementsByClassName('East');
 
       for (let i = 0; i < 144; i++) {
+
         if (this.all_east[0] === undefined) {
+
           console.log('Element are not ready !');
           return;
+
         }
+
         this.all_east[i].classList.remove('connected', 'pending', 'break');
         this.all_west[i].classList.remove('connected', 'pending', 'break');
+
       }
 
       console.log('------------------------------- All Port Status -------------------------------');
@@ -654,6 +702,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           document.getElementById(east).classList.add('connected'); // ADD GREEN COLOR
           document.getElementById(west).classList.add('connected'); // ADD GREEN COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+
         } else if (obj['status'] === 'started' || obj['status'] === 'pending') {
           const east = 'E' + obj['east'];
           const west = 'W' + obj['west'];
@@ -661,6 +710,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           document.getElementById(east).classList.add('pending'); // ADD RED COLOR
           document.getElementById(west).classList.add('pending'); // ADD RED COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+
         } else if (obj['status'] === 'break') {
           const east = 'E' + obj['east'];
           const west = 'W' + obj['west'];
@@ -668,51 +718,52 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           document.getElementById(east).classList.add('break'); // ADD YELLOW COLOR
           document.getElementById(west).classList.add('break'); // ADD YELLOW COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+
         }
+
       });
 
       console.log('-------------------------------------------------------------------------------');
+
     });
 
   }
   // CLEAR LOCAL STORAGE STOPS VALUE
-  clearValue(stops) {
+  validate_stops_value_to_clear_stops_value(stops) {
 
     // CLEAR STOPS LOCALSTORAGE VALUE
     if (stops === undefined || stops === null || stops === '') {
       stops = null;
       localStorage.setItem('stops', JSON.stringify(stops));
+
       // LOCK CONNECT BUTTON WHEN INVALID STOPS INPUT
     } else if (document.getElementById('stops').classList.contains('ng-invalid')) {
       this.disabled_connect_button = true;
     }
 
   }
-  // TEST CONSOLE.LOG LOCAL STORAGE VALUE
-  clear() {
-
-    const selectedEastPortID = localStorage.getItem('selectedEastPortID');
-    const selectedWestPortID = localStorage.getItem('selectedWestPortID');
-    console.log(selectedEastPortID, selectedWestPortID, this.stops);
-  }
-  // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
-  tooltipEast(EastID) {
+  // PUSH CONNECTED PORT TO EAST PORT TOOLTIP
+  eastport_tooltip(EastID) {
 
     for (const i of Object.keys(this.pair)) {
+
       const east = 'E' + this.pair[i].east;
       const west = 'W' + this.pair[i].west;
+
       if (EastID === east) {
         return 'Connected to ' + west;
       }
     }
 
   }
-  // PUSH CONNECTED PORT OF WEST TO WEST TOOLTIP
-  tooltipWest(WestID) {
+  // PUSH CONNECTED PORT TO WEST PORT TOOLTIP
+  westport_tooltip(WestID) {
 
     for (const i of Object.keys(this.pair)) {
+
       const east = 'E' + this.pair[i].east;
       const west = 'W' + this.pair[i].west;
+
       if (WestID === west) {
         return 'Connected to ' + east;
       }
@@ -720,28 +771,34 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // CHANGE POSITION OF SECOND TOOLTIP
-  etooltipPostion(EastID) {
+  eastport_tooltip_postion(EastID) {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
     for (const i of Object.keys(this.pair)) {
+
       const east = 'E' + this.pair[i].east;
+
       if (EastID === east) {
         return 'right';
       }
+
     }
     // ELSE RETURN TOOLTIP POSTION = ABOVE
     return 'above';
 
   }
   // CHANGE POSITION OF SECOND TOOLTIP
-  wtooltipPostion(WestID) {
+  westport_tooltip_postion(WestID) {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
     for (const i of Object.keys(this.pair)) {
+
       const west = 'W' + this.pair[i].west;
+
       if (WestID === west) {
         return 'left';
       }
+
     }
     // ELSE RETURN TOOLTIP POSTION = ABOVE
     return 'above';
@@ -750,8 +807,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // TOGGLE DEBUG BUTTON
   toggleDebugMode() {
 
-    $('#stops, #sequence, #input-container').toggle();
     this.debugMode = !this.debugMode;
+
+    $('#stops, #sequence, #input-container').toggle();
+
     console.log('toggleDebugMode ' + this.debugMode);
 
   }
@@ -775,20 +834,20 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
     if (message_length <= 30) {
 
-      const card = document.getElementsByTagName('md-card');
-      card[0].setAttribute('style', 'height: 20px');  // <-- set height 20px
+      const md_card = document.getElementsByTagName('md-card');
+      md_card[0].setAttribute('style', 'height: 20px');  // <-- set height 20px
 
       // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
     } else {
 
-      const card = document.getElementsByTagName('md-card');
-      card[0].setAttribute('style', 'height: 80px');  // <-- set height 80px
+      const md_card = document.getElementsByTagName('md-card');
+      md_card[0].setAttribute('style', 'height: 80px');  // <-- set height 80px
 
     }
 
   }
   // CONTINUE ROBOBT OPERATION TASK
-  continueRobotOperation() {
+  continue_robot_operation() {
 
     this.ApiService.continue_robot_operations().then((data) => {
 
@@ -802,10 +861,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     });
 
   }
-  // RELOAD ROBOT OPERATION TASK
-  reloadRobotOperation() {
+  // RESTART ROBOT OPERATION TASK
+  restart_robot_operation() {
 
-    this.ApiService.reload_robot_operations().then((data) => {
+    this.ApiService.restart_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
 
@@ -817,10 +876,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     });
 
   }
-  // RESTART ROBOT OPERATION TASK
-  restartRobotOperation() {
+  // RELOAD ROBOT OPERATION TASK
+  reload_robot_operation() {
 
-    this.ApiService.restart_robot_operations().then((data) => {
+    this.ApiService.reload_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
 
@@ -839,7 +898,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // FORCE DISABLE CONTINUE_MODE BUTTONS
-  foruce_disable_continue_mode_button() {
+  force_disable_continue_mode_buttons() {
 
     document.getElementById('Cancel').setAttribute('disabled', 'disabled');
     document.getElementById('Restart').setAttribute('disabled', 'disabled');
@@ -847,7 +906,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // VALIDATION TO ENABLE OR DISABLE BUTTONS
-  validate_continue_mode_all_button() {
+  validate_to_enable_continue_mode_buttons() {
 
     if (this.status === 'alarm') {
 
@@ -872,8 +931,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     }
 
   }
-  // GET LASTEST TASK TIME
-  get_lastest_task_time() {
+  // GET LATEST OPERATION TASK TIME
+  get_latest_operation_task_time() {
 
     this.ApiService.get_operation_task_time().then((data) => {
 
@@ -893,20 +952,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       }
 
     });
-
-  }
-
-  validate_status_for_add_hiding_continue_mode_button() {
-
-    if (this.status !== 'alarm') {
-
-      return 'hide';
-
-    } else {
-
-      return '';
-
-    }
 
   }
 

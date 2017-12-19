@@ -2,7 +2,11 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions, ResponseContentType } from '@angular/http';
 
+// Api services
 import { AuthenticationService } from '../services/authentication.service';
+
+// Enviroment variables
+import { environment } from '../../environments/environment';
 
 // Reactive
 import { Observable } from 'rxjs/Rx';
@@ -19,15 +23,10 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
+  private ROOT_URL = environment.apiUrl;
   // private ROOT_URL = `http://192.168.60.103:80/`;
-  private ROOT_URL = `http://localhost:8000/`;
 
-  constructor(private http: Http) {
-
-    localStorage.setItem('robot', '1');
-    localStorage.setItem('continue_mode', 'reload');
-
-  }
+  constructor(private http: Http) { }
 
   // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
   getAllPort() {
@@ -62,11 +61,12 @@ export class ApiService {
           id.push(obj.id);
 
         }
+
       });
 
       return ({
-        allPort: allPort, eports: eports, wports: wports,
-        eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
+        allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk,
+        wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
       });
 
     });
@@ -76,8 +76,10 @@ export class ApiService {
   getUsername() {
 
     if (localStorage.getItem('currentUser') !== null && localStorage.getItem('currentUser') !== undefined) {
+
       const user_data = JSON.parse(localStorage.getItem('currentUser'));
       return user_data['username'];
+
     }
 
   }
@@ -125,8 +127,10 @@ export class ApiService {
 
             // ERROR FROM CLIENT
           } else {
+
             console.error('POST START DEBUG MODE ERROR 500 Internal Server');
             return ({ status: 'error', error: 'ERROR 500' });
+
           }
 
         });
@@ -157,8 +161,10 @@ export class ApiService {
 
             // ERROR FROM CLIENT
           } else {
+
             console.error('POST DEBUG MODE ERROR 500 Internal Server');
             return ({ status: 'error', error: 'ERROR 500' });
+
           }
 
         });
@@ -188,8 +194,10 @@ export class ApiService {
 
           // ERROR FROM CLIENT
         } else {
+
           console.error('POST NORMAL MODE ERROR 500 Internal Server');
           return ({ status: 'error', error: 'ERROR 500' });
+
         }
 
       });
@@ -281,6 +289,7 @@ export class ApiService {
         return ({ status: 'error', sequence: null, action: null, error: 'ERROR 500', code: null });
 
       }
+
     });
 
   }
@@ -363,8 +372,6 @@ export class ApiService {
     return this.http.post(this.ROOT_URL + 'alarms/', { alarm, detail, severity }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
 
-      console.log(response_object);
-
       return response_object;
 
     }).catch((error: any) => {
@@ -391,8 +398,6 @@ export class ApiService {
     return this.http.post(this.ROOT_URL + 'pendingtask/', { id }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
 
-      console.log(response_object);
-
       return response_object;
 
     }).catch((error: any) => {
@@ -404,11 +409,14 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('PENDING TASK ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
+
   }
   // POST CANCEL TASK
   cancelTask(id, action) {
@@ -435,11 +443,14 @@ export class ApiService {
 
         // ERROR FROM CLIENT
       } else {
+
         console.error('CANCELED TASK ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
       }
 
     });
+
   }
   // CLEAR DATABASE DATA
   clearDatabase(action) {
@@ -451,8 +462,6 @@ export class ApiService {
 
     return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
-
-      console.log(response_object);
 
       return response_object;
 
@@ -468,6 +477,34 @@ export class ApiService {
 
         console.error('CLEAR DATABASE ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
+
+      }
+
+    });
+
+  }
+  // CLEAR LATEST OPERATION
+  clearLatestOperation() {
+
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
+    const action: string = 'clear_latest_operation';
+
+    return this.http.post(this.ROOT_URL + 'operations/', { action }, this.options).toPromise().then((response: any) => {
+
+      const response_object = JSON.parse(response._body);
+
+    }).catch((error: any) => {
+
+      const error_object = JSON.parse(error._body);
+
+      if (error.status === 400) {
+
+        console.error(error);
+        alert('status: ' + error_object['status'] + ', ' + 'error: ' + error_object['error']);
 
       }
 
@@ -525,18 +562,18 @@ export class ApiService {
     const path = `connectionhistorys/?type=connecthistorys`;
 
     return this.http.get(this.ROOT_URL + path, { responseType: ResponseContentType.Blob })
-      .subscribe(
-      (res: any) => {
+      .subscribe((res: any) => {
+
         const blob = res.blob();
         console.log(res);
         const filename = 'connection_log.json';
         FileSaver.saveAs(blob, filename);
-      }
-      );
+
+      });
 
   }
-  // CREATE CONNECTION IN CONNECTION TABLE
-  create_connection_in_database(east, west, action) {
+  // CREATE DUMMY CONNECTION IN CONNECTION TABLE
+  create_dummy_connection_in_database(east, west, action) {
 
     // set local authToken, header, options
     const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
