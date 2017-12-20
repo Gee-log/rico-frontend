@@ -19,8 +19,8 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL = `http://192.168.60.103:80/`;
-  private ROOT_URL = `http://localhost:8000/`;
+  private ROOT_URL = `http://192.168.60.103:80/`;
+  // private ROOT_URL = `http://localhost:8000/`;
 
   constructor(private http: Http) {
 
