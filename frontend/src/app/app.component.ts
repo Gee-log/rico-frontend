@@ -99,28 +99,21 @@ export class AppComponent {
   showNavbar() {
 
     if (this.router.url === '/login' || this.router.url === '/register') {
+
       return false;
+
     } else {
+
       return true;
+
     }
 
   }
   // LOGOUT
   logOut() {
 
-    // this.AuthenticationService.logout().then((data) => {
-
-      // if (data['status'] === 'success') {
-
-        // RE ROUTE TO LOGIN
-        // MAKE CLICK EVENT TO CLOSE SIDEBAR
-
-        this.router.navigateByUrl('/login');
-        document.getElementById('menu-icon').click();
-
-      // }
-
-    // });
+    this.router.navigateByUrl('/login');
+    document.getElementById('menu-icon').click();
 
   }
   // GET USERNAME
@@ -131,7 +124,7 @@ export class AppComponent {
     this.username = this.user_data['username'];
 
   }
-
+  // CLEAR LATEST OPERATION IN DATABASE
   clear_latest_operation() {
 
     this.ApiService.clearLatestOperation();

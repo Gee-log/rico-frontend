@@ -57,16 +57,6 @@ var _a;
 
 /***/ }),
 
-/***/ "../../../../../src/app/_models/backend_ip.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var backend_ip_address = "http://192.168.60.103\u0E4D:80/";
-/* harmony default export */ __webpack_exports__["a"] = (backend_ip_address);
-//# sourceMappingURL=backend_ip.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/alarm-history/alarm-history.component.html":
 /***/ (function(module, exports) {
 
@@ -506,7 +496,7 @@ AppRoutingModule = __decorate([
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN SIDENAV-FAB-CONTAINER -->\r\n  <md-sidenav-container class=\"sidenav-fab-container\">\r\n    <!-- BEGIN NAV BAR -->\r\n    <md-toolbar class=\"toolbar-container\" color=\"primary\" *ngIf=\"showNavbar()\">\r\n    <!-- attr.disabled]=\"this.disable_stops_input == true ? false : null\" -->\r\n      <!-- BEGIN MENU ICON -->\r\n      <div>\r\n        <button id=\"menu-icon\" type=\"button\" md-button class=\"div-icon-menu\" (click)=\"sidenav.toggle(); getUserName();\">\r\n           <md-icon >menu</md-icon>\r\n        </button>\r\n      </div>\r\n      <!-- END MENU ICON -->\r\n      <!-- BEGIN MORE-VERT ICON -->\r\n      <div class=\"warpper-right\">\r\n        <button md-icon-button>\r\n          <md-icon>mail</md-icon>\r\n        </button>\r\n        <button md-icon-button>\r\n          <md-icon>notifications</md-icon>\r\n        </button>\r\n        <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n          <md-icon >more_vert</md-icon>\r\n       </button>\r\n        <!-- BEGIN MENU-LIST -->\r\n        <md-menu #menu=\"mdMenu\">\r\n          <!-- BEGIN NOTIFICATION ICON -->\r\n          <button md-menu-item>\r\n            <md-icon>notifications_off</md-icon>\r\n            <span>Disable alerts</span>\r\n          </button>\r\n          <!-- END NOTIFICATION ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clearDatabase()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear database</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n        </md-menu>\r\n        <!-- END MENU-LIST -->\r\n      </div>\r\n      <!-- END MORE-VERT ICON -->\r\n    </md-toolbar>\r\n    <!-- END NAV BAR -->\r\n\r\n    <!-- OLD VERSION SIDENAV ! -->\r\n    <!-- <md-sidenav #sidenav mode=\"side\" opened=\"false\"> -->\r\n\r\n    <!-- NEW VERSION SIDENAV ! -->\r\n    <!-- BEGIN SIDENAV -->\r\n    <md-sidenav #sidenav opened=\"false\">\r\n      <!-- BEGIN SCROLLING-CONTENT -->\r\n      <div class=\"scrolling-content\">\r\n        <!-- BEGIN USER-CONTAINER -->\r\n        <header class=\"user-container\">\r\n          <!-- BEGIN AVATAR -->\r\n          <div class=\"avatar-container\">\r\n            <img src=\"../../../static/webapp/user.jpg\" alt=\"Avatar\" class=\"avatar\">\r\n          </div>\r\n          <!-- END AVATAR -->\r\n          <!-- BEGIN NAME-AVATAR-CONTAINER -->\r\n          <div class=\"name-avatar-container\">\r\n            <p>{{ this.username }}</p>\r\n          </div>\r\n          <!-- END NAME-AVATAR-CONTAINER -->\r\n          <!-- BEGIN USER-DROPDOWN-MENU -->\r\n          <div class=\"user-dropdown-menu\">\r\n            <span>{{ this.username }}@xenoptics.com</span>\r\n            <div class=\"mdl-layout-spacer\"></div>\r\n            <button md-button class=\"div-icon\" [mdMenuTriggerFor]=\"menudrop\">\r\n              <md-icon >arrow_drop_down</md-icon>\r\n           </button>\r\n            <md-menu #menudrop=\"mdMenu\">\r\n              <button md-menu-item>\r\n                <md-icon>add</md-icon>\r\n                <span>Add another account...</span>\r\n              </button>\r\n              <button md-menu-item (click)=\"logOut()\">\r\n                <md-icon>remove</md-icon>\r\n                <span>Logout</span>\r\n              </button>\r\n            </md-menu>\r\n          </div>\r\n          <!-- END USER-DROPDOWN-MENU -->\r\n        </header>\r\n        <!-- END USER-CONTAINER -->\r\n        <!-- BEGIN MENU -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"menu-open\" class=\"menu\">\r\n            <div id=\"menu-drop-down\" (click)=\"toggleMenu();\" hidden>\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n            </a>\r\n            </div>\r\n            <div id=\"menu-drop-up\" (click)=\"toggleMenu();\">\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n          </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"menu-list\" class=\"menu-container-height\">\r\n            <md-list>\r\n              <!-- IF WANT TO ADD LOGO -->\r\n              <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of links\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END MENU -->\r\n        <!-- BEGIN SETTINGS -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"settings-open\" class=\"settings\">\r\n            <div id=\"settings-drop-down\" (click)=\"toggleSettings();\">\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n              </a>\r\n            </div>\r\n            <div id=\"settings-drop-up\" (click)=\"toggleSettings();\" hidden>\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n            </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"settings-list\" class=\"settings-container-height\" hidden>\r\n            <md-list>\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of settinglinks\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END SETTINGS -->\r\n        <!-- BEGIN DOCUMENT LABEL -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"documents-open\" class=\"document\">\r\n            <div id=\"documents-drop-down\" (click)=\"toggleDocument();\">\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n                </a>\r\n            </div>\r\n            <div id=\"documents-drop-up\" (click)=\"toggleDocument();\" hidden>\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END DOCUMENT LABEL -->\r\n        <!-- BEGIN FOOTER-CONTAINER -->\r\n        <!-- <div class=\"footer-container\"> -->\r\n          <!-- <hr> -->\r\n          <!-- <div class=\"text-center\">\r\n            <span>Help & Feedback</span>\r\n          </div>\r\n        </div> -->\r\n        <!-- END FOOTER-CONTAINER -->\r\n      </div>\r\n      <!-- END SCROLLING-CONTENT -->\r\n    </md-sidenav>\r\n    <!-- END SIDENAV -->\r\n    <!-- BEGIN ROUTER-OUTLET -->\r\n    <router-outlet></router-outlet>\r\n    <!-- END ROUTER-OUTLET -->\r\n  </md-sidenav-container>\r\n  <!-- END SIDE NAV -->\r\n</div>\r\n<!-- END MAIN CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN SIDENAV-FAB-CONTAINER -->\r\n  <md-sidenav-container class=\"sidenav-fab-container\">\r\n    <!-- BEGIN NAV BAR -->\r\n    <md-toolbar class=\"toolbar-container\" color=\"primary\" *ngIf=\"showNavbar()\">\r\n      <!-- attr.disabled]=\"this.disable_stops_input == true ? false : null\" -->\r\n      <!-- BEGIN MENU ICON -->\r\n      <div>\r\n        <button id=\"menu-icon\" type=\"button\" md-button class=\"div-icon-menu\" (click)=\"sidenav.toggle(); getUserName();\">\r\n          <md-icon>menu</md-icon>\r\n        </button>\r\n      </div>\r\n      <!-- END MENU ICON -->\r\n      <!-- BEGIN MORE-VERT ICON -->\r\n      <div class=\"warpper-right\">\r\n        <button md-icon-button>\r\n          <md-icon>mail</md-icon>\r\n        </button>\r\n        <button md-icon-button>\r\n          <md-icon>notifications</md-icon>\r\n        </button>\r\n        <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n          <md-icon>more_vert</md-icon>\r\n        </button>\r\n        <!-- BEGIN MENU-LIST -->\r\n        <md-menu #menu=\"mdMenu\">\r\n          <!-- BEGIN NOTIFICATION ICON -->\r\n          <button md-menu-item>\r\n            <md-icon>notifications_off</md-icon>\r\n            <span>Disable alerts</span>\r\n          </button>\r\n          <!-- END NOTIFICATION ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clearDatabase()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear database</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clear_latest_operation()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear operation</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n        </md-menu>\r\n        <!-- END MENU-LIST -->\r\n      </div>\r\n      <!-- END MORE-VERT ICON -->\r\n    </md-toolbar>\r\n    <!-- END NAV BAR -->\r\n\r\n    <!-- OLD VERSION SIDENAV ! -->\r\n    <!-- <md-sidenav #sidenav mode=\"side\" opened=\"false\"> -->\r\n\r\n    <!-- NEW VERSION SIDENAV ! -->\r\n    <!-- BEGIN SIDENAV -->\r\n    <md-sidenav #sidenav opened=\"false\">\r\n      <!-- BEGIN SCROLLING-CONTENT -->\r\n      <div class=\"scrolling-content\">\r\n        <!-- BEGIN USER-CONTAINER -->\r\n        <header class=\"user-container\">\r\n          <!-- BEGIN AVATAR -->\r\n          <div class=\"avatar-container\">\r\n            <img src=\"../../../static/webapp/assets/user.jpg\" alt=\"Avatar\" class=\"avatar\">\r\n          </div>\r\n          <!-- END AVATAR -->\r\n          <!-- BEGIN NAME-AVATAR-CONTAINER -->\r\n          <div class=\"name-avatar-container\">\r\n            <p>{{ this.username }}</p>\r\n          </div>\r\n          <!-- END NAME-AVATAR-CONTAINER -->\r\n          <!-- BEGIN USER-DROPDOWN-MENU -->\r\n          <div class=\"user-dropdown-menu\">\r\n            <span>{{ this.username }}@xenoptics.com</span>\r\n            <div class=\"mdl-layout-spacer\"></div>\r\n            <button md-button class=\"div-icon\" [mdMenuTriggerFor]=\"menudrop\">\r\n              <md-icon>arrow_drop_down</md-icon>\r\n            </button>\r\n            <md-menu #menudrop=\"mdMenu\">\r\n              <button md-menu-item>\r\n                <md-icon>add</md-icon>\r\n                <span>Add another account...</span>\r\n              </button>\r\n              <button md-menu-item (click)=\"logOut()\">\r\n                <md-icon>remove</md-icon>\r\n                <span>Logout</span>\r\n              </button>\r\n            </md-menu>\r\n          </div>\r\n          <!-- END USER-DROPDOWN-MENU -->\r\n        </header>\r\n        <!-- END USER-CONTAINER -->\r\n        <!-- BEGIN MENU -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"menu-open\" class=\"menu\">\r\n            <div id=\"menu-drop-down\" (click)=\"toggleMenu();\" hidden>\r\n              <a>Menu\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_down</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n            <div id=\"menu-drop-up\" (click)=\"toggleMenu();\">\r\n              <a>Menu\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_up</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"menu-list\" class=\"menu-container-height\">\r\n            <md-list>\r\n              <!-- IF WANT TO ADD LOGO -->\r\n              <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of links\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END MENU -->\r\n        <!-- BEGIN SETTINGS -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"settings-open\" class=\"settings\">\r\n            <div id=\"settings-drop-down\" (click)=\"toggleSettings();\">\r\n              <a>Settings\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_down</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n            <div id=\"settings-drop-up\" (click)=\"toggleSettings();\" hidden>\r\n              <a>Settings\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_up</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"settings-list\" class=\"settings-container-height\" hidden>\r\n            <md-list>\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of settinglinks\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END SETTINGS -->\r\n        <!-- BEGIN DOCUMENT LABEL -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"documents-open\" class=\"document\">\r\n            <div id=\"documents-drop-down\" (click)=\"toggleDocument();\">\r\n              <a>Document\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_down</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n            <div id=\"documents-drop-up\" (click)=\"toggleDocument();\" hidden>\r\n              <a>Document\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_up</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END DOCUMENT LABEL -->\r\n        <!-- BEGIN FOOTER-CONTAINER -->\r\n        <!-- <div class=\"footer-container\"> -->\r\n        <!-- <hr> -->\r\n        <!-- <div class=\"text-center\">\r\n            <span>Help & Feedback</span>\r\n          </div>\r\n        </div> -->\r\n        <!-- END FOOTER-CONTAINER -->\r\n      </div>\r\n      <!-- END SCROLLING-CONTENT -->\r\n    </md-sidenav>\r\n    <!-- END SIDENAV -->\r\n    <!-- BEGIN ROUTER-OUTLET -->\r\n    <router-outlet></router-outlet>\r\n    <!-- END ROUTER-OUTLET -->\r\n  </md-sidenav-container>\r\n  <!-- END SIDE NAV -->\r\n</div>\r\n<!-- END MAIN CONTAINER -->"
 
 /***/ }),
 
@@ -639,11 +629,7 @@ var AppComponent = (function () {
     };
     // LOGOUT
     AppComponent.prototype.logOut = function () {
-        // CALL LOGOUT FUNCTION
-        this.AuthenticationService.logout();
-        // RE ROUTE TO LOGIN
         this.router.navigateByUrl('/login');
-        // MAKE CLICK EVENT TO CLOSE SIDEBAR
         document.getElementById('menu-icon').click();
     };
     // GET USERNAME
@@ -651,6 +637,10 @@ var AppComponent = (function () {
         // SET VARIABLE
         this.user_data = this.UserService.getUsers();
         this.username = this.user_data['username'];
+    };
+    // CLEAR LATEST OPERATION IN DATABASE
+    AppComponent.prototype.clear_latest_operation = function () {
+        this.ApiService.clearLatestOperation();
     };
     return AppComponent;
 }());
@@ -660,7 +650,7 @@ AppComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__["a" /* AuthenticationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* UserService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_api_service__["a" /* ApiService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_authentication_service__["a" /* AuthenticationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* UserService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === "function" && _e || Object])
 ], AppComponent);
 
 var _a, _b, _c, _d, _e;
@@ -693,18 +683,18 @@ var _a, _b, _c, _d, _e;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__server_status_error_server_status_error_component__ = __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts__ = __webpack_require__("../../../../ng2-charts/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable__ = __webpack_require__("../../../../@swimlane/ngx-datatable/release/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__ngx_datatable__ = __webpack_require__("../../../../../src/ngx-datatable.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_hammerjs__ = __webpack_require__("../../../../hammerjs/hammer.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21_hammerjs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services_authentication_service__ = __webpack_require__("../../../../../src/app/services/authentication.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__guards_auth_guard__ = __webpack_require__("../../../../../src/app/_guards/auth.guard.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__current_connection_current_connection_component__ = __webpack_require__("../../../../../src/app/current-connection/current-connection.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__register_register_component__ = __webpack_require__("../../../../../src/app/register/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__services_port_service__ = __webpack_require__("../../../../../src/app/services/port.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__guards_auth_guard__ = __webpack_require__("../../../../../src/app/_guards/auth.guard.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__current_connection_current_connection_component__ = __webpack_require__("../../../../../src/app/current-connection/current-connection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__register_register_component__ = __webpack_require__("../../../../../src/app/register/register.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -715,7 +705,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // ANGULAR MODULE
 
 
- // <-- enable production mode .❨╯°□°❩╯︵┻━┻
+// import { enableProdMode } from '@angular/core'; // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 
 
 
@@ -737,9 +727,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 // Third-Party
 
+// import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
+// import { DatatableRowDetailTemplateDirectiv } from ''
 
 // Services
+
 
 
 
@@ -750,7 +743,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["enableProdMode"])(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
+// enableProdMode(); // <-- enable production mode .❨╯°□°❩╯︵┻━┻
 var AppModule = (function () {
     function AppModule() {
     }
@@ -770,23 +763,23 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_11__port_connection_mobile_port_connection_mobile_component__["a" /* PortConnectionMobileComponent */],
             __WEBPACK_IMPORTED_MODULE_17__page_not_found_page_not_found_component__["a" /* PageNotFoundComponent */],
             __WEBPACK_IMPORTED_MODULE_18__server_status_error_server_status_error_component__["a" /* ServerStatusErrorComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__login_login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_28__current_connection_current_connection_component__["a" /* CurrentConnectionComponent */],
-            __WEBPACK_IMPORTED_MODULE_29__register_register_component__["a" /* RegisterComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__login_login_component__["a" /* LoginComponent */],
+            __WEBPACK_IMPORTED_MODULE_29__current_connection_current_connection_component__["a" /* CurrentConnectionComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__register_register_component__["a" /* RegisterComponent */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["BrowserModule"],
+            __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClientModule */],
             __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
             __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MaterialModule */],
-            __WEBPACK_IMPORTED_MODULE_25__app_routing_module__["a" /* AppRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_26__app_routing_module__["a" /* AppRoutingModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["a" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_cdk_table__["a" /* CdkTableModule */],
-            __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable__["NgxDatatableModule"],
+            __WEBPACK_IMPORTED_MODULE_20__ngx_datatable__["a" /* NgxDatatableStubModule */],
             __WEBPACK_IMPORTED_MODULE_19_ng2_charts__["ChartsModule"]
         ],
-        providers: [__WEBPACK_IMPORTED_MODULE_22__services_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_27__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_23__services_authentication_service__["a" /* AuthenticationService */], __WEBPACK_IMPORTED_MODULE_24__services_user_service__["a" /* UserService */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_22__services_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_28__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_23__services_authentication_service__["a" /* AuthenticationService */], __WEBPACK_IMPORTED_MODULE_24__services_user_service__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_25__services_port_service__["a" /* PortService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -798,7 +791,7 @@ AppModule = __decorate([
 /***/ "../../../../../src/app/current-connection/current-connection.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-ITEM -->\n  <div class=\"flex-item\">\n    <!-- BEGIN TABLE-CONTAINER  -->\n    <div class=\"table-container\">\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\n        (keyup)='updateFilter($event)' />\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n        <!-- BEGIN EAST PORT COLUMN -->\n        <ngx-datatable-column name=\"East\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END EAST PORT COLUMN -->\n        <!-- BEGIN WEST PORT COLUMN -->\n        <ngx-datatable-column name=\"West\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END WEST PORT COLUMN -->\n        <!-- BEGIN DATE COLUMN  -->\n        <ngx-datatable-column name=\"Date\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END DATE COLUMN -->\n      </ngx-datatable>\n      <!-- END TABLE -->\n    </div>\n    <!-- END SEARCH FILTER -->\n  </div>\n  <!-- END FLEX-ITEM -->\n</div>\n<!-- END FLEX-CONTAINER -->\n<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-FOOTER -->\n  <div class=\"flex-fix-padding\" align=\"center\">\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\n  </div>\n  <!-- END FLEX-FOOTER -->\n</div>\n<!-- END FLEX-CONTAINER -->"
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-ITEM -->\n  <div class=\"flex-item\">\n    <!-- BEGIN TABLE-CONTAINER  -->\n    <div class=\"table-container\">\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'/>\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n        [rowHeight]=\"'auto'\" [limit]=\"100\" [rows]='rows'>\n        <!-- BEGIN EAST PORT COLUMN -->\n        <ngx-datatable-column name=\"East\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END EAST PORT COLUMN -->\n        <!-- BEGIN WEST PORT COLUMN -->\n        <ngx-datatable-column name=\"West\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END WEST PORT COLUMN -->\n        <!-- BEGIN DATE COLUMN  -->\n        <ngx-datatable-column name=\"Date\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END DATE COLUMN -->\n      </ngx-datatable>\n      <!-- END TABLE -->\n    </div>\n    <!-- END SEARCH FILTER -->\n  </div>\n  <!-- END FLEX-ITEM -->\n</div>\n<!-- END FLEX-CONTAINER -->\n<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-FOOTER -->\n  <div class=\"flex-fix-padding\" align=\"center\">\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" type=\"button\">Save</button>\n  </div>\n  <!-- END FLEX-FOOTER -->\n</div>\n<!-- END FLEX-CONTAINER -->"
 
 /***/ }),
 
@@ -973,8 +966,6 @@ var LoginComponent = (function () {
     LoginComponent.prototype.ngOnInit = function () {
         // check current user
         this.checkCurrentUser();
-        // reset login status
-        // this.authenticationService.logout();
     };
     // VALIDATE CURRENT USER
     LoginComponent.prototype.checkCurrentUser = function () {
@@ -1112,7 +1103,7 @@ var _a;
 /***/ "../../../../../src/app/port-connection-mobile/port-connection-mobile.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FIRST-SECTION -->\r\n<div class=\"section first-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n            <div class=\"temperature-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>26 °C</span>\r\n                  <p>78.8 °C</p>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Temperature</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../../static/webapp/temp-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END TEMPERATURE-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN HUMIDITY-CONTAINER -->\r\n            <div class=\"humidity-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>50%</span>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Humidity</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-1 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../../static/webapp/humidity-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END HUMIDITY-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN TIME-CONTAINER -->\r\n            <div class=\"time-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>54 sec.</span>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Avg times</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-1 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../../static/webapp/timer-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END TIME-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END FIRST-SECTION -->\r\n\r\n<!-- BEGIN EAST-BANNER -->\r\n<div class=\"section east-banner\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n      <!-- BEGIN COLUMN -->\r\n      <div class=\"column\">\r\n        <md-card>East port table</md-card>\r\n      </div>\r\n      <!-- END COLUMN -->\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END EAST-BANNER -->\r\n\r\n<!-- BEGIN SECOND-SECTION -->\r\n<div class=\"section second-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN ONE-HALF COLUMN -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN LEFT-TABLE -->\r\n        <div class=\"left-table\">\r\n          <div *ngFor=\"let row of eportschunk_left_table\">\r\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n              <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n                  <span [mdTooltip]=\"pushEastNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n              </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END LEFT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUMN -->\r\n\r\n      <!-- BEGIN ONE-HALF COLUMN -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN RIGHT-TABLE -->\r\n        <div class=\"right-table\">\r\n          <div *ngFor=\"let row of eportschunk_right_table\">\r\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushEastNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END RIGHT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUMN -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END SECOND-SECTION -->\r\n\r\n<!-- BEGIN WEST-BANNER -->\r\n<div class=\"section west-banner\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n      <!-- BEGIN COLUMN -->\r\n      <div class=\"column\">\r\n        <md-card>West port table</md-card>\r\n      </div>\r\n      <!-- END COLUMN -->\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END WEST-BANNER -->\r\n\r\n<!-- BEGIN THIRD-SECTION -->\r\n<div class=\"section third-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN LEFT-TABLE -->\r\n        <div class=\"left-table\">\r\n          <div *ngFor=\"let row of wportschunk_left_table\">\r\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushWestNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END LEFT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUNB -->\r\n\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN RIGHT-TABLE -->\r\n        <div class=\"right-table\">\r\n          <div *ngFor=\"let row of wportschunk_right_table\">\r\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushWestNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END RIGHT-TABLE -->\r\n      </div>\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END THIRD-SECTION -->\r\n\r\n<!-- BEGIN FOURTH-SECTION -->\r\n<div class=\"section fourth-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN TWELVE COLUMNS -->\r\n      <div class=\"twelve columns\">\r\n        <div class=\"first-container\" align=\"center\">\r\n          <div class=\"button-container\">\r\n            <div class=\"button-connect-container\">\r\n              <div class=\"item-1\">\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n              </div>\r\n              <div class=\"item-2\">\r\n                <button md-raised-button id=\"Connect\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                  disabled>Connect</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <!-- END TWELVE COLUMNS -->\r\n\r\n      <!-- BEGIN TWELVE COLUMNS -->\r\n      <div class=\"twelve columns\">\r\n        <!-- BEGIN FIRST-CONTAINER -->\r\n        <div class=\"first-container\" align=\"center\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-DISCONNECT-CONTAINER -->\r\n            <div class=\"button-disconnect-container\">\r\n              <!-- BEGIN ITEM-1 -->\r\n              <div class=\"item-1\">\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n              </div>\r\n              <!-- END ITEM-1 -->\r\n              <!-- BEGIN ITEM-2 -->\r\n              <div class=\"item-2\">\r\n                <button md-raised-button id=\"Disconnect\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                  disabled>Disconnect</button>\r\n              </div>\r\n              <!-- END ITEM-2 -->\r\n            </div>\r\n            <!-- END BUTTON-DISCONNECT-CONTAINER -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END FIRST-CONTAINER -->\r\n      </div>\r\n      <!-- END TWELVE COLUMNS -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN SIX COLUMNS -->\r\n      <div class=\"six columns\">\r\n        <!-- BEGIN SECOND-CONTAINER -->\r\n        <div class=\"second-container\">\r\n          <div id=\"error-dialog\" class=\"hide\">\r\n            <md-card class=\"Blink\">{{ error_message }}</md-card>\r\n          </div>\r\n        </div>\r\n        <!-- END SECOND-CONTAINER -->\r\n      </div>\r\n      <!-- END SIX COLUMNS -->\r\n\r\n      <!-- BEGIN SIX COLUMS -->\r\n      <div class=\"six columns\">\r\n        <!-- BEGIN SECOND-CONTAINER -->\r\n        <div class=\"second-container\"></div>\r\n        <!-- END SECOND-CONTAINER -->\r\n      </div>\r\n      <!-- END SIX COLUMS -->\r\n    </div>\r\n    <!-- END ROW -->\r\n\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END FOURTH-SECTION -->"
+module.exports = "<!-- BEGIN FIRST-SECTION -->\r\n<div class=\"section first-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n            <div class=\"temperature-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>26 °C</span>\r\n                  <p>78.8 °C</p>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Temperature</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../../static/webapp/assets/temp-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END TEMPERATURE-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN HUMIDITY-CONTAINER -->\r\n            <div class=\"humidity-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>50%</span>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Humidity</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-1 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../../static/webapp/assets/humidity-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END HUMIDITY-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n      <!-- BEGIN FOUR COLUMNS -->\r\n      <div class=\"four columns\">\r\n        <!-- BEGIN CONTAINER -->\r\n        <div class=\"container\">\r\n          <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n          <div class=\"flex-item-container\">\r\n            <!-- BEGIN TIME-CONTAINER -->\r\n            <div class=\"time-container\">\r\n              <!-- BEGIN FLEX-ITEM-1 -->\r\n              <div class=\"flex-item-1\">\r\n                <!-- BEGIN CONTENT-1 -->\r\n                <div class=\"content-1\">\r\n                  <span>54 sec.</span>\r\n                </div>\r\n                <!-- END CONTENT-1 -->\r\n                <!-- BEGIN CONTENT-2 -->\r\n                <div class=\"content-2\">\r\n                  <span>Avg times</span>\r\n                </div>\r\n                <!-- END CONTENT-2 -->\r\n              </div>\r\n              <!-- END FLEX-ITEM-1 -->\r\n              <!-- BEGIN FLEX-ITEM-2 -->\r\n              <div class=\"flex-item-2\">\r\n                <img alt=\"Temperature-icon\" src=\"../../../static/webapp/assets/timer-icon.png\">\r\n              </div>\r\n              <!-- END FLEX-ITEM-2 -->\r\n            </div>\r\n            <!-- END TIME-CONTAINER -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-CONTAINER -->\r\n        </div>\r\n        <!-- END CONTAINER -->\r\n      </div>\r\n      <!-- END FOUR COLUMNS -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END FIRST-SECTION -->\r\n\r\n<!-- BEGIN EAST-BANNER -->\r\n<div class=\"section east-banner\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n      <!-- BEGIN COLUMN -->\r\n      <div class=\"column\">\r\n        <md-card>East port table</md-card>\r\n      </div>\r\n      <!-- END COLUMN -->\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END EAST-BANNER -->\r\n\r\n<!-- BEGIN SECOND-SECTION -->\r\n<div class=\"section second-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN ONE-HALF COLUMN -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN LEFT-TABLE -->\r\n        <div class=\"left-table\">\r\n          <div *ngFor=\"let row of eportschunk_left_table\">\r\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n              <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n                  <span [mdTooltip]=\"pushEastNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n              </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END LEFT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUMN -->\r\n\r\n      <!-- BEGIN ONE-HALF COLUMN -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN RIGHT-TABLE -->\r\n        <div class=\"right-table\">\r\n          <div *ngFor=\"let row of eportschunk_right_table\">\r\n            <div id=\"{{ column }}\" class=\"East\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushEastNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END RIGHT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUMN -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END SECOND-SECTION -->\r\n\r\n<!-- BEGIN WEST-BANNER -->\r\n<div class=\"section west-banner\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n      <!-- BEGIN COLUMN -->\r\n      <div class=\"column\">\r\n        <md-card>West port table</md-card>\r\n      </div>\r\n      <!-- END COLUMN -->\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END WEST-BANNER -->\r\n\r\n<!-- BEGIN THIRD-SECTION -->\r\n<div class=\"section third-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN LEFT-TABLE -->\r\n        <div class=\"left-table\">\r\n          <div *ngFor=\"let row of wportschunk_left_table\">\r\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushWestNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END LEFT-TABLE -->\r\n      </div>\r\n      <!-- END ONE-HALF COLUNB -->\r\n\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n      <div class=\"one-half column\">\r\n        <!-- BEGIN RIGHT-TABLE -->\r\n        <div class=\"right-table\">\r\n          <div *ngFor=\"let row of wportschunk_right_table\">\r\n            <div id=\"{{ column }}\" class=\"West\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\" *ngFor=\"let column of row\">\r\n                <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n                    <span [mdTooltip]=\"pushWestNote(column)\" mdTooltipPosition=\"below\">{{ column }}</span>\r\n                </span>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END RIGHT-TABLE -->\r\n      </div>\r\n      <!-- BEGIN ONE-HALF COLUNB -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END THIRD-SECTION -->\r\n\r\n<!-- BEGIN FOURTH-SECTION -->\r\n<div class=\"section fourth-section\">\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN TWELVE COLUMNS -->\r\n      <div class=\"twelve columns\">\r\n        <div class=\"first-container\" align=\"center\">\r\n          <div class=\"button-container\">\r\n            <div class=\"button-connect-container\">\r\n              <div class=\"item-1\">\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n              </div>\r\n              <div class=\"item-2\">\r\n                <button md-raised-button id=\"Connect\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                  disabled>Connect</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <!-- END TWELVE COLUMNS -->\r\n\r\n      <!-- BEGIN TWELVE COLUMNS -->\r\n      <div class=\"twelve columns\">\r\n        <!-- BEGIN FIRST-CONTAINER -->\r\n        <div class=\"first-container\" align=\"center\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-DISCONNECT-CONTAINER -->\r\n            <div class=\"button-disconnect-container\">\r\n              <!-- BEGIN ITEM-1 -->\r\n              <div class=\"item-1\">\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n              </div>\r\n              <!-- END ITEM-1 -->\r\n              <!-- BEGIN ITEM-2 -->\r\n              <div class=\"item-2\">\r\n                <button md-raised-button id=\"Disconnect\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                  disabled>Disconnect</button>\r\n              </div>\r\n              <!-- END ITEM-2 -->\r\n            </div>\r\n            <!-- END BUTTON-DISCONNECT-CONTAINER -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END FIRST-CONTAINER -->\r\n      </div>\r\n      <!-- END TWELVE COLUMNS -->\r\n\r\n    </div>\r\n    <!-- END ROW -->\r\n\r\n    <!-- BEGIN ROW -->\r\n    <div class=\"row\">\r\n\r\n      <!-- BEGIN SIX COLUMNS -->\r\n      <div class=\"six columns\">\r\n        <!-- BEGIN SECOND-CONTAINER -->\r\n        <div class=\"second-container\">\r\n          <div id=\"error-dialog\" class=\"hide\">\r\n            <md-card class=\"Blink\">{{ error_message }}</md-card>\r\n          </div>\r\n        </div>\r\n        <!-- END SECOND-CONTAINER -->\r\n      </div>\r\n      <!-- END SIX COLUMNS -->\r\n\r\n      <!-- BEGIN SIX COLUMS -->\r\n      <div class=\"six columns\">\r\n        <!-- BEGIN SECOND-CONTAINER -->\r\n        <div class=\"second-container\"></div>\r\n        <!-- END SECOND-CONTAINER -->\r\n      </div>\r\n      <!-- END SIX COLUMS -->\r\n    </div>\r\n    <!-- END ROW -->\r\n\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n</div>\r\n<!-- END FOURTH-SECTION -->"
 
 /***/ }),
 
@@ -1232,7 +1223,7 @@ var PortConnectionMobileComponent = (function () {
         // CHECK STATUS EVERY 5 SEC.
         this.timerInterval = setInterval(function () {
             _this.checkStatus();
-        }, 1500);
+        }, 5000);
     };
     PortConnectionMobileComponent.prototype.ngOnDestroy = function () {
         clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
@@ -1781,7 +1772,7 @@ var _a, _b;
 /***/ "../../../../../src/app/port-connection/port-connection.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN HEADER-CONTAINER -->\r\n<div class=\"header-container\" align=\"center\">\r\n  <!-- BEGIN CONTAINER-CONTENT -->\r\n  <div class=\"container-content\" align=\"center\">\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n        <div class=\"temperature-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>26 °C</span>\r\n              <p>78.8 °F</p>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Temperature</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/temp-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TEMPERATURE-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN HUMIDITY-CONTAINER -->\r\n        <div class=\"humidity-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>50%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Humidity</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/humidity-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END HUMIDITY-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN ORDER-CONTAINER -->\r\n        <div class=\"order-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN-CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>65%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN-CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Orders Completed</span>\r\n            </div>\r\n            <!-- END-CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/oder-icon2.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END ORDER-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TIME-CONTAINER -->\r\n        <div class=\"time-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>{{ this.operation_task_time }}</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Operations times</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/timer-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TIME-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n  </div>\r\n  <!-- END CONTAINER-CONTENT -->\r\n</div>\r\n<!-- END HEADER-CONTAINER -->\r\n\r\n<!-- BEGIN TABLE -->\r\n<!-- BEGIN SECTION GROUP -->\r\n<div class=\"section group\">\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- EAST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-1 -->\r\n    <table class=\"table-container-1\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of eportschunk\">\r\n          <td id=\"{{ column }}\" class=\"East td-style\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushEastNote(column)\" [mdTooltipPosition]=\"etooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- END TABLE-CONTAINER-1 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- WEST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n    <table class=\"table-container-2\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of wportschunk\">\r\n          <td id=\"{{ column }}\" class=\"West td-style\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushWestNote(column)\" [mdTooltipPosition]=\"wtooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n</div>\r\n<!-- END SECTION GROUP -->\r\n<!-- END TABLE -->\r\n\r\n<!-- BEGIN FOOTER -->\r\n<div class=\"footer-container\">\r\n  <!-- BEGIN FLEX-CONTAINER-1 -->\r\n  <div class=\"flex-container-1\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ERROR-DIALOG -->\r\n        <div id=\"error-dialog\" [ngClass]=\"check_status_for_hide_dialog()\">\r\n          <md-card class=\"Blink\">\r\n            <p>{{ error_message }}</p>\r\n          </md-card>\r\n        </div>\r\n        <!-- END ERROR-DIALOG -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-1 -->\r\n  <!-- BEGIN FLEX-CONTAINER-2 -->\r\n  <div class=\"flex-container-2\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container fix-width\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- <div class=\"button-container-item-1\"> -->\r\n              <!-- BEGIN TOOLTIP -->\r\n              <!-- <div class=\"tooltip\"> -->\r\n                <!-- BEGIN CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- <div class=\"cancel-button-circle Blink\"></div> -->\r\n                <!-- END CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <!-- <span class=\"tooltiptext\">Hint! \"c\" means continue robot operations. <br> \"s\" means restart robot operations. <br> \"l\" means reload robot operations.</span> -->\r\n                <!-- END TOOLTIPTEXT -->\r\n              <!-- </div> -->\r\n              <!-- END TOOLTIP -->\r\n            <!-- </div> -->\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Cancel\" class=\"cancel-button-width\" (click)=\"[continueRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>autorenew</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Restart\" class=\"cancel-button-width\" (click)=\"[restartRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>replay</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Reload\" class=\"cancel-button-width\" (click)=\"[reloadRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>clear</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"break-button-circle Blink\"></div>\r\n                <!-- END BREAK-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! debug button will available in debug mode.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONTINUE BUTTON -->\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" (click)=\"[postDebug(), force_disable_continue_button()]\" color=\"primary\" [attr.disabled]=\"this.status !== 'break' ? 'break' : null\"\r\n                disabled>Continue</button>\r\n              <!-- END CONTINUE BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! connect button will available when select two side available ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONNECT BUTTON -->\r\n              <button md-raised-button id=\"Connect\" class=\"button-width\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                disabled>Connect</button>\r\n              <!-- END CONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! disconnect button will available when select correct pair of connected ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN DISCONNECT BUTTON -->\r\n              <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                disabled>Disconnect</button>\r\n              <!-- END DISCONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n      <!-- BEGIN ITEM-2 -->\r\n      <div class=\"item-2\">\r\n        <!-- BEGIN SUB-ITEM -->\r\n        <div class=\"sub-item\" align=\"center\">\r\n          <!-- BEGIN INPUT-CONTAINER -->\r\n          <div id=\"input-container\" class=\"align-center\" hidden>\r\n            <!-- BEGIN INPUT DIV -->\r\n            <div style=\"transform: translateY(-20%);\">\r\n              <!-- BEGIN STOP INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"stops\" placeholder=\"Stops :\" value=\"stops\" [(ngModel)]=\"stops\" [ngClass]=\"clearValue(stops)\" pattern=\"[0-9,]{1,100}\"\r\n                  [attr.disabled]=\"this.disable_stops_input == true ? false : null\" hidden>\r\n              </md-input-container>\r\n              <!-- END STOP INPUT -->\r\n              <!-- BEGIN SEQUENCE INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"sequence\" placeholder=\"Sequence :\" value=\"sequence\" [(ngModel)]=\"sequence\" [attr.disabled]=\"this.disable_stops_input == true\"\r\n                  hidden>\r\n              </md-input-container>\r\n              <!-- END SEQUENCE INPUT -->\r\n            </div>\r\n            <!-- END INPUT DIV -->\r\n          </div>\r\n          <!-- END INPUT CONTAINER -->\r\n        </div>\r\n        <!-- END SUB-ITEM -->\r\n      </div>\r\n      <!-- END ITEM-2 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n    <!-- BEGIN FLEX-ITEM-2 -->\r\n    <div class=\"flex-item-2\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\" align=\"center\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <md-chip-list>\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <div class=\"detail-container-connected-item-1\">\r\n                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->\r\n                  <div class=\"connected-circle Blink\"></div>\r\n                  <!-- END CONNECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n                <div class=\"detail-container-connected-item-2\">\r\n                  <p>Connected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Green color means the port that connected.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <div class=\"detail-container-break-item-1\">\r\n                  <!-- BEGIN BREAK-CIRCLE BLINK -->\r\n                  <div class=\"break-circle Blink\"></div>\r\n                  <!-- END BREAK-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n                <div class=\"detail-container-break-item-2\">\r\n                  <p>Break</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <span class=\"tooltiptext\">Yellow color means the port that stop in current sequence.</span>\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <div class=\"detail-container-pending-item-1\">\r\n                  <!-- BEGIN PENDING-CIRCLE BLINK -->\r\n                  <div class=\"pending-circle Blink\"></div>\r\n                  <!-- END PENDING-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n                <div class=\"detail-container-pending-item-2\">\r\n                  <p>Pending</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Red color means the port that processing or pending.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <div class=\"detail-container-pair-item-1\">\r\n                  <!-- BEGIN PAIR-CIRCLE BLINK -->\r\n                  <div class=\"pair-circle Blink\"></div>\r\n                  <!-- END PAIR-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n                <div class=\"detail-container-pair-item-2\">\r\n                  <p>Pair</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show pairs of ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <div class=\"detail-container-selected-item-1\">\r\n                  <!-- BEGIN SELECTED-CIRCLE BLINK -->\r\n                  <div class=\"selected-circle Blink\"></div>\r\n                  <!-- END SELECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n                <div class=\"detail-container-selected-item-2\">\r\n                  <p>Selected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show current selected ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n          </md-chip-list>\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-2 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-2 -->\r\n  <!-- BEGIN FLEX-CONTAINER-3 -->\r\n  <div class=\"flex-container-3\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n      <div class=\"flex-item-1-container-shadow\">\r\n        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->\r\n        <md-slide-toggle id=\"toggleDebugButton\" class=\"bt-margin-left\" (click)=\"toggleDebugMode()\">Debug Mode</md-slide-toggle>\r\n        <!-- END DEBUG MODE TOGGLE BUTTON -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-3 -->\r\n</div>\r\n<!-- END FOOTER -->"
+module.exports = "<!-- BEGIN HEADER-CONTAINER -->\r\n<div class=\"header-container\" align=\"center\">\r\n  <!-- BEGIN CONTAINER-CONTENT -->\r\n  <div class=\"container-content\" align=\"center\">\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n        <div class=\"temperature-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>26 °C</span>\r\n              <p>78.8 °F</p>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Temperature</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/temp-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TEMPERATURE-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN HUMIDITY-CONTAINER -->\r\n        <div class=\"humidity-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>50%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Humidity</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/humidity-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END HUMIDITY-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN ORDER-CONTAINER -->\r\n        <div class=\"order-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN-CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>65%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN-CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Orders Completed</span>\r\n            </div>\r\n            <!-- END-CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/oder-icon2.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END ORDER-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TIME-CONTAINER -->\r\n        <div class=\"time-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>{{ this.operation_task_time }}</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Operations times</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/timer-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TIME-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n  </div>\r\n  <!-- END CONTAINER-CONTENT -->\r\n</div>\r\n<!-- END HEADER-CONTAINER -->\r\n\r\n<!-- BEGIN TABLE -->\r\n<!-- BEGIN SECTION GROUP -->\r\n<div class=\"section group\">\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- EAST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-1 -->\r\n    <table class=\"table-container-1\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of eportschunk\">\r\n          <td id=\"{{ column }}\" class=\"East td-style\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"eastport_tooltip(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushEastNote(column)\" [mdTooltipPosition]=\"eastport_tooltip_postion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- END TABLE-CONTAINER-1 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- WEST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n    <table class=\"table-container-2\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of wportschunk\">\r\n          <td id=\"{{ column }}\" class=\"West td-style\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"westport_tooltip(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushWestNote(column)\" [mdTooltipPosition]=\"westport_tooltip_postion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n</div>\r\n<!-- END SECTION GROUP -->\r\n<!-- END TABLE -->\r\n\r\n<!-- BEGIN FOOTER -->\r\n<div class=\"footer-container\">\r\n  <!-- BEGIN FLEX-CONTAINER-1 -->\r\n  <div class=\"flex-container-1\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ERROR-DIALOG -->\r\n        <div id=\"error-dialog\" [ngClass]=\"check_status_for_hide_dialog()\">\r\n          <md-card class=\"Blink\">\r\n            <p>{{ error_message }}</p>\r\n          </md-card>\r\n        </div>\r\n        <!-- END ERROR-DIALOG -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-1 -->\r\n  <!-- BEGIN FLEX-CONTAINER-2 -->\r\n  <div class=\"flex-container-2\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container fix-width\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- <div class=\"button-container-item-1\"> -->\r\n              <!-- BEGIN TOOLTIP -->\r\n              <!-- <div class=\"tooltip\"> -->\r\n                <!-- BEGIN CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- <div class=\"cancel-button-circle Blink\"></div> -->\r\n                <!-- END CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <!-- <span class=\"tooltiptext\">Hint! \"c\" means continue robot operations. <br> \"s\" means restart robot operations. <br> \"l\" means reload robot operations.</span> -->\r\n                <!-- END TOOLTIPTEXT -->\r\n              <!-- </div> -->\r\n              <!-- END TOOLTIP -->\r\n            <!-- </div> -->\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Cancel\" class=\"cancel-button-width\" (click)=\"[continueRobotOperation(), force_disable_continue_mode_buttons()]\" color=\"primary\" [attr.disabled]=\"this.validate_to_enable_continue_mode_buttons === false ? true : null\" disabled>\r\n                <md-icon>autorenew</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Restart\" class=\"cancel-button-width\" (click)=\"[restart_robot_operation(), force_disable_continue_mode_buttons()]\" color=\"primary\" [attr.disabled]=\"this.validate_to_enable_continue_mode_buttons === false ? true : null\" disabled>\r\n                <md-icon>replay</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Reload\" class=\"cancel-button-width\" (click)=\"[reload_robot_operation(), force_disable_continue_mode_buttons()]\" color=\"primary\" [attr.disabled]=\"this.validate_to_enable_continue_mode_buttons === false ? true : null\" disabled>\r\n                <md-icon>clear</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"break-button-circle Blink\"></div>\r\n                <!-- END BREAK-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! debug button will available in debug mode.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONTINUE BUTTON -->\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" (click)=\"[postDebug(), force_disable_continue_button()]\" color=\"primary\" [attr.disabled]=\"this.status !== 'break' ? 'break' : null\"\r\n                disabled>Continue</button>\r\n              <!-- END CONTINUE BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! connect button will available when select two side available ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONNECT BUTTON -->\r\n              <button md-raised-button id=\"Connect\" class=\"button-width\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                disabled>Connect</button>\r\n              <!-- END CONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! disconnect button will available when select correct pair of connected ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN DISCONNECT BUTTON -->\r\n              <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                disabled>Disconnect</button>\r\n              <!-- END DISCONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n      <!-- BEGIN ITEM-2 -->\r\n      <div class=\"item-2\">\r\n        <!-- BEGIN SUB-ITEM -->\r\n        <div class=\"sub-item\" align=\"center\">\r\n          <!-- BEGIN INPUT-CONTAINER -->\r\n          <div id=\"input-container\" class=\"align-center\" hidden>\r\n            <!-- BEGIN INPUT DIV -->\r\n            <div style=\"transform: translateY(-20%);\">\r\n              <!-- BEGIN STOP INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"stops\" placeholder=\"Stops :\" value=\"stops\" [(ngModel)]=\"stops\" [ngClass]=\"validate_stops_value_to_clear_stops_value(stops)\" pattern=\"[0-9,]{1,100}\"\r\n                  [attr.disabled]=\"this.disable_stops_input == true ? false : null\" hidden>\r\n              </md-input-container>\r\n              <!-- END STOP INPUT -->\r\n              <!-- BEGIN SEQUENCE INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"sequence\" placeholder=\"Sequence :\" value=\"sequence\" [(ngModel)]=\"sequence\" [attr.disabled]=\"this.disable_stops_input == true\"\r\n                  hidden>\r\n              </md-input-container>\r\n              <!-- END SEQUENCE INPUT -->\r\n            </div>\r\n            <!-- END INPUT DIV -->\r\n          </div>\r\n          <!-- END INPUT CONTAINER -->\r\n        </div>\r\n        <!-- END SUB-ITEM -->\r\n      </div>\r\n      <!-- END ITEM-2 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n    <!-- BEGIN FLEX-ITEM-2 -->\r\n    <div class=\"flex-item-2\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\" align=\"center\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <md-chip-list>\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <div class=\"detail-container-connected-item-1\">\r\n                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->\r\n                  <div class=\"connected-circle Blink\"></div>\r\n                  <!-- END CONNECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n                <div class=\"detail-container-connected-item-2\">\r\n                  <p>Connected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Green color means the port that connected.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <div class=\"detail-container-break-item-1\">\r\n                  <!-- BEGIN BREAK-CIRCLE BLINK -->\r\n                  <div class=\"break-circle Blink\"></div>\r\n                  <!-- END BREAK-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n                <div class=\"detail-container-break-item-2\">\r\n                  <p>Break</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <span class=\"tooltiptext\">Yellow color means the port that stop in current sequence.</span>\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <div class=\"detail-container-pending-item-1\">\r\n                  <!-- BEGIN PENDING-CIRCLE BLINK -->\r\n                  <div class=\"pending-circle Blink\"></div>\r\n                  <!-- END PENDING-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n                <div class=\"detail-container-pending-item-2\">\r\n                  <p>Pending</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Red color means the port that processing or pending.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <div class=\"detail-container-pair-item-1\">\r\n                  <!-- BEGIN PAIR-CIRCLE BLINK -->\r\n                  <div class=\"pair-circle Blink\"></div>\r\n                  <!-- END PAIR-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n                <div class=\"detail-container-pair-item-2\">\r\n                  <p>Pair</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show pairs of ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <div class=\"detail-container-selected-item-1\">\r\n                  <!-- BEGIN SELECTED-CIRCLE BLINK -->\r\n                  <div class=\"selected-circle Blink\"></div>\r\n                  <!-- END SELECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n                <div class=\"detail-container-selected-item-2\">\r\n                  <p>Selected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show current selected ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n          </md-chip-list>\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-2 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-2 -->\r\n  <!-- BEGIN FLEX-CONTAINER-3 -->\r\n  <div class=\"flex-container-3\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n      <div class=\"flex-item-1-container-shadow\">\r\n        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->\r\n        <md-slide-toggle id=\"toggleDebugButton\" class=\"bt-margin-left\" (click)=\"toggleDebugMode()\">Debug Mode</md-slide-toggle>\r\n        <!-- END DEBUG MODE TOGGLE BUTTON -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-3 -->\r\n</div>\r\n<!-- END FOOTER -->"
 
 /***/ }),
 
@@ -1875,8 +1866,6 @@ var PortConnectionComponent = (function () {
     }
     PortConnectionComponent.prototype.ngOnInit = function () {
         var _this = this;
-        // CHECK SERVER STATUS
-        this.check_server_status();
         // VERIFY USER
         this.verify_user();
         // DEVICE DETECT
@@ -1888,7 +1877,9 @@ var PortConnectionComponent = (function () {
         // CHECK STATUS EVERY 5 SEC.
         this.timerInterval = setInterval(function () {
             _this.checkStatus();
-        }, 5027);
+            // CHECK SERVER STATUS
+            _this.check_server_status();
+        }, 5000);
     };
     PortConnectionComponent.prototype.ngOnDestroy = function () {
         clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
@@ -1973,9 +1964,9 @@ var PortConnectionComponent = (function () {
                 _this.unselectable_table = false; // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
                 _this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
                 _this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
-                document.getElementById('error-dialog').classList.add('hide'); // <-- remove class hide
                 _this.disabled_continue_mode_all_button = false; // LOCK ALL CONTINUE MODE BUTTONS
-                _this.get_lastest_task_time(); // GET AVERAGE LASTEST TASK TIME
+                document.getElementById('error-dialog').classList.add('hide'); // <-- remove class hide
+                _this.get_latest_operation_task_time(); // GET AVERAGE LASTEST TASK TIME
                 // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
             }
             else if (_this.status === 'break' || _this.status === 'pending' || _this.status === 'started') {
@@ -2036,8 +2027,8 @@ var PortConnectionComponent = (function () {
     // GET EASTPORT ID ON CLICK
     PortConnectionComponent.prototype.setEastID = function (eastID) {
         this.selectedEastPortID = eastID; // SET EASTPORT ID
-        this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED EAST PORT
         localStorage.setItem('selectedEastPortID', JSON.stringify(eastID)); // SET LOCALSTORAGE VALUE OF selectedEastPortID
+        this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED EAST PORT
         console.log('Current East Port :', this.selectedEastPortID);
         // WHEN CLICK ON CONNECTED PORT
         if (document.getElementById(eastID).classList.contains('connected')) {
@@ -2331,6 +2322,10 @@ var PortConnectionComponent = (function () {
             var east_td = document.getElementsByClassName('West');
             var west_td = document.getElementsByClassName('East');
             for (var i = 0; i < 144; i++) {
+                if (_this.all_east[0] === undefined) {
+                    console.log('Element are not ready !');
+                    return;
+                }
                 _this.all_east[i].classList.remove('connected', 'pending', 'break');
                 _this.all_west[i].classList.remove('connected', 'pending', 'break');
             }
@@ -2370,7 +2365,7 @@ var PortConnectionComponent = (function () {
         });
     };
     // CLEAR LOCAL STORAGE STOPS VALUE
-    PortConnectionComponent.prototype.clearValue = function (stops) {
+    PortConnectionComponent.prototype.validate_stops_value_to_clear_stops_value = function (stops) {
         // CLEAR STOPS LOCALSTORAGE VALUE
         if (stops === undefined || stops === null || stops === '') {
             stops = null;
@@ -2381,14 +2376,8 @@ var PortConnectionComponent = (function () {
             this.disabled_connect_button = true;
         }
     };
-    // TEST CONSOLE.LOG LOCAL STORAGE VALUE
-    PortConnectionComponent.prototype.clear = function () {
-        var selectedEastPortID = localStorage.getItem('selectedEastPortID');
-        var selectedWestPortID = localStorage.getItem('selectedWestPortID');
-        console.log(selectedEastPortID, selectedWestPortID, this.stops);
-    };
-    // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
-    PortConnectionComponent.prototype.tooltipEast = function (EastID) {
+    // PUSH CONNECTED PORT TO EAST PORT TOOLTIP
+    PortConnectionComponent.prototype.eastport_tooltip = function (EastID) {
         for (var _i = 0, _a = Object.keys(this.pair); _i < _a.length; _i++) {
             var i = _a[_i];
             var east = 'E' + this.pair[i].east;
@@ -2398,8 +2387,8 @@ var PortConnectionComponent = (function () {
             }
         }
     };
-    // PUSH CONNECTED PORT OF WEST TO WEST TOOLTIP
-    PortConnectionComponent.prototype.tooltipWest = function (WestID) {
+    // PUSH CONNECTED PORT TO WEST PORT TOOLTIP
+    PortConnectionComponent.prototype.westport_tooltip = function (WestID) {
         for (var _i = 0, _a = Object.keys(this.pair); _i < _a.length; _i++) {
             var i = _a[_i];
             var east = 'E' + this.pair[i].east;
@@ -2410,7 +2399,7 @@ var PortConnectionComponent = (function () {
         }
     };
     // CHANGE POSITION OF SECOND TOOLTIP
-    PortConnectionComponent.prototype.etooltipPostion = function (EastID) {
+    PortConnectionComponent.prototype.eastport_tooltip_postion = function (EastID) {
         // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
         for (var _i = 0, _a = Object.keys(this.pair); _i < _a.length; _i++) {
             var i = _a[_i];
@@ -2423,7 +2412,7 @@ var PortConnectionComponent = (function () {
         return 'above';
     };
     // CHANGE POSITION OF SECOND TOOLTIP
-    PortConnectionComponent.prototype.wtooltipPostion = function (WestID) {
+    PortConnectionComponent.prototype.westport_tooltip_postion = function (WestID) {
         // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
         for (var _i = 0, _a = Object.keys(this.pair); _i < _a.length; _i++) {
             var i = _a[_i];
@@ -2437,8 +2426,8 @@ var PortConnectionComponent = (function () {
     };
     // TOGGLE DEBUG BUTTON
     PortConnectionComponent.prototype.toggleDebugMode = function () {
-        __WEBPACK_IMPORTED_MODULE_4_jquery__('#stops, #sequence, #input-container').toggle();
         this.debugMode = !this.debugMode;
+        __WEBPACK_IMPORTED_MODULE_4_jquery__('#stops, #sequence, #input-container').toggle();
         console.log('toggleDebugMode ' + this.debugMode);
     };
     // DISABLE NOT AVAILABLE EAST PORT
@@ -2454,17 +2443,17 @@ var PortConnectionComponent = (function () {
         var message_length = this.error_message.length; // <-- set message length
         // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
         if (message_length <= 30) {
-            var card = document.getElementsByTagName('md-card');
-            card[0].setAttribute('style', 'height: 20px'); // <-- set height 20px
+            var md_card = document.getElementsByTagName('md-card');
+            md_card[0].setAttribute('style', 'height: 20px'); // <-- set height 20px
             // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
         }
         else {
-            var card = document.getElementsByTagName('md-card');
-            card[0].setAttribute('style', 'height: 80px'); // <-- set height 80px
+            var md_card = document.getElementsByTagName('md-card');
+            md_card[0].setAttribute('style', 'height: 80px'); // <-- set height 80px
         }
     };
     // CONTINUE ROBOBT OPERATION TASK
-    PortConnectionComponent.prototype.continueRobotOperation = function () {
+    PortConnectionComponent.prototype.continue_robot_operation = function () {
         var _this = this;
         this.ApiService.continue_robot_operations().then(function (data) {
             if (data.status !== 'success') {
@@ -2473,20 +2462,20 @@ var PortConnectionComponent = (function () {
             }
         });
     };
-    // RELOAD ROBOT OPERATION TASK
-    PortConnectionComponent.prototype.reloadRobotOperation = function () {
+    // RESTART ROBOT OPERATION TASK
+    PortConnectionComponent.prototype.restart_robot_operation = function () {
         var _this = this;
-        this.ApiService.reload_robot_operations().then(function (data) {
+        this.ApiService.restart_robot_operations().then(function (data) {
             if (data.status !== 'success') {
                 _this.error_message = data.status + ' ' + data.error;
                 _this.checkMessageLength(); // <-- check message length
             }
         });
     };
-    // RESTART ROBOT OPERATION TASK
-    PortConnectionComponent.prototype.restartRobotOperation = function () {
+    // RELOAD ROBOT OPERATION TASK
+    PortConnectionComponent.prototype.reload_robot_operation = function () {
         var _this = this;
-        this.ApiService.restart_robot_operations().then(function (data) {
+        this.ApiService.reload_robot_operations().then(function (data) {
             if (data.status !== 'success') {
                 _this.error_message = data.status + ' ' + data.error;
                 _this.checkMessageLength(); // <-- check message length
@@ -2498,13 +2487,13 @@ var PortConnectionComponent = (function () {
         document.getElementById('Continue').setAttribute('disabled', 'disabled');
     };
     // FORCE DISABLE CONTINUE_MODE BUTTONS
-    PortConnectionComponent.prototype.foruce_disable_continue_mode_button = function () {
+    PortConnectionComponent.prototype.force_disable_continue_mode_buttons = function () {
         document.getElementById('Cancel').setAttribute('disabled', 'disabled');
         document.getElementById('Restart').setAttribute('disabled', 'disabled');
         document.getElementById('Reload').setAttribute('disabled', 'disabled');
     };
     // VALIDATION TO ENABLE OR DISABLE BUTTONS
-    PortConnectionComponent.prototype.validate_continue_mode_all_button = function () {
+    PortConnectionComponent.prototype.validate_to_enable_continue_mode_buttons = function () {
         if (this.status === 'alarm') {
             document.getElementById('Cancel').removeAttribute('disabled');
             document.getElementById('Restart').removeAttribute('disabled');
@@ -2520,8 +2509,8 @@ var PortConnectionComponent = (function () {
             return 'hide';
         }
     };
-    // GET LASTEST TASK TIME
-    PortConnectionComponent.prototype.get_lastest_task_time = function () {
+    // GET LATEST OPERATION TASK TIME
+    PortConnectionComponent.prototype.get_latest_operation_task_time = function () {
         var _this = this;
         this.ApiService.get_operation_task_time().then(function (data) {
             if (data['average_minute'] === 0 && data['average_second'] !== 0) {
@@ -2535,14 +2524,6 @@ var PortConnectionComponent = (function () {
                 _this.operation_task_time = data['average_minute'] + 'min ' + data['average_second'] + 'sec';
             }
         });
-    };
-    PortConnectionComponent.prototype.validate_status_for_add_hiding_continue_mode_button = function () {
-        if (this.status !== 'alarm') {
-            return 'hide';
-        }
-        else {
-            return '';
-        }
     };
     return PortConnectionComponent;
 }());
@@ -2564,7 +2545,7 @@ var _a, _b;
 /***/ "../../../../../src/app/port-history/port-history.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n        <!-- BEGIN TIME COLUMN  -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        <!-- BEGIN TYPE COLUMN -->\r\n        <ngx-datatable-column name=\"User\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TYPE COLUMN -->\r\n        <!-- BEGIN STATUS COLUMN -->\r\n        <ngx-datatable-column name=\"Status\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END STATUS COLUMN -->\r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"RobotStatus\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <!-- OLD VERSION -->\r\n            <!-- <div *ngIf=\"value.status !== 'Pending'\"> -->\r\n            <!-- NEW VERSION -->\r\n            <div *ngIf=\"value.status\">{{value.status}}&nbsp;&nbsp;\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" color=\"primary\" *ngIf=\"value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'\"\r\n                (click)=\"cancelTask(value.id)\">Cancel</button>\r\n            </div>\r\n            <!-- <div class=\"flex-container\"> -->\r\n            <!-- REMOVE PENDING BUTTON -->\r\n            <!-- <button md-raised-button id=\"Continue\" class=\"button-width button-red\" color=\"primary\" *ngIf=\"value.status == 'Pending'\" (click)=\"pending(value.id)\">Continue</button> -->\r\n            <!-- </div> -->\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"100\" [rows]='rows'>\r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n        <!-- BEGIN TIME COLUMN  -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        <!-- BEGIN TYPE COLUMN -->\r\n        <ngx-datatable-column name=\"User\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TYPE COLUMN -->\r\n        <!-- BEGIN STATUS COLUMN -->\r\n        <ngx-datatable-column name=\"Status\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END STATUS COLUMN -->\r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"RobotStatus\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <!-- OLD VERSION -->\r\n            <!-- <div *ngIf=\"value.status !== 'Pending'\"> -->\r\n            <!-- NEW VERSION -->\r\n            <div *ngIf=\"value.status\">{{value.status}}&nbsp;&nbsp;\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" color=\"primary\" *ngIf=\"value.status === 'Pending' || value.status === 'Break' \r\n              || value.status === 'Started' || value.status === 'Alarm'\" (click)=\"cancelTask(value.id)\">Cancel</button>\r\n            </div>\r\n            <!-- <div class=\"flex-container\"> -->\r\n            <!-- REMOVE PENDING BUTTON -->\r\n            <!-- <button md-raised-button id=\"Continue\" class=\"button-width button-red\" color=\"primary\" *ngIf=\"value.status == 'Pending'\" (click)=\"pending(value.id)\">Continue</button> -->\r\n            <!-- </div> -->\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->"
 
 /***/ }),
 
@@ -2918,7 +2899,7 @@ var _a, _b;
 /***/ "../../../../../src/app/server-status-error/server-status-error.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  \r\n    <!-- BEGIN CONTAINER -->\r\n    <div class=\"container\">\r\n      <p>\r\n        500. INTERNAL SERVER ERROR\r\n      </p>\r\n    </div>\r\n    <!-- END CONTAINER -->\r\n  \r\n  </div>\r\n  <!-- END MAIN-CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  \r\n    <!-- BEGIN CONTAINER -->\r\n    <div class=\"container\">\r\n      <p>\r\n        500. INTERNAL SERVER ERROR\r\n      </p>\r\n    </div>\r\n    <!-- END CONTAINER -->\r\n\r\n    <!-- BEGIN CONTAINER-BUTTON -->\r\n    <div class=\"container-button\">\r\n      <p>\r\n        A session may expire, you have to log out.\r\n      </p>\r\n      <button md-raised-button (click)=\"logOut()\">\r\n        Log out\r\n      </button>\r\n    </div>\r\n    <!-- END CONTAINER-BUTTON -->\r\n\r\n  </div>\r\n  <!-- END MAIN-CONTAINER -->"
 
 /***/ }),
 
@@ -2930,7 +2911,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n/* Main-container\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.main-container {\n  width: 100%;\n  height: 94vh;\n  background: #24C6DC;\n  /* fallback for old browsers */\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to right, #514A9D, #24C6DC);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n  .main-container .container {\n    padding-top: 150px;\n    text-align: center; }\n    .main-container .container p {\n      color: white;\n      font-size: 150px;\n      margin-top: 0;\n      margin-bottom: 0;\n      cursor: default; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/* Main-container\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.main-container {\n  background: #24C6DC;\n  /* fallback for old browsers */\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to right, #514A9D, #24C6DC);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n  @media only screen and (min-device-width: 640px) {\n    .main-container {\n      width: 100%;\n      height: 94vh; } }\n  @media only screen and (max-device-width: 640px) {\n    .main-container {\n      width: 100%;\n      height: 100%; } }\n  .main-container .container {\n    padding-top: 100px;\n    text-align: center; }\n    .main-container .container p {\n      color: white;\n      margin-top: 0;\n      margin-bottom: 0;\n      cursor: default; }\n      @media only screen and (min-device-width: 640px) {\n        .main-container .container p {\n          font-size: 150px; } }\n      @media only screen and (max-device-width: 640px) {\n        .main-container .container p {\n          font-size: 20px; } }\n  .main-container .container-button {\n    padding-top: 0px;\n    text-align: center; }\n    .main-container .container-button button {\n      font-size: 16px; }\n      @media only screen and (min-device-width: 640px) {\n        .main-container .container-button button {\n          width: 200px;\n          height: 50px; } }\n      @media only screen and (max-device-width: 640px) {\n        .main-container .container-button button {\n          width: 150px;\n          height: 50px; } }\n    .main-container .container-button p {\n      cursor: default;\n      color: white; }\n      @media only screen and (min-device-width: 640px) {\n        .main-container .container-button p {\n          font-size: 30px; } }\n      @media only screen and (max-device-width: 640px) {\n        .main-container .container-button p {\n          font-size: 16px; } }\n", ""]);
 
 // exports
 
@@ -2945,6 +2926,7 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServerStatusErrorComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2957,10 +2939,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 // ANGULAR MODULE
 
+
 var ServerStatusErrorComponent = (function () {
-    function ServerStatusErrorComponent() {
+    function ServerStatusErrorComponent(router) {
+        this.router = router;
     }
-    ServerStatusErrorComponent.prototype.ngOnInit = function () {
+    ServerStatusErrorComponent.prototype.ngOnInit = function () { };
+    ServerStatusErrorComponent.prototype.logOut = function () {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/login');
     };
     return ServerStatusErrorComponent;
 }());
@@ -2970,9 +2958,10 @@ ServerStatusErrorComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.html"),
         styles: [__webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.scss")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object])
 ], ServerStatusErrorComponent);
 
+var _a;
 //# sourceMappingURL=server-status-error.component.js.map
 
 /***/ }),
@@ -2985,11 +2974,10 @@ ServerStatusErrorComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_backend_ip__ = __webpack_require__("../../../../../src/app/_models/backend_ip.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_file_saver__ = __webpack_require__("../../../../file-saver/FileSaver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_file_saver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_file_saver__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_file_saver__ = __webpack_require__("../../../../file-saver/FileSaver.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_file_saver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_file_saver__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3003,21 +2991,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // ANGULAR MODULE
 
 
-// ReactiveX
-
-// Model
+// Reactive
 
 // Third-Party
 
 
 var ApiService = (function () {
-    // private ROOT_URL = `http://localhost:8000/`;
     function ApiService(http) {
         this.http = http;
         this.authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
-        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
-        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-        this.ROOT_URL = __WEBPACK_IMPORTED_MODULE_3__models_backend_ip__["a" /* default */];
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: this.headers });
+        // private ROOT_URL = environment.apiUrl;
+        this.ROOT_URL = "http://192.168.60.103:80/";
     }
     // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
     ApiService.prototype.getAllPort = function () {
@@ -3031,18 +3017,18 @@ var ApiService = (function () {
         var id = []; // OBJECT ID
         return this.http.get(this.ROOT_URL + 'ports/').toPromise().then(function (response) {
             allPort = JSON.parse(response._body);
-            __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](allPort, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](allPort, function (obj) {
                 // SEPERATE BY DIRECTION 'E'
                 if (obj.direction === 'E') {
                     eports.push(obj.direction + obj.number);
-                    eportschunk = __WEBPACK_IMPORTED_MODULE_4_lodash__["chunk"](eports, 12);
+                    eportschunk = __WEBPACK_IMPORTED_MODULE_3_lodash__["chunk"](eports, 12);
                     eportNote.push(obj.note);
                     id.push(obj.id);
                     // SEPERATE BY DIRECTION 'W'
                 }
                 else if (obj.direction === 'W') {
                     wports.push(obj.direction + obj.number);
-                    wportschunk = __WEBPACK_IMPORTED_MODULE_4_lodash__["chunk"](wports, 12);
+                    wportschunk = __WEBPACK_IMPORTED_MODULE_3_lodash__["chunk"](wports, 12);
                     wportNote.push(obj.note);
                     id.push(obj.id);
                 }
@@ -3072,8 +3058,8 @@ var ApiService = (function () {
         // PAYLOAD { east, west, action, stops }
         // set local authToken, header, options
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
         var username = this.getUsername();
         // START DEBUG MODE
         if (stops && number === undefined) {
@@ -3178,7 +3164,6 @@ var ApiService = (function () {
         var _this = this;
         return this.http.get(this.ROOT_URL + 'checktask/').toPromise().then(function (response) {
             response = JSON.parse(response._body);
-            // DO NOT DELETE, FOR READING
             // OLD VERSION
             // _.each(response, (obj) => {
             //   status = obj.status;
@@ -3219,8 +3204,8 @@ var ApiService = (function () {
     // CHECK CONNECTION STATUS ALL PORT
     ApiService.prototype.getConnectedPort = function () {
         return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3237,8 +3222,8 @@ var ApiService = (function () {
     // GET CONNECTION HISTORYS
     ApiService.prototype.getConnectionHistory = function () {
         return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3255,8 +3240,8 @@ var ApiService = (function () {
     // GET ALARM HISTORY
     ApiService.prototype.getAlarmHistory = function () {
         return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3273,8 +3258,8 @@ var ApiService = (function () {
     // POST ALARM
     ApiService.prototype.postAlarm = function (alarm, detail, severity) {
         return this.http.post(this.ROOT_URL + 'alarms/', { alarm: alarm, detail: detail, severity: severity }, this.options).toPromise().then(function (response) {
-            console.log(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3291,8 +3276,8 @@ var ApiService = (function () {
     // POST PENDING TASK
     ApiService.prototype.pendingTask = function (id) {
         return this.http.post(this.ROOT_URL + 'pendingtask/', { id: id }, this.options).toPromise().then(function (response) {
-            console.log(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3310,11 +3295,12 @@ var ApiService = (function () {
     ApiService.prototype.cancelTask = function (id, action) {
         // set local authToken, header, options
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
         return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id: id, action: action }, options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3332,12 +3318,11 @@ var ApiService = (function () {
     ApiService.prototype.clearDatabase = function (action) {
         // set local authToken, header, options
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
         return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action: action }, options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            console.log(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3351,11 +3336,29 @@ var ApiService = (function () {
             }
         });
     };
+    // CLEAR LATEST OPERATION
+    ApiService.prototype.clearLatestOperation = function () {
+        // set local authToken, header, options
+        var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        var action = 'clear_latest_operation';
+        return this.http.post(this.ROOT_URL + 'operations/', { action: action }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+        }).catch(function (error) {
+            var error_object = JSON.parse(error._body);
+            if (error.status === 400) {
+                console.error(error);
+                alert('status: ' + error_object['status'] + ', ' + 'error: ' + error_object['error']);
+            }
+        });
+    };
     // SAVE DATA (CSV FILE)
     ApiService.prototype.saveData_Connectionhistory = function (type) {
         return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type: type }, this.options).toPromise().then(function (response) {
-            console.log(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3369,8 +3372,9 @@ var ApiService = (function () {
             }
         });
     };
-    // DO NOT DELETE THIS FUNCTION
-    // FOR READING OLD VERSION
+    // -------------------------- //
+    // DO NOT DELETE, FOR READING //
+    // -------------------------- //
     // downloadFile() {
     //   let i = {'id': '1'};
     //   const api = `http://127.0.0.1:8000/connectionhistorys/?type=connecthistorys`;
@@ -3380,7 +3384,6 @@ var ApiService = (function () {
     //       // FileSaver.saveAs(response.blob(), fileName);
     //     });
     // }
-    // TODO NEW VERSION
     // TEST DOWLOAD (CSV FILE)
     ApiService.prototype.downloadFile = function () {
         var path = "connectionhistorys/?type=connecthistorys";
@@ -3389,24 +3392,24 @@ var ApiService = (function () {
             var blob = res.blob();
             console.log(res);
             var filename = 'connection_log.json';
-            __WEBPACK_IMPORTED_MODULE_5_file_saver__["saveAs"](blob, filename);
+            __WEBPACK_IMPORTED_MODULE_4_file_saver__["saveAs"](blob, filename);
         });
     };
-    // CREATE CONNECTION IN CONNECTION TABLE
-    ApiService.prototype.create_connection_in_database = function (east, west, action) {
+    // CREATE DUMMY CONNECTION IN CONNECTION TABLE
+    ApiService.prototype.create_dummy_connection_in_database = function (east, west, action) {
         // set local authToken, header, options
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
         return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action }, options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
+            var response_object = JSON.parse(response._body);
             if (response.status === 'error') {
                 console.error('status: ' + response.status + ', error_code: ' + response.error);
             }
             else {
                 console.log('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
             }
-            return response;
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3434,14 +3437,15 @@ var ApiService = (function () {
     // HOMING ROBOT
     ApiService.prototype.home_robot_axes = function () {
         return this.http.get(this.ROOT_URL + 'homes/').toPromise().then(function (response) {
-            var resp = JSON.parse(response._body);
-            resp['status'] = 'success';
-            return resp;
+            var response_object = JSON.parse(response._body);
+            response_object['status'] = 'success';
+            return response_object;
             // IF CANNOT GET RESPONSE FROM SERVER
         }).catch(function (error) {
             return { 'status': 'error', 'error': error };
         });
     };
+    // CONTINUE OPERATION CONTINUE MODE
     ApiService.prototype.continue_robot_operations = function () {
         var _this = this;
         var mode = 'robot';
@@ -3450,13 +3454,15 @@ var ApiService = (function () {
         var east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
         var west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
         return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode, action: action, east: east, west: west }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             var response = _this.parseErrorBody(error);
             return response;
         });
     };
+    // RELOAD OPERATION CONTINUE MODE
     ApiService.prototype.reload_robot_operations = function () {
         var _this = this;
         var mode = 'robot';
@@ -3465,13 +3471,15 @@ var ApiService = (function () {
         var east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
         var west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
         return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode, action: action, east: east, west: west }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             var response = _this.parseErrorBody(error);
             return response;
         });
     };
+    // RESTART OPERATION CONTINUE MODE
     ApiService.prototype.restart_robot_operations = function () {
         var _this = this;
         var mode = 'robot';
@@ -3480,8 +3488,9 @@ var ApiService = (function () {
         var east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
         var west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
         return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode, action: action, east: east, west: west }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             var response = _this.parseErrorBody(error);
             return response;
@@ -3489,35 +3498,37 @@ var ApiService = (function () {
     };
     // GET OPERATION TASK TIME
     ApiService.prototype.get_operation_task_time = function () {
-        // Set local authToken, header, options
+        // set local authToken, header, options
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
         return this.http.get(this.ROOT_URL + 'operationhistorys?action=connection_time').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            return response_object;
         });
     };
     // VERIFY USER WITH CURRENT BACKEND
     ApiService.prototype.verify_user_with_backend = function () {
         var token = JSON.parse(localStorage.getItem('token')); // Set sample token
         return this.http.post(this.ROOT_URL + 'verify_user/', { token: token }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.warn('Client status: ' + response_object['status']);
+            return response_object;
         });
     };
     // CREATE USER IN DATABASE
     ApiService.prototype.create_user = function (email, username, password) {
         return this.http.post(this.ROOT_URL + 'create_user/', { email: email, username: username, password: password }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         });
     };
     return ApiService;
 }());
 ApiService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object])
 ], ApiService);
 
 var _a;
@@ -3531,10 +3542,7 @@ var _a;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_backend_ip__ = __webpack_require__("../../../../../src/app/_models/backend_ip.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3548,19 +3556,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Angular Module
 
 
-
 // Api Service
 
-// Model
-
 var AuthenticationService = (function () {
-    // private ROOT_URL = `http://localhost:8000/`;
     function AuthenticationService(http, ApiService) {
         this.http = http;
         this.ApiService = ApiService;
-        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-        this.ROOT_URL = __WEBPACK_IMPORTED_MODULE_4__models_backend_ip__["a" /* default */];
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json' });
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: this.headers });
+        // private ROOT_URL = environment.apiUrl;
+        this.ROOT_URL = "http://192.168.60.103:80/";
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
@@ -3568,7 +3573,8 @@ var AuthenticationService = (function () {
     // Login
     AuthenticationService.prototype.login = function (username, password) {
         var _this = this;
-        return this.http.post(this.ROOT_URL + 'get_auth_token/', { username: username, password: password }, this.options).toPromise().then(function (response) {
+        return this.http.post(this.ROOT_URL + 'get_auth_token/', { username: username, password: password }, this.options)
+            .toPromise().then(function (response) {
             response = JSON.parse(response._body);
             // login successful if there's a jwt token in the response
             var token = response && response['token'];
@@ -3601,11 +3607,61 @@ var AuthenticationService = (function () {
 }());
 AuthenticationService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_api_service__["a" /* ApiService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_api_service__["a" /* ApiService */]) === "function" && _b || Object])
 ], AuthenticationService);
 
 var _a, _b;
 //# sourceMappingURL=authentication.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/port.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/add/operator/catch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PortService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var API_URL = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].apiUrl;
+var PortService = (function () {
+    function PortService(_http) {
+        this._http = _http;
+    }
+    PortService.prototype.getPorts = function () {
+        return this._http
+            .get(API_URL + 'ports/')
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    return PortService;
+}());
+PortService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object])
+], PortService);
+
+var _a;
+//# sourceMappingURL=port.service.js.map
 
 /***/ }),
 
@@ -3638,10 +3694,10 @@ var UserService = (function () {
     function UserService(http, authenticationService) {
         this.http = http;
         this.authenticationService = authenticationService;
-        // private ROOT_URL = backend_ip_address;
-        this.ROOT_URL = "http://localhost:8000/";
-        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
+        // private ROOT_URL = environment.backend_route_ip;
+        this.ROOT_URL = "http://192.168.60.76:80/";
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json' });
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: this.headers });
     }
     // getUsers(): Observable<User[]> {
     //   // add authorization header with jwt token
@@ -3670,7 +3726,7 @@ var UserService = (function () {
 }());
 UserService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
 ], UserService);
 
 var _a, _b;
@@ -3764,7 +3820,7 @@ SideNavComponent = __decorate([
 /***/ "../../../../../src/app/testing-mode/testing-mode.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN TAB-GROUP -->\r\n  <md-tab-group>\r\n    <!-- BEGIN ROBOT-TAB -->\r\n    <md-tab label=\"Robot Handler\">\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title> Home </md-panel-title>\r\n          <md-panel-description> Home all axes </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\r\n      </md-expansion-panel>\r\n\r\n      <md-action-row>\r\n        <!--<md-error [(ngModel)]=\"errorRobot\">error message</md-error>-->\r\n        <md-error>{{errorRobot}}</md-error>\r\n      </md-action-row>\r\n      <!--<div>-->\r\n      <!--<br />-->\r\n      <!--</div>-->\r\n\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Change Robot\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Change robot parameter\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"robot_number\" placeholder=\"Robot number\" value=\"robot_number\" [(ngModel)]=\"robot_number\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"continue_mode\" placeholder=\"Continue mode\" value=\"continue_mode\" [(ngModel)]=\"continue_mode\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"changeRobotParameter()\">Change Parameter</button>\r\n        </md-action-row>\r\n\r\n      </md-expansion-panel>\r\n\r\n\r\n    </md-tab>\r\n    <!-- END ROBOT-TAB -->\r\n    <!-- BEGIN CONNECTION-TAB -->\r\n    <md-tab label=\"Connection\">\r\n      <!-- BEGIN CREATE CONNECTION -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in database\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"create_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION -->\r\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in debug mode\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port and stops\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field class=\"event-prevent\">\r\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION DEBUG MODE -->\r\n    </md-tab>\r\n    <!-- END CONNECTION-TAB -->\r\n  </md-tab-group>\r\n  <!-- END TAB-GROUP -->\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN TAB-GROUP -->\r\n  <md-tab-group>\r\n    <!-- BEGIN ROBOT-TAB -->\r\n    <md-tab label=\"Robot Handler\">\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title> Home </md-panel-title>\r\n          <md-panel-description> Home all axes </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\r\n      </md-expansion-panel>\r\n\r\n      <md-action-row>\r\n        <!--<md-error [(ngModel)]=\"errorRobot\">error message</md-error>-->\r\n        <md-error>{{errorRobot}}</md-error>\r\n      </md-action-row>\r\n      <!--<div>-->\r\n      <!--<br />-->\r\n      <!--</div>-->\r\n\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Change Robot\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Change robot parameter\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"robot_number\" placeholder=\"Robot number\" value=\"robot_number\" [(ngModel)]=\"robot_number\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"continue_mode\" placeholder=\"Continue mode\" value=\"continue_mode\" [(ngModel)]=\"continue_mode\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"changeRobotParameter()\">Change Parameter</button>\r\n        </md-action-row>\r\n\r\n      </md-expansion-panel>\r\n\r\n\r\n    </md-tab>\r\n    <!-- END ROBOT-TAB -->\r\n    <!-- BEGIN CONNECTION-TAB -->\r\n    <md-tab label=\"Connection\">\r\n      <!-- BEGIN CREATE CONNECTION -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in database\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"create_dummy_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION -->\r\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in debug mode\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port and stops\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field class=\"event-prevent\">\r\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION DEBUG MODE -->\r\n    </md-tab>\r\n    <!-- END CONNECTION-TAB -->\r\n  </md-tab-group>\r\n  <!-- END TAB-GROUP -->\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
 
 /***/ }),
 
@@ -3829,10 +3885,10 @@ var TestingModeComponent = (function () {
             }
         });
     };
-    // CREATE CONNECTION
-    TestingModeComponent.prototype.create_connection = function () {
+    // CREATE DUMMY CONNECTION
+    TestingModeComponent.prototype.create_dummy_connection = function () {
         if (this.east_port_number && this.west_port_number) {
-            this.ApiService.create_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then(function (data) {
+            this.ApiService.create_dummy_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then(function (data) {
                 console.log(data);
             });
         }
@@ -3914,7 +3970,9 @@ var _a, _b;
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 // The file contents for the current environment will overwrite these during build.
 var environment = {
-    production: false
+    production: false,
+    // URL of development
+    apiUrl: 'http://localhost:8000/'
 };
 //# sourceMappingURL=environment.js.map
 
@@ -3938,6 +3996,152 @@ if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment *
 }
 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */]);
 //# sourceMappingURL=main.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/ngx-datatable.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromEvent__ = __webpack_require__("../../../../rxjs/add/observable/fromEvent.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromEvent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__swimlane_ngx_datatable_src_components_footer_footer_template_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/footer/footer-template.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__swimlane_ngx_datatable_src_directives_visibility_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/directives/visibility.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__swimlane_ngx_datatable_src_directives_draggable_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/directives/draggable.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__swimlane_ngx_datatable_src_directives_resizeable_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/directives/resizeable.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__swimlane_ngx_datatable_src_directives_orderable_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/directives/orderable.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__swimlane_ngx_datatable_src_directives_long_press_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/directives/long-press.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__swimlane_ngx_datatable_src_components_body_scroller_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/scroller.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__swimlane_ngx_datatable_src_components_datatable_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/datatable.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__swimlane_ngx_datatable_src_components_columns_column_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/columns/column.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__swimlane_ngx_datatable_src_components_header_header_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/header/header.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__swimlane_ngx_datatable_src_components_header_header_cell_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/header/header-cell.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__swimlane_ngx_datatable_src_components_body_body_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/body.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__swimlane_ngx_datatable_src_components_footer_footer_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/footer/footer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__swimlane_ngx_datatable_src_components_footer_pager_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/footer/pager.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__swimlane_ngx_datatable_src_components_body_progress_bar_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/progress-bar.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__swimlane_ngx_datatable_src_components_body_body_row_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/body-row.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable_src_components_body_body_row_wrapper_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/body-row-wrapper.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable_src_components_row_detail_row_detail_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/row-detail/row-detail.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable_src_components_row_detail_row_detail_template_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/row-detail/row-detail-template.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__swimlane_ngx_datatable_src_components_body_body_cell_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/body-cell.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__swimlane_ngx_datatable_src_components_body_selection_component__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/body/selection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__swimlane_ngx_datatable_src_components_columns_column_header_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/columns/column-header.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__swimlane_ngx_datatable_src_components_columns_column_cell_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/columns/column-cell.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__swimlane_ngx_datatable_src_components_footer_footer_directive__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/components/footer/footer.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__swimlane_ngx_datatable_src_services_scrollbar_helper_service__ = __webpack_require__("../../../../@swimlane/ngx-datatable/src/services/scrollbar-helper.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NgxDatatableStubModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { DatatableGroupHeaderDirective } from '@swimlane/ngx-datatable/src/components/body/body-group-header.directive';
+
+
+
+
+
+
+// import { DatatableGroupHeaderTemplateDirective } from '@swimlane/ngx-datatable/src/components/body/body-group-header-template.directive';
+
+var NgxDatatableStubModule = (function () {
+    function NgxDatatableStubModule() {
+    }
+    return NgxDatatableStubModule;
+}());
+NgxDatatableStubModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["e" /* CommonModule */]
+        ],
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_3__swimlane_ngx_datatable_src_components_footer_footer_template_directive__["a" /* DataTableFooterTemplateDirective */],
+            __WEBPACK_IMPORTED_MODULE_10__swimlane_ngx_datatable_src_components_datatable_component__["a" /* DatatableComponent */],
+            __WEBPACK_IMPORTED_MODULE_4__swimlane_ngx_datatable_src_directives_visibility_directive__["a" /* VisibilityDirective */],
+            __WEBPACK_IMPORTED_MODULE_5__swimlane_ngx_datatable_src_directives_draggable_directive__["a" /* DraggableDirective */],
+            __WEBPACK_IMPORTED_MODULE_6__swimlane_ngx_datatable_src_directives_resizeable_directive__["a" /* ResizeableDirective */],
+            __WEBPACK_IMPORTED_MODULE_7__swimlane_ngx_datatable_src_directives_orderable_directive__["a" /* OrderableDirective */],
+            __WEBPACK_IMPORTED_MODULE_8__swimlane_ngx_datatable_src_directives_long_press_directive__["a" /* LongPressDirective */],
+            __WEBPACK_IMPORTED_MODULE_9__swimlane_ngx_datatable_src_components_body_scroller_component__["a" /* ScrollerComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__swimlane_ngx_datatable_src_components_datatable_component__["a" /* DatatableComponent */],
+            __WEBPACK_IMPORTED_MODULE_11__swimlane_ngx_datatable_src_components_columns_column_directive__["a" /* DataTableColumnDirective */],
+            __WEBPACK_IMPORTED_MODULE_12__swimlane_ngx_datatable_src_components_header_header_component__["a" /* DataTableHeaderComponent */],
+            __WEBPACK_IMPORTED_MODULE_13__swimlane_ngx_datatable_src_components_header_header_cell_component__["a" /* DataTableHeaderCellComponent */],
+            __WEBPACK_IMPORTED_MODULE_14__swimlane_ngx_datatable_src_components_body_body_component__["a" /* DataTableBodyComponent */],
+            __WEBPACK_IMPORTED_MODULE_15__swimlane_ngx_datatable_src_components_footer_footer_component__["a" /* DataTableFooterComponent */],
+            __WEBPACK_IMPORTED_MODULE_16__swimlane_ngx_datatable_src_components_footer_pager_component__["a" /* DataTablePagerComponent */],
+            __WEBPACK_IMPORTED_MODULE_17__swimlane_ngx_datatable_src_components_body_progress_bar_component__["a" /* ProgressBarComponent */],
+            __WEBPACK_IMPORTED_MODULE_18__swimlane_ngx_datatable_src_components_body_body_row_component__["a" /* DataTableBodyRowComponent */],
+            __WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable_src_components_body_body_row_wrapper_component__["a" /* DataTableRowWrapperComponent */],
+            __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable_src_components_row_detail_row_detail_directive__["a" /* DatatableRowDetailDirective */],
+            // DatatableGroupHeaderDirective,
+            __WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable_src_components_row_detail_row_detail_template_directive__["a" /* DatatableRowDetailTemplateDirective */],
+            __WEBPACK_IMPORTED_MODULE_22__swimlane_ngx_datatable_src_components_body_body_cell_component__["a" /* DataTableBodyCellComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__swimlane_ngx_datatable_src_components_body_selection_component__["a" /* DataTableSelectionComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__swimlane_ngx_datatable_src_components_columns_column_header_directive__["a" /* DataTableColumnHeaderDirective */],
+            __WEBPACK_IMPORTED_MODULE_25__swimlane_ngx_datatable_src_components_columns_column_cell_directive__["a" /* DataTableColumnCellDirective */],
+            __WEBPACK_IMPORTED_MODULE_26__swimlane_ngx_datatable_src_components_footer_footer_directive__["a" /* DatatableFooterDirective */],
+        ],
+        providers: [
+            __WEBPACK_IMPORTED_MODULE_27__swimlane_ngx_datatable_src_services_scrollbar_helper_service__["a" /* ScrollbarHelper */]
+        ],
+        exports: [
+            __WEBPACK_IMPORTED_MODULE_3__swimlane_ngx_datatable_src_components_footer_footer_template_directive__["a" /* DataTableFooterTemplateDirective */],
+            __WEBPACK_IMPORTED_MODULE_10__swimlane_ngx_datatable_src_components_datatable_component__["a" /* DatatableComponent */],
+            __WEBPACK_IMPORTED_MODULE_4__swimlane_ngx_datatable_src_directives_visibility_directive__["a" /* VisibilityDirective */],
+            __WEBPACK_IMPORTED_MODULE_5__swimlane_ngx_datatable_src_directives_draggable_directive__["a" /* DraggableDirective */],
+            __WEBPACK_IMPORTED_MODULE_6__swimlane_ngx_datatable_src_directives_resizeable_directive__["a" /* ResizeableDirective */],
+            __WEBPACK_IMPORTED_MODULE_7__swimlane_ngx_datatable_src_directives_orderable_directive__["a" /* OrderableDirective */],
+            __WEBPACK_IMPORTED_MODULE_8__swimlane_ngx_datatable_src_directives_long_press_directive__["a" /* LongPressDirective */],
+            __WEBPACK_IMPORTED_MODULE_9__swimlane_ngx_datatable_src_components_body_scroller_component__["a" /* ScrollerComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__swimlane_ngx_datatable_src_components_datatable_component__["a" /* DatatableComponent */],
+            __WEBPACK_IMPORTED_MODULE_11__swimlane_ngx_datatable_src_components_columns_column_directive__["a" /* DataTableColumnDirective */],
+            __WEBPACK_IMPORTED_MODULE_12__swimlane_ngx_datatable_src_components_header_header_component__["a" /* DataTableHeaderComponent */],
+            __WEBPACK_IMPORTED_MODULE_13__swimlane_ngx_datatable_src_components_header_header_cell_component__["a" /* DataTableHeaderCellComponent */],
+            __WEBPACK_IMPORTED_MODULE_14__swimlane_ngx_datatable_src_components_body_body_component__["a" /* DataTableBodyComponent */],
+            __WEBPACK_IMPORTED_MODULE_15__swimlane_ngx_datatable_src_components_footer_footer_component__["a" /* DataTableFooterComponent */],
+            __WEBPACK_IMPORTED_MODULE_16__swimlane_ngx_datatable_src_components_footer_pager_component__["a" /* DataTablePagerComponent */],
+            __WEBPACK_IMPORTED_MODULE_17__swimlane_ngx_datatable_src_components_body_progress_bar_component__["a" /* ProgressBarComponent */],
+            __WEBPACK_IMPORTED_MODULE_18__swimlane_ngx_datatable_src_components_body_body_row_component__["a" /* DataTableBodyRowComponent */],
+            __WEBPACK_IMPORTED_MODULE_19__swimlane_ngx_datatable_src_components_body_body_row_wrapper_component__["a" /* DataTableRowWrapperComponent */],
+            __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable_src_components_row_detail_row_detail_directive__["a" /* DatatableRowDetailDirective */],
+            // DatatableGroupHeaderDirective,
+            __WEBPACK_IMPORTED_MODULE_21__swimlane_ngx_datatable_src_components_row_detail_row_detail_template_directive__["a" /* DatatableRowDetailTemplateDirective */],
+            __WEBPACK_IMPORTED_MODULE_22__swimlane_ngx_datatable_src_components_body_body_cell_component__["a" /* DataTableBodyCellComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__swimlane_ngx_datatable_src_components_body_selection_component__["a" /* DataTableSelectionComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__swimlane_ngx_datatable_src_components_columns_column_header_directive__["a" /* DataTableColumnHeaderDirective */],
+            __WEBPACK_IMPORTED_MODULE_25__swimlane_ngx_datatable_src_components_columns_column_cell_directive__["a" /* DataTableColumnCellDirective */],
+            __WEBPACK_IMPORTED_MODULE_26__swimlane_ngx_datatable_src_components_footer_footer_directive__["a" /* DatatableFooterDirective */],
+        ]
+    })
+], NgxDatatableStubModule);
+
+//# sourceMappingURL=ngx-datatable.js.map
 
 /***/ }),
 

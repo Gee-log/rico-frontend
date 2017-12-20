@@ -16,9 +16,9 @@ import { UserService } from '../services/user.service';
 export class LoginComponent implements OnInit {
 
   model: any = {};
-  loading = false; // <-- Not using right now
-  error = '';
-  current_user = this.userservice.getUsers();
+  loading: Boolean = false; // <-- Not using right now
+  error: String = '';
+  current_user: any = this.userservice.getUsers();
 
   constructor(
     private router: Router,
@@ -26,35 +26,43 @@ export class LoginComponent implements OnInit {
     private userservice: UserService) { }
 
   ngOnInit() {
+
     // check current user
     this.checkCurrentUser();
-    // reset login status
-    // this.authenticationService.logout();
+
   }
 
   // VALIDATE CURRENT USER
   checkCurrentUser() {
 
     // set fake token in localStorage first ** this versy important
-
     localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
 
     if (this.current_user['username'] && this.current_user['username'] !== null) {
+
       this.router.navigate(['/']);
+
     }
+
   }
   // LOGIN
   login() {
 
     this.loading = true;
+
     this.authenticationService.login(this.model.username, this.model.password)
       .then(result => {
+
         if (result === true) {
+
           this.router.navigate(['/']);
+
         } else {
+
           document.getElementById('error').classList.remove('hide');
           this.error = 'Username or password is incorrect';
           this.loading = false;
+
         }
 
       });
@@ -63,10 +71,14 @@ export class LoginComponent implements OnInit {
   validate_login_button() {
 
     if (this.model.username && this.model.password) {
+
       return true;
+
     } else {
+
       document.getElementById('error').classList.add('hide');
       return false;
+
     }
 
   }

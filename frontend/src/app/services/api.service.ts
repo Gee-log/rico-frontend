@@ -23,8 +23,8 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = environment.apiUrl;
-  // private ROOT_URL = `http://192.168.60.103:80/`;
+  // private ROOT_URL = environment.apiUrl;
+  private ROOT_URL = `http://192.168.60.103:80/`;
 
   constructor(private http: Http) { }
 
@@ -385,32 +385,6 @@ export class ApiService {
       } else {
 
         console.error('GET ALARM ERROR 500 Internal Server');
-        return ({ status: 'error', error: 'ERROR 500' });
-
-      }
-
-    });
-
-  }
-  // POST PENDING TASK
-  pendingTask(id) {
-
-    return this.http.post(this.ROOT_URL + 'pendingtask/', { id }, this.options).toPromise().then((response: any) => {
-      const response_object = JSON.parse(response._body);
-
-      return response_object;
-
-    }).catch((error: any) => {
-      // ERROR FROM SERVER
-      if (error.status && error.status !== 0) {
-
-        console.error('PENDING TASK ERROR ' + error.status, Observable.throw(new Error(error.status)));
-        return ({ status: 'error', error: 'ERROR ' + error.status });
-
-        // ERROR FROM CLIENT
-      } else {
-
-        console.error('PENDING TASK ERROR 500 Internal Server');
         return ({ status: 'error', error: 'ERROR 500' });
 
       }
