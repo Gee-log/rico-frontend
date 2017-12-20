@@ -3017,7 +3017,7 @@ var ApiService = (function () {
         this.authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-        this.ROOT_URL = __WEBPACK_IMPORTED_MODULE_3__models_backend_ip__["a" /* default */];
+        this.ROOT_URL = "http://192.168.60.103:80/";
     }
     // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
     ApiService.prototype.getAllPort = function () {
@@ -3560,7 +3560,7 @@ var AuthenticationService = (function () {
         this.ApiService = ApiService;
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-        this.ROOT_URL = __WEBPACK_IMPORTED_MODULE_4__models_backend_ip__["a" /* default */];
+        this.ROOT_URL = 'http://192.168.60.103:80/';
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
@@ -3639,7 +3639,7 @@ var UserService = (function () {
         this.http = http;
         this.authenticationService = authenticationService;
         // private ROOT_URL = backend_ip_address;
-        this.ROOT_URL = "http://localhost:8000/";
+        this.ROOT_URL = "http://192.168.60.103:80/";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
     }
