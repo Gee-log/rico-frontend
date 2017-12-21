@@ -26,31 +26,35 @@ export class LoginComponent implements OnInit {
     private userservice: UserService) { }
 
   ngOnInit() {
+
     // check current user
     this.checkCurrentUser();
     // reset login status
     // this.authenticationService.logout();
-  }
 
+  }
   // VALIDATE CURRENT USER
   checkCurrentUser() {
 
     // set fake token in localStorage first ** this versy important
-
     localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
 
     if (this.current_user['username'] && this.current_user['username'] !== null) {
       this.router.navigate(['/']);
     }
+
   }
   // LOGIN
   login() {
 
     this.loading = true;
+
     this.authenticationService.login(this.model.username, this.model.password)
       .then(result => {
+
         if (result === true) {
           this.router.navigate(['/']);
+
         } else {
           document.getElementById('error').classList.remove('hide');
           this.error = 'Username or password is incorrect';
@@ -64,6 +68,7 @@ export class LoginComponent implements OnInit {
 
     if (this.model.username && this.model.password) {
       return true;
+
     } else {
       document.getElementById('error').classList.add('hide');
       return false;
@@ -78,9 +83,7 @@ export class LoginComponent implements OnInit {
 
       // CHECK USERNAME AND PASSWORD NOT NULL OR BLANK
       if ((this.model.username && this.model.username !== '') && (this.model.password && this.model.password !== '')) {
-
         this.login();
-
       }
 
     }

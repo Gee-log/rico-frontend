@@ -56,9 +56,11 @@ export class AlarmHistoryComponent implements OnInit {
   check_server_status() {
 
     this.ApiService.check_server_status().then((status) => {
+
       if (status === 500) {
         this.router.navigateByUrl('/500');
       }
+
     });
 
   }
@@ -67,8 +69,10 @@ export class AlarmHistoryComponent implements OnInit {
 
     this.ApiService.getAlarmHistory().then((data) => {
       _.each(data, (obj) => {
+
         console.log(obj);
         this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
+
       });
     });
 

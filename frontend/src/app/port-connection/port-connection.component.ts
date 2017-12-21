@@ -83,7 +83,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     // CHECK STATUS EVERY 5 SEC.
     this.timerInterval = setInterval(() => {
       this.checkStatus();
-    }, 1500);
+    }, 5000);
 
   }
 
@@ -111,10 +111,12 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   verify_user() {
 
     this.ApiService.verify_user_with_backend().then((data) => {
+
       if (data['status'] === 'unverified') {
         localStorage.setItem('currentUser', null);
         this.router.navigateByUrl('/login');
       }
+
     });
 
   }
@@ -124,9 +126,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     const token = JSON.parse(localStorage.getItem('token')); // Set sample token
 
     if (token === null) {
-
       this.router.navigateByUrl('/login');
-
     }
 
   }
@@ -190,7 +190,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // CHECK CURRENT STATUS OF TASK
       // WHEN CURRENT STATUS IS SUCCESS
       if (this.status === 'success' || this.status === 'revoked' || this.status === 'failure' || this.status === 'canceled') {
-
         this.unselectable_table = false; // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
@@ -200,7 +199,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
-
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
@@ -208,28 +206,23 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
         // WHEN CURRENT STATUS IS ERRROR
       } else if (this.status === 'error') {
-
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
-
           this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code'];  // <-- set error_message
           this.checkMessageLength(); // <-- check message length
 
           // IF data['code] is null
         } else {
-
           this.error_message = data['status'] + ' ' + data['error'];  // <-- set error_message
           this.checkMessageLength(); // <-- check message length
-
         }
 
         // WHEN CURRENT STATUS IS ALARM
       } else if (this.status === 'alarm') {
-
         this.unselectable_table = true; // LOCK TABLE WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
         this.disable_stops_input = true; // LOCK STOPS INPUT WHEN STATUS IS BREAK, PENDING, STARTED
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUTF
@@ -237,7 +230,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
         // IF data['code'] is not null
         if (data['code'] !== null) {
-
           this.error_message = data['status'] + ' ' + data['error'] + ', Code ' + data['code'];  // <-- set error_message
           this.checkMessageLength(); // <-- check message length
 
@@ -245,7 +237,6 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         } else {
           this.error_message = data['status'] + ' ' + data['error'];  // <-- set error_message
           this.checkMessageLength(); // <-- check message length
-
         }
 
       }
@@ -375,14 +366,17 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     _.each(this.pair, (obj) => {
       const east = 'E' + obj.east;
       const west = 'W' + obj.west;
+
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         document.getElementById(east).classList.add('selected-pair');
         document.getElementById(west).classList.add('selected-pair');
         this.disabled_disconnect_button = false;
+
       } else if (east === this.selectedEastPortID) {
         document.getElementById(east).classList.add('pair');
         document.getElementById(west).classList.add('pair');
       }
+
     });
 
   }
@@ -392,14 +386,17 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     _.each(this.pair, (obj) => {
       const east = 'E' + obj.east;
       const west = 'W' + obj.west;
+
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         document.getElementById(east).classList.add('selected-pair');
         document.getElementById(west).classList.add('selected-pair');
         this.disabled_disconnect_button = false;
+
       } else if (west === this.selectedWestPortID) {
         document.getElementById(east).classList.add('pair');
         document.getElementById(west).classList.add('pair');
       }
+
     });
 
   }
@@ -467,15 +464,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // POST DATA
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
         .then((data) => {
+
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
-
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
+            return;
           }
 
         });
@@ -483,16 +480,17 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     } else {
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
         .then((data) => {
+
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
-
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
+            return;
           }
+
         });
       // LOCK CONTINUE BUTTON AFTER POST
       this.disabled_connect_button = true;
@@ -519,15 +517,15 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // POST DATA
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
         .then((data) => {
+
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
-
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
+            return;
           }
 
         });
@@ -535,19 +533,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     } else {
       this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
         .then((data) => {
+
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
-
             this.error_message = data.status + ' ' + data.error;
             this.checkMessageLength();  // <-- check message length
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
+            return;
           }
 
         });
-
       // LOCK DISCONTINUE BUTTON AFTER POST
       this.disabled_disconnect_button = true;
     }
@@ -582,21 +579,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
           if (data.status === 'error') {
-
             this.error_message = data.status + ' ' + data.error;  // <-- set error_message
             this.checkMessageLength();  // <-- check message length
 
             // IF CELERY'S CURRENT STATUS IS NOT ERROR
           } else {
-
+            return;
           }
 
         });
       // NO stops, sequence VALUE IN PAYLOAD
     } else {
-
       console.log('No stops or sequence value !');
-
     }
 
     // REMOVE PAIR, SELECTED-PAIR AND SELECTED COLOR IN EACH TABLE AFTER POST
@@ -627,22 +621,24 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       const west_td = document.getElementsByClassName('East');
 
       for (let i = 0; i < 144; i++) {
+
         if (this.all_east[0] === undefined) {
           console.log('Element are not ready !');
           return;
+
+        } else {
+          this.all_east[i].classList.remove('connected', 'pending', 'break');
+          this.all_west[i].classList.remove('connected', 'pending', 'break');
         }
-        this.all_east[i].classList.remove('connected', 'pending', 'break');
-        this.all_west[i].classList.remove('connected', 'pending', 'break');
+
       }
 
       console.log('------------------------------- All Port Status -------------------------------');
 
       // IF STATUS IS ERROR SHOW ERROR DIALOG
       if (data['status'] === 'error') {
-
         this.error_message = data.status + ' ' + data.error;  // <-- set error_message
         this.checkMessageLength();  // <-- check message length
-
       }
 
       _.each(data, (obj) => {
@@ -654,6 +650,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           document.getElementById(east).classList.add('connected'); // ADD GREEN COLOR
           document.getElementById(west).classList.add('connected'); // ADD GREEN COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+
         } else if (obj['status'] === 'started' || obj['status'] === 'pending') {
           const east = 'E' + obj['east'];
           const west = 'W' + obj['west'];
@@ -661,6 +658,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           document.getElementById(east).classList.add('pending'); // ADD RED COLOR
           document.getElementById(west).classList.add('pending'); // ADD RED COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
+
         } else if (obj['status'] === 'break') {
           const east = 'E' + obj['east'];
           const west = 'W' + obj['west'];
@@ -669,9 +667,11 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
           document.getElementById(west).classList.add('break'); // ADD YELLOW COLOR
           console.log(east + ' : ' + west + ' | ' + 'Status : ' + status);
         }
+
       });
 
       console.log('-------------------------------------------------------------------------------');
+
     });
 
   }
@@ -682,18 +682,12 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     if (stops === undefined || stops === null || stops === '') {
       stops = null;
       localStorage.setItem('stops', JSON.stringify(stops));
+
       // LOCK CONNECT BUTTON WHEN INVALID STOPS INPUT
     } else if (document.getElementById('stops').classList.contains('ng-invalid')) {
       this.disabled_connect_button = true;
     }
 
-  }
-  // TEST CONSOLE.LOG LOCAL STORAGE VALUE
-  clear() {
-
-    const selectedEastPortID = localStorage.getItem('selectedEastPortID');
-    const selectedWestPortID = localStorage.getItem('selectedWestPortID');
-    console.log(selectedEastPortID, selectedWestPortID, this.stops);
   }
   // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
   tooltipEast(EastID) {
@@ -701,6 +695,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     for (const i of Object.keys(this.pair)) {
       const east = 'E' + this.pair[i].east;
       const west = 'W' + this.pair[i].west;
+
       if (EastID === east) {
         return 'Connected to ' + west;
       }
@@ -713,6 +708,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     for (const i of Object.keys(this.pair)) {
       const east = 'E' + this.pair[i].east;
       const west = 'W' + this.pair[i].west;
+
       if (WestID === west) {
         return 'Connected to ' + east;
       }
@@ -725,6 +721,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
     for (const i of Object.keys(this.pair)) {
       const east = 'E' + this.pair[i].east;
+
       if (EastID === east) {
         return 'right';
       }
@@ -739,6 +736,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
     for (const i of Object.keys(this.pair)) {
       const west = 'W' + this.pair[i].west;
+
       if (WestID === west) {
         return 'left';
       }
@@ -774,16 +772,13 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
     if (message_length <= 30) {
-
       const card = document.getElementsByTagName('md-card');
       card[0].setAttribute('style', 'height: 20px');  // <-- set height 20px
 
       // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
     } else {
-
       const card = document.getElementsByTagName('md-card');
       card[0].setAttribute('style', 'height: 80px');  // <-- set height 80px
-
     }
 
   }
@@ -793,10 +788,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.ApiService.continue_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
-
         this.error_message = data.status + ' ' + data.error;
         this.checkMessageLength();  // <-- check message length
-
       }
 
     });
@@ -808,10 +801,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.ApiService.reload_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
-
         this.error_message = data.status + ' ' + data.error;
         this.checkMessageLength();  // <-- check message length
-
       }
 
     });
@@ -823,10 +814,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.ApiService.restart_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
-
         this.error_message = data.status + ' ' + data.error;
         this.checkMessageLength();  // <-- check message length
-
       }
 
     });
@@ -850,11 +839,12 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   validate_continue_mode_all_button() {
 
     if (this.status === 'alarm') {
-
       document.getElementById('Cancel').removeAttribute('disabled');
       document.getElementById('Restart').removeAttribute('disabled');
       document.getElementById('Reload').removeAttribute('disabled');
 
+    } else {
+      return;
     }
 
   }
@@ -862,13 +852,10 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   check_status_for_hide_dialog() {
 
     if (this.status === 'alarm' || this.status === 'error') {
-
       return null;
 
     } else {
-
       return 'hide';
-
     }
 
   }
@@ -878,35 +865,18 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.ApiService.get_operation_task_time().then((data) => {
 
       if (data['average_minute'] === 0 && data['average_second'] !== 0) {
-
         this.operation_task_time = data['average_second'] + 'sec';
 
       } else if ((data['average_minute'] === 0 && data['average_second'] === 0)
         || ((data['average_minute'] === undefined && data['average_second'] === undefined))) {
 
-        this.operation_task_time = 'empty task';
+          this.operation_task_time = 'empty task';
 
       } else {
-
         this.operation_task_time = data['average_minute'] + 'min ' + data['average_second'] + 'sec';
-
       }
 
     });
-
-  }
-
-  validate_status_for_add_hiding_continue_mode_button() {
-
-    if (this.status !== 'alarm') {
-
-      return 'hide';
-
-    } else {
-
-      return '';
-
-    }
 
   }
 

@@ -57,9 +57,11 @@ export class CurrentConnectionComponent implements OnInit {
   check_server_status() {
 
     this.ApiService.check_server_status().then((status) => {
+
       if (status === 500) {
         this.router.navigateByUrl('/500');
       }
+
     });
 
   }
@@ -76,6 +78,7 @@ export class CurrentConnectionComponent implements OnInit {
         this.rows.push({
           east: 'E' + obj['east'], west: 'W' + obj['west'], date: date
         });
+
       });
     });
 

@@ -42,6 +42,7 @@ export class RegisterComponent implements OnInit {
           console.log(data);
           document.getElementById('error-box').classList.remove('hide');
           this.error_message = data['error'];
+
         } else {
           this.router.navigate(['/login']);
         }
@@ -61,7 +62,6 @@ export class RegisterComponent implements OnInit {
         this.signup_button_disable = true;
 
         return true;
-
       }
 
     }
@@ -77,9 +77,7 @@ export class RegisterComponent implements OnInit {
     if (this.username) {
 
       if (this.username.length >= 8) {
-
         return true;
-
       }
 
     }

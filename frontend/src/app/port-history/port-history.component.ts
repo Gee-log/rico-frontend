@@ -61,9 +61,11 @@ export class PortHistoryComponent implements OnInit {
   check_server_status() {
 
     this.ApiService.check_server_status().then((status) => {
+
       if (status === 500) {
         this.router.navigateByUrl('/500');
       }
+
     });
 
   }
@@ -72,11 +74,13 @@ export class PortHistoryComponent implements OnInit {
 
     this.ApiService.getConnectionHistory().then((data) => {
       _.each(data, (obj) => {
+
         console.log(obj);
         const date = new Date(obj['timestamp']);
         const day = date.toString().substring(0, 15);
         const time = date.toString().substring(15);
         const status = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
+
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj['switching_type'] === 'C') {
           this.rows.push({
@@ -84,6 +88,7 @@ export class PortHistoryComponent implements OnInit {
             , east: 'E' + obj['east'], west: 'W' + obj['west'],
             status: 'Connected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
+
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
@@ -92,6 +97,7 @@ export class PortHistoryComponent implements OnInit {
             status: 'Disconnected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
         }
+
       });
     });
 

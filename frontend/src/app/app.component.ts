@@ -19,8 +19,8 @@ import { UserService } from './services/user.service';
 export class AppComponent {
 
   // USER DATA
-  user_data: object;
-  username: string;
+  private user_data: object;
+  private username: string;
 
   links = [
     {
@@ -68,8 +68,12 @@ export class AppComponent {
     }
   ];
 
-  constructor(private http: Http, private ApiService: ApiService,
-    private AuthenticationService: AuthenticationService, private UserService: UserService, private router: Router) { }
+  constructor(
+    private http: Http,
+    private ApiService: ApiService,
+    private AuthenticationService: AuthenticationService,
+    private UserService: UserService,
+    private router: Router) { }
 
   // TOGGLE SETTINGS MENU
   toggleSettings() {
@@ -100,6 +104,7 @@ export class AppComponent {
 
     if (this.router.url === '/login' || this.router.url === '/register') {
       return false;
+
     } else {
       return true;
     }
