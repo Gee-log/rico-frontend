@@ -21,3 +21,4 @@ node_modules
 
 # log
 *.log
+*.log.[0-9]*
