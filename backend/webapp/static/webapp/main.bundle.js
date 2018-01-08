@@ -57,20 +57,10 @@ var _a;
 
 /***/ }),
 
-/***/ "../../../../../src/app/_models/backend_ip.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var backend_ip_address = "http://192.168.60.103\u0E4D:80/";
-/* harmony default export */ __webpack_exports__["a"] = (backend_ip_address);
-//# sourceMappingURL=backend_ip.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/alarm-history/alarm-history.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n    <!-- BEGIN FLEX-ITEM -->\r\n    <div class=\"flex-item\">\r\n      <!-- BEGIN TABLE-CONTAINER  -->\r\n      <div class=\"table-container\">\r\n        <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n          (keyup)='updateFilter($event)' />\r\n        <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n          [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n          <!-- BEGIN ALARM COLUMN  -->\r\n          <ngx-datatable-column name=\"Alarm\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END ALARM COLUMN -->\r\n          <!-- BEGIN DETAIL COLUMN  -->\r\n          <ngx-datatable-column name=\"Detail\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END DETAIL COLUMN -->\r\n          <!-- BEGIN TIME COLUMN -->\r\n          <ngx-datatable-column name=\"Time\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END TIME COLUMN -->\r\n          <!-- BEGIN SEVERITY COLUMN -->\r\n          <ngx-datatable-column name=\"Severity\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END SEVERITY COLUMN -->\r\n        </ngx-datatable>\r\n        <!-- END TABLE -->\r\n      </div>\r\n      <!-- END SEARCH FILTER -->\r\n    </div>\r\n    <!-- END FLEX-ITEM -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER -->\r\n  <!-- BEGIN FLEX-CONTAINER -->\r\n  <div class=\"flex-container\">\r\n    <!-- BEGIN FLEX-FOOTER -->\r\n    <div class=\"flex-fix-padding\" align=\"center\">\r\n      <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" onclick=\"location.href='http://localhost:8000/3'\"\r\n        type=\"button\">Save</button>\r\n    </div>\r\n    <!-- END FLEX-FOOTER -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER -->\r\n  "
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n    <!-- BEGIN FLEX-ITEM -->\r\n    <div class=\"flex-item\">\r\n      <!-- BEGIN TABLE-CONTAINER  -->\r\n      <div class=\"table-container\">\r\n        <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n          (keyup)='updateFilter($event)' />\r\n        <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n          [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n\r\n\r\n          <!-- BEGIN ALARM COLUMN  -->\r\n          <ngx-datatable-column name=\"Alarm\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END ALARM COLUMN -->\r\n\r\n\r\n          <!-- BEGIN DETAIL COLUMN  -->\r\n          <ngx-datatable-column name=\"Detail\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END DETAIL COLUMN -->\r\n\r\n\r\n          <!-- BEGIN TIME COLUMN -->\r\n          <ngx-datatable-column name=\"Time\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END TIME COLUMN -->\r\n\r\n\r\n          <!-- BEGIN SEVERITY COLUMN -->\r\n          <ngx-datatable-column name=\"Severity\">\r\n            <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n              <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n            </ng-template>\r\n            <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n              <div>{{value}}</div>\r\n            </ng-template>\r\n          </ngx-datatable-column>\r\n          <!-- END SEVERITY COLUMN -->\r\n\r\n\r\n        </ngx-datatable>\r\n        <!-- END TABLE -->\r\n      </div>\r\n      <!-- END SEARCH FILTER -->\r\n    </div>\r\n    <!-- END FLEX-ITEM -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER -->\r\n\r\n\r\n  <!-- BEGIN FLEX-CONTAINER -->\r\n  <div class=\"flex-container\">\r\n    <!-- BEGIN FLEX-FOOTER -->\r\n    <div class=\"flex-fix-padding\" align=\"center\">\r\n      <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" onclick=\"location.href='http://localhost:8000/3'\"\r\n        type=\"button\">Save</button>\r\n    </div>\r\n    <!-- END FLEX-FOOTER -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER -->\r\n"
 
 /***/ }),
 
@@ -120,9 +110,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AlarmHistoryComponent = (function () {
-    function AlarmHistoryComponent(ApiService, router) {
-        this.ApiService = ApiService;
-        this.router = router;
+    function AlarmHistoryComponent(_apiService, _router) {
+        this._apiService = _apiService;
+        this._router = _router;
         this.rows = [];
         this.temp = [];
         this.columns = [
@@ -142,25 +132,21 @@ var AlarmHistoryComponent = (function () {
     // CHECK SERVER STATUS
     AlarmHistoryComponent.prototype.check_server_status = function () {
         var _this = this;
-        this.ApiService.check_server_status().then(function (status) {
+        this._apiService.check_server_status().then(function (status) {
             if (status === 500) {
-                _this.router.navigateByUrl('/500');
+                _this._router.navigateByUrl('/500');
             }
         });
     };
     // FETCH DATA
     AlarmHistoryComponent.prototype.fetchData = function () {
         var _this = this;
-        this.ApiService.getAlarmHistory().then(function (data) {
+        this._apiService.getAlarmHistory().then(function (data) {
             __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 console.log(obj);
                 _this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
             });
         });
-    };
-    // TEST FUNCTION
-    AlarmHistoryComponent.prototype.clickme = function (row) {
-        console.log(row);
     };
     // FILTER <-- Need to fix bug
     AlarmHistoryComponent.prototype.updateFilter = function (event) {
@@ -197,7 +183,7 @@ var _a, _b, _c;
 /***/ "../../../../../src/app/alarm/alarm.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        <!-- BEGIN ALARM COLUMN  -->\r\n        <ngx-datatable-column name=\"Alarm\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END ALARM COLUMN -->\r\n        <!-- BEGIN DETAIL COLUMN  -->\r\n        <ngx-datatable-column name=\"Detail\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DETAIL COLUMN -->\r\n        <!-- BEGIN TIME COLUMN -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"Severity\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" onclick=\"location.href='http://localhost:8000/2'\"\r\n      type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        \r\n        \r\n        <!-- BEGIN ALARM COLUMN  -->\r\n        <ngx-datatable-column name=\"Alarm\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END ALARM COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN DETAIL COLUMN  -->\r\n        <ngx-datatable-column name=\"Detail\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DETAIL COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN TIME COLUMN -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"Severity\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      \r\n      \r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n\r\n\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" onclick=\"location.href='http://localhost:8000/2'\"\r\n      type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
 
 /***/ }),
 
@@ -250,9 +236,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AlarmComponent = (function () {
-    function AlarmComponent(ApiService, router) {
-        this.ApiService = ApiService;
-        this.router = router;
+    function AlarmComponent(_apiService, _router) {
+        this._apiService = _apiService;
+        this._router = _router;
         this.currentAlarmTime = new Date();
         this.patterns = [
             ['I', 'Robot standby', '1'],
@@ -270,7 +256,6 @@ var AlarmComponent = (function () {
         ];
         this.temp = [];
         this.rows = [];
-        // { name: obj.alarm, gender: 'Male', company: 'Swimlane' },
         this.columns = [
             { prop: 'Alarm' },
             { name: 'Detail' },
@@ -289,28 +274,21 @@ var AlarmComponent = (function () {
     // CHECK SERVER STATUS
     AlarmComponent.prototype.check_server_status = function () {
         var _this = this;
-        this.ApiService.check_server_status().then(function (status) {
+        this._apiService.check_server_status().then(function (status) {
             if (status === 500) {
-                _this.router.navigateByUrl('/500');
+                _this._router.navigateByUrl('/500');
             }
         });
     };
     // SET ALARM HISTORY DATA
     AlarmComponent.prototype.fetchData = function () {
-        // this.currentAlarmTime.setMinutes(this.currentAlarmTime.getMinutes() - 1);
         var _this = this;
-        // setInterval(function () {
-        // console.log('polling', new Date())
-        // let since = this.currentAlarmTime.getTime() / 1000
-        this.ApiService.getAlarmHistory().then(function (data) {
+        this._apiService.getAlarmHistory().then(function (data) {
             __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 console.log(obj);
                 _this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
             });
         });
-        // }, 4000)
-        // this.updateSaveUrl(this.currentAlarmTime.getTime())
-        // this.randomAlert()
     };
     // SAVE TIME IN .crf FILE
     AlarmComponent.prototype.updateSaveUrl = function (time) {
@@ -339,16 +317,12 @@ var AlarmComponent = (function () {
             var p = this.randomPattern();
             this.ApiService.connectPort(p[0], p[1], p[2]).then(function (data) {
                 console.log('randomAlert Success', data);
-                // createTable(data)
             });
             console.log('randomAlert', new Date(), p);
             this.randomAlert();
         }, this.randomTime());
     };
-    // TEST FUNCTION
-    AlarmComponent.prototype.clickme = function (row) {
-        console.log(row);
-    };
+    // SEARCH FILTER
     AlarmComponent.prototype.updateFilter = function (event) {
         var val = event.target.value.toLowerCase();
         // filter our data
@@ -506,7 +480,7 @@ AppRoutingModule = __decorate([
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN SIDENAV-FAB-CONTAINER -->\r\n  <md-sidenav-container class=\"sidenav-fab-container\">\r\n    <!-- BEGIN NAV BAR -->\r\n    <md-toolbar class=\"toolbar-container\" color=\"primary\" *ngIf=\"showNavbar()\">\r\n    <!-- attr.disabled]=\"this.disable_stops_input == true ? false : null\" -->\r\n      <!-- BEGIN MENU ICON -->\r\n      <div>\r\n        <button id=\"menu-icon\" type=\"button\" md-button class=\"div-icon-menu\" (click)=\"sidenav.toggle(); getUserName();\">\r\n           <md-icon >menu</md-icon>\r\n        </button>\r\n      </div>\r\n      <!-- END MENU ICON -->\r\n      <!-- BEGIN MORE-VERT ICON -->\r\n      <div class=\"warpper-right\">\r\n        <button md-icon-button>\r\n          <md-icon>mail</md-icon>\r\n        </button>\r\n        <button md-icon-button>\r\n          <md-icon>notifications</md-icon>\r\n        </button>\r\n        <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n          <md-icon >more_vert</md-icon>\r\n       </button>\r\n        <!-- BEGIN MENU-LIST -->\r\n        <md-menu #menu=\"mdMenu\">\r\n          <!-- BEGIN NOTIFICATION ICON -->\r\n          <button md-menu-item>\r\n            <md-icon>notifications_off</md-icon>\r\n            <span>Disable alerts</span>\r\n          </button>\r\n          <!-- END NOTIFICATION ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clearDatabase()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear database</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n        </md-menu>\r\n        <!-- END MENU-LIST -->\r\n      </div>\r\n      <!-- END MORE-VERT ICON -->\r\n    </md-toolbar>\r\n    <!-- END NAV BAR -->\r\n\r\n    <!-- OLD VERSION SIDENAV ! -->\r\n    <!-- <md-sidenav #sidenav mode=\"side\" opened=\"false\"> -->\r\n\r\n    <!-- NEW VERSION SIDENAV ! -->\r\n    <!-- BEGIN SIDENAV -->\r\n    <md-sidenav #sidenav opened=\"false\">\r\n      <!-- BEGIN SCROLLING-CONTENT -->\r\n      <div class=\"scrolling-content\">\r\n        <!-- BEGIN USER-CONTAINER -->\r\n        <header class=\"user-container\">\r\n          <!-- BEGIN AVATAR -->\r\n          <div class=\"avatar-container\">\r\n            <img src=\"../../../static/webapp/assets/user.jpg\" alt=\"Avatar\" class=\"avatar\">\r\n          </div>\r\n          <!-- END AVATAR -->\r\n          <!-- BEGIN NAME-AVATAR-CONTAINER -->\r\n          <div class=\"name-avatar-container\">\r\n            <p>{{ this.username }}</p>\r\n          </div>\r\n          <!-- END NAME-AVATAR-CONTAINER -->\r\n          <!-- BEGIN USER-DROPDOWN-MENU -->\r\n          <div class=\"user-dropdown-menu\">\r\n            <span>{{ this.username }}@xenoptics.com</span>\r\n            <div class=\"mdl-layout-spacer\"></div>\r\n            <button md-button class=\"div-icon\" [mdMenuTriggerFor]=\"menudrop\">\r\n              <md-icon >arrow_drop_down</md-icon>\r\n           </button>\r\n            <md-menu #menudrop=\"mdMenu\">\r\n              <button md-menu-item>\r\n                <md-icon>add</md-icon>\r\n                <span>Add another account...</span>\r\n              </button>\r\n              <button md-menu-item (click)=\"logOut()\">\r\n                <md-icon>remove</md-icon>\r\n                <span>Logout</span>\r\n              </button>\r\n            </md-menu>\r\n          </div>\r\n          <!-- END USER-DROPDOWN-MENU -->\r\n        </header>\r\n        <!-- END USER-CONTAINER -->\r\n        <!-- BEGIN MENU -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"menu-open\" class=\"menu\">\r\n            <div id=\"menu-drop-down\" (click)=\"toggleMenu();\" hidden>\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n            </a>\r\n            </div>\r\n            <div id=\"menu-drop-up\" (click)=\"toggleMenu();\">\r\n              <a>Menu  \r\n            <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n          </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"menu-list\" class=\"menu-container-height\">\r\n            <md-list>\r\n              <!-- IF WANT TO ADD LOGO -->\r\n              <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of links\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END MENU -->\r\n        <!-- BEGIN SETTINGS -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"settings-open\" class=\"settings\">\r\n            <div id=\"settings-drop-down\" (click)=\"toggleSettings();\">\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n              </a>\r\n            </div>\r\n            <div id=\"settings-drop-up\" (click)=\"toggleSettings();\" hidden>\r\n              <a>Settings  \r\n              <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n            </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"settings-list\" class=\"settings-container-height\" hidden>\r\n            <md-list>\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of settinglinks\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END SETTINGS -->\r\n        <!-- BEGIN DOCUMENT LABEL -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"documents-open\" class=\"document\">\r\n            <div id=\"documents-drop-down\" (click)=\"toggleDocument();\">\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon >arrow_drop_down</md-icon></button>\r\n                </a>\r\n            </div>\r\n            <div id=\"documents-drop-up\" (click)=\"toggleDocument();\" hidden>\r\n              <a>Document  \r\n                <button md-button class=\"div-icon\"><md-icon>arrow_drop_up</md-icon></button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END DOCUMENT LABEL -->\r\n        <!-- BEGIN FOOTER-CONTAINER -->\r\n        <!-- <div class=\"footer-container\"> -->\r\n          <!-- <hr> -->\r\n          <!-- <div class=\"text-center\">\r\n            <span>Help & Feedback</span>\r\n          </div>\r\n        </div> -->\r\n        <!-- END FOOTER-CONTAINER -->\r\n      </div>\r\n      <!-- END SCROLLING-CONTENT -->\r\n    </md-sidenav>\r\n    <!-- END SIDENAV -->\r\n    <!-- BEGIN ROUTER-OUTLET -->\r\n    <router-outlet></router-outlet>\r\n    <!-- END ROUTER-OUTLET -->\r\n  </md-sidenav-container>\r\n  <!-- END SIDE NAV -->\r\n</div>\r\n<!-- END MAIN CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN SIDENAV-FAB-CONTAINER -->\r\n  <md-sidenav-container class=\"sidenav-fab-container\">\r\n    <!-- BEGIN NAV BAR -->\r\n    <md-toolbar class=\"toolbar-container\" color=\"primary\" *ngIf=\"showNavbar()\">\r\n      <!-- attr.disabled]=\"this.disable_stops_input == true ? false : null\" -->\r\n      <!-- BEGIN MENU ICON -->\r\n      <div>\r\n        <button id=\"menu-icon\" type=\"button\" md-button class=\"div-icon-menu\" (click)=\"sidenav.toggle(); getUserName();\">\r\n          <md-icon>menu</md-icon>\r\n        </button>\r\n      </div>\r\n      <!-- END MENU ICON -->\r\n      <!-- BEGIN MORE-VERT ICON -->\r\n      <div class=\"warpper-right\">\r\n        <button md-icon-button>\r\n          <md-icon>mail</md-icon>\r\n        </button>\r\n        <button md-icon-button>\r\n          <md-icon>notifications</md-icon>\r\n        </button>\r\n        <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n          <md-icon>more_vert</md-icon>\r\n        </button>\r\n        <!-- BEGIN MENU-LIST -->\r\n        <md-menu #menu=\"mdMenu\">\r\n          <!-- BEGIN NOTIFICATION ICON -->\r\n          <button md-menu-item>\r\n            <md-icon>notifications_off</md-icon>\r\n            <span>Disable alerts</span>\r\n          </button>\r\n          <!-- END NOTIFICATION ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clearDatabase()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear database</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n          <!-- BEGIN CLEAR DATABASE ICON -->\r\n          <button md-menu-item (click)=\"clear_latest_operation()\">\r\n            <md-icon>delete</md-icon>\r\n            <span>Clear operation</span>\r\n          </button>\r\n          <!-- END CLEAR DATABASE ICON -->\r\n        </md-menu>\r\n        <!-- END MENU-LIST -->\r\n      </div>\r\n      <!-- END MORE-VERT ICON -->\r\n    </md-toolbar>\r\n    <!-- END NAV BAR -->\r\n\r\n    <!-- OLD VERSION SIDENAV ! -->\r\n    <!-- <md-sidenav #sidenav mode=\"side\" opened=\"false\"> -->\r\n\r\n    <!-- NEW VERSION SIDENAV ! -->\r\n    <!-- BEGIN SIDENAV -->\r\n    <md-sidenav #sidenav opened=\"false\">\r\n      <!-- BEGIN SCROLLING-CONTENT -->\r\n      <div class=\"scrolling-content\">\r\n        <!-- BEGIN USER-CONTAINER -->\r\n        <header class=\"user-container\">\r\n          <!-- BEGIN AVATAR -->\r\n          <div class=\"avatar-container\">\r\n            <img src=\"../../../static/webapp/assets/user.jpg\" alt=\"Avatar\" class=\"avatar\">\r\n          </div>\r\n          <!-- END AVATAR -->\r\n          <!-- BEGIN NAME-AVATAR-CONTAINER -->\r\n          <div class=\"name-avatar-container\">\r\n            <p>{{ this.username }}</p>\r\n          </div>\r\n          <!-- END NAME-AVATAR-CONTAINER -->\r\n          <!-- BEGIN USER-DROPDOWN-MENU -->\r\n          <div class=\"user-dropdown-menu\">\r\n            <span>{{ this.username }}@xenoptics.com</span>\r\n            <div class=\"mdl-layout-spacer\"></div>\r\n            <button md-button class=\"div-icon\" [mdMenuTriggerFor]=\"menudrop\">\r\n              <md-icon>arrow_drop_down</md-icon>\r\n            </button>\r\n            <md-menu #menudrop=\"mdMenu\">\r\n              <button md-menu-item>\r\n                <md-icon>add</md-icon>\r\n                <span>Add another account...</span>\r\n              </button>\r\n              <button md-menu-item (click)=\"logOut()\">\r\n                <md-icon>remove</md-icon>\r\n                <span>Logout</span>\r\n              </button>\r\n            </md-menu>\r\n          </div>\r\n          <!-- END USER-DROPDOWN-MENU -->\r\n        </header>\r\n        <!-- END USER-CONTAINER -->\r\n        <!-- BEGIN MENU -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"menu-open\" class=\"menu\">\r\n            <div id=\"menu-drop-down\" (click)=\"toggleMenu();\" hidden>\r\n              <a>Menu\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_down</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n            <div id=\"menu-drop-up\" (click)=\"toggleMenu();\">\r\n              <a>Menu\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_up</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"menu-list\" class=\"menu-container-height\">\r\n            <md-list>\r\n              <!-- IF WANT TO ADD LOGO -->\r\n              <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of links\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END MENU -->\r\n        <!-- BEGIN SETTINGS -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"settings-open\" class=\"settings\">\r\n            <div id=\"settings-drop-down\" (click)=\"toggleSettings();\">\r\n              <a>Settings\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_down</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n            <div id=\"settings-drop-up\" (click)=\"toggleSettings();\" hidden>\r\n              <a>Settings\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_up</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n          <div id=\"settings-list\" class=\"settings-container-height\" hidden>\r\n            <md-list>\r\n              <a [routerLink]=\"[link.path]\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{ exact: true }\" *ngFor=\"let link of settinglinks\">\r\n                <md-list-item>\r\n                  <md-icon md-list-icon>{{ link.icon }}</md-icon>\r\n                  <h4 md-line>{{ link.name }}</h4>\r\n                </md-list-item>\r\n              </a>\r\n            </md-list>\r\n          </div>\r\n        </div>\r\n        <!-- END SETTINGS -->\r\n        <!-- BEGIN DOCUMENT LABEL -->\r\n        <div class=\"menu-list-container\">\r\n          <div id=\"documents-open\" class=\"document\">\r\n            <div id=\"documents-drop-down\" (click)=\"toggleDocument();\">\r\n              <a>Document\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_down</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n            <div id=\"documents-drop-up\" (click)=\"toggleDocument();\" hidden>\r\n              <a>Document\r\n                <button md-button class=\"div-icon\">\r\n                  <md-icon>arrow_drop_up</md-icon>\r\n                </button>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!-- END DOCUMENT LABEL -->\r\n        <!-- BEGIN FOOTER-CONTAINER -->\r\n        <!-- <div class=\"footer-container\"> -->\r\n        <!-- <hr> -->\r\n        <!-- <div class=\"text-center\">\r\n            <span>Help & Feedback</span>\r\n          </div>\r\n        </div> -->\r\n        <!-- END FOOTER-CONTAINER -->\r\n      </div>\r\n      <!-- END SCROLLING-CONTENT -->\r\n    </md-sidenav>\r\n    <!-- END SIDENAV -->\r\n    <!-- BEGIN ROUTER-OUTLET -->\r\n    <router-outlet></router-outlet>\r\n    <!-- END ROUTER-OUTLET -->\r\n  </md-sidenav-container>\r\n  <!-- END SIDE NAV -->\r\n</div>\r\n<!-- END MAIN CONTAINER -->"
 
 /***/ }),
 
@@ -561,12 +535,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AppComponent = (function () {
-    function AppComponent(http, ApiService, AuthenticationService, UserService, router) {
-        this.http = http;
-        this.ApiService = ApiService;
-        this.AuthenticationService = AuthenticationService;
-        this.UserService = UserService;
-        this.router = router;
+    function AppComponent(_http, _apiService, _authenticationService, _userService, _router) {
+        this._http = _http;
+        this._apiService = _apiService;
+        this._authenticationService = _authenticationService;
+        this._userService = _userService;
+        this._router = _router;
         this.links = [
             {
                 icon: 'settings_input_component',
@@ -626,11 +600,16 @@ var AppComponent = (function () {
     };
     // CLEAR DATABASE DATA
     AppComponent.prototype.clearDatabase = function () {
-        this.ApiService.clearDatabase('cleardatabase');
+        this._apiService.clearDatabase('cleardatabase');
+        // this.ApiService.clearDatabase('cleardatabase');
+    };
+    // CLEAR LATEST OPERATION
+    AppComponent.prototype.clear_latest_operation = function () {
+        this._apiService.clear_latest_operation('clear_latest_operation');
     };
     // SHOW NAVBAR
     AppComponent.prototype.showNavbar = function () {
-        if (this.router.url === '/login' || this.router.url === '/register') {
+        if (this._router.url === '/login' || this._router.url === '/register') {
             return false;
         }
         else {
@@ -640,16 +619,16 @@ var AppComponent = (function () {
     // LOGOUT
     AppComponent.prototype.logOut = function () {
         // CALL LOGOUT FUNCTION
-        this.AuthenticationService.logout();
+        this._authenticationService.logout();
         // RE ROUTE TO LOGIN
-        this.router.navigateByUrl('/login');
+        this._router.navigateByUrl('/login');
         // MAKE CLICK EVENT TO CLOSE SIDEBAR
         document.getElementById('menu-icon').click();
     };
     // GET USERNAME
     AppComponent.prototype.getUserName = function () {
         // SET VARIABLE
-        this.user_data = this.UserService.getUsers();
+        this.user_data = this._userService.getUsers();
         this.username = this.user_data['username'];
     };
     return AppComponent;
@@ -677,20 +656,20 @@ var _a, _b, _c, _d, _e;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__("../../../common/@angular/common/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_cdk_table__ = __webpack_require__("../../../cdk/@angular/cdk/table.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__side_nav_side_nav_component__ = __webpack_require__("../../../../../src/app/side-nav/side-nav.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__port_connection_port_connection_component__ = __webpack_require__("../../../../../src/app/port-connection/port-connection.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__port_connection_mobile_port_connection_mobile_component__ = __webpack_require__("../../../../../src/app/port-connection-mobile/port-connection-mobile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__port_history_port_history_component__ = __webpack_require__("../../../../../src/app/port-history/port-history.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__alarm_alarm_component__ = __webpack_require__("../../../../../src/app/alarm/alarm.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__alarm_history_alarm_history_component__ = __webpack_require__("../../../../../src/app/alarm-history/alarm-history.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__port_pipe__ = __webpack_require__("../../../../../src/app/port.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__testing_mode_testing_mode_component__ = __webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__page_not_found_page_not_found_component__ = __webpack_require__("../../../../../src/app/page-not-found/page-not-found.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__server_status_error_server_status_error_component__ = __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__alarm_alarm_component__ = __webpack_require__("../../../../../src/app/alarm/alarm.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__alarm_history_alarm_history_component__ = __webpack_require__("../../../../../src/app/alarm-history/alarm-history.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__page_not_found_page_not_found_component__ = __webpack_require__("../../../../../src/app/page-not-found/page-not-found.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__port_connection_port_connection_component__ = __webpack_require__("../../../../../src/app/port-connection/port-connection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__port_connection_mobile_port_connection_mobile_component__ = __webpack_require__("../../../../../src/app/port-connection-mobile/port-connection-mobile.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__port_history_port_history_component__ = __webpack_require__("../../../../../src/app/port-history/port-history.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__port_pipe__ = __webpack_require__("../../../../../src/app/port.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__side_nav_side_nav_component__ = __webpack_require__("../../../../../src/app/side-nav/side-nav.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__testing_mode_testing_mode_component__ = __webpack_require__("../../../../../src/app/testing-mode/testing-mode.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__server_status_error_server_status_error_component__ = __webpack_require__("../../../../../src/app/server-status-error/server-status-error.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__angular_cdk_table__ = __webpack_require__("../../../cdk/@angular/cdk/table.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts__ = __webpack_require__("../../../../ng2-charts/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_ng2_charts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable__ = __webpack_require__("../../../../@swimlane/ngx-datatable/release/index.js");
@@ -719,10 +698,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-// MATERIAL MODULE
-
-
-
 // Component
 
 
@@ -732,6 +707,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
+
+// MATERIAL MODULE
 
 
 
@@ -759,17 +738,17 @@ var AppModule = (function () {
 AppModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__side_nav_side_nav_component__["a" /* SideNavComponent */],
-            __WEBPACK_IMPORTED_MODULE_10__port_connection_port_connection_component__["a" /* PortConnectionComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__port_history_port_history_component__["a" /* PortHistoryComponent */],
-            __WEBPACK_IMPORTED_MODULE_13__alarm_alarm_component__["a" /* AlarmComponent */],
-            __WEBPACK_IMPORTED_MODULE_14__alarm_history_alarm_history_component__["a" /* AlarmHistoryComponent */],
-            __WEBPACK_IMPORTED_MODULE_15__port_pipe__["a" /* PortPipe */],
-            __WEBPACK_IMPORTED_MODULE_16__testing_mode_testing_mode_component__["a" /* TestingModeComponent */],
-            __WEBPACK_IMPORTED_MODULE_11__port_connection_mobile_port_connection_mobile_component__["a" /* PortConnectionMobileComponent */],
-            __WEBPACK_IMPORTED_MODULE_17__page_not_found_page_not_found_component__["a" /* PageNotFoundComponent */],
-            __WEBPACK_IMPORTED_MODULE_18__server_status_error_server_status_error_component__["a" /* ServerStatusErrorComponent */],
+            __WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_13__side_nav_side_nav_component__["a" /* SideNavComponent */],
+            __WEBPACK_IMPORTED_MODULE_9__port_connection_port_connection_component__["a" /* PortConnectionComponent */],
+            __WEBPACK_IMPORTED_MODULE_11__port_history_port_history_component__["a" /* PortHistoryComponent */],
+            __WEBPACK_IMPORTED_MODULE_6__alarm_alarm_component__["a" /* AlarmComponent */],
+            __WEBPACK_IMPORTED_MODULE_7__alarm_history_alarm_history_component__["a" /* AlarmHistoryComponent */],
+            __WEBPACK_IMPORTED_MODULE_12__port_pipe__["a" /* PortPipe */],
+            __WEBPACK_IMPORTED_MODULE_14__testing_mode_testing_mode_component__["a" /* TestingModeComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__port_connection_mobile_port_connection_mobile_component__["a" /* PortConnectionMobileComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__page_not_found_page_not_found_component__["a" /* PageNotFoundComponent */],
+            __WEBPACK_IMPORTED_MODULE_15__server_status_error_server_status_error_component__["a" /* ServerStatusErrorComponent */],
             __WEBPACK_IMPORTED_MODULE_26__login_login_component__["a" /* LoginComponent */],
             __WEBPACK_IMPORTED_MODULE_28__current_connection_current_connection_component__["a" /* CurrentConnectionComponent */],
             __WEBPACK_IMPORTED_MODULE_29__register_register_component__["a" /* RegisterComponent */],
@@ -777,17 +756,17 @@ AppModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["BrowserModule"],
             __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClientModule */],
-            __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-            __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MaterialModule */],
+            __WEBPACK_IMPORTED_MODULE_18__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+            __WEBPACK_IMPORTED_MODULE_16__angular_material__["a" /* MaterialModule */],
             __WEBPACK_IMPORTED_MODULE_25__app_routing_module__["a" /* AppRoutingModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["a" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_6__angular_cdk_table__["a" /* CdkTableModule */],
+            __WEBPACK_IMPORTED_MODULE_17__angular_cdk_table__["a" /* CdkTableModule */],
             __WEBPACK_IMPORTED_MODULE_20__swimlane_ngx_datatable__["NgxDatatableModule"],
             __WEBPACK_IMPORTED_MODULE_19_ng2_charts__["ChartsModule"]
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_22__services_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_27__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_23__services_authentication_service__["a" /* AuthenticationService */], __WEBPACK_IMPORTED_MODULE_24__services_user_service__["a" /* UserService */]],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
@@ -798,7 +777,7 @@ AppModule = __decorate([
 /***/ "../../../../../src/app/current-connection/current-connection.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-ITEM -->\n  <div class=\"flex-item\">\n    <!-- BEGIN TABLE-CONTAINER  -->\n    <div class=\"table-container\">\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\n        (keyup)='updateFilter($event)' />\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n        <!-- BEGIN EAST PORT COLUMN -->\n        <ngx-datatable-column name=\"East\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END EAST PORT COLUMN -->\n        <!-- BEGIN WEST PORT COLUMN -->\n        <ngx-datatable-column name=\"West\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END WEST PORT COLUMN -->\n        <!-- BEGIN DATE COLUMN  -->\n        <ngx-datatable-column name=\"Date\">\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\n          </ng-template>\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\n            <div>{{value}}</div>\n          </ng-template>\n        </ngx-datatable-column>\n        <!-- END DATE COLUMN -->\n      </ngx-datatable>\n      <!-- END TABLE -->\n    </div>\n    <!-- END SEARCH FILTER -->\n  </div>\n  <!-- END FLEX-ITEM -->\n</div>\n<!-- END FLEX-CONTAINER -->\n<!-- BEGIN FLEX-CONTAINER -->\n<div class=\"flex-container\">\n  <!-- BEGIN FLEX-FOOTER -->\n  <div class=\"flex-fix-padding\" align=\"center\">\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\n  </div>\n  <!-- END FLEX-FOOTER -->\n</div>\n<!-- END FLEX-CONTAINER -->"
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        \r\n        \r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n\r\n\r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n      \r\n      \r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n\r\n\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->"
 
 /***/ }),
 
@@ -849,9 +828,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var CurrentConnectionComponent = (function () {
-    function CurrentConnectionComponent(ApiService, router) {
-        this.ApiService = ApiService;
-        this.router = router;
+    function CurrentConnectionComponent(_apiService, _router) {
+        this._apiService = _apiService;
+        this._router = _router;
         this.rows = [];
         this.temp = [];
         this.selected = [];
@@ -872,16 +851,16 @@ var CurrentConnectionComponent = (function () {
     // CHECK SERVER STATUS
     CurrentConnectionComponent.prototype.check_server_status = function () {
         var _this = this;
-        this.ApiService.check_server_status().then(function (status) {
+        this._apiService.check_server_status().then(function (status) {
             if (status === 500) {
-                _this.router.navigateByUrl('/500');
+                _this._router.navigateByUrl('/500');
             }
         });
     };
     // SET DATA TABLE
     CurrentConnectionComponent.prototype.fetchData = function () {
         var _this = this;
-        this.ApiService.getConnectedPort().then(function (data) {
+        this._apiService.getConnectedPort().then(function (data) {
             __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 var date = new Date(obj['connected_date']);
                 var day = date.toString().substring(0, 15); // not using right now
@@ -915,7 +894,7 @@ var _a, _b, _c;
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN CONTAINER -->\r\n<md-card class=\"container\">\r\n  <!-- BEGIN FLEX-1 -->\r\n  <div class=\"flex-1\">\r\n    <div>\r\n      <p>XENOPTICS</p>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-1 -->\r\n\r\n  <!-- BEGIN FLEX-2 -->\r\n  <div class=\"flex-2\">\r\n    <div>\r\n\r\n      <md-form-field>\r\n        <input mdInput placeholder=\"Username\" type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"model.username\" #username=\"ngModel\"\r\n        />\r\n      </md-form-field>\r\n\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-2 -->\r\n\r\n  <!-- BEGIN FLEX-3 -->\r\n  <div class=\"flex-3\">\r\n    <div>\r\n\r\n      <md-form-field>\r\n        <input mdInput placeholder=\"Password\" type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\"\r\n          (keyup)=\"catchEnter($event)\" />\r\n      </md-form-field>\r\n\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-3 -->\r\n\r\n  <!-- BEGIN FLEX-4 -->\r\n  <div class=\"flex-4\">\r\n    <div class=\"item-1\">\r\n      <button md-raised-button color=\"primary\" (click)=\"login()\" [attr.disabled]=\"validate_login_button() === false ? true : null\"\r\n        disabled>Log In</button>\r\n    </div>\r\n    <div class=\"item-2\">\r\n      <button md-raised-button color=\"primary\" (click)=\"registerRoute()\">Register</button>\r\n    </div>\r\n    <div class=\"item-3\">\r\n      <md-card id=\"error\" class=\"hide\">\r\n        <p>{{ this.error }}</p>\r\n      </md-card>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-4 -->\r\n</md-card>\r\n<!-- END CONTAINER -->"
+module.exports = "<!-- BEGIN CONTAINER -->\r\n<md-card class=\"container\">\r\n\r\n\r\n  <!-- BEGIN FLEX-1 -->\r\n  <div class=\"flex-1\">\r\n    <div>\r\n      <p>XENOPTICS</p>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-1 -->\r\n\r\n\r\n  <!-- BEGIN FLEX-2 -->\r\n  <div class=\"flex-2\">\r\n    <div>\r\n      <md-form-field>\r\n        <input mdInput placeholder=\"Username\" type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"model.username\" #username=\"ngModel\"\r\n        />\r\n      </md-form-field>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-2 -->\r\n\r\n\r\n  <!-- BEGIN FLEX-3 -->\r\n  <div class=\"flex-3\">\r\n    <div>\r\n      <md-form-field>\r\n        <input mdInput placeholder=\"Password\" type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\"\r\n          (keyup)=\"catchEnter($event)\" />\r\n      </md-form-field>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-3 -->\r\n\r\n\r\n  <!-- BEGIN FLEX-4 -->\r\n  <div class=\"flex-4\">\r\n    <div class=\"item-1\">\r\n      <button md-raised-button color=\"primary\" (click)=\"login()\" [attr.disabled]=\"validate_login_button() === false ? true : null\"\r\n        disabled>Log In</button>\r\n    </div>\r\n    <div class=\"item-2\">\r\n      <button md-raised-button color=\"primary\" (click)=\"registerRoute()\">Register</button>\r\n    </div>\r\n    <div class=\"item-3\">\r\n      <md-card id=\"error\" class=\"hide\">\r\n        <p>{{ this.error }}</p>\r\n      </md-card>\r\n    </div>\r\n  </div>\r\n  <!-- END FLEX-4 -->\r\n\r\n\r\n</md-card>\r\n<!-- END CONTAINER -->\r\n"
 
 /***/ }),
 
@@ -961,14 +940,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var LoginComponent = (function () {
-    function LoginComponent(router, authenticationService, userservice) {
-        this.router = router;
-        this.authenticationService = authenticationService;
-        this.userservice = userservice;
+    function LoginComponent(_router, _authenticationService, _userService) {
+        this._router = _router;
+        this._authenticationService = _authenticationService;
+        this._userService = _userService;
         this.model = {};
-        this.loading = false; // <-- Not using right now
+        this.current_user = this._userService.getUsers();
         this.error = '';
-        this.current_user = this.userservice.getUsers();
+        this.loading = false; // <-- Not using right now
     }
     LoginComponent.prototype.ngOnInit = function () {
         // check current user
@@ -981,17 +960,17 @@ var LoginComponent = (function () {
         // set fake token in localStorage first ** this versy important
         localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
         if (this.current_user['username'] && this.current_user['username'] !== null) {
-            this.router.navigate(['/']);
+            this._router.navigate(['/']);
         }
     };
     // LOGIN
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
+        this._authenticationService.login(this.model.username, this.model.password)
             .then(function (result) {
             if (result === true) {
-                _this.router.navigate(['/']);
+                _this._router.navigate(['/']);
             }
             else {
                 document.getElementById('error').classList.remove('hide');
@@ -1010,7 +989,7 @@ var LoginComponent = (function () {
             return false;
         }
     };
-    // CATCH ENTER
+    // CATCH USER'S EVENT PRESS ENTER
     LoginComponent.prototype.catchEnter = function (e) {
         // IF KEYUP EVENT IS "ENTER"
         if (e.keyCode === 13) {
@@ -1020,8 +999,9 @@ var LoginComponent = (function () {
             }
         }
     };
+    // REGISTER ROUTE
     LoginComponent.prototype.registerRoute = function () {
-        this.router.navigate(['/register']);
+        this._router.navigate(['/register']);
     };
     return LoginComponent;
 }());
@@ -1042,7 +1022,7 @@ var _a, _b, _c;
 /***/ "../../../../../src/app/page-not-found/page-not-found.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <p>\r\n      404\r\n    </p>\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n\r\n  <!-- BEGIN BUTTON-CONTAINER -->\r\n  <div class=\"button-container Blink\">\r\n    <span mdTooltip=\"Are You Sure, You're Not Drunk?\" mdTooltipPosition=\"right\">\r\n    <button (click)='goHome()'>GO HOME DUDE <br/> YOU'RE DRUNK</button>\r\n    </span>\r\n  </div>\r\n  <!-- END BUTTON-CONTAINER -->\r\n\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n\r\n\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <p>404</p>\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n\r\n\r\n  <!-- BEGIN BUTTON-CONTAINER -->\r\n  <div class=\"button-container Blink\">\r\n    <span mdTooltip=\"Are You Sure, You're Not Drunk?\" mdTooltipPosition=\"right\">\r\n    <button (click)='goHome()'>GO HOME DUDE <br/> YOU'RE DRUNK</button>\r\n    </span>\r\n  </div>\r\n  <!-- END BUTTON-CONTAINER -->\r\n\r\n\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
 
 /***/ }),
 
@@ -1084,14 +1064,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var PageNotFoundComponent = (function () {
-    function PageNotFoundComponent(router) {
-        this.router = router;
+    function PageNotFoundComponent(_router) {
+        this._router = _router;
     }
-    PageNotFoundComponent.prototype.ngOnInit = function () {
-    };
+    PageNotFoundComponent.prototype.ngOnInit = function () { };
     // GO HOME
     PageNotFoundComponent.prototype.goHome = function () {
-        this.router.navigateByUrl('/');
+        this._router.navigateByUrl('/');
     };
     return PageNotFoundComponent;
 }());
@@ -1781,7 +1760,7 @@ var _a, _b;
 /***/ "../../../../../src/app/port-connection/port-connection.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN HEADER-CONTAINER -->\r\n<div class=\"header-container\" align=\"center\">\r\n  <!-- BEGIN CONTAINER-CONTENT -->\r\n  <div class=\"container-content\" align=\"center\">\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n        <div class=\"temperature-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>26 °C</span>\r\n              <p>78.8 °F</p>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Temperature</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/temp-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TEMPERATURE-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN HUMIDITY-CONTAINER -->\r\n        <div class=\"humidity-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>50%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Humidity</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/humidity-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END HUMIDITY-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN ORDER-CONTAINER -->\r\n        <div class=\"order-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN-CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>65%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN-CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Orders Completed</span>\r\n            </div>\r\n            <!-- END-CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/oder-icon2.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END ORDER-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TIME-CONTAINER -->\r\n        <div class=\"time-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>{{ this.operation_task_time }}</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Operations times</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/timer-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TIME-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n  </div>\r\n  <!-- END CONTAINER-CONTENT -->\r\n</div>\r\n<!-- END HEADER-CONTAINER -->\r\n\r\n<!-- BEGIN TABLE -->\r\n<!-- BEGIN SECTION GROUP -->\r\n<div class=\"section group\">\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- EAST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-1 -->\r\n    <table class=\"table-container-1\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of eportschunk\">\r\n          <td id=\"{{ column }}\" class=\"East td-style\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushEastNote(column)\" [mdTooltipPosition]=\"etooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- END TABLE-CONTAINER-1 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- WEST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n    <table class=\"table-container-2\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of wportschunk\">\r\n          <td id=\"{{ column }}\" class=\"West td-style\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushWestNote(column)\" [mdTooltipPosition]=\"wtooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n</div>\r\n<!-- END SECTION GROUP -->\r\n<!-- END TABLE -->\r\n\r\n<!-- BEGIN FOOTER -->\r\n<div class=\"footer-container\">\r\n  <!-- BEGIN FLEX-CONTAINER-1 -->\r\n  <div class=\"flex-container-1\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ERROR-DIALOG -->\r\n        <div id=\"error-dialog\" [ngClass]=\"check_status_for_hide_dialog()\">\r\n          <md-card class=\"Blink\">\r\n            <p>{{ error_message }}</p>\r\n          </md-card>\r\n        </div>\r\n        <!-- END ERROR-DIALOG -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-1 -->\r\n  <!-- BEGIN FLEX-CONTAINER-2 -->\r\n  <div class=\"flex-container-2\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container fix-width\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- <div class=\"button-container-item-1\"> -->\r\n              <!-- BEGIN TOOLTIP -->\r\n              <!-- <div class=\"tooltip\"> -->\r\n                <!-- BEGIN CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- <div class=\"cancel-button-circle Blink\"></div> -->\r\n                <!-- END CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <!-- <span class=\"tooltiptext\">Hint! \"c\" means continue robot operations. <br> \"s\" means restart robot operations. <br> \"l\" means reload robot operations.</span> -->\r\n                <!-- END TOOLTIPTEXT -->\r\n              <!-- </div> -->\r\n              <!-- END TOOLTIP -->\r\n            <!-- </div> -->\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Cancel\" class=\"cancel-button-width\" (click)=\"[continueRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>autorenew</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Restart\" class=\"cancel-button-width\" (click)=\"[restartRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>replay</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Reload\" class=\"cancel-button-width\" (click)=\"[reloadRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>clear</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"break-button-circle Blink\"></div>\r\n                <!-- END BREAK-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! debug button will available in debug mode.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONTINUE BUTTON -->\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" (click)=\"[postDebug(), force_disable_continue_button()]\" color=\"primary\" [attr.disabled]=\"this.status !== 'break' ? 'break' : null\"\r\n                disabled>Continue</button>\r\n              <!-- END CONTINUE BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! connect button will available when select two side available ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONNECT BUTTON -->\r\n              <button md-raised-button id=\"Connect\" class=\"button-width\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                disabled>Connect</button>\r\n              <!-- END CONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! disconnect button will available when select correct pair of connected ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN DISCONNECT BUTTON -->\r\n              <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                disabled>Disconnect</button>\r\n              <!-- END DISCONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n      <!-- BEGIN ITEM-2 -->\r\n      <div class=\"item-2\">\r\n        <!-- BEGIN SUB-ITEM -->\r\n        <div class=\"sub-item\" align=\"center\">\r\n          <!-- BEGIN INPUT-CONTAINER -->\r\n          <div id=\"input-container\" class=\"align-center\" hidden>\r\n            <!-- BEGIN INPUT DIV -->\r\n            <div style=\"transform: translateY(-20%);\">\r\n              <!-- BEGIN STOP INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"stops\" placeholder=\"Stops :\" value=\"stops\" [(ngModel)]=\"stops\" [ngClass]=\"clearValue(stops)\" pattern=\"[0-9,]{1,100}\"\r\n                  [attr.disabled]=\"this.disable_stops_input == true ? false : null\" hidden>\r\n              </md-input-container>\r\n              <!-- END STOP INPUT -->\r\n              <!-- BEGIN SEQUENCE INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"sequence\" placeholder=\"Sequence :\" value=\"sequence\" [(ngModel)]=\"sequence\" [attr.disabled]=\"this.disable_stops_input == true\"\r\n                  hidden>\r\n              </md-input-container>\r\n              <!-- END SEQUENCE INPUT -->\r\n            </div>\r\n            <!-- END INPUT DIV -->\r\n          </div>\r\n          <!-- END INPUT CONTAINER -->\r\n        </div>\r\n        <!-- END SUB-ITEM -->\r\n      </div>\r\n      <!-- END ITEM-2 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n    <!-- BEGIN FLEX-ITEM-2 -->\r\n    <div class=\"flex-item-2\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\" align=\"center\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <md-chip-list>\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <div class=\"detail-container-connected-item-1\">\r\n                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->\r\n                  <div class=\"connected-circle Blink\"></div>\r\n                  <!-- END CONNECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n                <div class=\"detail-container-connected-item-2\">\r\n                  <p>Connected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Green color means the port that connected.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <div class=\"detail-container-break-item-1\">\r\n                  <!-- BEGIN BREAK-CIRCLE BLINK -->\r\n                  <div class=\"break-circle Blink\"></div>\r\n                  <!-- END BREAK-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n                <div class=\"detail-container-break-item-2\">\r\n                  <p>Break</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <span class=\"tooltiptext\">Yellow color means the port that stop in current sequence.</span>\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <div class=\"detail-container-pending-item-1\">\r\n                  <!-- BEGIN PENDING-CIRCLE BLINK -->\r\n                  <div class=\"pending-circle Blink\"></div>\r\n                  <!-- END PENDING-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n                <div class=\"detail-container-pending-item-2\">\r\n                  <p>Pending</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Red color means the port that processing or pending.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <div class=\"detail-container-pair-item-1\">\r\n                  <!-- BEGIN PAIR-CIRCLE BLINK -->\r\n                  <div class=\"pair-circle Blink\"></div>\r\n                  <!-- END PAIR-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n                <div class=\"detail-container-pair-item-2\">\r\n                  <p>Pair</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show pairs of ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <div class=\"detail-container-selected-item-1\">\r\n                  <!-- BEGIN SELECTED-CIRCLE BLINK -->\r\n                  <div class=\"selected-circle Blink\"></div>\r\n                  <!-- END SELECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n                <div class=\"detail-container-selected-item-2\">\r\n                  <p>Selected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show current selected ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n          </md-chip-list>\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-2 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-2 -->\r\n  <!-- BEGIN FLEX-CONTAINER-3 -->\r\n  <div class=\"flex-container-3\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n      <div class=\"flex-item-1-container-shadow\">\r\n        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->\r\n        <md-slide-toggle id=\"toggleDebugButton\" class=\"bt-margin-left\" (click)=\"toggleDebugMode()\">Debug Mode</md-slide-toggle>\r\n        <!-- END DEBUG MODE TOGGLE BUTTON -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-3 -->\r\n</div>\r\n<!-- END FOOTER -->"
+module.exports = "<!-- BEGIN HEADER-CONTAINER -->\r\n<div class=\"header-container\" align=\"center\">\r\n  <!-- BEGIN CONTAINER-CONTENT -->\r\n  <div class=\"container-content\" align=\"center\">\r\n \r\n\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TEMPERATURE-CONTAINER -->\r\n        <div class=\"temperature-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>26 °C</span>\r\n              <p>78.8 °F</p>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Temperature</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/temp-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TEMPERATURE-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n\r\n\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN HUMIDITY-CONTAINER -->\r\n        <div class=\"humidity-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>50%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Humidity</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/humidity-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END HUMIDITY-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n\r\n\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN ORDER-CONTAINER -->\r\n        <div class=\"order-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN-CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>65%</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN-CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Orders Completed</span>\r\n            </div>\r\n            <!-- END-CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/oder-icon2.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END ORDER-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n\r\n\r\n    <!-- BEGIN SUB-CONTAINER-CONTENT -->\r\n    <div class=\"sub-container-content\">\r\n      <!-- BEGIN FLEX-ITEM-CONTAINER -->\r\n      <div class=\"flex-item-container\">\r\n        <!-- BEGIN TIME-CONTAINER -->\r\n        <div class=\"time-container\">\r\n          <!-- BEGIN FLEX-ITEM-1 -->\r\n          <div class=\"flex-item-1\">\r\n            <!-- BEGIN CONTENT-1 -->\r\n            <div class=\"content-1\">\r\n              <span>{{ this.operation_task_time }}</span>\r\n            </div>\r\n            <!-- END CONTENT-1 -->\r\n            <!-- BEGIN CONTENT-2 -->\r\n            <div class=\"content-2\">\r\n              <span>Operations times</span>\r\n            </div>\r\n            <!-- END CONTENT-2 -->\r\n          </div>\r\n          <!-- END FLEX-ITEM-1 -->\r\n          <!-- BEGIN FLEX-ITEM-2 -->\r\n          <div class=\"flex-item-2\">\r\n            <img src=\"../../../static/webapp/assets/timer-icon.png\" alt=\"Temperature-icon\">\r\n          </div>\r\n          <!-- END FLEX-ITEM-2 -->\r\n        </div>\r\n        <!-- END TIME-CONTAINER -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-CONTAINER -->\r\n    </div>\r\n    <!-- END SUB-CONTAINER-CONTENT -->\r\n\r\n\r\n  </div>\r\n  <!-- END CONTAINER-CONTENT -->\r\n</div>\r\n<!-- END HEADER-CONTAINER -->\r\n\r\n\r\n<!-- BEGIN TABLE -->\r\n<!-- BEGIN SECTION GROUP -->\r\n<div class=\"section group\">\r\n\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- EAST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-1 -->\r\n    <table class=\"table-container-1\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of eportschunk\">\r\n          <td id=\"{{ column }}\" class=\"East td-style\" [ngClass]=\"[isSelectEast(column), disabledEastPort(column)]\" (click)=\"setEastID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipEast(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushEastNote(column)\" [mdTooltipPosition]=\"etooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- END TABLE-CONTAINER-1 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n\r\n\r\n  <!-- BEGIN COL SPAN_1_OF_2 -->\r\n  <div class=\"col span_1_of_2\">\r\n    <!-- WEST TABLE -->\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n    <table class=\"table-container-2\" align=\"center\">\r\n      <tbody [ngClass]=\"{'unselectable': this.unselectable_table, 'selectable': !this.unselectable_table}\">\r\n        <tr class=\"tr-style\" *ngFor=\"let row of wportschunk\">\r\n          <td id=\"{{ column }}\" class=\"West td-style\" [ngClass]=\"[isSelectWest(column), disabledWestPort(column)]\" (click)=\"setWestID(column)\"\r\n            *ngFor=\"let column of row\">\r\n            <span id=\"T{{ column }}\" [mdTooltip]=\"tooltipWest(column)\" mdTooltipPosition=\"above\">\r\n              <span [mdTooltip]=\"pushWestNote(column)\" [mdTooltipPosition]=\"wtooltipPostion(column)\">{{ column }}</span>\r\n            </span>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <!-- BEGIN TABLE-CONTAINER-2 -->\r\n  </div>\r\n  <!-- END COL SPAN_1_OF_2 -->\r\n\r\n\r\n</div>\r\n<!-- END SECTION GROUP -->\r\n<!-- END TABLE -->\r\n\r\n\r\n<!-- BEGIN FOOTER -->\r\n<div class=\"footer-container\">\r\n\r\n\r\n  <!-- BEGIN FLEX-CONTAINER-1 -->\r\n  <div class=\"flex-container-1\"> \r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ERROR-DIALOG -->\r\n        <div id=\"error-dialog\" [ngClass]=\"check_status_for_hide_dialog()\">\r\n          <md-card class=\"Blink\">\r\n            <p>{{ error_message }}</p>\r\n          </md-card>\r\n        </div>\r\n        <!-- END ERROR-DIALOG -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-1 -->\r\n\r\n\r\n  <!-- BEGIN FLEX-CONTAINER-2 -->\r\n  <div class=\"flex-container-2\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container fix-width\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- <div class=\"button-container-item-1\"> -->\r\n              <!-- BEGIN TOOLTIP -->\r\n              <!-- <div class=\"tooltip\"> -->\r\n                <!-- BEGIN CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- <div class=\"cancel-button-circle Blink\"></div> -->\r\n                <!-- END CANCEL-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <!-- <span class=\"tooltiptext\">Hint! \"c\" means continue robot operations. <br> \"s\" means restart robot operations. <br> \"l\" means reload robot operations.</span> -->\r\n                <!-- END TOOLTIPTEXT -->\r\n              <!-- </div> -->\r\n              <!-- END TOOLTIP -->\r\n            <!-- </div> -->\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Cancel\" class=\"cancel-button-width\" (click)=\"[continueRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>autorenew</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Restart\" class=\"cancel-button-width\" (click)=\"[restartRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>replay</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n              <!-- BEGIN CANCEL BUTTON -->\r\n              <button md-raised-button id=\"Reload\" class=\"cancel-button-width\" (click)=\"[reloadRobotOperation(), foruce_disable_continue_mode_button()]\" color=\"primary\" [attr.disabled]=\"this.disabled_continue_mode_all_button === false ? true : null\" disabled>\r\n                <md-icon>clear</md-icon>\r\n              </button>\r\n              <!-- END CANCEL BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN BREAK-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"break-button-circle Blink\"></div>\r\n                <!-- END BREAK-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! debug button will available in debug mode.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONTINUE BUTTON -->\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" (click)=\"[postDebug(), force_disable_continue_button()]\" color=\"primary\" [attr.disabled]=\"this.status !== 'break' ? 'break' : null\"\r\n                disabled>Continue</button>\r\n              <!-- END CONTINUE BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"connect-button-circle Blink\"></div>\r\n                <!-- END CONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! connect button will available when select two side available ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN CONNECT BUTTON -->\r\n              <button md-raised-button id=\"Connect\" class=\"button-width\" (click)=\"postConnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_connect_button == true ? false : null\"\r\n                disabled>Connect</button>\r\n              <!-- END CONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n          <!-- BEGIN BUTTON-CONTAINER -->\r\n          <div class=\"button-container\">\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->\r\n            <div class=\"button-container-item-1\">\r\n              <!-- BEGIN TOOLTIP -->\r\n              <div class=\"tooltip\">\r\n                <!-- BEGIN DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <div class=\"disconnect-button-circle Blink\"></div>\r\n                <!-- END DISCONNECT-BUTTON-CIRCLE BLINK -->\r\n                <!-- BEGIN TOOLTIPTEXT -->\r\n                <span class=\"tooltiptext\">Hint! disconnect button will available when select correct pair of connected ports.</span>\r\n                <!-- END TOOLTIPTEXT -->\r\n              </div>\r\n              <!-- END TOOLTIP -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-1 -->\r\n            <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->\r\n            <div class=\"button-container-item-2\">\r\n              <!-- BEGIN DISCONNECT BUTTON -->\r\n              <button md-raised-button id=\"Disconnect\" class=\"button-width\" (click)=\"postDisconnection()\" color=\"primary\" [attr.disabled]=\"this.disabled_disconnect_button == true ? false : null\"\r\n                disabled>Disconnect</button>\r\n              <!-- END DISCONNECT BUTTON -->\r\n            </div>\r\n            <!-- END BUTTON-CONTAINER-ITEM-2 -->\r\n          </div>\r\n          <!-- END BUTTON-CONTAINER -->\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n      <!-- BEGIN ITEM-2 -->\r\n      <div class=\"item-2\">\r\n        <!-- BEGIN SUB-ITEM -->\r\n        <div class=\"sub-item\" align=\"center\">\r\n          <!-- BEGIN INPUT-CONTAINER -->\r\n          <div id=\"input-container\" class=\"align-center\" hidden>\r\n            <!-- BEGIN INPUT DIV -->\r\n            <div style=\"transform: translateY(-20%);\">\r\n              <!-- BEGIN STOP INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"stops\" placeholder=\"Stops :\" value=\"stops\" [(ngModel)]=\"stops\" [ngClass]=\"clearValue(stops)\" pattern=\"[0-9,]{1,100}\"\r\n                  [attr.disabled]=\"this.disable_stops_input == true ? false : null\" hidden>\r\n              </md-input-container>\r\n              <!-- END STOP INPUT -->\r\n              <!-- BEGIN SEQUENCE INPUT -->\r\n              <md-input-container>\r\n                <input mdInput id=\"sequence\" placeholder=\"Sequence :\" value=\"sequence\" [(ngModel)]=\"sequence\" [attr.disabled]=\"this.disable_stops_input == true\"\r\n                  hidden>\r\n              </md-input-container>\r\n              <!-- END SEQUENCE INPUT -->\r\n            </div>\r\n            <!-- END INPUT DIV -->\r\n          </div>\r\n          <!-- END INPUT CONTAINER -->\r\n        </div>\r\n        <!-- END SUB-ITEM -->\r\n      </div>\r\n      <!-- END ITEM-2 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n    <!-- BEGIN FLEX-ITEM-2 -->\r\n    <div class=\"flex-item-2\">\r\n      <!-- BEGIN ITEM-1 -->\r\n      <div class=\"item-1\" align=\"center\">\r\n        <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->\r\n        <div class=\"item-1-container-shadow\">\r\n          <md-chip-list>\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <div class=\"detail-container-connected-item-1\">\r\n                  <!-- BEGIN CONNECTED-CIRCLE BLINK -->\r\n                  <div class=\"connected-circle Blink\"></div>\r\n                  <!-- END CONNECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n                <div class=\"detail-container-connected-item-2\">\r\n                  <p>Connected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-CONNECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Green color means the port that connected.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <div class=\"detail-container-break-item-1\">\r\n                  <!-- BEGIN BREAK-CIRCLE BLINK -->\r\n                  <div class=\"break-circle Blink\"></div>\r\n                  <!-- END BREAK-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n                <div class=\"detail-container-break-item-2\">\r\n                  <p>Break</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-BREAK-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <span class=\"tooltiptext\">Yellow color means the port that stop in current sequence.</span>\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <div class=\"detail-container-pending-item-1\">\r\n                  <!-- BEGIN PENDING-CIRCLE BLINK -->\r\n                  <div class=\"pending-circle Blink\"></div>\r\n                  <!-- END PENDING-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n                <div class=\"detail-container-pending-item-2\">\r\n                  <p>Pending</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Red color means the port that processing or pending.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <div class=\"detail-container-pair-item-1\">\r\n                  <!-- BEGIN PAIR-CIRCLE BLINK -->\r\n                  <div class=\"pair-circle Blink\"></div>\r\n                  <!-- END PAIR-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n                <div class=\"detail-container-pair-item-2\">\r\n                  <p>Pair</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-PAIR-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show pairs of ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n            <!-- BEGIN TOOLTIP -->\r\n            <div class=\"tooltip\">\r\n              <!-- BEGIN DETAIL-CONTAINER -->\r\n              <div class=\"detail-container\" style=\"display: inline-flex;\">\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <div class=\"detail-container-selected-item-1\">\r\n                  <!-- BEGIN SELECTED-CIRCLE BLINK -->\r\n                  <div class=\"selected-circle Blink\"></div>\r\n                  <!-- END SELECTED-CIRCLE BLINK -->\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-1 -->\r\n                <!-- BEGIN DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n                <div class=\"detail-container-selected-item-2\">\r\n                  <p>Selected</p>\r\n                </div>\r\n                <!-- END DETAIL-CONTAINER-SELECTED-ITEM-2 -->\r\n              </div>\r\n              <!-- END DETAIL-CONTAINER -->\r\n              <!-- BEGIN TOOLTIPTEXT -->\r\n              <span class=\"tooltiptext\">Show current selected ports.</span>\r\n              <!-- END TOOLTIPTEXT -->\r\n            </div>\r\n            <!-- END TOOLTIP -->\r\n          </md-chip-list>\r\n        </div>\r\n        <!-- END ITEM-1-CONTAINER-SHADOW -->\r\n      </div>\r\n      <!-- END ITEM-1 -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-2 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-2 -->\r\n\r\n\r\n  <!-- BEGIN FLEX-CONTAINER-3 -->\r\n  <div class=\"flex-container-3\">\r\n    <!-- BEGIN FLEX-ITEM-1 -->\r\n    <div class=\"flex-item-1\" align=\"center\">\r\n      <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n      <div class=\"flex-item-1-container-shadow\">\r\n        <!-- BEGIN DEBUG MODE TOGGLE BUTTON -->\r\n        <md-slide-toggle id=\"toggleDebugButton\" class=\"bt-margin-left\" (click)=\"toggleDebugMode()\">Debug Mode</md-slide-toggle>\r\n        <!-- END DEBUG MODE TOGGLE BUTTON -->\r\n      </div>\r\n      <!-- END FLEX-ITEM-1-CONTAINER-SHADOW -->\r\n    </div>\r\n    <!-- END FLEX-ITEM-1 -->\r\n  </div>\r\n  <!-- END FLEX-CONTAINER-3 -->\r\n\r\n\r\n</div>\r\n<!-- END FOOTER -->\r\n"
 
 /***/ }),
 
@@ -1835,9 +1814,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var PortConnectionComponent = (function () {
-    function PortConnectionComponent(ApiService, router) {
-        this.ApiService = ApiService;
-        this.router = router;
+    function PortConnectionComponent(_apiService, _router) {
+        this._apiService = _apiService;
+        this._router = _router;
         // PORTS DATA
         this.eports = []; // 144 EAST PORTS
         this.wports = []; // 144 WEST PORTS
@@ -1888,7 +1867,7 @@ var PortConnectionComponent = (function () {
         // CHECK STATUS EVERY 5 SEC.
         this.timerInterval = setInterval(function () {
             _this.checkStatus();
-        }, 5027);
+        }, 5000);
     };
     PortConnectionComponent.prototype.ngOnDestroy = function () {
         clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
@@ -1896,21 +1875,21 @@ var PortConnectionComponent = (function () {
     // CHECK SERVER STATUS
     PortConnectionComponent.prototype.check_server_status = function () {
         var _this = this;
-        this.ApiService.check_server_status().then(function (status) {
+        this._apiService.check_server_status().then(function (status) {
             // CHECK TOKEN
             _this.check_token();
             if (status === 500) {
-                _this.router.navigateByUrl('/500');
+                _this._router.navigateByUrl('/500');
             }
         });
     };
     // VERIFY USER WITH CURRENT BACKEND
     PortConnectionComponent.prototype.verify_user = function () {
         var _this = this;
-        this.ApiService.verify_user_with_backend().then(function (data) {
+        this._apiService.verify_user_with_backend().then(function (data) {
             if (data['status'] === 'unverified') {
                 localStorage.setItem('currentUser', null);
-                _this.router.navigateByUrl('/login');
+                _this._router.navigateByUrl('/login');
             }
         });
     };
@@ -1918,19 +1897,19 @@ var PortConnectionComponent = (function () {
     PortConnectionComponent.prototype.check_token = function () {
         var token = JSON.parse(localStorage.getItem('token')); // Set sample token
         if (token === null) {
-            this.router.navigateByUrl('/login');
+            this._router.navigateByUrl('/login');
         }
     };
     // DEVICE DETECT
     PortConnectionComponent.prototype.deviceDetect = function () {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            this.router.navigateByUrl('/port_connection_mobile');
+            this._router.navigateByUrl('/port_connection_mobile');
         }
     };
     // FETCH DATA
     PortConnectionComponent.prototype.fetchData = function () {
         var _this = this;
-        this.ApiService.getAllPort().then(function (data) {
+        this._apiService.getAllPort().then(function (data) {
             _this.eports = data.eports;
             _this.eportschunk = data.eportschunk;
             _this.wports = data.wports;
@@ -1959,7 +1938,7 @@ var PortConnectionComponent = (function () {
     // CHECK CURRENT ROBOT STATUS
     PortConnectionComponent.prototype.checkStatus = function () {
         var _this = this;
-        this.ApiService.checkStatus().then(function (data) {
+        this._apiService.checkStatus().then(function (data) {
             _this.sequence = data.sequence;
             _this.status = data.status;
             _this.action = data.action;
@@ -2198,7 +2177,7 @@ var PortConnectionComponent = (function () {
             // SET LOCALSTORAGE VALUE OF stops
             localStorage.setItem('stops', JSON.stringify(this.stops));
             // POST DATA
-            this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
+            this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
@@ -2207,12 +2186,13 @@ var PortConnectionComponent = (function () {
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
+                    return;
                 }
             });
             // PAYLOAD { east, west, action }
         }
         else {
-            this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
+            this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
@@ -2221,6 +2201,7 @@ var PortConnectionComponent = (function () {
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
+                    return;
                 }
             });
             // LOCK CONTINUE BUTTON AFTER POST
@@ -2244,7 +2225,7 @@ var PortConnectionComponent = (function () {
             // SET LOCALSTORAGE VALUE OF stops
             localStorage.setItem('stops', JSON.stringify(this.stops));
             // POST DATA
-            this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
+            this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
@@ -2253,12 +2234,13 @@ var PortConnectionComponent = (function () {
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
+                    return;
                 }
             });
             // PAYLOAD { east, west, action }
         }
         else {
-            this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
+            this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
@@ -2267,6 +2249,7 @@ var PortConnectionComponent = (function () {
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
+                    return;
                 }
             });
             // LOCK DISCONTINUE BUTTON AFTER POST
@@ -2294,7 +2277,7 @@ var PortConnectionComponent = (function () {
             // GET LOCALSTORAGE VALUE OF selectedWestPortID
             var selectedWestPortID = localStorage.getItem('selectedWestPortID');
             // POST DATA
-            this.ApiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1), this.action, JSON.parse(stops), this.sequence)
+            this._apiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1), this.action, JSON.parse(stops), this.sequence)
                 .then(function (data) {
                 // IF CELERY'S CURRENT STATUS IS ERROR
                 if (data.status === 'error') {
@@ -2303,6 +2286,7 @@ var PortConnectionComponent = (function () {
                     // IF CELERY'S CURRENT STATUS IS NOT ERROR
                 }
                 else {
+                    return;
                 }
             });
             // NO stops, sequence VALUE IN PAYLOAD
@@ -2320,7 +2304,7 @@ var PortConnectionComponent = (function () {
     PortConnectionComponent.prototype.setConnectedPort = function () {
         var _this = this;
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
-        this.ApiService.getConnectedPort().then(function (data) {
+        this._apiService.getConnectedPort().then(function (data) {
             console.log('ALL PORT CONNECTION :', data);
             // SET PORT DATA IN PAIR
             _this.pair = data;
@@ -2331,8 +2315,14 @@ var PortConnectionComponent = (function () {
             var east_td = document.getElementsByClassName('West');
             var west_td = document.getElementsByClassName('East');
             for (var i = 0; i < 144; i++) {
-                _this.all_east[i].classList.remove('connected', 'pending', 'break');
-                _this.all_west[i].classList.remove('connected', 'pending', 'break');
+                if (_this.all_east[0] === undefined) {
+                    console.log('Element are not ready !');
+                    return;
+                }
+                else {
+                    _this.all_east[i].classList.remove('connected', 'pending', 'break');
+                    _this.all_west[i].classList.remove('connected', 'pending', 'break');
+                }
             }
             console.log('------------------------------- All Port Status -------------------------------');
             // IF STATUS IS ERROR SHOW ERROR DIALOG
@@ -2380,12 +2370,6 @@ var PortConnectionComponent = (function () {
         else if (document.getElementById('stops').classList.contains('ng-invalid')) {
             this.disabled_connect_button = true;
         }
-    };
-    // TEST CONSOLE.LOG LOCAL STORAGE VALUE
-    PortConnectionComponent.prototype.clear = function () {
-        var selectedEastPortID = localStorage.getItem('selectedEastPortID');
-        var selectedWestPortID = localStorage.getItem('selectedWestPortID');
-        console.log(selectedEastPortID, selectedWestPortID, this.stops);
     };
     // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
     PortConnectionComponent.prototype.tooltipEast = function (EastID) {
@@ -2466,7 +2450,7 @@ var PortConnectionComponent = (function () {
     // CONTINUE ROBOBT OPERATION TASK
     PortConnectionComponent.prototype.continueRobotOperation = function () {
         var _this = this;
-        this.ApiService.continue_robot_operations().then(function (data) {
+        this._apiService.continue_robot_operations().then(function (data) {
             if (data.status !== 'success') {
                 _this.error_message = data.status + ' ' + data.error;
                 _this.checkMessageLength(); // <-- check message length
@@ -2476,7 +2460,7 @@ var PortConnectionComponent = (function () {
     // RELOAD ROBOT OPERATION TASK
     PortConnectionComponent.prototype.reloadRobotOperation = function () {
         var _this = this;
-        this.ApiService.reload_robot_operations().then(function (data) {
+        this._apiService.reload_robot_operations().then(function (data) {
             if (data.status !== 'success') {
                 _this.error_message = data.status + ' ' + data.error;
                 _this.checkMessageLength(); // <-- check message length
@@ -2486,7 +2470,7 @@ var PortConnectionComponent = (function () {
     // RESTART ROBOT OPERATION TASK
     PortConnectionComponent.prototype.restartRobotOperation = function () {
         var _this = this;
-        this.ApiService.restart_robot_operations().then(function (data) {
+        this._apiService.restart_robot_operations().then(function (data) {
             if (data.status !== 'success') {
                 _this.error_message = data.status + ' ' + data.error;
                 _this.checkMessageLength(); // <-- check message length
@@ -2510,6 +2494,9 @@ var PortConnectionComponent = (function () {
             document.getElementById('Restart').removeAttribute('disabled');
             document.getElementById('Reload').removeAttribute('disabled');
         }
+        else {
+            return;
+        }
     };
     // CHECK STATUS FOR VALIDATION TO ADD CLASS TO ERROR DIALOG
     PortConnectionComponent.prototype.check_status_for_hide_dialog = function () {
@@ -2523,7 +2510,7 @@ var PortConnectionComponent = (function () {
     // GET LASTEST TASK TIME
     PortConnectionComponent.prototype.get_lastest_task_time = function () {
         var _this = this;
-        this.ApiService.get_operation_task_time().then(function (data) {
+        this._apiService.get_operation_task_time().then(function (data) {
             if (data['average_minute'] === 0 && data['average_second'] !== 0) {
                 _this.operation_task_time = data['average_second'] + 'sec';
             }
@@ -2535,14 +2522,6 @@ var PortConnectionComponent = (function () {
                 _this.operation_task_time = data['average_minute'] + 'min ' + data['average_second'] + 'sec';
             }
         });
-    };
-    PortConnectionComponent.prototype.validate_status_for_add_hiding_continue_mode_button = function () {
-        if (this.status !== 'alarm') {
-            return 'hide';
-        }
-        else {
-            return '';
-        }
     };
     return PortConnectionComponent;
 }());
@@ -2564,7 +2543,7 @@ var _a, _b;
 /***/ "../../../../../src/app/port-history/port-history.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n        <!-- BEGIN TIME COLUMN  -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        <!-- BEGIN TYPE COLUMN -->\r\n        <ngx-datatable-column name=\"User\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TYPE COLUMN -->\r\n        <!-- BEGIN STATUS COLUMN -->\r\n        <ngx-datatable-column name=\"Status\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END STATUS COLUMN -->\r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"RobotStatus\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <!-- OLD VERSION -->\r\n            <!-- <div *ngIf=\"value.status !== 'Pending'\"> -->\r\n            <!-- NEW VERSION -->\r\n            <div *ngIf=\"value.status\">{{value.status}}&nbsp;&nbsp;\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" color=\"primary\" *ngIf=\"value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'\"\r\n                (click)=\"cancelTask(value.id)\">Cancel</button>\r\n            </div>\r\n            <!-- <div class=\"flex-container\"> -->\r\n            <!-- REMOVE PENDING BUTTON -->\r\n            <!-- <button md-raised-button id=\"Continue\" class=\"button-width button-red\" color=\"primary\" *ngIf=\"value.status == 'Pending'\" (click)=\"pending(value.id)\">Continue</button> -->\r\n            <!-- </div> -->\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
+module.exports = "<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-ITEM -->\r\n  <div class=\"flex-item\">\r\n    <!-- BEGIN TABLE-CONTAINER  -->\r\n    <div class=\"table-container\">\r\n      <input class=\"fliter\" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'\r\n        (keyup)='updateFilter($event)' />\r\n      <ngx-datatable #table class=\"material shadow\" [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\r\n        [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\r\n        \r\n        \r\n        <!-- BEGIN DATE COLUMN  -->\r\n        <ngx-datatable-column name=\"Date\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END DATE COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN TIME COLUMN  -->\r\n        <ngx-datatable-column name=\"Time\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"red\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TIME COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN TYPE COLUMN -->\r\n        <ngx-datatable-column name=\"User\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"orange\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END TYPE COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN STATUS COLUMN -->\r\n        <ngx-datatable-column name=\"Status\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END STATUS COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN EAST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"East\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END EAST PORT COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN WEST PORT COLUMN -->\r\n        <ngx-datatable-column name=\"West\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"blue\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <div>{{value}}</div>\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END WEST PORT COLUMN -->\r\n        \r\n        \r\n        <!-- BEGIN SEVERITY COLUMN -->\r\n        <ngx-datatable-column name=\"RobotStatus\">\r\n          <ng-template let-column=\"column\" let-sort=\"sortFn\" ngx-datatable-header-template>\r\n            <span (click)=\"sort()\" class=\"green\"> {{column.name}}</span>\r\n          </ng-template>\r\n          <ng-template let-value=\"value\" ngx-datatable-cell-template>\r\n            <!-- OLD VERSION -->\r\n            <!-- <div *ngIf=\"value.status !== 'Pending'\"> -->\r\n            <!-- NEW VERSION -->\r\n            <div *ngIf=\"value.status\">{{value.status}}&nbsp;&nbsp;\r\n              <button md-raised-button id=\"Continue\" class=\"button-width\" color=\"primary\" *ngIf=\"value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'\"\r\n                (click)=\"cancelTask(value.id)\">Cancel</button>\r\n            </div>\r\n            <!-- <div class=\"flex-container\"> -->\r\n            <!-- REMOVE PENDING BUTTON -->\r\n            <!-- <button md-raised-button id=\"Continue\" class=\"button-width button-red\" color=\"primary\" *ngIf=\"value.status == 'Pending'\" (click)=\"pending(value.id)\">Continue</button> -->\r\n            <!-- </div> -->\r\n          </ng-template>\r\n        </ngx-datatable-column>\r\n        <!-- END SEVERITY COLUMN -->\r\n      \r\n      \r\n      </ngx-datatable>\r\n      <!-- END TABLE -->\r\n    </div>\r\n    <!-- END SEARCH FILTER -->\r\n  </div>\r\n  <!-- END FLEX-ITEM -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n\r\n\r\n<!-- BEGIN FLEX-CONTAINER -->\r\n<div class=\"flex-container\">\r\n  <!-- BEGIN FLEX-FOOTER -->\r\n  <div class=\"flex-fix-padding\" align=\"center\">\r\n    <button md-raised-button id=\"save\" class=\"button-width\" color=\"primary\" (click)=\"saveData()\" type=\"button\">Save</button>\r\n  </div>\r\n  <!-- END FLEX-FOOTER -->\r\n</div>\r\n<!-- END FLEX-CONTAINER -->\r\n"
 
 /***/ }),
 
@@ -2615,9 +2594,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var PortHistoryComponent = (function () {
-    function PortHistoryComponent(ApiService, router) {
-        this.ApiService = ApiService;
-        this.router = router;
+    function PortHistoryComponent(_apiService, _router) {
+        this._apiService = _apiService;
+        this._router = _router;
         this.rows = [];
         this.temp = [];
         this.selected = [];
@@ -2642,16 +2621,16 @@ var PortHistoryComponent = (function () {
     // CHECK SERVER STATUS
     PortHistoryComponent.prototype.check_server_status = function () {
         var _this = this;
-        this.ApiService.check_server_status().then(function (status) {
+        this._apiService.check_server_status().then(function (status) {
             if (status === 500) {
-                _this.router.navigateByUrl('/500');
+                _this._router.navigateByUrl('/500');
             }
         });
     };
     // SET DATA TABLE
     PortHistoryComponent.prototype.fetchData = function () {
         var _this = this;
-        this.ApiService.getConnectionHistory().then(function (data) {
+        this._apiService.getConnectionHistory().then(function (data) {
             __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](data, function (obj) {
                 console.log(obj);
                 var date = new Date(obj['timestamp']);
@@ -2679,7 +2658,7 @@ var PortHistoryComponent = (function () {
     };
     // CANCEL TASK
     PortHistoryComponent.prototype.cancelTask = function (id) {
-        this.ApiService.cancelTask(id, 'canceled').then(function (data) {
+        this._apiService.cancelTask(id, 'canceled').then(function (data) {
             if (data['status'] !== 'error' && data['historyid'] !== null) {
                 location.reload();
             }
@@ -2690,7 +2669,7 @@ var PortHistoryComponent = (function () {
         // USING HTTP TO DOWLOAD
         // window.location.href = 'http://localhost:8000/connectionhistorys?type=connectionhistory';
         // USING API SERVICE TO DOWNLOAD
-        this.ApiService.downloadFile();
+        this._apiService.downloadFile();
         // USING ANGULAR2CSV PACKAGE TO DOWNLOAD
         // this.ApiService.getConnectionHistory().then((data) => {
         //    const x = new Angular2Csv(data, 'connect_log');
@@ -2805,20 +2784,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Api Service
 
 var RegisterComponent = (function () {
-    function RegisterComponent(router, ApiService) {
-        this.router = router;
-        this.ApiService = ApiService;
+    function RegisterComponent(_router, _apiService) {
+        this._router = _router;
+        this._apiService = _apiService;
         this.gender = false; // Gender value
         this.email = null; // Email value
         this.username = null; // Username value
         this.password = null; // Password value
         this.confirm_password = null; // Confirm password value
+        // ERROR MESSAGE
         this.error_message = 'Password does not match';
         // DISABLE BUTTON
         this.signup_button_disable = true;
     }
-    RegisterComponent.prototype.ngOnInit = function () {
-    };
+    RegisterComponent.prototype.ngOnInit = function () { };
     // SEND SIGN UP
     RegisterComponent.prototype.signUp = function () {
         var _this = this;
@@ -2827,14 +2806,14 @@ var RegisterComponent = (function () {
             document.getElementById('error-box').classList.remove('hide');
         }
         else {
-            this.ApiService.create_user(this.email, this.username, this.password).then(function (data) {
+            this._apiService.create_user(this.email, this.username, this.password).then(function (data) {
                 if (data['status'] === 'error') {
                     console.log(data);
                     document.getElementById('error-box').classList.remove('hide');
                     _this.error_message = data['error'];
                 }
                 else {
-                    _this.router.navigate(['/login']);
+                    _this._router.navigate(['/login']);
                 }
             });
         }
@@ -2861,7 +2840,7 @@ var RegisterComponent = (function () {
     };
     // ROUTE BACK TO PREVIOUS PAGE
     RegisterComponent.prototype.routeBack = function () {
-        this.router.navigate(['/']);
+        this._router.navigate(['/']);
     };
     // CHECK PASSWORD'S VALUE LENGTH
     RegisterComponent.prototype.check_password_length = function () {
@@ -2918,7 +2897,7 @@ var _a, _b;
 /***/ "../../../../../src/app/server-status-error/server-status-error.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  \r\n    <!-- BEGIN CONTAINER -->\r\n    <div class=\"container\">\r\n      <p>\r\n        500. INTERNAL SERVER ERROR\r\n      </p>\r\n    </div>\r\n    <!-- END CONTAINER -->\r\n  \r\n  </div>\r\n  <!-- END MAIN-CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n\r\n\r\n  <!-- BEGIN CONTAINER -->\r\n  <div class=\"container\">\r\n    <p>500. INTERNAL SERVER ERROR</p>\r\n  </div>\r\n  <!-- END CONTAINER -->\r\n\r\n\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
 
 /***/ }),
 
@@ -2960,8 +2939,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ServerStatusErrorComponent = (function () {
     function ServerStatusErrorComponent() {
     }
-    ServerStatusErrorComponent.prototype.ngOnInit = function () {
-    };
+    ServerStatusErrorComponent.prototype.ngOnInit = function () { };
     return ServerStatusErrorComponent;
 }());
 ServerStatusErrorComponent = __decorate([
@@ -2985,11 +2963,10 @@ ServerStatusErrorComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_backend_ip__ = __webpack_require__("../../../../../src/app/_models/backend_ip.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_file_saver__ = __webpack_require__("../../../../file-saver/FileSaver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_file_saver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_file_saver__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_file_saver__ = __webpack_require__("../../../../file-saver/FileSaver.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_file_saver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_file_saver__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3003,21 +2980,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // ANGULAR MODULE
 
 
-// ReactiveX
-
-// Model
+// Reactive
 
 // Third-Party
 
 
 var ApiService = (function () {
     // private ROOT_URL = `http://localhost:8000/`;
-    function ApiService(http) {
-        this.http = http;
+    function ApiService(_http) {
+        this._http = _http;
         this.authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-        this.ROOT_URL = "http://192.168.60.103:80/";
+        this.ROOT_URL = "http://192.168.60.76:80/";
     }
     // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
     ApiService.prototype.getAllPort = function () {
@@ -3029,27 +3004,27 @@ var ApiService = (function () {
         var eportNote = []; // EAST PORT NOTE
         var wportNote = []; // WEST PORT NOTE
         var id = []; // OBJECT ID
-        return this.http.get(this.ROOT_URL + 'ports/').toPromise().then(function (response) {
+        return this._http.get(this.ROOT_URL + 'ports/').toPromise().then(function (response) {
             allPort = JSON.parse(response._body);
-            __WEBPACK_IMPORTED_MODULE_4_lodash__["each"](allPort, function (obj) {
+            __WEBPACK_IMPORTED_MODULE_3_lodash__["each"](allPort, function (obj) {
                 // SEPERATE BY DIRECTION 'E'
                 if (obj.direction === 'E') {
                     eports.push(obj.direction + obj.number);
-                    eportschunk = __WEBPACK_IMPORTED_MODULE_4_lodash__["chunk"](eports, 12);
+                    eportschunk = __WEBPACK_IMPORTED_MODULE_3_lodash__["chunk"](eports, 12);
                     eportNote.push(obj.note);
                     id.push(obj.id);
                     // SEPERATE BY DIRECTION 'W'
                 }
                 else if (obj.direction === 'W') {
                     wports.push(obj.direction + obj.number);
-                    wportschunk = __WEBPACK_IMPORTED_MODULE_4_lodash__["chunk"](wports, 12);
+                    wportschunk = __WEBPACK_IMPORTED_MODULE_3_lodash__["chunk"](wports, 12);
                     wportNote.push(obj.note);
                     id.push(obj.id);
                 }
             });
             return ({
-                allPort: allPort, eports: eports, wports: wports, eportschunk: eportschunk,
-                wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
+                allPort: allPort, eports: eports, wports: wports,
+                eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
             });
         });
     };
@@ -3077,7 +3052,7 @@ var ApiService = (function () {
         var username = this.getUsername();
         // START DEBUG MODE
         if (stops && number === undefined) {
-            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, username: username }, options).toPromise().then(function (response) {
+            return this._http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, username: username }, options).toPromise().then(function (response) {
                 response = JSON.parse(response._body);
                 if (response.status === 'error' || response.status === 'alarm') {
                     return (response);
@@ -3101,7 +3076,7 @@ var ApiService = (function () {
             // PAYLOAD { east, west, action, stops, number }
         }
         else if (stops && number) {
-            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, number: number }, options).toPromise().then(function (response) {
+            return this._http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, stops: stops, number: number }, options).toPromise().then(function (response) {
                 response = JSON.parse(response._body);
                 if (response.status === 'error' || response.status === 'alarm') {
                     return (response);
@@ -3125,7 +3100,8 @@ var ApiService = (function () {
             // PAYLOAD { east, west, action }
         }
         else {
-            return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, username: username }, options).toPromise().then(function (response) {
+            return this._http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action, username: username }, options).toPromise()
+                .then(function (response) {
                 response = JSON.parse(response._body);
                 if (response.status === 'error' || response.status === 'alarm') {
                     return (response);
@@ -3176,9 +3152,8 @@ var ApiService = (function () {
     // CHECK STATUS FROM CURRENT TASK
     ApiService.prototype.checkStatus = function () {
         var _this = this;
-        return this.http.get(this.ROOT_URL + 'checktask/').toPromise().then(function (response) {
+        return this._http.get(this.ROOT_URL + 'checktask/').toPromise().then(function (response) {
             response = JSON.parse(response._body);
-            // DO NOT DELETE, FOR READING
             // OLD VERSION
             // _.each(response, (obj) => {
             //   status = obj.status;
@@ -3218,9 +3193,9 @@ var ApiService = (function () {
     };
     // CHECK CONNECTION STATUS ALL PORT
     ApiService.prototype.getConnectedPort = function () {
-        return this.http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3236,9 +3211,9 @@ var ApiService = (function () {
     };
     // GET CONNECTION HISTORYS
     ApiService.prototype.getConnectionHistory = function () {
-        return this.http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.get(this.ROOT_URL + 'connectionhistorys/').toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3254,9 +3229,9 @@ var ApiService = (function () {
     };
     // GET ALARM HISTORY
     ApiService.prototype.getAlarmHistory = function () {
-        return this.http.get(this.ROOT_URL + 'alarms/').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.get(this.ROOT_URL + 'alarms/').toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3272,9 +3247,10 @@ var ApiService = (function () {
     };
     // POST ALARM
     ApiService.prototype.postAlarm = function (alarm, detail, severity) {
-        return this.http.post(this.ROOT_URL + 'alarms/', { alarm: alarm, detail: detail, severity: severity }, this.options).toPromise().then(function (response) {
-            console.log(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'alarms/', { alarm: alarm, detail: detail, severity: severity }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3290,9 +3266,10 @@ var ApiService = (function () {
     };
     // POST PENDING TASK
     ApiService.prototype.pendingTask = function (id) {
-        return this.http.post(this.ROOT_URL + 'pendingtask/', { id: id }, this.options).toPromise().then(function (response) {
-            console.log(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'pendingtask/', { id: id }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3312,9 +3289,10 @@ var ApiService = (function () {
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
-        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { id: id, action: action }, options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'connectionhistorys/', { id: id, action: action }, options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3334,10 +3312,33 @@ var ApiService = (function () {
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
-        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { action: action }, options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            console.log(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'connectionhistorys/', { action: action }, options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
+        }).catch(function (error) {
+            // ERROR FROM SERVER
+            if (error.status && error.status !== 0) {
+                console.error('CLEAR DATABASE TASK ERROR ' + error.status, __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(new Error(error.status)));
+                return ({ status: 'error', error: 'ERROR ' + error.status });
+                // ERROR FROM CLIENT
+            }
+            else {
+                console.error('CLEAR DATABASE ERROR 500 Internal Server');
+                return ({ status: 'error', error: 'ERROR 500' });
+            }
+        });
+    };
+    // CLEAR DATABASE DATA
+    ApiService.prototype.clear_latest_operation = function (action) {
+        // set local authToken, header, options
+        var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
+        return this._http.post(this.ROOT_URL + 'operations/', { action: action }, options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3353,9 +3354,10 @@ var ApiService = (function () {
     };
     // SAVE DATA (CSV FILE)
     ApiService.prototype.saveData_Connectionhistory = function (type) {
-        return this.http.post(this.ROOT_URL + 'connectionhistorys/', { type: type }, this.options).toPromise().then(function (response) {
-            console.log(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'connectionhistorys/', { type: type }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3369,27 +3371,27 @@ var ApiService = (function () {
             }
         });
     };
-    // DO NOT DELETE THIS FUNCTION
-    // FOR READING OLD VERSION
+    // -------------------------- //
+    // DO NOT DELETE, FOR READING //
+    // -------------------------- //
     // downloadFile() {
     //   let i = {'id': '1'};
     //   const api = `http://127.0.0.1:8000/connectionhistorys/?type=connecthistorys`;
     //   const fileName = `connection_log.csv`;
-    //   this.http.get(api, { responseType: ResponseContentType.Blob })
+    //   this._http.get(api, { responseType: ResponseContentType.Blob })
     //     .subscribe((response: any) => {
     //       // FileSaver.saveAs(response.blob(), fileName);
     //     });
     // }
-    // TODO NEW VERSION
     // TEST DOWLOAD (CSV FILE)
     ApiService.prototype.downloadFile = function () {
         var path = "connectionhistorys/?type=connecthistorys";
-        return this.http.get(this.ROOT_URL + path, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob })
+        return this._http.get(this.ROOT_URL + path, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob })
             .subscribe(function (res) {
             var blob = res.blob();
             console.log(res);
             var filename = 'connection_log.json';
-            __WEBPACK_IMPORTED_MODULE_5_file_saver__["saveAs"](blob, filename);
+            __WEBPACK_IMPORTED_MODULE_4_file_saver__["saveAs"](blob, filename);
         });
     };
     // CREATE CONNECTION IN CONNECTION TABLE
@@ -3398,15 +3400,15 @@ var ApiService = (function () {
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
-        return this.http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action }, options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
+        return this._http.post(this.ROOT_URL + 'connections/', { east: east, west: west, action: action }, options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
             if (response.status === 'error') {
                 console.error('status: ' + response.status + ', error_code: ' + response.error);
             }
             else {
                 console.log('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
             }
-            return response;
+            return response_object;
         }).catch(function (error) {
             // ERROR FROM SERVER
             if (error.status && error.status !== 0) {
@@ -3423,7 +3425,7 @@ var ApiService = (function () {
     // CHECK SERVER IS ONLINE OR NOT
     ApiService.prototype.check_server_status = function () {
         var status;
-        return this.http.get(this.ROOT_URL).toPromise().then(function (response) {
+        return this._http.get(this.ROOT_URL).toPromise().then(function (response) {
             return (response.status);
             // IF CANNOT GET RESPONSE FROM SERVER
         }).catch(function () {
@@ -3433,55 +3435,52 @@ var ApiService = (function () {
     };
     // HOMING ROBOT
     ApiService.prototype.home_robot_axes = function () {
-        return this.http.get(this.ROOT_URL + 'homes/').toPromise().then(function (response) {
-            var resp = JSON.parse(response._body);
-            resp['status'] = 'success';
-            return resp;
+        return this._http.get(this.ROOT_URL + 'homes/').toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            response_object['status'] = 'success';
+            return response_object;
             // IF CANNOT GET RESPONSE FROM SERVER
         }).catch(function (error) {
             return { 'status': 'error', 'error': error };
         });
     };
+    // CONTINUE OPERATION CONTINUE MODE
     ApiService.prototype.continue_robot_operations = function () {
         var _this = this;
         var mode = 'robot';
         var continue_mode = 'continue';
-        var action = JSON.parse(localStorage.getItem('action'))['action'];
-        var east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
-        var west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
-        return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode, action: action, east: east, west: west }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             var response = _this.parseErrorBody(error);
             return response;
         });
     };
+    // RELOAD OPERATION CONTINUE MODE
     ApiService.prototype.reload_robot_operations = function () {
         var _this = this;
         var mode = 'robot';
         var continue_mode = 'reload';
-        var action = JSON.parse(localStorage.getItem('action'))['action'];
-        var east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
-        var west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
-        return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode, action: action, east: east, west: west }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             var response = _this.parseErrorBody(error);
             return response;
         });
     };
+    // RESTART OPERATION CONTINUE MODE
     ApiService.prototype.restart_robot_operations = function () {
         var _this = this;
         var mode = 'robot';
         var continue_mode = 'restart';
-        var action = JSON.parse(localStorage.getItem('action'))['action'];
-        var east = JSON.parse(localStorage.getItem('selectedEastPortID')).substring(1);
-        var west = JSON.parse(localStorage.getItem('selectedWestPortID')).substring(1);
-        return this.http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode, action: action, east: east, west: west }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode: mode, continue_mode: continue_mode }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         }).catch(function (error) {
             var response = _this.parseErrorBody(error);
             return response;
@@ -3489,28 +3488,31 @@ var ApiService = (function () {
     };
     // GET OPERATION TASK TIME
     ApiService.prototype.get_operation_task_time = function () {
-        // Set local authToken, header, options
+        // set local authToken, header, options
         var authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers });
-        return this.http.get(this.ROOT_URL + 'operationhistorys?action=connection_time').toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.get(this.ROOT_URL + 'operationhistorys?action=connection_time').toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            return response_object;
         });
     };
     // VERIFY USER WITH CURRENT BACKEND
     ApiService.prototype.verify_user_with_backend = function () {
         var token = JSON.parse(localStorage.getItem('token')); // Set sample token
-        return this.http.post(this.ROOT_URL + 'verify_user/', { token: token }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'verify_user/', { token: token }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.warn('Client status: ' + response_object['status']);
+            return response_object;
         });
     };
     // CREATE USER IN DATABASE
     ApiService.prototype.create_user = function (email, username, password) {
-        return this.http.post(this.ROOT_URL + 'create_user/', { email: email, username: username, password: password }, this.options).toPromise().then(function (response) {
-            response = JSON.parse(response._body);
-            return response;
+        return this._http.post(this.ROOT_URL + 'create_user/', { email: email, username: username, password: password }, this.options)
+            .toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            console.log(response_object);
+            return response_object;
         });
     };
     return ApiService;
@@ -3534,7 +3536,6 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_backend_ip__ = __webpack_require__("../../../../../src/app/_models/backend_ip.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3551,8 +3552,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 // Api Service
 
-// Model
-
 var AuthenticationService = (function () {
     // private ROOT_URL = `http://localhost:8000/`;
     function AuthenticationService(http, ApiService) {
@@ -3560,7 +3559,7 @@ var AuthenticationService = (function () {
         this.ApiService = ApiService;
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
-        this.ROOT_URL = 'http://192.168.60.103:80/';
+        this.ROOT_URL = "http://192.168.60.76:80/";
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
@@ -3635,11 +3634,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Service
 
 var UserService = (function () {
-    function UserService(http, authenticationService) {
-        this.http = http;
-        this.authenticationService = authenticationService;
-        // private ROOT_URL = backend_ip_address;
-        this.ROOT_URL = "http://192.168.60.103:80/";
+    function UserService(_http, _authenticationService) {
+        this._http = _http;
+        this._authenticationService = _authenticationService;
+        this.ROOT_URL = "http://192.168.60.76:80/";
+        // private ROOT_URL = `http://localhost:8000/`;
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
     }
@@ -3764,7 +3763,7 @@ SideNavComponent = __decorate([
 /***/ "../../../../../src/app/testing-mode/testing-mode.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n  <!-- BEGIN TAB-GROUP -->\r\n  <md-tab-group>\r\n    <!-- BEGIN ROBOT-TAB -->\r\n    <md-tab label=\"Robot Handler\">\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title> Home </md-panel-title>\r\n          <md-panel-description> Home all axes </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\r\n      </md-expansion-panel>\r\n\r\n      <md-action-row>\r\n        <!--<md-error [(ngModel)]=\"errorRobot\">error message</md-error>-->\r\n        <md-error>{{errorRobot}}</md-error>\r\n      </md-action-row>\r\n      <!--<div>-->\r\n      <!--<br />-->\r\n      <!--</div>-->\r\n\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Change Robot\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Change robot parameter\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"robot_number\" placeholder=\"Robot number\" value=\"robot_number\" [(ngModel)]=\"robot_number\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"continue_mode\" placeholder=\"Continue mode\" value=\"continue_mode\" [(ngModel)]=\"continue_mode\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"changeRobotParameter()\">Change Parameter</button>\r\n        </md-action-row>\r\n\r\n      </md-expansion-panel>\r\n\r\n\r\n    </md-tab>\r\n    <!-- END ROBOT-TAB -->\r\n    <!-- BEGIN CONNECTION-TAB -->\r\n    <md-tab label=\"Connection\">\r\n      <!-- BEGIN CREATE CONNECTION -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in database\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"create_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION -->\r\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create connection in debug mode\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port and stops\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field class=\"event-prevent\">\r\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION DEBUG MODE -->\r\n    </md-tab>\r\n    <!-- END CONNECTION-TAB -->\r\n  </md-tab-group>\r\n  <!-- END TAB-GROUP -->\r\n</div>\r\n<!-- END MAIN-CONTAINER -->"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\r\n<div class=\"main-container\">\r\n\r\n  <!-- BEGIN TAB-GROUP -->\r\n  <md-tab-group>\r\n\r\n    <!-- BEGIN ROBOT-TAB -->\r\n    <md-tab label=\"Robot Handler\">\r\n\r\n      <!-- BEGIN HOME -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title> Home robot </md-panel-title>\r\n          <md-panel-description> Home all axes </md-panel-description>\r\n        </md-expansion-panel-header>\r\n        <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\r\n      </md-expansion-panel>\r\n      <md-action-row>\r\n        <md-error>{{errorRobot}}</md-error>\r\n      </md-action-row>\r\n      <!-- END HOME -->\r\n\r\n    </md-tab>\r\n    <!-- END ROBOT-TAB -->\r\n\r\n    <!-- BEGIN CONNECTION-TAB -->\r\n    <md-tab label=\"Connection\">\r\n\r\n      <!-- BEGIN CREATE CONNECTION -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create dummy connection in database\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button color=\"primary\" (click)=\"create_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION -->\r\n\r\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\r\n      <md-expansion-panel>\r\n        <md-expansion-panel-header>\r\n          <md-panel-title>\r\n            Create dummy connection in debug mode\r\n          </md-panel-title>\r\n          <md-panel-description>\r\n            Type east port and west port and stops\r\n          </md-panel-description>\r\n        </md-expansion-panel-header>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\r\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field>\r\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\r\n        </md-form-field>\r\n\r\n        <md-form-field class=\"event-prevent\">\r\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\r\n        </md-form-field>\r\n\r\n        <md-action-row>\r\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\r\n            disabled>Send Data</button>\r\n        </md-action-row>\r\n      </md-expansion-panel>\r\n      <!-- END CREATE CONNECTION DEBUG MODE -->\r\n\r\n    </md-tab>\r\n    <!-- END CONNECTION-TAB -->\r\n\r\n  </md-tab-group>\r\n  <!-- END TAB-GROUP -->\r\n\r\n</div>\r\n<!-- END MAIN-CONTAINER -->\r\n"
 
 /***/ }),
 
@@ -3809,30 +3808,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Api Service
 
 var TestingModeComponent = (function () {
-    function TestingModeComponent(ApiService, router) {
-        this.ApiService = ApiService;
-        this.router = router;
-        this.errorRobot = '';
+    function TestingModeComponent(_apiService, _router) {
+        this._apiService = _apiService;
+        this._router = _router;
     }
     TestingModeComponent.prototype.ngOnInit = function () {
         // CHECK SERVER STATUS
         this.check_server_status();
-        // SET debug_button = true
+        // SET debug_button is true
         this.debug_button = true;
     };
     // CHECK SERVER STATUS
     TestingModeComponent.prototype.check_server_status = function () {
         var _this = this;
-        this.ApiService.check_server_status().then(function (status) {
+        this._apiService.check_server_status().then(function (status) {
             if (status === 500) {
-                _this.router.navigateByUrl('/500');
+                _this._router.navigateByUrl('/500');
             }
         });
     };
     // CREATE CONNECTION
     TestingModeComponent.prototype.create_connection = function () {
+        var action = 'create_connection';
         if (this.east_port_number && this.west_port_number) {
-            this.ApiService.create_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then(function (data) {
+            this._apiService.create_connection_in_database(this.east_port_number, this.west_port_number, action).then(function (data) {
                 console.log(data);
             });
         }
@@ -3853,10 +3852,6 @@ var TestingModeComponent = (function () {
             return false;
         }
     };
-    // CREATE CONNECTION DEBUG MODE
-    TestingModeComponent.prototype.create_connection_debug_mode = function () {
-        // TODO
-    };
     // VALIDATE DEBUG BUTTON
     TestingModeComponent.prototype.validate_debug_button = function () {
         if ((this.east_port_number <= 144 && this.west_port_number <= 144)
@@ -3870,22 +3865,16 @@ var TestingModeComponent = (function () {
             return false;
         }
     };
+    // HOMING MOTOR
     TestingModeComponent.prototype.home_motor = function () {
-        var _this = this;
-        this.ApiService.home_robot_axes().then(function (data) {
+        this._apiService.home_robot_axes().then(function (data) {
             if (data['status'] === 'success') {
                 console.log(data);
             }
             else {
                 console.error(data);
-                _this.errorRobot = data['status'];
             }
         });
-    };
-    TestingModeComponent.prototype.changeRobotParameter = function () {
-        localStorage.setItem('robot', this.robot_number);
-        localStorage.setItem('continue_mode', this.continue_mode);
-        alert('Change robot parameter success !');
     };
     return TestingModeComponent;
 }());

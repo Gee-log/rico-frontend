@@ -61,8 +61,7 @@ class TaskcancelationList(APIView):
                 continue_mode (string) : continue mode
         """
 
-        if 'mode' in request.data and 'continue_mode' in request.data and 'action' in request.data \
-                and 'east' in request.data and 'west' in request.data:
+        if 'mode' in request.data and 'continue_mode' in request.data:
 
             return ContinueMode.validate_input_for_continue_mode(request)
 
@@ -72,18 +71,6 @@ class TaskcancelationList(APIView):
 
         elif 'continue_mode' not in request.data:
             return JsonResponse({'status': 'error', 'error': 'No continue mode input'},
-                                status=status.HTTP_400_BAD_REQUEST)
-
-        elif 'action' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No action mode input'},
-                                status=status.HTTP_400_BAD_REQUEST)
-
-        elif 'east' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No east mode input'},
-                                status=status.HTTP_400_BAD_REQUEST)
-
-        elif 'west' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No west mode input'},
                                 status=status.HTTP_400_BAD_REQUEST)
 
         else:

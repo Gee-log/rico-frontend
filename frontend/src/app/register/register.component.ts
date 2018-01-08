@@ -13,20 +13,23 @@ import { ApiService } from '../services/api.service';
 export class RegisterComponent implements OnInit {
 
   gender: boolean = false; // Gender value
-  email: String = null; // Email value
-  username: String = null; // Username value
-  password: String = null; // Password value
-  confirm_password: String = null; // Confirm password value
+  email: string = null; // Email value
+  username: string = null; // Username value
+  password: string = null; // Password value
+  confirm_password: string = null; // Confirm password value
 
-  error_message: String = 'Password does not match';
+  // ERROR MESSAGE
+  error_message: string = 'Password does not match';
 
   // DISABLE BUTTON
   signup_button_disable: boolean = true;
 
-  constructor(private router: Router, private ApiService: ApiService) { }
+  constructor(
+    private _router: Router,
+    private _apiService: ApiService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
+
   // SEND SIGN UP
   signUp() {
 
@@ -36,7 +39,7 @@ export class RegisterComponent implements OnInit {
 
     } else {
 
-      this.ApiService.create_user(this.email, this.username, this.password).then((data) => {
+      this._apiService.create_user(this.email, this.username, this.password).then((data) => {
 
         if (data['status'] === 'error') {
           console.log(data);
@@ -44,7 +47,7 @@ export class RegisterComponent implements OnInit {
           this.error_message = data['error'];
 
         } else {
-          this.router.navigate(['/login']);
+          this._router.navigate(['/login']);
         }
 
       });
@@ -88,7 +91,7 @@ export class RegisterComponent implements OnInit {
   // ROUTE BACK TO PREVIOUS PAGE
   routeBack() {
 
-    this.router.navigate(['/']);
+    this._router.navigate(['/']);
 
   }
   // CHECK PASSWORD'S VALUE LENGTH

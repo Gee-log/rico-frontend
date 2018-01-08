@@ -124,7 +124,7 @@ class ForEmbest(object):
                 return JsonResponse({'status': 'error', 'error': 'status unknown'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create connection in connection table
-        elif request.data['action'] == 'test_connect':
+        elif request.data['action'] == 'create_connection':
             return ConnectionUtilities.create_dummy_connection(request)
 
         # Else return error_operation message

@@ -67,7 +67,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // FOR ngOnDestroy
   public timerInterval: any; // set public variable type any
 
-  constructor(private ApiService: ApiService, private router: Router) { }
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router) { }
 
   ngOnInit() {
     // CHECK SERVER STATUS
@@ -96,13 +98,13 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // CHECK SERVER STATUS
   check_server_status() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.check_server_status().then((status) => {
 
       // CHECK TOKEN
       this.check_token();
 
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
     });
 
@@ -110,11 +112,11 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // VERIFY USER WITH CURRENT BACKEND
   verify_user() {
 
-    this.ApiService.verify_user_with_backend().then((data) => {
+    this._apiService.verify_user_with_backend().then((data) => {
 
       if (data['status'] === 'unverified') {
         localStorage.setItem('currentUser', null);
-        this.router.navigateByUrl('/login');
+        this._router.navigateByUrl('/login');
       }
 
     });
@@ -126,7 +128,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     const token = JSON.parse(localStorage.getItem('token')); // Set sample token
 
     if (token === null) {
-      this.router.navigateByUrl('/login');
+      this._router.navigateByUrl('/login');
     }
 
   }
@@ -134,14 +136,14 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   deviceDetect() {
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      this.router.navigateByUrl('/port_connection_mobile');
+      this._router.navigateByUrl('/port_connection_mobile');
     }
 
   }
   // FETCH DATA
   fetchData() {
 
-    this.ApiService.getAllPort().then((data) => {
+    this._apiService.getAllPort().then((data) => {
       this.eports = data.eports;
       this.eportschunk = data.eportschunk;
       this.wports = data.wports;
@@ -177,7 +179,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // CHECK CURRENT ROBOT STATUS
   checkStatus() {
 
-    this.ApiService.checkStatus().then((data) => {
+    this._apiService.checkStatus().then((data) => {
 
       this.sequence = data.sequence;
       this.status = data.status;
@@ -462,7 +464,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -478,7 +480,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         });
       // PAYLOAD { east, west, action }
     } else {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -515,7 +517,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -531,7 +533,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         });
       // PAYLOAD { east, west, action }
     } else {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -573,7 +575,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // GET LOCALSTORAGE VALUE OF selectedWestPortID
       const selectedWestPortID = localStorage.getItem('selectedWestPortID');
       // POST DATA
-      this.ApiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
+      this._apiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
         this.action, JSON.parse(stops), this.sequence)
         .then((data) => {
 
@@ -605,7 +607,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
 
-    this.ApiService.getConnectedPort().then((data) => {
+    this._apiService.getConnectedPort().then((data) => {
 
       console.log('ALL PORT CONNECTION :', data);
 
@@ -785,7 +787,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // CONTINUE ROBOBT OPERATION TASK
   continueRobotOperation() {
 
-    this.ApiService.continue_robot_operations().then((data) => {
+    this._apiService.continue_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -798,7 +800,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // RELOAD ROBOT OPERATION TASK
   reloadRobotOperation() {
 
-    this.ApiService.reload_robot_operations().then((data) => {
+    this._apiService.reload_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -811,7 +813,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // RESTART ROBOT OPERATION TASK
   restartRobotOperation() {
 
-    this.ApiService.restart_robot_operations().then((data) => {
+    this._apiService.restart_robot_operations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -862,7 +864,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // GET LASTEST TASK TIME
   get_lastest_task_time() {
 
-    this.ApiService.get_operation_task_time().then((data) => {
+    this._apiService.get_operation_task_time().then((data) => {
 
       if (data['average_minute'] === 0 && data['average_second'] !== 0) {
         this.operation_task_time = data['average_second'] + 'sec';

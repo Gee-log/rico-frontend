@@ -33,10 +33,10 @@ class ContinueMode(object):
     @staticmethod
     def validate_input_for_continue_mode(request):
 
-        action = request.data['action']
+        action = ''
+        east = ''
+        west = ''
         continue_mode = request.data['continue_mode']
-        east = request.data['east']
-        west = request.data['west']
         mode = request.data['mode']
 
         robot = 0
@@ -59,6 +59,9 @@ class ContinueMode(object):
                 sequence = request_object['options']['current_sequence']
 
             run_value = request_object['options']['run']
+            action = request_object['action']
+            east = request_object['east']
+            west = request_object['west']
             operations_request = o.request
 
         robots = Robot.objects.all()

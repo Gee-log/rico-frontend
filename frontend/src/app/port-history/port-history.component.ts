@@ -22,11 +22,10 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
   templateUrl: './port-history.component.html',
   styleUrls: ['./port-history.component.scss']
 })
-
 export class PortHistoryComponent implements OnInit {
 
-  rows = [];
-  temp = [];
+  rows: any = [];
+  temp: any = [];
   selected: any[] = [];
 
   // COLUMNS VARIABLES
@@ -51,7 +50,9 @@ export class PortHistoryComponent implements OnInit {
 
   }
 
-  constructor(private ApiService: ApiService, private router: Router) {
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router) {
 
     this.temp = this.rows;
 
@@ -60,10 +61,10 @@ export class PortHistoryComponent implements OnInit {
   // CHECK SERVER STATUS
   check_server_status() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.check_server_status().then((status) => {
 
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
 
     });
@@ -72,7 +73,7 @@ export class PortHistoryComponent implements OnInit {
   // SET DATA TABLE
   fetchData() {
 
-    this.ApiService.getConnectionHistory().then((data) => {
+    this._apiService.getConnectionHistory().then((data) => {
       _.each(data, (obj) => {
 
         console.log(obj);
@@ -105,7 +106,7 @@ export class PortHistoryComponent implements OnInit {
   // CANCEL TASK
   cancelTask(id) {
 
-    this.ApiService.cancelTask(id, 'canceled').then((data) => {
+    this._apiService.cancelTask(id, 'canceled').then((data) => {
 
       if (data['status'] !== 'error' && data['historyid'] !== null) {
         location.reload();
@@ -121,7 +122,7 @@ export class PortHistoryComponent implements OnInit {
     // window.location.href = 'http://localhost:8000/connectionhistorys?type=connectionhistory';
 
     // USING API SERVICE TO DOWNLOAD
-    this.ApiService.downloadFile();
+    this._apiService.downloadFile();
 
     // USING ANGULAR2CSV PACKAGE TO DOWNLOAD
     // this.ApiService.getConnectionHistory().then((data) => {

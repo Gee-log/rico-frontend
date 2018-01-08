@@ -21,10 +21,10 @@ walk = Walker()
 
 # set logger
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('webapp_views')
+logger = logging.getLogger('webapp')
 
 # create a file handler
-handler = logging.handlers.RotatingFileHandler('webapp_views.log', maxBytes=10485760, backupCount=10, encoding='utf-8')
+handler = logging.handlers.RotatingFileHandler('webapp.log', maxBytes=10485760, backupCount=10, encoding='utf-8')
 handler.setLevel(logging.INFO)
 
 # create a logging format
@@ -956,75 +956,6 @@ def savedata_startedtopending(east, west, status, uuid):
 #     Connection.objects.filter(east=east, west=west, disconnected_date=None).update(status=status)    
 #     Operation.objects.filter(uuid=uuid).update(status=status)
 #     OperationHistory.objects.filter(uuid=uuid, finished_time=None).update(status=status)
-
-
-# def pendingtask(request):
-#     """Continue task's status pending
-
-#     Args:
-#         request: request data
-
-#     Returns:
-#         Json: ({'historyid': historyid})
-#     """
-
-#     # not sure about this three variables
-#     uuid = ""
-#     historyid = ""
-#     resp = ""
-#     payload = []
-
-#     if 'id' in request.POST:
-#         historyid = request.POST['id']
-
-#         connh = ConnectionHistory.objects.all().filter(id=historyid)
-#         for i in connh:
-
-#             conn = Connection.objects.all().filter(east=i.east, west=i.west, disconnected_date=None)
-#             for c in conn:
-
-#                 if i.switching_type == 'C' and c.disconnected_date is None:
-#                     payload = {'east': i.east.number, 'west': i.west.number, 'action': 'connect'}
-
-#                     # Validate using dummy
-#                     if walk.is_dummy():
-#                         resp = walk.connect(payload)
-
-#                     else:
-#                         resp = requests.post(CELERY_APP + '/connect', data=payload)
-
-#                 elif i.switching_type == 'D' and c.disconnected_date is None:
-#                     payload = {'east': i.east.number, 'west': i.west.number, 'action': 'disconnect'}
-
-#                     if walk.is_dummy():
-#                         resp = walk.disconnect(payload)
-
-#                     else:
-#                         resp = requests.post(CELERY_APP + '/disconnect', data=payload)
-#             uuid = resp.text
-
-#         operations = Operation.objects.all()
-#         robots = Robot.objects.all()
-#         robotnumber = ''
-
-#         for o in robots:
-#             robotnumber = o.robot_number
-
-#         if len(operations) > 0:
-#             operations.delete()
-#             operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',
-#                                                   request=str(payload))
-#             operations.save()
-
-#         else:
-#             operations = Operation.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending',
-#                                                   request=str(payload))
-#             operations.save()
-
-#     operationhistorys = OperationHistory.objects.create(robotnumber=robotnumber, uuid=uuid, status='pending', request=str(payload))
-#     operationhistorys.save()
-
-#     return JsonResponse({'historyid': historyid})
 
 
 def save(question_id, timestamp=0):

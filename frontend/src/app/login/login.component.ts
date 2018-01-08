@@ -7,7 +7,6 @@ import { ApiService } from '../services/api.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { UserService } from '../services/user.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,14 +15,14 @@ import { UserService } from '../services/user.service';
 export class LoginComponent implements OnInit {
 
   model: any = {};
-  loading = false; // <-- Not using right now
-  error = '';
-  current_user = this.userservice.getUsers();
+  current_user: any = this._userService.getUsers();
+  error: string = '';
+  loading: boolean = false; // <-- Not using right now
 
   constructor(
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private userservice: UserService) { }
+    private _router: Router,
+    private _authenticationService: AuthenticationService,
+    private _userService: UserService) { }
 
   ngOnInit() {
 
@@ -40,7 +39,7 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('token', JSON.stringify({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' }));
 
     if (this.current_user['username'] && this.current_user['username'] !== null) {
-      this.router.navigate(['/']);
+      this._router.navigate(['/']);
     }
 
   }
@@ -49,19 +48,19 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
 
-    this.authenticationService.login(this.model.username, this.model.password)
+    this._authenticationService.login(this.model.username, this.model.password)
       .then(result => {
 
         if (result === true) {
-          this.router.navigate(['/']);
+          this._router.navigate(['/']);
 
         } else {
           document.getElementById('error').classList.remove('hide');
           this.error = 'Username or password is incorrect';
           this.loading = false;
         }
-
       });
+
   }
   // VALIDATE INPUT TO ENABLE / DISABLE LOGIN BUTTON
   validate_login_button() {
@@ -75,7 +74,7 @@ export class LoginComponent implements OnInit {
     }
 
   }
-  // CATCH ENTER
+  // CATCH USER'S EVENT PRESS ENTER
   catchEnter(e) {
 
     // IF KEYUP EVENT IS "ENTER"
@@ -89,10 +88,10 @@ export class LoginComponent implements OnInit {
     }
 
   }
-
+  // REGISTER ROUTE
   registerRoute() {
 
-    this.router.navigate(['/register']);
+    this._router.navigate(['/register']);
 
   }
 

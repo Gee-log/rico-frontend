@@ -72,7 +72,7 @@ class ForWhitewalker(object):
         if request.data['action'] == 'disconnect':
             return CreateDisconnect.validate_input_to_create_disconnection(request)
 
-        elif request.data['action'] == 'test_connect':
+        elif request.data['action'] == 'create_connection':
             return ConnectionUtilities.create_dummy_connection(request)
 
         elif request.data['action'] == 'connect':

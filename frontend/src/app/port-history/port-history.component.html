@@ -8,6 +8,8 @@
         (keyup)='updateFilter($event)' />
       <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
         [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        
+        
         <!-- BEGIN DATE COLUMN  -->
         <ngx-datatable-column name="Date">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -18,6 +20,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END DATE COLUMN -->
+        
+        
         <!-- BEGIN TIME COLUMN  -->
         <ngx-datatable-column name="Time">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -28,6 +32,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END TIME COLUMN -->
+        
+        
         <!-- BEGIN TYPE COLUMN -->
         <ngx-datatable-column name="User">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -38,6 +44,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END TYPE COLUMN -->
+        
+        
         <!-- BEGIN STATUS COLUMN -->
         <ngx-datatable-column name="Status">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -48,6 +56,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END STATUS COLUMN -->
+        
+        
         <!-- BEGIN EAST PORT COLUMN -->
         <ngx-datatable-column name="East">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -58,6 +68,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END EAST PORT COLUMN -->
+        
+        
         <!-- BEGIN WEST PORT COLUMN -->
         <ngx-datatable-column name="West">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -68,6 +80,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END WEST PORT COLUMN -->
+        
+        
         <!-- BEGIN SEVERITY COLUMN -->
         <ngx-datatable-column name="RobotStatus">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -88,6 +102,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END SEVERITY COLUMN -->
+      
+      
       </ngx-datatable>
       <!-- END TABLE -->
     </div>
@@ -96,6 +112,8 @@
   <!-- END FLEX-ITEM -->
 </div>
 <!-- END FLEX-CONTAINER -->
+
+
 <!-- BEGIN FLEX-CONTAINER -->
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->

@@ -25,8 +25,8 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 export class CurrentConnectionComponent implements OnInit {
 
-  rows = [];
-  temp = [];
+  rows: any = [];
+  temp: any = [];
   selected: any[] = [];
 
   // COLUMNS VARIABLES
@@ -38,7 +38,9 @@ export class CurrentConnectionComponent implements OnInit {
 
   @ViewChild('table') table: DatatableComponent;
 
-  constructor(private ApiService: ApiService, private router: Router) {
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router) {
 
     this.temp = this.rows;
 
@@ -56,10 +58,10 @@ export class CurrentConnectionComponent implements OnInit {
   // CHECK SERVER STATUS
   check_server_status() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.check_server_status().then((status) => {
 
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
 
     });
@@ -68,7 +70,7 @@ export class CurrentConnectionComponent implements OnInit {
   // SET DATA TABLE
   fetchData() {
 
-    this.ApiService.getConnectedPort().then((data) => {
+    this._apiService.getConnectedPort().then((data) => {
       _.each(data, (obj) => {
 
         const date = new Date(obj['connected_date']);

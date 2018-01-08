@@ -69,11 +69,11 @@ export class AppComponent {
   ];
 
   constructor(
-    private http: Http,
-    private ApiService: ApiService,
-    private AuthenticationService: AuthenticationService,
-    private UserService: UserService,
-    private router: Router) { }
+    private _http: Http,
+    private _apiService: ApiService,
+    private _authenticationService: AuthenticationService,
+    private _userService: UserService,
+    private _router: Router) { }
 
   // TOGGLE SETTINGS MENU
   toggleSettings() {
@@ -96,13 +96,20 @@ export class AppComponent {
   // CLEAR DATABASE DATA
   clearDatabase() {
 
-    this.ApiService.clearDatabase('cleardatabase');
+    this._apiService.clearDatabase('cleardatabase');
+    // this.ApiService.clearDatabase('cleardatabase');
+
+  }
+  // CLEAR LATEST OPERATION
+  clear_latest_operation() {
+
+    this._apiService.clear_latest_operation('clear_latest_operation');
 
   }
   // SHOW NAVBAR
   showNavbar() {
 
-    if (this.router.url === '/login' || this.router.url === '/register') {
+    if (this._router.url === '/login' || this._router.url === '/register') {
       return false;
 
     } else {
@@ -114,9 +121,9 @@ export class AppComponent {
   logOut() {
 
     // CALL LOGOUT FUNCTION
-    this.AuthenticationService.logout();
+    this._authenticationService.logout();
     // RE ROUTE TO LOGIN
-    this.router.navigateByUrl('/login');
+    this._router.navigateByUrl('/login');
     // MAKE CLICK EVENT TO CLOSE SIDEBAR
     document.getElementById('menu-icon').click();
 
@@ -125,7 +132,7 @@ export class AppComponent {
   getUserName() {
 
     // SET VARIABLE
-    this.user_data = this.UserService.getUsers();
+    this.user_data = this._userService.getUsers();
     this.username = this.user_data['username'];
 
   }
