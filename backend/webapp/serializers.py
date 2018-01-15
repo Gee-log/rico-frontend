@@ -48,7 +48,7 @@ class OperationSequenceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = OperationSequence
-        fields = ('sequence_number')
+        fields = ('id', 'sequence_number', 'total_sequence')
 
 
 class RoleSerializer(serializers.ModelSerializer):

@@ -38,7 +38,7 @@ class OperationHistoryModelAdmin(admin.ModelAdmin):
 admin.site.register(OperationHistory, OperationHistoryModelAdmin)
 
 class OperationSequenceModelAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "sequence_number"]
+    list_display = ["__str__", "sequence_number", "total_sequence"]
     class Meta:
         model = OperationSequence
 

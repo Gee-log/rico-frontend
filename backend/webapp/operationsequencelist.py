@@ -2,6 +2,7 @@
 """
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
+from rest_framework.parsers import JSONParser
 
 from webapp.models import OperationSequence
 from webapp.serializers import OperationSequenceSerializer
@@ -34,19 +35,23 @@ class OperationSequencelist(APIView):
             status (string): HTTP status
         """
 
-        if 'sequence_number' in request.data:
-            
-            sequence_number = request.data['sequence_number']
-            
-            operationsequence_object = OperationSequence.objects.all()
+        request_data = JSONParser().parse(request)
+        serializers = OperationSequenceSerializer(data=request_data)
+        if serializers.is_valid():
+            sequence_number = request_data['sequence_number']
+            total_sequence = request_data['total_sequence'] 
 
-            if operationsequence_object is None:
-                operationsequences = OperationSequence.objects.create(sequence_number=sequence_number)
-                operationsequences.save()
+            operationsequences = OperationSequence.objects.all()
+
+            if len(operationsequences) > 0:
+                operationsequences = OperationSequence.objects.all()
+                operationsequences.update(sequence_number=sequence_number, total_sequence=total_sequence)
 
             else:
-                operationsequences = OperationSequence.objects.update(sequence_number=sequence_number)
-                operationsequences.save()                    
+                operationsequences = OperationSequence.objects.create(sequence_number=sequence_number, total_sequence=total_sequence)
+                operationsequences.save()  
+
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
 
         else:
             error_detail = {'detail': 'Invalid input.'}

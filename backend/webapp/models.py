@@ -177,8 +177,8 @@ class Taskcancelation(models.Model):
 
     @classmethod
     def create(cls, uuid, mode, robot, continue_mode, response):
-        tasktranslation = cls(uuid=uuid, mode=mode, robot=robot, continue_mode=continue_mode, response=response)
-        return tasktranslation
+        taskcancelation = cls(uuid=uuid, mode=mode, robot=robot, continue_mode=continue_mode, response=response)
+        return taskcancelation
 
     def __str__(self):
         return self.uuid
@@ -190,6 +190,12 @@ class Taskcancelation(models.Model):
 class OperationSequence(models.Model):
     
     sequence_number = models.CharField(max_length=64, default=None, blank=True, null=True)
+    total_sequence = models.CharField(max_length=64, default=None, blank=True, null=True)
+
+    @classmethod
+    def create(cls, sequence_number, total_sequence):
+        operationsequence = cls(sequence_number=sequence_number, total_sequence=total_sequence)
+        return operationsequence
 
     def __str__(self):
         return self.sequence_number

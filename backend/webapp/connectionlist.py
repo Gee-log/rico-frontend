@@ -2,6 +2,7 @@
 """
 
 import logging.handlers
+
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
@@ -9,7 +10,8 @@ from webapp.libs.authorization import ValidationUser
 from webapp.libs.for_embest import ForEmbest
 from webapp.libs.for_whitewalker import ForWhitewalker
 from webapp.libs.validation_error import ValidateError
-from webapp.models import Connection, Operation
+from webapp.libs.get_available_port import GetAvailablePort
+from webapp.models import Connection, Operation, Port
 from webapp.serializers import ConnectionSerializer
 from webapp.views import walk
 
@@ -69,6 +71,43 @@ class ConnectionList(APIView):
                 logger.info('Connectionlist get method: empty operation, data: {}'.format(data))
 
             return Response(data, status=status.HTTP_200_OK)
+
+        # get his paired
+        elif 'east' in request.GET or 'west' in request.GET:
+            east = ''
+            west = ''
+
+            if 'east' in request.GET:
+                east = int(request.GET['east'])
+
+                # find available ports
+                ports = Port.objects.all()
+                for p in ports:
+                    
+                    if p.direction == 'E' and p.number == east:
+                        east = p
+
+                conns = Connection.objects.all().filter(east=east)
+
+            if 'west' in request.GET:
+                west = int(request.GET['west'])
+
+                # find available ports
+                ports = Port.objects.all()
+                for p in ports:
+
+                    if p.direction == 'W' and p.number == west:
+                        west = p
+
+                conns = Connection.objects.all().filter(west=west)
+
+            if conns:
+                serializer = ConnectionSerializer(conns, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            else:
+                error_message = {'status': 'error', 'detail': 'east port or west port not exist in database.'}
+                return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
 
         # get all port data
         else:
