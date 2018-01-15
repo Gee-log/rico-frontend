@@ -1,5 +1,6 @@
 """operationlist api
 """
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
@@ -35,8 +36,16 @@ class OperationList(APIView):
             status (string): HTTP status
         """
 
-        if 'action' in request.data and 'clear_latest_operation' in request.data['action']:
-            return OperationAction.clear_latest_operation()
+        request_data = JSONParser().parse(request)
+        
+        if 'action' in request_data:        
+            action = request_data['action']
+            
+            if action == 'clear_latest_operation':
+                return OperationAction.clear_latest_operation()
+            else:
+                error_detail = {'detail': 'Invalid input.'}
+                return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
         else:
             error_detail = {'detail': 'Method "POST" not allowed.'}

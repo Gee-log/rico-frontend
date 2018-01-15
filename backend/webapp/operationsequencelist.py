@@ -1,8 +1,8 @@
 """operationsequencelist api
 """
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
-from rest_framework.parsers import JSONParser
 
 from webapp.models import OperationSequence
 from webapp.serializers import OperationSequenceSerializer
@@ -36,8 +36,7 @@ class OperationSequencelist(APIView):
         """
 
         request_data = JSONParser().parse(request)
-        serializers = OperationSequenceSerializer(data=request_data)
-        if serializers.is_valid():
+        if 'sequence_number' and 'total_sequence' in request_data:
             sequence_number = request_data['sequence_number']
             total_sequence = request_data['total_sequence'] 
 
@@ -51,11 +50,11 @@ class OperationSequencelist(APIView):
                 operationsequences = OperationSequence.objects.create(sequence_number=sequence_number, total_sequence=total_sequence)
                 operationsequences.save()  
 
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
+            return_data = {'status': 'Success'}
+            return Response(return_data, status=status.HTTP_201_CREATED)
 
-        else:
-            error_detail = {'detail': 'Invalid input.'}
-            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        error_detail = {'detail': 'Invalid input.'}
+        return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT OperationSequenceList API
