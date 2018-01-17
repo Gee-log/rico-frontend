@@ -44,12 +44,12 @@ class OperationList(APIView):
             if action == 'clear_latest_operation':
                 return OperationAction.clear_latest_operation()
             else:
-                error_detail = {'detail': 'Invalid input.'}
-                return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+                return_data = {'detail': 'Invalid action.'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
         else:
-            error_detail = {'detail': 'Method "POST" not allowed.'}
-            return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return_data = {'detail': 'Method "POST" not allowed.'}
+            return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def put(self, request):
         """PUT OperationList API
@@ -62,8 +62,8 @@ class OperationList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE OperationList API
@@ -76,5 +76,5 @@ class OperationList(APIView):
             status (string): HTTP status
         """
         
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

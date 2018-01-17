@@ -24,7 +24,7 @@ logger.addHandler(handler)
 class GetAvailablePort(object):
 
     @staticmethod
-    def get_available_port(request):
+    def get_available_port(request_data):
         """Query available port in database
 
         Args:
@@ -37,8 +37,8 @@ class GetAvailablePort(object):
 
         east, west = None, None
 
-        e = int(request.data['east'])
-        w = int(request.data['west'])
+        e = int(request_data['east'])
+        w = int(request_data['west'])
 
         # find available ports
         ports = Port.objects.all()

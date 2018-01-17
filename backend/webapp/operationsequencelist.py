@@ -50,11 +50,11 @@ class OperationSequencelist(APIView):
                 operationsequences = OperationSequence.objects.create(sequence_number=sequence_number, total_sequence=total_sequence)
                 operationsequences.save()  
 
-            return_data = {'status': 'Success'}
+            return_data = {'status': 'success'}
             return Response(return_data, status=status.HTTP_201_CREATED)
 
-        error_detail = {'detail': 'Invalid input.'}
-        return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        return_data = {'detail': 'Invalid input.'}
+        return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT OperationSequenceList API
@@ -67,8 +67,8 @@ class OperationSequencelist(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE OperationSequenceList API
@@ -81,5 +81,5 @@ class OperationSequencelist(APIView):
             status (string): HTTP status
         """
         
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

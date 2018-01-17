@@ -7,7 +7,7 @@ import datetime
 from rest_framework.response import Response
 from webapp.models import OperationHistory
 
-CONNECT_STEPS = 17
+CONNECT_STEPS = 31
 DISCONNECT_STEPS = 21
 
 
@@ -27,7 +27,7 @@ class Walker(object):
             elif var != 'false' and var != 'False':
                 self.dummy = True
 
-        #self.dummy = True
+        #self.dummy = True 
 
         self._log('dummy', self.dummy)
 

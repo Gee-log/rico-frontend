@@ -2,7 +2,7 @@
 """
 import logging.handlers
 
-from django.http import JsonResponse
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.views import status as drf_status
@@ -46,17 +46,16 @@ class ConnectionHistoryList(APIView):
                 status (string): status code
         """
 
-        data = []
+        return_data = []
 
         connh = ConnectionHistory.objects.all()
         for ch in connh:
-
             obj = {'id': str(ch.id), 'east': str(ch.east.number), 'west': str(ch.west.number),
                    'switching_type': str(ch.switching_type), 'timestamp': str(ch.timestamp), 'status': str(ch.status),
                    'username': str(ch.username)}
-            data.append(obj)
+            return_data.append(obj)
 
-        return Response(data, status=drf_status.HTTP_200_OK)
+        return Response(return_data, status=drf_status.HTTP_200_OK)
 
     def post(self, request):
         """POST ConnectionHistoryList API,
@@ -86,38 +85,53 @@ class ConnectionHistoryList(APIView):
 
         if ValidationUser.validate_http_authorization(request) is True:
 
-                if 'id' in request.data and 'action' in request.data and request.data['action'] == 'canceled':
+                request_data = JSONParser().parse(request)
+                if 'id' in request_data and 'action' in request_data:
+                    action = request_data['action']
+                    history_id = request_data['id']
 
-                    if ConnectionHistoryAction.cancel_task(request) is False:
+                    if action == 'canceled':
 
-                        history_id = request.data['id']
-                        error_detail = ({'detail': 'Not found this {} id in connectionhistory table'.format(
-                            history_id)})
-                        logger.error('connectionhistory_action.cancel_task method: error:{} request:{}'.format(
-                            error_detail, request.META.get('HTTP_AUTHORIZATION')))
-                        return JsonResponse({'historyid': None, 'status': 'error'},
-                                            status=drf_status.HTTP_400_BAD_REQUEST)
+                        if ConnectionHistoryAction.cancel_task(action, history_id) is False:
+
+                            error_detail = ({'detail': 'Not found this {} id in connectionhistory table'.format(
+                                history_id)})
+                            logger.error('connectionhistory_action.cancel_task method: error:{} request:{}'.format(
+                                error_detail, request.META.get('HTTP_AUTHORIZATION')))
+                            return_data = {'historyid': None, 'status': 'error'}
+                            return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
+
+                        else:
+                            return ConnectionHistoryAction.cancel_task(action, history_id)
+
+                elif 'action' in request_data:
+                    action = request_data['action']
+
+                    if action == 'cleardatabase':
+                        return ConnectionHistoryAction.cleardatabase()
 
                     else:
-                        return ConnectionHistoryAction.cancel_task(request)
-
-                elif 'action' in request.data and request.data['action'] == 'cleardatabase':
-                    return ConnectionHistoryAction.cleardatabase()
+                        return_data = ({'detail': 'Invalid input.'})
+                        logger.error('post method: error:{} request:{}'.format(return_data, request))
+                        return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
 
                 # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-                elif 'type' in request.data and request.data['type'] == 'connectionhistory':
-                    return ConnectionHistoryAction.savedata()
+                elif 'type' in request_data:
+                    action_type = request_data['type']
+
+                    if action_type == 'connectionhistory':
+                        return ConnectionHistoryAction.savedata()
 
                 else:
-                    error_detail = ({'detail': 'Invalid input data'})
-                    logger.error('post method: error:{} request:{}'.format(error_detail, request))
-                    return Response(error_detail, status=drf_status.HTTP_400_BAD_REQUEST)
+                    return_data = ({'detail': 'Invalid input data'})
+                    logger.error('post method: error:{} request:{}'.format(return_data, request))
+                    return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
 
         else:
-            error_detail = ({'detail': 'Permission denied'})
+            return_data = ({'detail': 'Permission denied'})
             logger.error('validate_user.validate_http_authorization method: error:{} request:{}'.format(
-                error_detail, request.META.get('HTTP_AUTHORIZATION')))
-            return Response(error_detail, status=drf_status.HTTP_401_UNAUTHORIZED)
+                return_data, request.META.get('HTTP_AUTHORIZATION')))
+            return Response(return_data, status=drf_status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
         """PUT ConnectionHistoryList API
@@ -130,8 +144,8 @@ class ConnectionHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE ConnectionHistoryList API
@@ -144,5 +158,5 @@ class ConnectionHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)

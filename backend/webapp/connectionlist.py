@@ -1,6 +1,6 @@
 """connectionlist api
 """
-
+import json
 import logging.handlers
 
 from rest_framework.response import Response
@@ -10,7 +10,6 @@ from webapp.libs.authorization import ValidationUser
 from webapp.libs.for_embest import ForEmbest
 from webapp.libs.for_whitewalker import ForWhitewalker
 from webapp.libs.validation_error import ValidateError
-from webapp.libs.get_available_port import GetAvailablePort
 from webapp.models import Connection, Operation, Port
 from webapp.serializers import ConnectionSerializer
 from webapp.views import walk
@@ -55,30 +54,35 @@ class ConnectionList(APIView):
         """
 
         # get current connected port data
-        if 'action' in request.GET and request.GET['action'] == 'connected':
-            operations = Operation.objects.all()
-            conns = Connection.objects.all().filter(disconnected_date=None)
-            data = []
+        request_data = json.dumps(request.GET)
+        request_data = json.loads(request_data)
 
-            for c in conns:
-                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status, 'connected_date':
-                       c.connected_date}
-                data.append(obj)
+        if 'action' in request_data:
+            action = request_data['action']
 
-            if len(operations) > 0:
-                logger.info('Connectionlist get method: current operation: {}, data: {}'.format(operations, data))
-            else:
-                logger.info('Connectionlist get method: empty operation, data: {}'.format(data))
+            if action == 'connected':
+                operations = Operation.objects.all()
+                conns = Connection.objects.all().filter(disconnected_date=None)
+                return_data = []
 
-            return Response(data, status=status.HTTP_200_OK)
+                for c in conns:
+                    obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status,
+                           'connected_date': c.connected_date}
+                    return_data.append(obj)
+
+                if len(operations) > 0:
+                    logger.info(
+                        'Connectionlist get method: current operation: {}, data: {}'.format(operations, return_data))
+                else:
+                    logger.info('Connectionlist get method: empty operation, data: {}'.format(return_data))
+
+                return Response(return_data, status=status.HTTP_200_OK)
 
         # get his paired
-        elif 'east' in request.GET or 'west' in request.GET:
-            east = ''
-            west = ''
+        elif 'east' or 'west' in request_data:
 
-            if 'east' in request.GET:
-                east = int(request.GET['east'])
+            if 'east' in request_data:
+                east = int(request_data['east'])
 
                 # find available ports
                 ports = Port.objects.all()
@@ -88,9 +92,11 @@ class ConnectionList(APIView):
                         east = p
 
                 conns = Connection.objects.all().filter(east=east)
+                serializer = ConnectionSerializer(conns, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
 
-            if 'west' in request.GET:
-                west = int(request.GET['west'])
+            if 'west' in request_data:
+                west = int(request_data['west'])
 
                 # find available ports
                 ports = Port.objects.all()
@@ -100,14 +106,12 @@ class ConnectionList(APIView):
                         west = p
 
                 conns = Connection.objects.all().filter(west=west)
-
-            if conns:
                 serializer = ConnectionSerializer(conns, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             
             else:
-                error_message = {'status': 'error', 'detail': 'east port or west port not exist in database.'}
-                return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
+                return_data = {'status': 'error', 'detail': 'east port or west port not exist in database.'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
         # get all port data
         else:
@@ -149,10 +153,10 @@ class ConnectionList(APIView):
                     return ValidateError.query_status_error()
         
         else:
-            error_detail = ({'detail': 'Permission denied'})
+            return_data = ({'detail': 'Permission denied'})
             logger.error('validate_user.validate_http_authorization method: error:{} request:{}'.format(
-                         error_detail, request.META.get('HTTP_AUTHORIZATION')))
-            return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
+                        return_data, request.META.get('HTTP_AUTHORIZATION')))
+            return Response(return_data, status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
         """PUT ConnectionList API
@@ -165,8 +169,8 @@ class ConnectionList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE ConnectionList API
@@ -178,9 +182,9 @@ class ConnectionList(APIView):
             content (string): error detail
             status (string): HTTP status
         """
-        
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     #################
     # DO NOT DELETE #

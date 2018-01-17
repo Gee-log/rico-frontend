@@ -19,8 +19,8 @@ export class ApiService {
   private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options = new RequestOptions({ headers: this.headers });
-  private ROOT_URL = `http://192.168.60.76:80/`;
-  // private ROOT_URL = `http://localhost:8000/`;
+  // private ROOT_URL = `http://192.168.60.103:80/`;
+  private ROOT_URL = `http://localhost:8000/`;
 
   constructor(
     private _http: Http) { }
@@ -264,7 +264,13 @@ export class ApiService {
   // CHECK CONNECTION STATUS ALL PORT
   getConnectedPort() {
 
-    return this._http.get(this.ROOT_URL + 'connections/?action=connected').toPromise().then((response: any) => {
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+    const params = { 'action': 'connected' };
+
+    return this._http.get(this.ROOT_URL + 'connections/', { headers: headers, params: params }).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
       return response_object;
 
@@ -419,8 +425,6 @@ export class ApiService {
     return this._http.post(this.ROOT_URL + 'connectionhistorys/', { action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
 
-      console.log(response_object);
-
       return response_object;
 
     }).catch((error: any) => {
@@ -448,8 +452,6 @@ export class ApiService {
 
     return this._http.post(this.ROOT_URL + 'operations/', { action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
-
-      console.log(response_object);
 
       return response_object;
 
@@ -606,8 +608,6 @@ export class ApiService {
       this.options).toPromise().then((response: any) => {
         const response_object = JSON.parse(response._body);
 
-        console.log(response_object);
-
         return response_object;
 
       }).catch((error: any) => {
@@ -625,8 +625,6 @@ export class ApiService {
     return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode },
       this.options).toPromise().then((response: any) => {
         const response_object = JSON.parse(response._body);
-
-        console.log(response_object);
 
         return response_object;
 
@@ -646,8 +644,6 @@ export class ApiService {
       this.options).toPromise().then((response: any) => {
         const response_object = JSON.parse(response._body);
 
-        console.log(response_object);
-
         return response_object;
 
       }).catch((error: any) => {
@@ -664,17 +660,50 @@ export class ApiService {
     const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
     const options = new RequestOptions({ headers: headers });
 
-    return this._http.get(this.ROOT_URL + 'operationhistorys?action=connection_time').toPromise().then((response: any) => {
+    const params = { 'action': 'connection_time' };
+
+    return this._http.get(this.ROOT_URL + 'operationhistorys/', { headers: headers, params: params }).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
 
       return response_object;
     });
 
   }
+  // GET OPERATION SEQUENCE
+  get_operation_sequence() {
+
+    // set local authToken, header, options
+    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options = new RequestOptions({ headers: headers });
+
+    let operation_sequence;
+    let total_sequence;
+    let operation_task_completed;
+
+    return this._http.get(this.ROOT_URL + 'operationsequences/', { headers: headers }).toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+      // const response_object = response;
+      _.each(response_object, (obj) => {
+
+        operation_sequence = obj['sequence_number'];
+        total_sequence = obj['total_sequence'];
+
+      });
+
+      operation_task_completed = (operation_sequence / total_sequence);
+      operation_task_completed = Math.round(operation_task_completed * 100);
+
+      return { 'operation_task_completed': operation_task_completed };
+
+    });
+
+  }
   // VERIFY USER WITH CURRENT BACKEND
   verify_user_with_backend() {
 
-    const token = JSON.parse(localStorage.getItem('token')); // Set sample token
+    let token = JSON.parse(localStorage.getItem('token')); // Set sample token
+    token = token['token'];
 
     return this._http.post(this.ROOT_URL + 'verify_user/', { token }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);

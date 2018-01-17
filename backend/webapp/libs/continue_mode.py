@@ -5,12 +5,13 @@ import ast
 import logging.handlers
 import requests
 
-
-from django.http import JsonResponse
+from datetime import datetime
+from rest_framework.response import Response
 from rest_framework.views import status
 
-from webapp.models import Operation, OperationHistory, Robot, Taskcancelation
+from webapp.models import ConnectionHistory, Operation, OperationHistory, Robot, Taskcancelation
 from webapp.views import CELERY_APP
+from webapp.libs.get_available_port import GetAvailablePort
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -31,13 +32,13 @@ logger.addHandler(handler)
 class ContinueMode(object):
 
     @staticmethod
-    def validate_input_for_continue_mode(request):
+    def validate_input_for_continue_mode(request_data, mode, continue_mode):
 
         action = ''
         east = ''
         west = ''
-        continue_mode = request.data['continue_mode']
-        mode = request.data['mode']
+        continue_mode = continue_mode
+        mode = mode
 
         robot = 0
         sequence = ''
@@ -72,7 +73,7 @@ class ContinueMode(object):
                 resp = {'status': 'error', 'error': 'Empty robot number {} in database'.format(robot)}
                 logger.error('validate_input_for_continue_mode method: empty robot number in database error: {}'
                              .format(e))
-                return JsonResponse(resp, status=status.HTTP_400_BAD_REQUEST)
+                return Response(resp, status=status.HTTP_400_BAD_REQUEST)
 
         # run_value is false when debug mode
         if run_value is False:
@@ -96,12 +97,18 @@ class ContinueMode(object):
 
             if continue_mode == 'reload':
                 operationhistorys = OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='reload',
-                                                                    request=request.data, response=response)
+                                                                    request=request_data, response=response)
                 operationhistorys.save()
             else:
                 operationhistorys = OperationHistory.objects.create(uuid=uuid, robotnumber=robot, status='started',
-                                                                    request=request.data, response=response)
+                                                                    request=request_data, response=response)
                 operationhistorys.save()
+
+            # dummy request_data in json format
+            request_data = {'east': east, 'west': west}
+            east, west = GetAvailablePort.get_available_port(request_data)
+            connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='alarm')
+            connectionhistorys.update(status='started', timestamp=datetime.now())
 
             taskcancelations = Taskcancelation.objects.create(uuid=uuid, robot=robot, mode=mode,
                                                               continue_mode=continue_mode, response=response)
@@ -110,10 +117,11 @@ class ContinueMode(object):
                                                   request=operations_request)
             operations.save()
 
-            logger.info('validate_input_for_continue_mode method: return data: {}'.format({'status': 'success'}))
-            return JsonResponse({'status': 'success'}, status=status.HTTP_200_OK)
+            return_data = {'status': 'success'}
+            logger.info('validate_input_for_continue_mode method: return data: {}'.format(return_data))
+            return Response(return_data, status=status.HTTP_200_OK)
 
         else:
-            resp = {'status': 'error', 'error': 'This robot number {} not available.'.format(robot)}
-            logger.error('Wrong robot request: {} response: {}'.format(request, resp))
-            return JsonResponse(resp, status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': 'error', 'error': 'Robot number empty in database'}
+            logger.error('Robot number empty in database')
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)

@@ -3,11 +3,14 @@
 import ast
 import logging.handlers
 
+from celery.task.control import revoke
 from datetime import datetime
-from django.http import JsonResponse
+from rest_framework.response import Response
 from rest_framework.views import status
 
 from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory, Port
+from webapp.views import walk
+
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -59,8 +62,10 @@ class OperationAction(object):
                 west = request_obj['west']
                 uuid = o.uuid
 
+            if walk.is_dummy() is False:
+                revoke(uuid, terminate=True)            
+            
             east, west = OperationAction.query_to_get_port_object(east, west)
-
             connections = Connection.objects.filter(east=east, west=west)
 
             if action == 'connect':
@@ -68,14 +73,17 @@ class OperationAction(object):
             else:
                 connections.update(status='success', disconnected_date=None)
 
-            ConnectionHistory.objects.filter(east=east, west=west).update(timestamp=datetime.now(), status='revoked')
+            connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west)
+            connectionhistorys.update(timestamp=datetime.now(), status='revoked')
             operations.delete()
-            OperationHistory.objects.filter(uuid=uuid).update(finished_time=datetime.now(), status='revoked')
+            operationhistorys = OperationHistory.objects.filter(uuid=uuid)
+            operationhistorys.update(finished_time=datetime.now(), status='revoked')
 
-            logger.info('operation_action_database response method return data {}'.format({'status': 'success'}))
-            return JsonResponse({'status': 'success'}, status=status.HTTP_200_OK)
+            return_data = {'status': 'success'}
+            logger.info('operation_action_database response method return data {}'.format(return_data))
+            return Response(return_data, status=status.HTTP_200_OK)
 
         else:
-            logger.error('operation_action_database clear_latest_operation method: error: Empty operation table')
-            return JsonResponse({'status': 'error', 'error': 'Empty operation table'}
-                                , status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': 'error', 'error': 'Empty operation table'}
+            logger.error('operation_action_database clear_latest_operation method: {}'.format(return_data))
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)

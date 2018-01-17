@@ -2,8 +2,8 @@
 """
 import re
 
-from django.http import JsonResponse
 from django.contrib.auth.models import User
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
@@ -23,8 +23,8 @@ class CreateUser(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "POST" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "POST" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def post(self, request):
         """POST Verify User API
@@ -36,50 +36,55 @@ class CreateUser(APIView):
             Json: OperationHistory data
         """
 
-        if 'email' in request.data and 'username' in request.data and 'password' in request.data:
-            email = request.data['email']
-            username = request.data['username']
-            password = request.data['password']
+        request_data = JSONParser().parse(request)
+
+        if 'email' and 'username' and 'password' in request_data:
+            # if 'email' in request_data and 'username' in request_data and 'password' in request_data:
+            email = request_data['email']
+            username = request_data['username']
+            password = request_data['password']
 
             if User.objects.filter(email=email):
-                return JsonResponse({'status': 'error', 'error': 'this email has been used'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                return_data = {'status': 'error', 'error': 'this email has been used'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
             if User.objects.filter(username=username):
-                return JsonResponse({'status': 'error', 'error': 'this user already exist'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                return_data = {'status': 'error', 'error': 'this user already exist'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
             if '@' not in email and '.' not in email:
-                return JsonResponse({'status': 'error', 'error': 'invalid email format'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                return_data = {'status': 'error', 'error': 'invalid email format'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
             if re.match("^[A-Za-z0-9_-]*$", username) and re.match("^[A-Za-z0-9_-]*$", password):
                 # default role is staff
                 user = User.objects.create_user(username, email, password, is_staff=True)
                 user.save()
-
                 username_object = User.objects.get(username=username)
-
                 roles = Role.objects.create(user=username_object, role='Staff')
                 roles.save()
-
-                return JsonResponse({'status': 'success', 'detail': 'user created'}, status=status.HTTP_201_CREATED)
+                return_data = {'status': 'success', 'detail': 'user created'}
+                return Response(return_data, status=status.HTTP_201_CREATED)
 
             else:
-                return JsonResponse({'status': 'error', 'error': 'invalid username or password format'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                return_data = {'status': 'error', 'error': 'invalid username or password format'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
-        elif 'email' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'no email data'}, status=status.HTTP_400_BAD_REQUEST)
+        elif 'email' not in request_data:
+            return_data = {'status': 'error', 'error': 'no email data'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
         
-        elif 'username' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'no username data'}, status=status.HTTP_400_BAD_REQUEST)
+        elif 'username' not in request_data:
+            return_data = {'status': 'error', 'error': 'no username data'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
             
-        elif 'password' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'no password data'}, status=status.HTTP_400_BAD_REQUEST)
+        elif 'password' not in request_data:
+            return_data = {'status': 'error', 'error': 'no password data'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
             
         else:
-            return JsonResponse({'status': 'error', 'error': 'invalid input data'}, status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': 'error', 'error': 'invalid input data'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT Create User API
@@ -92,8 +97,8 @@ class CreateUser(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE Create User API
@@ -105,6 +110,6 @@ class CreateUser(APIView):
             content (string): error detail
             status (string): HTTP status
         """
-        
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

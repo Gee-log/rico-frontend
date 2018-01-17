@@ -5,7 +5,8 @@ import logging.handlers
 from celery.task.control import revoke
 from datetime import datetime
 from django.utils import timezone
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
+from rest_framework.response import Response
 from rest_framework.views import status as drf_status
 
 from webapp.models import Connection, ConnectionHistory, Operation, OperationHistory
@@ -30,9 +31,9 @@ logger.addHandler(handler)
 class ConnectionHistoryAction(object):
 
     @staticmethod
-    def cancel_task(request):
-        historyid = int(request.data['id'])
-        status = request.data['action']
+    def cancel_task(action, history_id):
+        historyid = history_id
+        status = action
         action = ''
         east = ''
         west = ''
@@ -52,7 +53,6 @@ class ConnectionHistoryAction(object):
 
         if action == 'C':
             connections.delete()
-
         else:
             connections.update(status='success', disconnected_date=None)
 
@@ -63,25 +63,27 @@ class ConnectionHistoryAction(object):
         for o in operations:
             revoke(o.uuid, terminate=True)
 
-        return JsonResponse({'historyid': historyid, 'status': status}, status=drf_status.HTTP_200_OK)
+        return_data = {'historyid': historyid, 'status': status}
+        return Response(return_data, status=drf_status.HTTP_200_OK)
 
     @staticmethod
     def cleardatabase():
 
         try:
-            status = 'success'
-
             Connection.objects.all().delete()
             # ConnectionHistory.objects.all().delete()
             Operation.objects.all().delete()
             OperationHistory.objects.all().delete()
-            return JsonResponse({'status': status}, status=drf_status.HTTP_200_OK)
+
+            status = 'success'
+            return_data = {'status': status}
+            return Response(return_data, status=drf_status.HTTP_200_OK)
 
         except ValueError:
             status = 'failed'
-
             logger.error('cleardatabase method: error:{}'.format(ValueError))
-            return JsonResponse({'status': status}, status=drf_status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': status}
+            return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
 
     # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
     @staticmethod

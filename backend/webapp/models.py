@@ -1,4 +1,5 @@
 import uuid
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -181,7 +182,7 @@ class Taskcancelation(models.Model):
         return taskcancelation
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
 
     class Meta:
         ordering = ['-id']

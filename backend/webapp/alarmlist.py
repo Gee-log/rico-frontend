@@ -34,7 +34,7 @@ class AlarmList(APIView):
             alarms = Alarm.objects.all()
 
         serializer = AlarmSerializer(alarms, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST AlarmList API
@@ -54,12 +54,11 @@ class AlarmList(APIView):
 
             alarms = Alarm.create(request.data["alarm"], request.data["detail"], request.data["severity"])
             alarms.save()
-
-            return Response(request.data)
+            return Response(request.data, status=status.HTTP_200_OK)
 
         else:
-            error_detail = {'detail': 'Permission denied'}
-            return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
+            return_data = {'detail': 'Permission denied'}
+            return Response(return_data, status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request):
         """PUT AlarmList API
@@ -72,8 +71,8 @@ class AlarmList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE AlarmList API
@@ -85,6 +84,6 @@ class AlarmList(APIView):
             content (string): error detail
             status (string): HTTP status
         """
-        
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -1,6 +1,5 @@
 """portlist api
 """
-from django.http import JsonResponse
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -28,7 +27,7 @@ class RoleList(APIView):
 
         roles = Role.objects.all()
         serializer = RoleSerializer(roles, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST PortList API
@@ -59,10 +58,9 @@ class RoleList(APIView):
         # else:
         #     error_detail = {'detail': 'Invalid input.'}
         #     return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
-        
-        error_detail = {'detail': 'Method "POST" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-            
+
+        return_data = {'detail': 'Method "POST" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def put(self, request):
         """PUT PortList API
@@ -75,8 +73,8 @@ class RoleList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE PortList API
@@ -89,5 +87,5 @@ class RoleList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}        
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

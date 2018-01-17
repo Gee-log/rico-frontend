@@ -32,11 +32,11 @@ logger.addHandler(handler)
 class CreateDisconnect(object):
 
     @staticmethod
-    def validate_input_to_create_disconnection(request):
+    def validate_input_to_create_disconnection(request_data):
         """Disconnection Process
 
         Args:
-            request: request data
+            request_data: request data
             request['east'](string): east port number
             request['west'](string): west port number
             request['action'](string): connection type
@@ -50,34 +50,34 @@ class CreateDisconnect(object):
                 action (string): action type
         """
 
-        username = request.data['username']
-        east, west = GetAvailablePort.get_available_port(request)
+        username = request_data['username']
+        east, west = GetAvailablePort.get_available_port(request_data)
 
-        logger.info('validate_input_to_create_disconnection method: request data: {}'.format(request.data))
+        logger.info('validate_input_to_create_disconnection method: request data: {}'.format(request_data))
 
         # validate input
         if east is None:
             logger.error('validate_input_to_create_disconnection method: error: no east port number {}, request: {}'
-                         .format(east, request))
+                         .format(east, request_data))
             return Response('No east port number ' + str(east), content_type="text/plain")
 
         if west is None:
             logger.error('validate_input_to_create_disconnection method: error: no west port number {}, request: {}'
-                         .format(west, request))
+                         .format(west, request_data))
             return Response('No west port number ' + str(west), content_type="text/plain")
 
         # create disconnection
-        CreateDisconnect.create_disconnect(request, east, west, username)
+        CreateDisconnect.create_disconnect(request_data, east, west, username)
 
-        logger.info('validate_input_to_create_disconnection method: return data: {}'.format(request.data))
-        return Response(request.data, status=status.HTTP_201_CREATED)
+        logger.info('validate_input_to_create_disconnection method: return data: {}'.format(request_data))
+        return Response(request_data, status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def create_disconnect(request, east, west, username):
+    def create_disconnect(request_data, east, west, username):
         """Create disconnection in database
 
         Args:
-            request: request data
+            request_data: request data
             east(object): east's port from get_available_ports()
             west(object): west's port from get_available_ports()
             username (string): username from post method
@@ -97,13 +97,13 @@ class CreateDisconnect(object):
 
         connections = Connection.objects.filter(east=east, west=west, status='success').exclude(connected_date=None)
         connections.update(status='pending')
-        connectionhistorys = ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending',
-                                                              username=username)
+        connectionhistorys = ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending'
+                                                              , username=username)
         connectionhistorys.save()
 
         # validate input
-        if 'stops' in request.data:
-            stops = request.data['stops']
+        if 'stops' in request_data:
+            stops = request_data['stops']
         else:
             stops = None
 

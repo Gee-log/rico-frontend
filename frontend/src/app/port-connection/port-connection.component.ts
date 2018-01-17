@@ -44,7 +44,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   status: string; // CURRENT STATUS TASK OF ROBOT
   action: string; // CURRENT ACTION IN DEBUG MODE
   error_message: string = undefined; // ERROR MESSAGE
-  operation_task_time: string;
+  operation_task_time: string; // OPERATION TASK TIME
+  operation_task_completed: string; // OPERATION TASK COMPLETED
 
   // DISABLE ULITIES
   unselectable_table: boolean = false; // DISABLED TABLE
@@ -65,7 +66,8 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   all_west: Object = document.getElementsByClassName('West');
 
   // FOR ngOnDestroy
-  public timerInterval: any; // set public variable type any
+  public timerInterval: any; // SET TIMEINTERVAL FOR MAIN FUNCTION
+  public timerInterval_operation_sequence: any; // SET TIMEINTERVAL FOR OPERATION SEQUENCE
 
   constructor(
     private _apiService: ApiService,
@@ -87,11 +89,16 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       this.checkStatus();
     }, 5000);
 
+    this.timerInterval_operation_sequence = setInterval(() => {
+      this.get_operation_sequence();
+    }, 1500);
+
   }
 
   ngOnDestroy() {
 
     clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
+    clearInterval(this.timerInterval_operation_sequence);
 
   }
 
@@ -866,17 +873,54 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     this._apiService.get_operation_task_time().then((data) => {
 
-      if (data['average_minute'] === 0 && data['average_second'] !== 0) {
-        this.operation_task_time = data['average_second'] + 'sec';
+      // SET VARIABLE OF TIMES
+      const created_time = new Date(data['created_time']);
+      const finished_time = new Date(data['finished_time']);
+      const created_time_hours = created_time.getHours();
+      const created_time_minutes = created_time.getMinutes();
+      const created_time_seconds = created_time.getSeconds();
+      const finished_time_hours = finished_time.getHours();
+      const finished_time_minutes = finished_time.getMinutes();
+      const finished_time_seconds = finished_time.getSeconds();
 
-      } else if ((data['average_minute'] === 0 && data['average_second'] === 0)
-        || ((data['average_minute'] === undefined && data['average_second'] === undefined))) {
+      // CALCULATION TIME
+      const average_hours = finished_time_hours - created_time_hours;
+      let average_minutes = finished_time_minutes - created_time_minutes;
+      let average_seconds = finished_time_seconds - created_time_seconds;
 
-          this.operation_task_time = 'empty task';
+      if (average_minutes > 0 && average_seconds < 0) {
+        average_minutes = average_minutes - 1;
+        average_seconds = (finished_time_seconds + 60) - created_time_seconds;
+
+      } else if (average_minutes <= 0 && average_seconds < 0) {
+        average_minutes = 0;
+        average_seconds = Math.abs(average_seconds);
+
+      } else if (average_minutes <= 0 && average_seconds < 0) {
+        average_minutes = 0;
+      }
+
+      if (average_minutes === 0 && average_seconds !== 0) {
+        this.operation_task_time = average_seconds + 'sec';
+
+      } else if ((average_minutes === 0 && average_seconds === 0)
+        || ((average_minutes === undefined && average_seconds === undefined))) {
+
+        this.operation_task_time = 'empty task';
 
       } else {
-        this.operation_task_time = data['average_minute'] + 'min ' + data['average_second'] + 'sec';
+        this.operation_task_time = average_minutes + 'min ' + average_seconds + 'sec';
       }
+
+    });
+
+  }
+  // GET OPERATION SEQUENCE
+  get_operation_sequence() {
+
+    this._apiService.get_operation_sequence().then((data) => {
+
+      this.operation_task_completed = data['operation_task_completed'] + '%';
 
     });
 

@@ -1,5 +1,7 @@
 """operationhistorylist api
 """
+import json
+
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
@@ -20,8 +22,17 @@ class OperationHistoryList(APIView):
             Json: OperationHistory data
         """
 
-        if 'action' in request.GET and request.GET['action'] == 'connection_time':
-            return GetLatestTime.calculation_latest_operation_time()
+        request_data = json.dumps(request.GET)
+        request_data = json.loads(request_data)
+
+        if 'action' in request_data:
+            action = request_data['action']
+
+            if action == 'connection_time':
+                return GetLatestTime.get_time()           
+            else:
+                return_data = {'detail': 'Invalid action.'}
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
         else:
             operationhistorys = OperationHistory.objects.all()
@@ -40,8 +51,8 @@ class OperationHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "POST" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "POST" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def put(self, request):
         """PUT OperationHistoryList API
@@ -54,8 +65,8 @@ class OperationHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE OperationHistoryList API
@@ -68,5 +79,5 @@ class OperationHistoryList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -1,8 +1,8 @@
 """verify backend
 """
-from django.http import JsonResponse
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
@@ -22,8 +22,8 @@ class VerifyUser(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "GET" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "GET" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def post(self, request):
         """POST Verify User API
@@ -34,9 +34,11 @@ class VerifyUser(APIView):
         Returns:
             Json: verify's status
         """
-        if 'token' in request.data:
-            token = request.data['token']
-            token = token['token']
+
+        request_data = JSONParser().parse(request)
+
+        if 'token' in request_data:
+            token = request_data['token']
             # username = ''
 
             # token_object = Token.objects.filter(key=token)
@@ -54,14 +56,16 @@ class VerifyUser(APIView):
             #     role_object.update(status='Online')
 
             if Token.objects.filter(key=token):
-                return JsonResponse({'status': 'verified'}, status=status.HTTP_200_OK)
+                return_data = {'status': 'verified'}
+                return Response(return_data, status=status.HTTP_200_OK)
 
             else:
-                return JsonResponse({'status': 'unverified'}, status=status.HTTP_200_OK)
+                return_data = {'status': 'unverified'}
+                return Response(return_data, status=status.HTTP_200_OK)
         
         else:
-            error_detail = {'detail': 'Invalid input variables.'}
-            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'detail': 'Invalid input.'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request):
         """PUT Verify User API
@@ -74,8 +78,8 @@ class VerifyUser(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE Verify User API
@@ -88,5 +92,5 @@ class VerifyUser(APIView):
             status (string): HTTP status
         """
         
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

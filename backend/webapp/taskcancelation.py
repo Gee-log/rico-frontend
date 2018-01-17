@@ -2,9 +2,9 @@
 """
 import logging.handlers
 
+from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
-from django.http import JsonResponse
 
 from webapp.libs.continue_mode import ContinueMode
 from webapp.models import Taskcancelation
@@ -46,7 +46,7 @@ class TaskcancelationList(APIView):
 
         tasktranslations = Taskcancelation.objects.all()
         serializer = TaskcancelationSerializer(tasktranslations, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST TasktranslationList API
@@ -61,21 +61,24 @@ class TaskcancelationList(APIView):
                 continue_mode (string) : continue mode
         """
 
-        if 'mode' in request.data and 'continue_mode' in request.data:
+        request_data = JSONParser().parse(request)
 
-            return ContinueMode.validate_input_for_continue_mode(request)
+        if 'mode' and 'continue_mode' in request_data:
+            mode = request_data['mode']
+            continue_mode = request_data['continue_mode']
+            return ContinueMode.validate_input_for_continue_mode(request_data, mode, continue_mode)
 
         elif 'mode' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No mode input'},
-                                status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': 'error', 'error': 'No mode input.'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
         elif 'continue_mode' not in request.data:
-            return JsonResponse({'status': 'error', 'error': 'No continue mode input'},
-                                status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': 'error', 'error': 'No continue_mode input.'}
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
         else:
-            return JsonResponse({'status': 'error', 'error': 'Invalid input.'},
-                                status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'status': 'error', 'error': 'Invalid input.'} 
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         """PUT TasktranslationList API
@@ -88,8 +91,8 @@ class TaskcancelationList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'detail': 'Method "PUT" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'detail': 'Method "PUT" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE TasktranslationList API
@@ -101,6 +104,6 @@ class TaskcancelationList(APIView):
             content (string): error detail
             status (string): HTTP status
         """
-        
-        error_detail = {'detail': 'Method "DELETE" not allowed.'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        return_data = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
