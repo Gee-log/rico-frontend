@@ -82,9 +82,8 @@
 
   <div class="checkbox-container">
     <div>
-      <md-radio-group [(ngModel)]="gender">
-        <md-radio-button [value]="false">Male</md-radio-button>
-        <md-radio-button [value]="true">Female</md-radio-button>
+      <md-radio-group [(ngModel)]="role">
+        <md-radio-button *ngFor="let role of roles" [value]="role">{{ role }}</md-radio-button>
       </md-radio-group>
     </div>
   </div>
@@ -95,7 +94,7 @@
     <div>
       <button md-raised-button color="primary" id="signup-button" (click)="signUp()" [attr.disabled]="signup_button_unlock() == true ? false : null"
         disabled>Sign up</button>
-      <button md-raised-button color="primary" (click)="routeBack ()">Back</button>
+      <button md-raised-button color="primary" (click)="routeBack()">Back</button>
     </div>
   </div>
 

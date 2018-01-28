@@ -8,6 +8,7 @@ import { MdPaginator } from '@angular/material';
 
 // Api Service
 import { ApiService } from '../services/api.service';
+import { UserService } from '../services/user.service';
 
 // ReactiveX
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -16,6 +17,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
 import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { List } from 'lodash';
 
 @Component({
   selector: 'app-port-history',
@@ -24,12 +26,13 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 })
 export class PortHistoryComponent implements OnInit {
 
+  // TABLE'S VARIABLES
   rows: any = [];
   temp: any = [];
   selected: any[] = [];
 
   // COLUMNS VARIABLES
-  columns = [
+  columns: Array<any> = [
     { name: 'Date' },
     { name: 'Time' },
     { name: 'User' },
@@ -39,12 +42,17 @@ export class PortHistoryComponent implements OnInit {
     { name: 'RobotStatus' }
   ];
 
+  // USER'S VARIABLE
+  role: string;
+
   @ViewChild('table') table: DatatableComponent;
 
   ngOnInit() {
 
     // CHECK SERVER STATUS
     this.check_server_status();
+    // CHECK USER'S ROLE
+    this.checkUserRole();
     // FETCH DATA
     this.fetchData();
 
@@ -52,6 +60,7 @@ export class PortHistoryComponent implements OnInit {
 
   constructor(
     private _apiService: ApiService,
+    private _userService: UserService,
     private _router: Router) {
 
     this.temp = this.rows;
@@ -70,6 +79,16 @@ export class PortHistoryComponent implements OnInit {
     });
 
   }
+  // CHECK USER'S ROLE
+  checkUserRole() {
+
+    this._userService.getUserRoles().then((data) => {
+
+      this.role = data['role'];
+
+    });
+
+  }
   // SET DATA TABLE
   fetchData() {
 
@@ -77,10 +96,10 @@ export class PortHistoryComponent implements OnInit {
       _.each(data, (obj) => {
 
         console.log(obj);
-        const date = new Date(obj['timestamp']);
-        const day = date.toString().substring(0, 15);
-        const time = date.toString().substring(15);
-        const status = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
+        const date: Date = new Date(obj['timestamp']);
+        const day: string = date.toString().substring(0, 15);
+        const time: string = date.toString().substring(15);
+        const status: string = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
 
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj['switching_type'] === 'C') {
@@ -104,7 +123,7 @@ export class PortHistoryComponent implements OnInit {
 
   }
   // CANCEL TASK
-  cancelTask(id) {
+  cancelTask(id: string) {
 
     this._apiService.cancelTask(id, 'canceled').then((data) => {
 
@@ -113,6 +132,12 @@ export class PortHistoryComponent implements OnInit {
       }
 
     });
+
+  }
+  // VALIDATE USER'S ROLE TO HIDE BUTTON
+  validate_user_role_hide_button() {
+
+    return (this.role === 'User') ? 'hide-buttons' : '';
 
   }
   // SAVE DATA

@@ -74,7 +74,7 @@ class ForEmbest(object):
 
             # If current status is break then making debug mode
             if ValidateError.check_current_status() == 'break':
-                return CreateDebugMode.validate_input_to_create_debug_mode(request)
+                return CreateDebugMode.validate_input_to_create_debug_mode(request_data)
 
             # If current status is started or pending then return error_robotworking message
             elif ValidateError.check_current_status() in ['started', 'pending']:

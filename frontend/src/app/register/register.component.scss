@@ -255,12 +255,18 @@
         div {
             // Labtop screen
             @media only screen and (min-device-width : 640px) {
-                margin-left: 155px;     
+                margin-left: 135px;     
             }
             // Mobile screen
             @media only screen and (max-device-width : 640px) {
-                margin-left: 100px;
+                margin-left: 75px;
             }
+        }
+        md-radio-button {
+            margin-right: 5px;
+        }
+        .disable-button {
+            display: none;
         }
     }
     /*****SIGNUP-CONTAINER*****/

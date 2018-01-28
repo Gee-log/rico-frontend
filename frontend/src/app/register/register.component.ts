@@ -1,35 +1,80 @@
 // ANGULAR MODULE
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Api Service
 import { ApiService } from '../services/api.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnChanges, DoCheck {
 
+  // LOGGED-IN USER'S VARIABLE
+  logged_in_email: string;
+  logged_in_username: string;
+  logged_in_role: string;
+
+  // CREATED USER'S VARIABLE
   gender: boolean = false; // Gender value
-  email: string = null; // Email value
-  username: string = null; // Username value
-  password: string = null; // Password value
-  confirm_password: string = null; // Confirm password value
+  email: string; // Email value
+  role: string = 'Admin'; // Role value, set default is admin
+  username: string; // Username value
+  password: string; // Password value
+  confirm_password: string; // Confirm password value
+
+  roles: Array<string> = [
+    'Admin',
+    'Staff',
+    'User'
+  ];
 
   // ERROR MESSAGE
   error_message: string = 'Password does not match';
 
   // DISABLE BUTTON
   signup_button_disable: boolean = true;
+  admin_button_disable: boolean = true;
+  staff_button_disable: boolean = true;
+  user_button_disable: boolean = true;
 
   constructor(
     private _router: Router,
-    private _apiService: ApiService) { }
+    private _apiService: ApiService,
+    private _userService: UserService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
 
+    this.checkUserRole();
+
+  }
+
+  ngOnChanges() {
+
+  }
+
+  ngDoCheck() {
+
+    if (this.logged_in_role === 'Admin') {
+      this.admin_button_disable = false;
+      this.staff_button_disable = false;
+      this.user_button_disable = false;
+    }
+
+  }
+  // CHECK USER'S ROLE
+  checkUserRole() {
+
+    this._userService.getUserRoles().then((data) => {
+      this.logged_in_username = data['username'];
+      this.logged_in_role = data['role'];
+      this.logged_in_email = data['email'];
+    });
+
+  }
   // SEND SIGN UP
   signUp() {
 
@@ -39,7 +84,7 @@ export class RegisterComponent implements OnInit {
 
     } else {
 
-      this._apiService.create_user(this.email, this.username, this.password).then((data) => {
+      this._apiService.create_user(this.email, this.username, this.password, this.role).then((data) => {
 
         if (data['status'] === 'error') {
           console.log(data);
@@ -61,16 +106,13 @@ export class RegisterComponent implements OnInit {
     if (this.password && this.confirm_password) {
 
       if (this.password.length >= 8 && this.confirm_password.length >= 8) {
-
         this.signup_button_disable = true;
-
         return true;
       }
 
     }
 
     this.signup_button_disable = false;
-
     return false;
 
   }
@@ -91,7 +133,8 @@ export class RegisterComponent implements OnInit {
   // ROUTE BACK TO PREVIOUS PAGE
   routeBack() {
 
-    this._router.navigate(['/']);
+    localStorage.clear();
+    this._router.navigate(['/login']);
 
   }
   // CHECK PASSWORD'S VALUE LENGTH

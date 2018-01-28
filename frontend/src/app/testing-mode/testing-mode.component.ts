@@ -18,7 +18,7 @@ export class TestingModeComponent implements OnInit {
   west_port_number: any; // WEST PORT NUMBER
   stops: any; // STOP NUMBER
   sequence: any; // CURRENT SEQUENCE NUM
-  continue_mode; // CONTINUE MODE
+  continue_mode: string; // CONTINUE MODE
 
   // LOCK BUTTON UTILITIES
   debug_button: boolean; // DEBUG BUTTON
@@ -50,7 +50,7 @@ export class TestingModeComponent implements OnInit {
   // CREATE CONNECTION
   create_connection() {
 
-    const action = 'create_connection';
+    const action: string = 'create_connection';
 
     if (this.east_port_number && this.west_port_number) {
       this._apiService.create_connection_in_database(this.east_port_number, this.west_port_number, action).then((data) => {

@@ -1,5 +1,5 @@
 // ANGULAR Module
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Router } from '@angular/router';
 
@@ -16,11 +16,12 @@ import { UserService } from './services/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  // USER DATA
-  private user_data: object;
-  private username: string;
+  // USER'S VARIABLE
+  private user_data: object; // PARAMETERS  {USERNAME, EMAIL, ROLE}
+  private username: string; // USERNAME
+  private role: string; // USER'ROLE
 
   links = [
     {
@@ -75,6 +76,40 @@ export class AppComponent {
     private _userService: UserService,
     private _router: Router) { }
 
+  ngOnInit() {
+
+    localStorage.setItem('User_data', JSON.stringify({ 'username': null, 'email': null, 'role': null }));
+
+  }
+
+  // VALIDATE USER'S ROLE TO HIDE BUTTON
+  validate_user_role_hide_button() {
+
+    const user_data: object = JSON.parse(localStorage.getItem('User_data'));
+    const user_role: string = user_data['role'];
+
+    return (user_data['role'] === null || user_data['role'] !== 'Admin') ? 'hide-element' : '';
+
+  }
+  // VALIDATE URL TO DISPLAY NAVBAR OR HIDE NAVBAR
+  showNavbar() {
+
+    if (this._router.url === '/login' || this._router.url === '/register') {
+      return false;
+
+    } else {
+      return true;
+    }
+
+  }
+  // GET USERNAME
+  getUsername() {
+
+    // SET VARIABLE
+    const user_data: object = this._userService.getUsers();
+    this.username = user_data['username'];
+
+  }
   // TOGGLE SETTINGS MENU
   toggleSettings() {
 
@@ -97,24 +132,12 @@ export class AppComponent {
   clearDatabase() {
 
     this._apiService.clearDatabase('cleardatabase');
-    // this.ApiService.clearDatabase('cleardatabase');
 
   }
   // CLEAR LATEST OPERATION
   clear_latest_operation() {
 
     this._apiService.clear_latest_operation('clear_latest_operation');
-
-  }
-  // SHOW NAVBAR
-  showNavbar() {
-
-    if (this._router.url === '/login' || this._router.url === '/register') {
-      return false;
-
-    } else {
-      return true;
-    }
 
   }
   // LOGOUT
@@ -128,12 +151,10 @@ export class AppComponent {
     document.getElementById('menu-icon').click();
 
   }
-  // GET USERNAME
-  getUserName() {
+  registerRoute() {
 
-    // SET VARIABLE
-    this.user_data = this._userService.getUsers();
-    this.username = this.user_data['username'];
+    const user_data: object = JSON.parse(localStorage.getItem('User_data'));
+    const user_role: string = user_data['role'];
 
   }
 

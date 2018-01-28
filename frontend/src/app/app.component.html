@@ -7,7 +7,7 @@
       <!-- attr.disabled]="this.disable_stops_input == true ? false : null" -->
       <!-- BEGIN MENU ICON -->
       <div>
-        <button id="menu-icon" type="button" md-button class="div-icon-menu" (click)="sidenav.toggle(); getUserName();">
+        <button id="menu-icon" type="button" md-button class="div-icon-menu" (click)="sidenav.toggle(); getUsername();">
           <md-icon>menu</md-icon>
         </button>
       </div>
@@ -32,13 +32,13 @@
           </button>
           <!-- END NOTIFICATION ICON -->
           <!-- BEGIN CLEAR DATABASE ICON -->
-          <button md-menu-item (click)="clearDatabase()">
+          <button id="cleardatabase" md-menu-item (click)="clearDatabase()" [ngClass]="validate_user_role_hide_button()">
             <md-icon>delete</md-icon>
             <span>Clear database</span>
           </button>
           <!-- END CLEAR DATABASE ICON -->
           <!-- BEGIN CLEAR DATABASE ICON -->
-          <button md-menu-item (click)="clear_latest_operation()">
+          <button id="clearoperation" md-menu-item (click)="clear_latest_operation()" [ngClass]="validate_user_role_hide_button()">
             <md-icon>delete</md-icon>
             <span>Clear operation</span>
           </button>
@@ -78,7 +78,7 @@
               <md-icon>arrow_drop_down</md-icon>
             </button>
             <md-menu #menudrop="mdMenu">
-              <button md-menu-item>
+              <button md-menu-item [ngClass]="validate_user_role_hide_button()">
                 <md-icon>add</md-icon>
                 <span>Add another account...</span>
               </button>

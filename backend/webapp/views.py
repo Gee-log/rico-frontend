@@ -786,10 +786,10 @@ def savedata_startedtobreak(east, west, status, uuid):
     east, west = matching_port_object_in_database(east, west)
 
     if action == 'connect':
-        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='C').order_by('-timestamp')[:1]
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='break', switching_type='C').order_by('-timestamp')[:1]
     
     else:
-        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='started', switching_type='D').order_by('-timestamp')[:1]
+        connectionhistorys = ConnectionHistory.objects.filter(east=east, west=west, status='break', switching_type='D').order_by('-timestamp')[:1]
 
     for c in connectionhistorys:
         ConnectionHistory.objects.filter(east=c.east, west=c.west, switching_type=c.switching_type, timestamp=c.timestamp).update(status=status, timestamp=datetime.now())

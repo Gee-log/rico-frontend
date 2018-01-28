@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) { }
+  constructor(
+    private _router: Router) { }
 
   canActivate() {
 
@@ -16,7 +17,7 @@ export class AuthGuard implements CanActivate {
     }
 
     // not logged in so redirect to login page
-    this.router.navigate(['/login']);
+    this._router.navigate(['/login']);
     return false;
   }
 

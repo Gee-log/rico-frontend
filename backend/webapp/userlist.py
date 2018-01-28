@@ -1,5 +1,7 @@
 """portlist api
 """
+import json
+
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -25,9 +27,20 @@ class RoleList(APIView):
                 id (integer): id of object
         """
 
-        roles = Role.objects.all()
-        serializer = RoleSerializer(roles, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # get current username
+        request_data = json.dumps(request.GET)
+        request_data = json.loads(request_data)
+
+        if 'username' in request_data:
+            username = request_data['username']
+            users = User.objects.filter(username=username)
+            roles = Role.objects.filter(user=users)
+            serializer = RoleSerializer(roles, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            roles = Role.objects.all()
+            serializer = RoleSerializer(roles, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST PortList API

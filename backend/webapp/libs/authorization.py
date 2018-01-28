@@ -1,6 +1,10 @@
 """Validate User
 """
+from django.contrib.auth.models import User
+
 from rest_framework.authtoken.models import Token
+
+from webapp.models import Role
 
 
 class ValidationUser(object):
@@ -20,6 +24,9 @@ class ValidationUser(object):
 
             else:
                 return False
+        
+        else:
+            return False
 
     @staticmethod
     def validate_token(token):
@@ -27,5 +34,29 @@ class ValidationUser(object):
         if Token.objects.filter(key=token):
             return True
 
+        else:
+            return False
+
+
+class ValidateUserRole(object):
+    
+    @staticmethod
+    def validate_role(request):
+
+        token = request.META.get('HTTP_AUTHORIZATION')
+        token_object = Token.objects.filter(key=token)
+
+        for i in token_object:
+            username = i.user
+
+        user_object = User.objects.filter(username=username)
+        role_object = Role.objects.filter(user=user_object)
+
+        for r in role_object:
+            user_role = r.role
+
+        if user_role == 'Admin' or user_role == 'Staff':
+            return True
+        
         else:
             return False

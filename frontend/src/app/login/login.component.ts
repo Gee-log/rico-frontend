@@ -52,18 +52,46 @@ export class LoginComponent implements OnInit {
       .then(result => {
 
         if (result === true) {
-          this._router.navigate(['/']);
+
+
+          this._userService.getUserRoles().then((data) => {
+
+            localStorage.setItem('User_data', JSON.stringify({
+              'username': data['username'], 'email': data['email'],
+              'role': data['role']
+            }));
+
+            this._router.navigate(['/']);
+
+          });
+
 
         } else {
+
           document.getElementById('error').classList.remove('hide');
           this.error = 'Username or password is incorrect';
           this.loading = false;
+
         }
+
+
       });
 
   }
   // VALIDATE INPUT TO ENABLE / DISABLE LOGIN BUTTON
   validate_login_button() {
+
+    if (this.model.username && this.model.password) {
+      return true;
+
+    } else {
+      document.getElementById('error').classList.add('hide');
+      return false;
+    }
+
+  }
+  // VALIDATE INPUT TO ENABLE / DISABLE LOGIN BUTTON
+  validate_register_button() {
 
     if (this.model.username && this.model.password) {
       return true;
@@ -91,7 +119,34 @@ export class LoginComponent implements OnInit {
   // REGISTER ROUTE
   registerRoute() {
 
-    this._router.navigate(['/register']);
+    this._authenticationService.login(this.model.username, this.model.password)
+      .then(result => {
+
+        if (result === true) {
+
+          this._userService.getUserRoles()
+            .then((data) => {
+
+              if (data['role'] === 'Admin') {
+
+                this._router.navigate(['/register']);
+
+              } else {
+
+                document.getElementById('error').classList.remove('hide');
+                this.error = 'You dont have permission to access';
+                localStorage.clear();
+
+              }
+
+            });
+
+        } else {
+          document.getElementById('error').classList.remove('hide');
+          this.error = 'Username or password is incorrect';
+          this.loading = false;
+        }
+      });
 
   }
 

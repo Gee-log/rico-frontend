@@ -3,7 +3,6 @@
 import logging.handlers
 import requests
 
-from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import status
 
@@ -31,7 +30,7 @@ logger.addHandler(handler)
 class CreateDebugMode(object):
 
     @staticmethod
-    def validate_input_to_create_debug_mode(request):
+    def validate_input_to_create_debug_mode(request_data):
         """Debug Process
 
         Args:
@@ -47,26 +46,26 @@ class CreateDebugMode(object):
                 action (string): action type
         """
 
-        east, west = GetAvailablePort.get_available_port(request)
+        east, west = GetAvailablePort.get_available_port(request_data)
         logger.info('debug %s - %s', east, west)
 
         # Validate input
         if east is None:
-            logger.error('debug: error:no east port number {} request:{}'.format(east, request))
+            logger.error('debug: error:no east port number {} request:{}'.format(east, request_data))
             return Response('No east port number ' + str(east), content_type="text/plain")
 
         if west is None:
-            logger.error('debug: error:no west port number {} request:{}'.format(west, request))
+            logger.error('debug: error:no west port number {} request:{}'.format(west, request_data))
             return Response('No west port number ' + str(west), content_type="text/plain")
 
         # create debug mode
-        CreateDebugMode.create_debug(request, east, west)
+        CreateDebugMode.create_debug(request_data, east, west)
 
-        logger.info('debug: response method return data: {}'.format(request.data))
-        return Response(request.data, status=status.HTTP_200_OK)
+        logger.info('debug: response method return data: {}'.format(request_data))
+        return Response(request_data, status=status.HTTP_200_OK)
 
     @staticmethod
-    def create_debug(request, east, west):
+    def create_debug(request_data, east, west):
         """Create debug Process in database
 
         Args:
@@ -76,10 +75,10 @@ class CreateDebugMode(object):
         """
 
         # Validate input
-        if 'number' in request.data and 'stops' in request.data:
-            action = request.data['action']
-            number = request.data['number']
-            stops = request.data['stops']
+        if 'number' in request_data and 'stops' in request_data:
+            action = request_data['action']
+            number = request_data['number']
+            stops = request_data['stops']
 
         else:
             number = None
@@ -90,7 +89,8 @@ class CreateDebugMode(object):
                        'no': str(number)}
 
         else:
-            return JsonResponse({'status': 'error', 'error': 'Invalid Debug Input'})
+            return_data = ({'status': 'error', 'error': 'Invalid Debug Input'})
+            return Response(return_data, status=status.HTTP_200_OK)
 
         # Validate using dummy
         if walk.is_dummy():

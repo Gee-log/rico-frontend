@@ -11,31 +11,31 @@ import { Observable } from 'rxjs/Rx';
 // Third-Party
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
-import { PACKAGE_ROOT_URL } from '@angular/core/src/application_tokens';
 
 @Injectable()
 export class ApiService {
 
-  private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
-  private headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
-  private options = new RequestOptions({ headers: this.headers });
+  private authToken: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
+  private headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
+  private options: any = new RequestOptions({ headers: this.headers });
   // private ROOT_URL = `http://192.168.60.103:80/`;
-  private ROOT_URL = `http://localhost:8000/`;
+  private ROOT_URL: string = `http://localhost:8000/`;
 
   constructor(
-    private _http: Http) { }
+    private _http: Http,
+    private _authenticationService: AuthenticationService) { }
 
   // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
   getAllPort() {
 
-    const eports = []; // 144 EAST PORTS
-    const wports = []; // 144 WEST PORTS
-    let eportschunk = []; // 144 to [12,12,...]
-    let wportschunk = []; // 144 to [12,12,...]
-    let allPort = []; // ALL PORTS, 288 PORTS
-    const eportNote = []; // EAST PORT NOTE
-    const wportNote = []; // WEST PORT NOTE
-    const id = []; // OBJECT ID
+    const eports: Array<string> = []; // 144 EAST PORTS
+    const wports: Array<string> = []; // 144 WEST PORTS
+    let eportschunk: Array<object> = []; // 144 to [12,12,...]
+    let wportschunk: Array<object> = []; // 144 to [12,12,...]
+    let allPort: object = []; // ALL PORTS, 288 PORTS
+    const eportNote: Array<string> = []; // EAST PORT NOTE
+    const wportNote: Array<string> = []; // WEST PORT NOTE
+    const id: Array<string> = []; // OBJECT ID
 
     return this._http.get(this.ROOT_URL + 'ports/').toPromise().then((response: any) => {
       allPort = JSON.parse(response._body);
@@ -59,8 +59,8 @@ export class ApiService {
       });
 
       return ({
-        allPort: allPort, eports: eports, wports: wports,
-        eportschunk: eportschunk, wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
+        eports: eports, wports: wports, eportschunk: eportschunk,
+        wportschunk: wportschunk, eportNote: eportNote, wportNote: wportNote, id: id
       });
 
     });
@@ -70,13 +70,13 @@ export class ApiService {
   getUsername() {
 
     if (localStorage.getItem('currentUser') !== null && localStorage.getItem('currentUser') !== undefined) {
-      const user_data = JSON.parse(localStorage.getItem('currentUser'));
+      const user_data: object = JSON.parse(localStorage.getItem('currentUser'));
       return user_data['username'];
     }
 
   }
   // POST CONNECTION, DISCONNECTION, DEBUG API TO SERVER
-  connectPort(east, west, action, stops?, number?) {
+  connectPort(east: string, west: string, action: string, stops?: string, number?: number) {
     // VARIABLE DETAILS
     // east = selectedEastPortID
     // west = selectedWestPortID
@@ -88,10 +88,10 @@ export class ApiService {
     // PAYLOAD { east, west, action, stops }
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
-    const username = this.getUsername();
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
+    const username: string = this.getUsername();
 
     // START DEBUG MODE
     if (stops && number === undefined) {
@@ -182,19 +182,19 @@ export class ApiService {
 
   }
   // PARSE AN ERROR HTTPRESPONSE BODY
-  parseErrorBody(error) {
+  parseErrorBody(error: any) {
 
     try {
-      const response = JSON.parse(error._body);
+      const response: any = JSON.parse(error._body);
       return response;
 
     } catch (e) {
 
       if (e instanceof SyntaxError) {
-        const parse = new DOMParser();
-        const htmlData = parse.parseFromString(error._body, 'text/html');
-        const title = htmlData.getElementsByTagName('title')[0].textContent;
-        const error_message = htmlData.getElementsByClassName('exception_value')[0].textContent;
+        const parse: any = new DOMParser();
+        const htmlData: any = parse.parseFromString(error._body, 'text/html');
+        const title: any = htmlData.getElementsByTagName('title')[0].textContent;
+        const error_message: any = htmlData.getElementsByClassName('exception_value')[0].textContent;
 
         const obj: any = {
           'status': 'error',
@@ -225,9 +225,9 @@ export class ApiService {
       //   action = obj.action;
       // });
       // NEW VERSION
-      const status = response.status; // CURRENT STATUS
-      const sequence = response.sequence; // CURRENT SEQUENCE
-      const action = response.action; // CURRENT ACTION
+      const status: string = response.status; // CURRENT STATUS
+      const sequence: number = response.sequence; // CURRENT SEQUENCE
+      const action: string = response.action; // CURRENT ACTION
 
       return ({ status: status, sequence: sequence, action: action });
 
@@ -265,10 +265,10 @@ export class ApiService {
   getConnectedPort() {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
-    const params = { 'action': 'connected' };
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
+    const params: object = { 'action': 'connected' };
 
     return this._http.get(this.ROOT_URL + 'connections/', { headers: headers, params: params }).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -336,7 +336,7 @@ export class ApiService {
 
   }
   // POST ALARM
-  postAlarm(alarm, detail, severity) {
+  postAlarm(alarm: string, detail: string, severity: number) {
 
     return this._http.post(this.ROOT_URL + 'alarms/', { alarm, detail, severity }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -361,7 +361,7 @@ export class ApiService {
 
   }
   // POST PENDING TASK
-  pendingTask(id) {
+  pendingTask(id: string) {
 
     return this._http.post(this.ROOT_URL + 'pendingtask/', { id }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -385,12 +385,12 @@ export class ApiService {
     });
   }
   // POST CANCEL TASK
-  cancelTask(id, action) {
+  cancelTask(id: string, action: string) {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
 
     return this._http.post(this.ROOT_URL + 'connectionhistorys/', { id, action }, options).toPromise().then((response: any) => {
 
@@ -418,9 +418,9 @@ export class ApiService {
   clearDatabase(action) {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
 
     return this._http.post(this.ROOT_URL + 'connectionhistorys/', { action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -443,12 +443,12 @@ export class ApiService {
 
   }
   // CLEAR DATABASE DATA
-  clear_latest_operation(action) {
+  clear_latest_operation(action: string) {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
 
     return this._http.post(this.ROOT_URL + 'operations/', { action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -471,7 +471,7 @@ export class ApiService {
 
   }
   // SAVE DATA (CSV FILE)
-  saveData_Connectionhistory(type) {
+  saveData_Connectionhistory(type: string) {
 
     return this._http.post(this.ROOT_URL + 'connectionhistorys/', { type }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -529,12 +529,12 @@ export class ApiService {
 
   }
   // CREATE CONNECTION IN CONNECTION TABLE
-  create_connection_in_database(east, west, action) {
+  create_connection_in_database(east: string, west: string, action: string) {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
 
     return this._http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -566,7 +566,7 @@ export class ApiService {
   // CHECK SERVER IS ONLINE OR NOT
   check_server_status() {
 
-    let status;
+    let status: number;
 
     return this._http.get(this.ROOT_URL).toPromise().then((response: any) => {
 
@@ -601,8 +601,8 @@ export class ApiService {
   // CONTINUE OPERATION CONTINUE MODE
   continue_robot_operations() {
 
-    const mode = 'robot';
-    const continue_mode = 'continue';
+    const mode: string = 'robot';
+    const continue_mode: string = 'continue';
 
     return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode },
       this.options).toPromise().then((response: any) => {
@@ -619,8 +619,8 @@ export class ApiService {
   // RELOAD OPERATION CONTINUE MODE
   reload_robot_operations() {
 
-    const mode = 'robot';
-    const continue_mode = 'reload';
+    const mode: string = 'robot';
+    const continue_mode: string = 'reload';
 
     return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode },
       this.options).toPromise().then((response: any) => {
@@ -637,8 +637,8 @@ export class ApiService {
   // RESTART OPERATION CONTINUE MODE
   restart_robot_operations() {
 
-    const mode = 'robot';
-    const continue_mode = 'restart';
+    const mode: string = 'robot';
+    const continue_mode: string = 'restart';
 
     return this._http.post(this.ROOT_URL + 'taskcancelations/', { mode, continue_mode },
       this.options).toPromise().then((response: any) => {
@@ -656,11 +656,11 @@ export class ApiService {
   get_operation_task_time() {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
 
-    const params = { 'action': 'connection_time' };
+    const params: object = { 'action': 'connection_time' };
 
     return this._http.get(this.ROOT_URL + 'operationhistorys/', { headers: headers, params: params }).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -673,13 +673,13 @@ export class ApiService {
   get_operation_sequence() {
 
     // set local authToken, header, options
-    const authToken = JSON.parse(localStorage.getItem('token')); // Set sample token
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
-    const options = new RequestOptions({ headers: headers });
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
 
-    let operation_sequence;
-    let total_sequence;
-    let operation_task_completed;
+    let operation_sequence: number;
+    let total_sequence: number;
+    let operation_task_completed: number;
 
     return this._http.get(this.ROOT_URL + 'operationsequences/', { headers: headers }).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -702,7 +702,7 @@ export class ApiService {
   // VERIFY USER WITH CURRENT BACKEND
   verify_user_with_backend() {
 
-    let token = JSON.parse(localStorage.getItem('token')); // Set sample token
+    let token: string = JSON.parse(localStorage.getItem('token')); // Set sample token
     token = token['token'];
 
     return this._http.post(this.ROOT_URL + 'verify_user/', { token }, this.options).toPromise().then((response: any) => {
@@ -715,9 +715,14 @@ export class ApiService {
 
   }
   // CREATE USER IN DATABASE
-  create_user(email, username, password) {
+  create_user(email: string, username: string, password: string, role: string) {
 
-    return this._http.post(this.ROOT_URL + 'create_user/', { email, username, password }, this.options)
+    // set local authToken, header, options
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
+
+    return this._http.post(this.ROOT_URL + 'create_user/', { email, username, password, role }, options)
       .toPromise().then((response: any) => {
         const response_object = JSON.parse(response._body);
 

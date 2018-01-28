@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 
 // GUARD
 import { AuthGuard } from './_guards/auth.guard';
+import { RegisterGuard } from './_guards/register.guard';
 
 export const appRoutes: Routes = [
   {
@@ -56,7 +57,8 @@ export const appRoutes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [RegisterGuard]
   },
   {
     path: 'login',

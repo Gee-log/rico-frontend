@@ -6,7 +6,7 @@ import logging.handlers
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
-from webapp.libs.authorization import ValidationUser
+from webapp.libs.authorization import ValidationUser, ValidateUserRole
 from webapp.libs.for_embest import ForEmbest
 from webapp.libs.for_whitewalker import ForWhitewalker
 from webapp.libs.validation_error import ValidateError
@@ -137,21 +137,25 @@ class ConnectionList(APIView):
 
         if ValidationUser.validate_http_authorization(request) is True:
            
-            # If using white walker dummy
-            if walk.is_dummy():
-                return ForWhitewalker.validate_input(request)
+            if ValidateUserRole.validate_role(request) is True:
+                # If using white walker dummy
+                if walk.is_dummy():
+                    return ForWhitewalker.validate_input(request)
 
-            # If not using white walker dummy
-            else:
-
-                # Check if current status is not error then call for_embest()
-                if ValidateError.check_current_status() not in ['error', 'alarm']:
-                    return ForEmbest.validate_input(request)
-                
-                # Check if current status is error then return error message
+                # If not using white walker dummy
                 else:
-                    return ValidateError.query_status_error()
-        
+                    # Check if current status is not error then call for_embest()
+                    if ValidateError.check_current_status() not in ['error', 'alarm']:
+                        return ForEmbest.validate_input(request)
+                    
+                    # Check if current status is error then return error message
+                    else:
+                        return ValidateError.query_status_error()
+            else:
+                return_data = ({'detail': 'Your role has no permission'})
+                logger.error('validate_user_role.validate_role method: error: {} request: {}'.format(
+                        return_data, request.META.get('HTTP_AUTHORIZATION')))
+                return Response(return_data, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return_data = ({'detail': 'Permission denied'})
             logger.error('validate_user.validate_http_authorization method: error:{} request:{}'.format(
