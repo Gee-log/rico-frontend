@@ -13,12 +13,35 @@
           <md-panel-title> Home robot </md-panel-title>
           <md-panel-description> Home all axes </md-panel-description>
         </md-expansion-panel-header>
-        <button md-button color="primary" (click)="home_motor()">Home</button>
-        <button md-button color="primary" (click)="test()">Test</button>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="home_motor()">Home</button>
+        </md-action-row>
+        <!-- <md-action-row> -->
+        <!-- <md-error>{{errorRobot}}</md-error> -->
+        <!-- </md-action-row> -->
       </md-expansion-panel>
-      <md-action-row>
-        <md-error>{{errorRobot}}</md-error>
-      </md-action-row>
+      <!-- END HOME -->
+
+      <!-- BEGIN HOME -->
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title> Rollback smu </md-panel-title>
+          <md-panel-description> Rollback smu position </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input mdInput id="smu_no" placeholder="SMU Number" value="smu_no" [(ngModel)]="smu_no" minlength="1" maxlength="3" pattern="^[1-9][0-9]{0,3}">
+        </md-form-field>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="rollback()" [attr.disabled]="validate_rollback_button() === false ? true : null"
+            disabled>Rollback</button>
+        </md-action-row>
+        <!-- <md-action-row>
+          <md-error>{{errorRobot}}</md-error>
+        </md-action-row> -->
+      </md-expansion-panel>
       <!-- END HOME -->
 
     </md-tab>
@@ -30,12 +53,8 @@
       <!-- BEGIN CREATE CONNECTION -->
       <md-expansion-panel>
         <md-expansion-panel-header>
-          <md-panel-title>
-            Create dummy connection in database
-          </md-panel-title>
-          <md-panel-description>
-            Type east port and west port
-          </md-panel-description>
+          <md-panel-title> Create dummy connection in database </md-panel-title>
+          <md-panel-description> Type east port and west port </md-panel-description>
         </md-expansion-panel-header>
 
         <md-form-field>

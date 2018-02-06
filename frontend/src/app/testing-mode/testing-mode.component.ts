@@ -19,6 +19,7 @@ export class TestingModeComponent implements OnInit {
   stops: any; // STOP NUMBER
   sequence: any; // CURRENT SEQUENCE NUM
   continue_mode: string; // CONTINUE MODE
+  smu_no: number; // SMU NUMBER
 
   // LOCK BUTTON UTILITIES
   debug_button: boolean; // DEBUG BUTTON
@@ -94,6 +95,18 @@ export class TestingModeComponent implements OnInit {
     }
 
   }
+  // VALIDATE ROLLBACK BUTTON
+  validate_rollback_button() {
+
+    if ((this.smu_no <= 144) && (!document.getElementById('smu_no').classList.contains('ng-invalid')) && this.smu_no) {
+
+      return true;
+
+    } else {
+      return false;
+    }
+
+  }
   // HOMING MOTOR
   home_motor() {
 
@@ -103,6 +116,21 @@ export class TestingModeComponent implements OnInit {
 
       } else {
         console.error(data);
+      }
+    });
+
+  }
+  // ROLLBACK SMU POSITION
+  rollback() {
+
+    this._apiService.rollback(this.smu_no).then((data) => {
+      if (data['uuid']) {
+        this.smu_no = null;
+        alert('Command send successful, start rollback...');
+
+      } else {
+        this.smu_no = null;
+        alert('Error rollback.');
       }
     });
 

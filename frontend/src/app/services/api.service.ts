@@ -585,7 +585,7 @@ export class ApiService {
   // HOMING ROBOT
   home_robot_axes() {
 
-    return this._http.get(this.ROOT_URL + 'homes/').toPromise().then((response: any) => {
+    return this._http.get(this.ROOT_URL + 'utilities/homes/').toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
 
       response_object['status'] = 'success';
@@ -596,6 +596,21 @@ export class ApiService {
     }).catch((error) => {
       return { 'status': 'error', 'error': error };
     });
+
+  }
+  // ROLLBACK SMU POSITION
+  rollback(smu_no) {
+
+    return this._http.post(this.ROOT_URL + 'utilities/rollback/', { smu_no },
+      this.options).toPromise().then((response: any) => {
+        const response_object = JSON.parse(response._body);
+
+        return response_object;
+
+      }).catch((error: any) => {
+        const response = this.parseErrorBody(error);
+        return response;
+      });
 
   }
   // CONTINUE OPERATION CONTINUE MODE

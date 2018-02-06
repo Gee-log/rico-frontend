@@ -920,6 +920,7 @@ def save(question_id, timestamp=0):
     return response
 
 
+@api_view(['GET'])
 def homes(request):
     """Ask robot to home all axes
 
@@ -938,3 +939,26 @@ def homes(request):
 
     return_data = {'uuid': resp.text}
     return Response(return_data, status=drf_status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def rollback(request):
+    """Rollback smu position
+
+    Returns:
+            status (string): status code
+            detail (string): error detail
+            uuid (uuid4): uuid from celery 
+    """
+
+    request_data = JSONParser().parse(request)
+    if 'smu_no' in request_data:
+        east = request_data['smu_no']
+        west = request_data['smu_no']
+        payload = {'east': east, 'west': west}
+        resp = requests.post(CELERY_APP + '/rollback', data=payload)
+        return_data = {'uuid': resp.text}
+        return Response(return_data, status=drf_status.HTTP_200_OK)
+    else:
+        return_data = {'status': 'error', 'detail': 'Invalid input.'}
+        return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
