@@ -1,3 +1,7 @@
+<div class="main-container">
+
+<div class="spacer"></div>
+
 <!-- BEGIN CONTAINER -->
 <md-card class="container">
 
@@ -38,21 +42,33 @@
   <!-- BEGIN FLEX-4 -->
   <div class="flex-4">
     <div class="item-1">
-      <button md-raised-button color="primary" (click)="login()" [attr.disabled]="validate_login_button() === false ? true : null"
+      <button md-raised-button id="login" color="primary" (click)="login()" [attr.disabled]="validate_login_button() === false ? true : null"
         disabled>Log In</button>
     </div>
     <div class="item-2">
-      <button md-raised-button color="primary" (click)="registerRoute()" [attr.disabled]="validate_register_button() === false ? true : null"
+      <button md-raised-button id="register" color="primary" (click)="registerRoute()" [attr.disabled]="validate_register_button() === false ? true : null"
         disabled>Register</button>
     </div>
-    <div class="item-3">
+    <!-- <div class="item-3">
       <md-card id="error" class="hide">
         <p>{{ this.error }}</p>
       </md-card>
-    </div>
+    </div> -->
   </div>
   <!-- END FLEX-4 -->
 
 
+  <!-- BEGIN FLEX-5 -->
+  <div class="flex-5">
+    <div id="error">
+      <p>{{ this.error }}</p>
+    </div>
+  </div>
+<!-- END FLEX-5 -->
+
+
 </md-card>
 <!-- END CONTAINER -->
+
+
+</div>

@@ -41,7 +41,7 @@ class ConnectionList(APIView):
 
         Returns:
             json:
-                If action == 'connected':
+                If action is 'connected':
                     east (integer): east port number
                     west (integer): west port number
                     status (string): status code

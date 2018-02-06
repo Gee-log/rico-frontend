@@ -62,7 +62,6 @@ class CreateUser(APIView):
                 request_data = JSONParser().parse(request)
 
                 if 'email' in request_data and 'username' in request_data and 'password' in request_data and 'role' in request_data: 
-                    # if 'email' in request_data and 'username' in request_data and 'password' in request_data:
                     email = request_data['email']
                     username = request_data['username']
                     password = request_data['password']
@@ -81,7 +80,6 @@ class CreateUser(APIView):
                         return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
                     if re.match("^[A-Za-z0-9_-]*$", username) and re.match("^[A-Za-z0-9_-]*$", password):
-                        # default role is staff
                         if role == 'Admin':
                             user = User.objects.create_superuser(username, email, password)
                             user.save()
@@ -90,6 +88,7 @@ class CreateUser(APIView):
                             user.save()
                         if role == 'User':
                             user = User.objects.create_user(username, email, password, is_staff=False)
+                            user.save()
                         user_object = User.objects.get(username=username)
                         roles = Role.objects.create(user=user_object, role=role)
                         roles.save()

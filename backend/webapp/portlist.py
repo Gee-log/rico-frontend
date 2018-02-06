@@ -2,10 +2,11 @@
 """
 import logging.handlers
 
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
-from webapp.libs.authorization import ValidationUser
+from webapp.libs.authorization import ValidationUser, ValidateUserRole
 from webapp.models import Port
 from webapp.serializers import PortSerializer
 
@@ -68,8 +69,7 @@ class PortList(APIView):
                     if Port.objects.filter(direction=request.data['direction'], number=request.data['number']):
                         return_data = {'error': 'This port already exist in database.'}
                         logger.error('post method: error:{} request:{}'.format(return_data, request.data))
-                        return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
-                    
+                        return Response(return_data, status=status.HTTP_400_BAD_REQUEST)  
                     else: 
                         serializer.save()
                         logger.info('post method: saved request:{}'.format(request.data))

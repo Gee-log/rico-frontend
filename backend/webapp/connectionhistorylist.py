@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.views import status as drf_status
 
-from webapp.libs.authorization import ValidationUser
+from webapp.libs.authorization import ValidationUser, ValidateUserRole
 from webapp.libs.connectionhistory_action_database import ConnectionHistoryAction
 from webapp.models import ConnectionHistory
 
@@ -59,18 +59,18 @@ class ConnectionHistoryList(APIView):
 
     def post(self, request):
         """POST ConnectionHistoryList API,
-        If action == 'canceled' check condition then update database,
-        If action == 'cleardatabase' check condition then update database
+        If action is 'canceled' check condition then update database,
+        If action is 'cleardatabase' check condition then update database
 
         # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-        IF type == 'connectionhistory' call savedata()
+        IF type is 'connectionhistory' call savedata()
 
         Args:
             request: request data
 
         Returns:
                 json:
-                    If action == 'canceled':
+                    If action is 'canceled':
                         id (string): object id
                         east (string): east port object number
                         west (string): west port object number
@@ -79,11 +79,13 @@ class ConnectionHistoryList(APIView):
                         status (string): status code
 
                 # TODO SAVE CSV BY CALLING FROM FUNCTION IN FRONTEND
-                IF type == 'connectionhistory'
+                IF type is 'connectionhistory'
                 csv: csv file
         """
 
         if ValidationUser.validate_http_authorization(request) is True:
+
+            if ValidateUserRole.validate_role(request) is True:
 
                 request_data = JSONParser().parse(request)
                 if 'id' in request_data and 'action' in request_data:
@@ -126,6 +128,12 @@ class ConnectionHistoryList(APIView):
                     return_data = ({'detail': 'Invalid input data'})
                     logger.error('post method: error:{} request:{}'.format(return_data, request))
                     return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return_data = ({'detail': 'Your role has no permission'})
+                logger.error('validate_user_role.validate_role method: error: {} request: {}'.format(
+                        return_data, request.META.get('HTTP_AUTHORIZATION')))
+                return Response(return_data, status=drf_status.HTTP_401_UNAUTHORIZED)
 
         else:
             return_data = ({'detail': 'Permission denied'})

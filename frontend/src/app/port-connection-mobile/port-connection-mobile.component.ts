@@ -44,7 +44,7 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   debugMode: boolean = false; // DEBUG MODE
 
   // DATA FROM CELERY
-  sequence: string; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
+  sequence: number; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
   status: string; // CURRENT STATUS TASK OF ROBOT
   action: string; // CURRENT ACTION IN DEBUG MODE
   error_message: string = undefined; // ERROR MESSAGE
@@ -324,8 +324,8 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   eastPair() {
 
     _.each(this.pair, (obj) => {
-      const east = 'E' + obj.east;
-      const west = 'W' + obj.west;
+      const east = 'E' + obj['east'];
+      const west = 'W' + obj['west'];
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         document.getElementById(east).classList.add('selected-pair');
         document.getElementById(west).classList.add('selected-pair');
@@ -341,8 +341,8 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   westPair() {
 
     _.each(this.pair, (obj) => {
-      const east = 'E' + obj.east;
-      const west = 'W' + obj.west;
+      const east = 'E' + obj['east'];
+      const west = 'W' + obj['west'];
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         document.getElementById(east).classList.add('selected-pair');
         document.getElementById(west).classList.add('selected-pair');

@@ -45,7 +45,6 @@ class OperationSequencelist(APIView):
             if len(operationsequences) > 0:
                 operationsequences = OperationSequence.objects.all()
                 operationsequences.update(sequence_number=sequence_number, total_sequence=total_sequence)
-
             else:
                 operationsequences = OperationSequence.objects.create(sequence_number=sequence_number, total_sequence=total_sequence)
                 operationsequences.save()  
