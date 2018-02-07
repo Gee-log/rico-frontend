@@ -23,7 +23,7 @@
       </md-expansion-panel>
       <!-- END HOME -->
 
-      <!-- BEGIN HOME -->
+      <!-- BEGIN ROLLBACK -->
       <md-expansion-panel>
         <md-expansion-panel-header>
           <md-panel-title> Rollback smu </md-panel-title>
@@ -42,7 +42,33 @@
           <md-error>{{errorRobot}}</md-error>
         </md-action-row> -->
       </md-expansion-panel>
-      <!-- END HOME -->
+      <!-- END ROLLBACK -->
+
+      <!-- BEGIN SELF CONNECTION -->
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title> Self connection </md-panel-title>
+          <md-panel-description> self connect/disconnect smu </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input mdInput id="smu_no" placeholder="SMU Number" value="smu_no" [(ngModel)]="smu_no" minlength="1" maxlength="3" pattern="^[1-9][0-9]{0,3}">
+        </md-form-field>
+
+        <section>
+          <md-checkbox [(ngModel)]="connect">Connect</md-checkbox>
+          <md-checkbox [(ngModel)]="disconnect">Disconnect</md-checkbox>
+        </section>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="self_connection()" [attr.disabled]="validate_self_connection_button() === false ? true : null"
+            disabled>Self connect</button>
+        </md-action-row>
+        <!-- <md-action-row>
+                <md-error>{{errorRobot}}</md-error>
+              </md-action-row> -->
+      </md-expansion-panel>
+      <!-- END SELF CONNECTION -->
 
     </md-tab>
     <!-- END ROBOT-TAB -->

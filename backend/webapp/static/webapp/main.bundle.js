@@ -3652,13 +3652,24 @@ var ApiService = (function () {
     };
     // HOMING ROBOT
     ApiService.prototype.home_robot_axes = function () {
-        return this._http.get(this.ROOT_URL + 'homes/').toPromise().then(function (response) {
+        return this._http.get(this.ROOT_URL + 'utilities/homes/').toPromise().then(function (response) {
             var response_object = JSON.parse(response._body);
             response_object['status'] = 'success';
             return response_object;
             // IF CANNOT GET RESPONSE FROM SERVER
         }).catch(function (error) {
             return { 'status': 'error', 'error': error };
+        });
+    };
+    // ROLLBACK SMU POSITION
+    ApiService.prototype.rollback = function (smu_no) {
+        var _this = this;
+        return this._http.post(this.ROOT_URL + 'utilities/rollback/', { smu_no: smu_no }, this.options).toPromise().then(function (response) {
+            var response_object = JSON.parse(response._body);
+            return response_object;
+        }).catch(function (error) {
+            var response = _this.parseErrorBody(error);
+            return response;
         });
     };
     // CONTINUE OPERATION CONTINUE MODE
@@ -3788,11 +3799,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AuthenticationService = (function () {
-    // private ROOT_URL: string = `http://localhost:8000/`;
     function AuthenticationService(_http) {
         this._http = _http;
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
+        // private ROOT_URL: string = `http://192.168.60.103:80/`;
         this.ROOT_URL = "http://localhost:8000/";
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -3921,7 +3932,7 @@ var _a;
 /***/ "../../../../../src/app/testing-mode/testing-mode.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- BEGIN MAIN-CONTAINER -->\n<div class=\"main-container\">\n\n  <!-- BEGIN TAB-GROUP -->\n  <md-tab-group>\n\n    <!-- BEGIN ROBOT-TAB -->\n    <md-tab label=\"Robot Handler\">\n\n      <!-- BEGIN HOME -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title> Home robot </md-panel-title>\n          <md-panel-description> Home all axes </md-panel-description>\n        </md-expansion-panel-header>\n        <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\n        <button md-button color=\"primary\" (click)=\"test()\">Test</button>\n      </md-expansion-panel>\n      <md-action-row>\n        <md-error>{{errorRobot}}</md-error>\n      </md-action-row>\n      <!-- END HOME -->\n\n    </md-tab>\n    <!-- END ROBOT-TAB -->\n\n    <!-- BEGIN CONNECTION-TAB -->\n    <md-tab label=\"Connection\">\n\n      <!-- BEGIN CREATE CONNECTION -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title>\n            Create dummy connection in database\n          </md-panel-title>\n          <md-panel-description>\n            Type east port and west port\n          </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-form-field>\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-action-row>\n          <button md-button color=\"primary\" (click)=\"create_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\n            disabled>Send Data</button>\n        </md-action-row>\n      </md-expansion-panel>\n      <!-- END CREATE CONNECTION -->\n\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title>\n            Create dummy connection in debug mode\n          </md-panel-title>\n          <md-panel-description>\n            Type east port and west port and stops\n          </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-form-field>\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\n        </md-form-field>\n\n        <md-form-field class=\"event-prevent\">\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\n        </md-form-field>\n\n        <md-action-row>\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\n            disabled>Send Data</button>\n        </md-action-row>\n      </md-expansion-panel>\n      <!-- END CREATE CONNECTION DEBUG MODE -->\n\n    </md-tab>\n    <!-- END CONNECTION-TAB -->\n\n  </md-tab-group>\n  <!-- END TAB-GROUP -->\n\n</div>\n<!-- END MAIN-CONTAINER -->\n"
+module.exports = "<!-- BEGIN MAIN-CONTAINER -->\n<div class=\"main-container\">\n\n  <!-- BEGIN TAB-GROUP -->\n  <md-tab-group>\n\n    <!-- BEGIN ROBOT-TAB -->\n    <md-tab label=\"Robot Handler\">\n\n      <!-- BEGIN HOME -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title> Home robot </md-panel-title>\n          <md-panel-description> Home all axes </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-action-row>\n          <button md-button color=\"primary\" (click)=\"home_motor()\">Home</button>\n        </md-action-row>\n        <!-- <md-action-row> -->\n        <!-- <md-error>{{errorRobot}}</md-error> -->\n        <!-- </md-action-row> -->\n      </md-expansion-panel>\n      <!-- END HOME -->\n\n      <!-- BEGIN HOME -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title> Rollback smu </md-panel-title>\n          <md-panel-description> Rollback smu position </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-form-field>\n          <input mdInput id=\"smu_no\" placeholder=\"SMU Number\" value=\"smu_no\" [(ngModel)]=\"smu_no\" minlength=\"1\" maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-action-row>\n          <button md-button color=\"primary\" (click)=\"rollback()\" [attr.disabled]=\"validate_rollback_button() === false ? true : null\"\n            disabled>Rollback</button>\n        </md-action-row>\n        <!-- <md-action-row>\n          <md-error>{{errorRobot}}</md-error>\n        </md-action-row> -->\n      </md-expansion-panel>\n      <!-- END HOME -->\n\n    </md-tab>\n    <!-- END ROBOT-TAB -->\n\n    <!-- BEGIN CONNECTION-TAB -->\n    <md-tab label=\"Connection\">\n\n      <!-- BEGIN CREATE CONNECTION -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title> Create dummy connection in database </md-panel-title>\n          <md-panel-description> Type east port and west port </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-form-field>\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-action-row>\n          <button md-button color=\"primary\" (click)=\"create_connection()\" [attr.disabled]=\"validate_connect_button() === false ? true : null\"\n            disabled>Send Data</button>\n        </md-action-row>\n      </md-expansion-panel>\n      <!-- END CREATE CONNECTION -->\n\n      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->\n      <md-expansion-panel>\n        <md-expansion-panel-header>\n          <md-panel-title>\n            Create dummy connection in debug mode\n          </md-panel-title>\n          <md-panel-description>\n            Type east port and west port and stops\n          </md-panel-description>\n        </md-expansion-panel-header>\n\n        <md-form-field>\n          <input mdInput id=\"east_port_input\" placeholder=\"East port\" value=\"east_port_number\" [(ngModel)]=\"east_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"west_port_input\" placeholder=\"West port\" value=\"west_port_number\" [(ngModel)]=\"west_port_number\" minlength=\"1\"\n            maxlength=\"3\" pattern=\"^[1-9][0-9]{0,3}\">\n        </md-form-field>\n\n        <md-form-field>\n          <input mdInput id=\"stops\" placeholder=\"Stops\" value=\"stops\" [(ngModel)]=\"stops\" minlength=\"1\" maxlength=\"20\" pattern=\"^[1-9][0-9,]{1,20}\">\n        </md-form-field>\n\n        <md-form-field class=\"event-prevent\">\n          <input mdInput id=\"sequence\" placeholder=\"Sequence\" value=\"sequence\" [(ngModel)]=\"sequence\" disabled>\n        </md-form-field>\n\n        <md-action-row>\n          <button md-button id=\"debug_button\" color=\"primary\" (click)=\"create_connection_debug_mode()\" [attr.disabled]=\"validate_debug_button() === false ? true : null\"\n            disabled>Send Data</button>\n        </md-action-row>\n      </md-expansion-panel>\n      <!-- END CREATE CONNECTION DEBUG MODE -->\n\n    </md-tab>\n    <!-- END CONNECTION-TAB -->\n\n  </md-tab-group>\n  <!-- END TAB-GROUP -->\n\n</div>\n<!-- END MAIN-CONTAINER -->"
 
 /***/ }),
 
@@ -4023,6 +4034,15 @@ var TestingModeComponent = (function () {
             return false;
         }
     };
+    // VALIDATE ROLLBACK BUTTON
+    TestingModeComponent.prototype.validate_rollback_button = function () {
+        if ((this.smu_no <= 144) && (!document.getElementById('smu_no').classList.contains('ng-invalid')) && this.smu_no) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
     // HOMING MOTOR
     TestingModeComponent.prototype.home_motor = function () {
         this._apiService.home_robot_axes().then(function (data) {
@@ -4031,6 +4051,20 @@ var TestingModeComponent = (function () {
             }
             else {
                 console.error(data);
+            }
+        });
+    };
+    // ROLLBACK SMU POSITION
+    TestingModeComponent.prototype.rollback = function () {
+        var _this = this;
+        this._apiService.rollback(this.smu_no).then(function (data) {
+            if (data['uuid']) {
+                _this.smu_no = null;
+                alert('Command send successful, start rollback...');
+            }
+            else {
+                _this.smu_no = null;
+                alert('Error rollback.');
             }
         });
     };

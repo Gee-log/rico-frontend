@@ -962,3 +962,38 @@ def rollback(request):
     else:
         return_data = {'status': 'error', 'detail': 'Invalid input.'}
         return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def self_connection(request):
+    """Self connect/disconnect smu
+
+    Returns:
+            status (string): status code
+            detail (string): error detail
+            uuid (uuid4): uuid from celery
+    """
+
+    request_data = JSONParser().parse(request)
+    if 'smu_no' in request_data and 'connect' in request_data and 'disconnect' in request_data:
+        east = request_data['smu_no']
+        west = request_data['smu_no']
+        
+        if request_data['connect'] is True:
+            connect = True
+        else:
+            connect = False
+        
+        if request_data['disconnect'] is True:
+            disconnect = True
+        else:
+            disconnect = False
+        
+        payload = {'east': east, 'west': west, 'connect': connect, 'disconnect': disconnect }
+        resp = requests.post(CELERY_APP + '/self_connect', data=payload)
+        return_data = {'uuid': resp.text}
+        return Response(return_data, status=drf_status.HTTP_200_OK)
+    else:
+        return_data = {'status': 'error', 'detail': 'Invalid input.'}
+        return Response(return_data, status=drf_status.HTTP_400_BAD_REQUEST)
+        

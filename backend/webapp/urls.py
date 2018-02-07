@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='Get auth token'),
     url(r'^utilities/homes/', views.homes, name='Call robot homes method'),
     url(r'^utilities/rollback/', views.rollback, name='Rollback smu position'),
+    url(r'^utilities/self_connect/', views.self_connection, name='Self connect/disconnect smu'),
     url(r'^operations/', operationlist.OperationList.as_view(), name='Operations api'),
     url(r'^operationhistorys/', operationhistorylist.OperationHistoryList.as_view(), name='Operationhistorys api'),
     url(r'^operationsequences/', operationsequencelist.OperationSequencelist.as_view(), name='Operationsequences api'),

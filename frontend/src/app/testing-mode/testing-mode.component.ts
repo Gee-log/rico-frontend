@@ -20,6 +20,8 @@ export class TestingModeComponent implements OnInit {
   sequence: any; // CURRENT SEQUENCE NUM
   continue_mode: string; // CONTINUE MODE
   smu_no: number; // SMU NUMBER
+  connect: boolean = false; // SELF CONNECTION ACTION CONNECT
+  disconnect: boolean = false; // SELF CONNECTION ACTION DISCONNECT
 
   // LOCK BUTTON UTILITIES
   debug_button: boolean; // DEBUG BUTTON
@@ -107,6 +109,19 @@ export class TestingModeComponent implements OnInit {
     }
 
   }
+  // VALIDATE SELF CONNECTION BUTTON
+  validate_self_connection_button() {
+
+    if ((this.connect === true || this.disconnect === true) && this.smu_no && this.smu_no <= 144
+      && (!document.getElementById('smu_no').classList.contains('ng-invalid'))) {
+
+      return true;
+
+    } else {
+      return false;
+    }
+
+  }
   // HOMING MOTOR
   home_motor() {
 
@@ -133,6 +148,25 @@ export class TestingModeComponent implements OnInit {
         alert('Error rollback.');
       }
     });
+
+  }
+  // SELF CONNECTION SMU
+  self_connection() {
+
+    if (this.validate_self_connection_button() === true) {
+      this._apiService.self_connection(this.smu_no, this.connect, this.disconnect).then((data) => {
+        if (data['uuid']) {
+          this.smu_no = null;
+          this.connect = false;
+          this.disconnect = false;
+          alert('Command send successful, start self connection...');
+
+        } else {
+          this.smu_no = null;
+          alert('Error self connection');
+        }
+      });
+    }
 
   }
 

@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Rx';
 // Third-Party
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
+import { error } from 'selenium-webdriver';
 
 @Injectable()
 export class ApiService {
@@ -602,6 +603,21 @@ export class ApiService {
   rollback(smu_no) {
 
     return this._http.post(this.ROOT_URL + 'utilities/rollback/', { smu_no },
+      this.options).toPromise().then((response: any) => {
+        const response_object = JSON.parse(response._body);
+
+        return response_object;
+
+      }).catch((error: any) => {
+        const response = this.parseErrorBody(error);
+        return response;
+      });
+
+  }
+  // SELF CONNECTION SMU
+  self_connection(smu_no, action, disconnect) {
+
+    return this._http.post(this.ROOT_URL + 'utilities/self_connect/', { smu_no, action, disconnect },
       this.options).toPromise().then((response: any) => {
         const response_object = JSON.parse(response._body);
 
