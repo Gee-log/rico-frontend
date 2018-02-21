@@ -19,12 +19,11 @@ export class ApiService {
   private authToken: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'; // <-- Set fake token
   private headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken });
   private options: any = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL = `http://192.168.60.103:80/`;
+  // private ROOT_URL = `http://192.168.60.73:80/`;
   private ROOT_URL: string = `http://localhost:8000/`;
 
   constructor(
-    private _http: Http,
-    private _authenticationService: AuthenticationService) { }
+    private _http: Http) { }
 
   // GET ALLPORT FROM API AND SEPERATE INTO TWO DIRECTION 'E' AND 'W'
   getAllPort() {
@@ -361,30 +360,6 @@ export class ApiService {
     });
 
   }
-  // POST PENDING TASK
-  pendingTask(id: string) {
-
-    return this._http.post(this.ROOT_URL + 'pendingtask/', { id }, this.options).toPromise().then((response: any) => {
-      const response_object = JSON.parse(response._body);
-
-      console.log(response_object);
-
-      return response_object;
-
-    }).catch((error: any) => {
-      // ERROR FROM SERVER
-      if (error.status && error.status !== 0) {
-        console.error('PENDING TASK ERROR ' + error.status, Observable.throw(new Error(error.status)));
-        return ({ status: 'error', error: 'ERROR ' + error.status });
-
-        // ERROR FROM CLIENT
-      } else {
-        console.error('PENDING TASK ERROR 500 Internal Server');
-        return ({ status: 'error', error: 'ERROR 500' });
-      }
-
-    });
-  }
   // POST CANCEL TASK
   cancelTask(id: string, action: string) {
 
@@ -444,7 +419,7 @@ export class ApiService {
 
   }
   // CLEAR DATABASE DATA
-  clear_latest_operation(action: string) {
+  clearLatestOperation(action: string) {
 
     // set local authToken, header, options
     const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
@@ -472,7 +447,7 @@ export class ApiService {
 
   }
   // SAVE DATA (CSV FILE)
-  saveData_Connectionhistory(type: string) {
+  saveDataConnectionHistory(type: string) {
 
     return this._http.post(this.ROOT_URL + 'connectionhistorys/', { type }, this.options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -520,17 +495,17 @@ export class ApiService {
 
     return this._http.get(this.ROOT_URL + path, { responseType: ResponseContentType.Blob })
       .subscribe(
-      (res: any) => {
-        const blob = res.blob();
-        console.log(res);
-        const filename = 'connection_log.json';
-        FileSaver.saveAs(blob, filename);
-      }
+        (res: any) => {
+          const blob = res.blob();
+          console.log(res);
+          const filename = 'connection_log.json';
+          FileSaver.saveAs(blob, filename);
+        }
       );
 
   }
-  // CREATE CONNECTION IN CONNECTION TABLE
-  create_connection_in_database(east: string, west: string, action: string) {
+  // CREATE DUMMY CONNECTION IN CONNECTION TABLE
+  createDummyConnection(east: string, west: string, action: string) {
 
     // set local authToken, header, options
     const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
@@ -540,11 +515,8 @@ export class ApiService {
     return this._http.post(this.ROOT_URL + 'connections/', { east, west, action }, options).toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
 
-      if (response.status === 'error') {
-        console.error('status: ' + response.status + ', error_code: ' + response.error);
-
-      } else {
-        console.log('status: ' + response.status + ' east: ' + response.east + ' west: ' + response.west);
+      if (response.status !== 200) {
+        console.error('status code: ' + response.status + ' status: ' + response_object['status'] +  ' error_code: ' + response.error);
       }
 
       return response_object;
@@ -565,7 +537,7 @@ export class ApiService {
 
   }
   // CHECK SERVER IS ONLINE OR NOT
-  check_server_status() {
+  checkServerStatus() {
 
     let status: number;
 
@@ -584,7 +556,7 @@ export class ApiService {
 
   }
   // HOMING ROBOT
-  home_robot_axes() {
+  homeRobotAxes() {
 
     return this._http.get(this.ROOT_URL + 'utilities/homes/').toPromise().then((response: any) => {
       const response_object = JSON.parse(response._body);
@@ -600,7 +572,7 @@ export class ApiService {
 
   }
   // ROLLBACK SMU POSITION
-  rollback(smu_no) {
+  rollBack(smu_no) {
 
     return this._http.post(this.ROOT_URL + 'utilities/rollback/', { smu_no },
       this.options).toPromise().then((response: any) => {
@@ -615,9 +587,9 @@ export class ApiService {
 
   }
   // SELF CONNECTION SMU
-  self_connection(smu_no, action, disconnect) {
+  selfConnection(smu_no, connect, disconnect) {
 
-    return this._http.post(this.ROOT_URL + 'utilities/self_connect/', { smu_no, action, disconnect },
+    return this._http.post(this.ROOT_URL + 'utilities/self_connect/', { smu_no, connect, disconnect },
       this.options).toPromise().then((response: any) => {
         const response_object = JSON.parse(response._body);
 
@@ -630,7 +602,7 @@ export class ApiService {
 
   }
   // CONTINUE OPERATION CONTINUE MODE
-  continue_robot_operations() {
+  continueRobotOperations() {
 
     const mode: string = 'robot';
     const continue_mode: string = 'continue';
@@ -648,7 +620,7 @@ export class ApiService {
 
   }
   // RELOAD OPERATION CONTINUE MODE
-  reload_robot_operations() {
+  reloadRobotOperations() {
 
     const mode: string = 'robot';
     const continue_mode: string = 'reload';
@@ -666,7 +638,7 @@ export class ApiService {
 
   }
   // RESTART OPERATION CONTINUE MODE
-  restart_robot_operations() {
+  restartRobotOperations() {
 
     const mode: string = 'robot';
     const continue_mode: string = 'restart';
@@ -684,7 +656,7 @@ export class ApiService {
 
   }
   // GET OPERATION TASK TIME
-  get_operation_task_time() {
+  getOperationTaskTime() {
 
     // set local authToken, header, options
     const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
@@ -701,7 +673,7 @@ export class ApiService {
 
   }
   // GET OPERATION SEQUENCE
-  get_operation_sequence() {
+  getOperationSequence() {
 
     // set local authToken, header, options
     const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
@@ -730,8 +702,36 @@ export class ApiService {
     });
 
   }
+  // GET SYSTEM UPTIME
+  getSystemUptime() {
+
+    return this._http.get(this.ROOT_URL + 'dashboard/uptime').toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
+
+      // IF CANNOT GET RESPONSE FROM SERVER
+    }).catch((error) => {
+      return { 'status': 'error', 'error': error };
+    });
+
+  }
+  // GET DASHBOARD DATA
+  getDashboardData() {
+
+    return this._http.get(this.ROOT_URL + 'dashboard/').toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
+
+      // IF CANNOT GET RESPONSE FROM SERVER
+    }).catch((error) => {
+      return { 'status': 'error', 'error': error };
+    });
+
+  }
   // VERIFY USER WITH CURRENT BACKEND
-  verify_user_with_backend() {
+  verifyUserWithBackend() {
 
     let token: string = JSON.parse(localStorage.getItem('token')); // Set sample token
     token = token['token'];
@@ -746,7 +746,7 @@ export class ApiService {
 
   }
   // CREATE USER IN DATABASE
-  create_user(email: string, username: string, password: string, role: string) {
+  createUser(email: string, username: string, password: string, role: string) {
 
     // set local authToken, header, options
     const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token

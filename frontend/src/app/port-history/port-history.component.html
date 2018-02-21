@@ -92,7 +92,7 @@
             <!-- <div *ngIf="value.status !== 'Pending'"> -->
             <!-- NEW VERSION -->
             <div *ngIf="value.status">{{value.status}}&nbsp;&nbsp;
-              <button md-raised-button id="Continue" class="button-width" [ngClass]="validate_user_role_hide_button()" color="primary" *ngIf="value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'"
+              <button md-raised-button id="Continue" class="button-width" [ngClass]="validateUserRole_toHideButton()" color="primary" *ngIf="value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'"
                 (click)="cancelTask(value.id)">Cancel</button>
             </div>
             <!-- <div class="flex-container"> -->

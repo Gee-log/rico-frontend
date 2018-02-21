@@ -42,7 +42,7 @@ export class TestingModeComponent implements OnInit {
   // CHECK SERVER STATUS
   check_server_status() {
 
-    this._apiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
         this._router.navigateByUrl('/500');
@@ -56,7 +56,7 @@ export class TestingModeComponent implements OnInit {
     const action: string = 'create_connection';
 
     if (this.east_port_number && this.west_port_number) {
-      this._apiService.create_connection_in_database(this.east_port_number, this.west_port_number, action).then((data) => {
+      this._apiService.createDummyConnection(this.east_port_number, this.west_port_number, action).then((data) => {
         console.log(data);
       });
 
@@ -125,7 +125,7 @@ export class TestingModeComponent implements OnInit {
   // HOMING MOTOR
   home_motor() {
 
-    this._apiService.home_robot_axes().then((data) => {
+    this._apiService.homeRobotAxes().then((data) => {
       if (data['status'] === 'success') {
         console.log(data);
 
@@ -138,7 +138,7 @@ export class TestingModeComponent implements OnInit {
   // ROLLBACK SMU POSITION
   rollback() {
 
-    this._apiService.rollback(this.smu_no).then((data) => {
+    this._apiService.rollBack(this.smu_no).then((data) => {
       if (data['uuid']) {
         this.smu_no = null;
         alert('Command send successful, start rollback...');
@@ -154,16 +154,19 @@ export class TestingModeComponent implements OnInit {
   self_connection() {
 
     if (this.validate_self_connection_button() === true) {
-      this._apiService.self_connection(this.smu_no, this.connect, this.disconnect).then((data) => {
+      this._apiService.selfConnection(this.smu_no, this.connect, this.disconnect).then((data) => {
+
         if (data['uuid']) {
           this.smu_no = null;
           this.connect = false;
           this.disconnect = false;
+          console.log(data);
           alert('Command send successful, start self connection...');
 
         } else {
           this.smu_no = null;
-          alert('Error self connection');
+          console.error(data);
+          alert('Error invalid input in backend.');
         }
       });
     }

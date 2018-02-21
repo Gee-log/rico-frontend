@@ -12,9 +12,8 @@ export class AuthenticationService {
   public token: string;
   private headers: any = new Headers({ 'Content-Type': 'application/json' });
   private options: any = new RequestOptions({ headers: this.headers });
-  // private ROOT_URL: string = `http://192.168.60.103:80/`;
+  // private ROOT_URL: string = `http://192.168.60.73:80/`;
   private ROOT_URL: string = `http://localhost:8000/`;
-
 
   constructor(
     private _http: Http) {

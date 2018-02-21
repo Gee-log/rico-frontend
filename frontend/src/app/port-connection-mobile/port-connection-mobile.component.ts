@@ -83,7 +83,7 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // DEVICE DETECT
     this.deviceDetect();
     // FETCH DATA
@@ -106,9 +106,9 @@ export class PortConnectionMobileComponent implements OnInit, OnDestroy {
   }
 
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this.ApiService.checkServerStatus().then((status) => {
       if (status === 500) {
         this.router.navigateByUrl('/500');
       }

@@ -1,6 +1,5 @@
 // ANGULAR Module
 import { Component, OnInit } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
 import { Router } from '@angular/router';
 
 // Third-party
@@ -21,13 +20,17 @@ export class AppComponent implements OnInit {
   // USER'S VARIABLE
   private user_data: object; // PARAMETERS  {USERNAME, EMAIL, ROLE}
   private username: string; // USERNAME
-  private role: string; // USER'ROLE
 
-  links = [
+  menulinks = [
+    {
+      icon: 'dashboard',
+      name: 'Dashboard',
+      path: '/'
+    },
     {
       icon: 'settings_input_component',
       name: 'Port Connection',
-      path: '/'
+      path: '/port_connection'
     },
     {
       icon: 'settings_input_component',
@@ -36,17 +39,17 @@ export class AppComponent implements OnInit {
     },
     {
       icon: 'history',
-      name: 'Port History',
+      name: 'Connection Log',
       path: '/port_history'
     },
     {
       icon: 'error_outline',
-      name: 'Alarm',
+      name: 'Current Alarm',
       path: '/alarm'
     },
     {
       icon: 'history',
-      name: 'Alarm History',
+      name: 'Alarm Log',
       path: '/alarm_history'
     }
   ];
@@ -70,7 +73,6 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
-    private _http: Http,
     private _apiService: ApiService,
     private _authenticationService: AuthenticationService,
     private _userService: UserService,
@@ -78,36 +80,48 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    localStorage.setItem('User_data', JSON.stringify({ 'username': null, 'email': null, 'role': null }));
+    // set mockup User_data variable
+    localStorage.setItem('User_data', JSON.stringify({ 'username': 'Admin', 'email': 'admin@email.com', 'role': 'Admin' }));
 
   }
 
-  // VALIDATE USER'S ROLE TO HIDE BUTTON
-  validate_user_role_hide_button() {
+  // CLEAR DATABASE DATA
+  clearDatabase() {
 
-    const user_data: object = JSON.parse(localStorage.getItem('User_data'));
-    const user_role: string = user_data['role'];
-
-    return (user_data['role'] === null || user_data['role'] !== 'Admin') ? 'hide-element' : '';
+    this._apiService.clearDatabase('Cleardatabase');
 
   }
-  // VALIDATE URL TO DISPLAY NAVBAR OR HIDE NAVBAR
-  showNavbar() {
+  // CLEAR LATEST OPERATION
+  clearLatestOperation() {
 
-    if (this._router.url === '/login' || this._router.url === '/register') {
-      return false;
-
-    } else {
-      return true;
-    }
+    this._apiService.clearLatestOperation('clear_latest_operation');
 
   }
   // GET USERNAME
   getUsername() {
 
-    // SET VARIABLE
     const user_data: object = this._userService.getUsers();
     this.username = user_data['username'];
+
+  }
+  // LOGOUT
+  logOut() {
+
+    this._authenticationService.logout();
+    this._router.navigateByUrl('/login');
+    document.getElementById('menu-icon').click();
+
+  }
+  // REGISTER ROUTE
+  registerRoute() {
+
+    this._router.navigateByUrl('/register');
+
+  }
+  // VALIDATE URL TO DISPLAY NAVBAR OR HIDE NAVBAR
+  showNavbar() {
+
+    return (this._router.url === '/login' || this._router.url === '/login-dev') ? false : true;
 
   }
   // TOGGLE SETTINGS MENU
@@ -128,33 +142,13 @@ export class AppComponent implements OnInit {
     $('#documents-drop-down, #documents-drop-up').toggle();
 
   }
-  // CLEAR DATABASE DATA
-  clearDatabase() {
-
-    this._apiService.clearDatabase('cleardatabase');
-
-  }
-  // CLEAR LATEST OPERATION
-  clear_latest_operation() {
-
-    this._apiService.clear_latest_operation('clear_latest_operation');
-
-  }
-  // LOGOUT
-  logOut() {
-
-    // CALL LOGOUT FUNCTION
-    this._authenticationService.logout();
-    // RE ROUTE TO LOGIN
-    this._router.navigateByUrl('/login');
-    // MAKE CLICK EVENT TO CLOSE SIDEBAR
-    document.getElementById('menu-icon').click();
-
-  }
-  registerRoute() {
+  // VALIDATE USER'S ROLE TO HIDE BUTTON
+  validateUserRole() {
 
     const user_data: object = JSON.parse(localStorage.getItem('User_data'));
     const user_role: string = user_data['role'];
+
+    return (user_data['role'] !== 'Admin') ? 'hide-element' : '';
 
   }
 

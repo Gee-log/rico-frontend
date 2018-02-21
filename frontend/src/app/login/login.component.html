@@ -1,74 +1,51 @@
-<div class="main-container">
-
-<div class="spacer"></div>
-
-<!-- BEGIN CONTAINER -->
-<md-card class="container">
-
-
-  <!-- BEGIN FLEX-1 -->
-  <div class="flex-1">
-    <div>
-      <p>XENOPTICS</p>
+<div class="warpper">
+    <div class="login-container">
+      <div class="flex-one">
+        <div class="company-name">XENOPTICS COMPANY</div>
+      </div>
+      <div class="flex-two">
+        <div class="container">
+          <div class="column-one">
+            <div class="row-one">
+              <div class="text">Username</div>
+            </div>
+            <div class="row-two">
+              <md-form-field>
+                <input mdInput placeholder="Enter username" type="text" class="form-control" name="username" [(ngModel)]="model.username"
+                  #username="ngModel" />
+              </md-form-field>
+            </div>
+          </div>
+          <div class="column-two">
+            <div class="row-one">
+              <div class="text">Password</div>
+            </div>
+            <div class="row-two">
+              <md-form-field>
+                <input mdInput placeholder="Enter password" type="password" name="password" [(ngModel)]="model.password" #password="ngModel"
+                  (keyup)="catchEnter($event)" />
+              </md-form-field>
+            </div>
+          </div>
+          <div class="column-three">
+            <div class="row-one"></div>
+            <div class="row-two"></div>
+          </div>
+          <div class="column-four">
+            <div class="row-one"></div>
+            <div class="row-two">
+              <div class="login-button-container">
+                <button md-raised-button id="login-button" class="button-style" color="primary" (click)="login()" [attr.disabled]="validateLoginButton() === false ? true : null"
+                  disabled>Log In</button>
+              </div>
+              <div class="error-dialog-container">
+                  <md-card id="error" class="hide">
+                      <p>{{ this.error_message }}</p>
+                    </md-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <!-- END FLEX-1 -->
-
-
-  <!-- BEGIN FLEX-2 -->
-  <div class="flex-2">
-    <div>
-      <md-form-field>
-        <input mdInput placeholder="Username" type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel"
-        />
-      </md-form-field>
-    </div>
-  </div>
-  <!-- END FLEX-2 -->
-
-
-  <!-- BEGIN FLEX-3 -->
-  <div class="flex-3">
-    <div>
-      <md-form-field>
-        <input mdInput placeholder="Password" type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel"
-          (keyup)="catchEnter($event)" />
-      </md-form-field>
-    </div>
-  </div>
-  <!-- END FLEX-3 -->
-
-
-  <!-- BEGIN FLEX-4 -->
-  <div class="flex-4">
-    <div class="item-1">
-      <button md-raised-button id="login" color="primary" (click)="login()" [attr.disabled]="validate_login_button() === false ? true : null"
-        disabled>Log In</button>
-    </div>
-    <div class="item-2">
-      <button md-raised-button id="register" color="primary" (click)="registerRoute()" [attr.disabled]="validate_register_button() === false ? true : null"
-        disabled>Register</button>
-    </div>
-    <!-- <div class="item-3">
-      <md-card id="error" class="hide">
-        <p>{{ this.error }}</p>
-      </md-card>
-    </div> -->
-  </div>
-  <!-- END FLEX-4 -->
-
-
-  <!-- BEGIN FLEX-5 -->
-  <div class="flex-5">
-    <div id="error">
-      <p>{{ this.error }}</p>
-    </div>
-  </div>
-<!-- END FLEX-5 -->
-
-
-</md-card>
-<!-- END CONTAINER -->
-
-
-</div>

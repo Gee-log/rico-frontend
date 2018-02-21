@@ -1,0 +1,476 @@
+<div class="warpper">
+  <div class="header-spacer"></div>
+  <div class="section-one">
+    <div class="flex-one">
+      <div class="row-one">
+        <div class="text">Dashboard</div>
+      </div>
+      <div class="row-two">
+        <div class="text">SOS-288</div>
+      </div>
+    </div>
+    <div class="flex-two">
+      <div class="row-one">
+        <div class="column-one">
+          <div class="text">Robot Status</div>
+        </div>
+        <div class="column-two">
+          <div class="banner">
+            <div class="section-one">
+              <div class="green-status blink"></div>
+            </div>
+            <div class="section-two">
+              <div class="text">{{ this.robot_status }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row-two">
+        <div class="column-one">
+          <div class="text">Available Port</div>
+        </div>
+        <div class="column-two">
+          <div class="banner">
+            <div class="section-one">
+              <div class="green-status blink"></div>
+            </div>
+            <div class="section-two">
+              <div class="text">{{ this.available_port }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-two">
+    <div class="flex-one">
+      <div class="section-one">
+        <div class="column-one">
+          <div class="container">
+            <div class="row-one">
+              <div class="text">Connection History</div>
+            </div>
+            <div class="row-two">
+              <div class="container">
+                <div class="column-one">
+                  <div class="row-one">
+                    <div class="text">Date&Time</div>
+                  </div>
+                  <div class="row-two">
+                    <div class="text">East&West</div>
+                  </div>
+                </div>
+                <div class="column-two">
+                  <div class="sub-column-two">
+                    <div id="table-wrapper">
+                      <div id="table-scroll">
+                        <table>
+                          <tbody>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                            <tr>
+                              <td>09-Feb-2018 10:58:27 GMT+07000</td>
+                              <td>2, 0</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column-two">
+          <div class="container">
+            <div class="row-one">
+              <div class="text">Total Connection</div>
+            </div>
+            <div class="row-two">
+              <div class="column-one">
+                <div class="container">
+                  <div class="text">{{ this.total_connected_pair }}</div>
+                </div>
+              </div>
+              <div class="column-two">
+                <div class="text">Total of Connected Pair(s)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-two">
+        <div class="container">
+          <div class="row-one">
+            <div class="text">System Summary</div>
+          </div>
+          <div class="row-two">
+            <div class="sub-row-one">
+              <div class="sub-column-one">
+                <div class="section-one">
+                  <div class="text-container">
+                    <div class="text">System Information</div>
+                  </div>
+                </div>
+                <div class="section-two">
+                  <div class="column-container">
+                    <div class="column-one">
+                      <div class="text-container">
+                        <div class="text">System Description: &nbsp;&nbsp;&nbsp;&nbsp;{{ this.system_description }}</div>
+                      </div>
+                    </div>
+                    <div class="column-two">
+                      <div class="text-container">
+                        <div class="text">System Location: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.system_location }}</div>
+                      </div>
+                    </div>
+                    <div class="column-three">
+                      <div class="text-container">
+                        <div class="text">System Contact: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.system_contact }}</div>
+                      </div>
+                    </div>
+                    <div class="column-four">
+                      <div class="text-container">
+                        <div class="text">Host Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.system_hostname }}</div>
+                      </div>
+                    </div>
+                    <div class="column-five">
+                      <div class="text-container">
+                        <div class="text">System Object ID: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.object_id }}</div>
+                      </div>
+                    </div>
+                    <div class="column-six">
+                      <div class="text-container">
+                        <div class="text">System Uptime: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.system_uptime }}</div>
+                      </div>
+                    </div>
+                    <div class="column-seven">
+                      <div class="text-container">
+                        <div class="text">Current Time: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.current_time_fix }}</div>
+                      </div>
+                    </div>
+                    <div class="column-eight">
+                      <div class="text-container">
+                        <div class="text">Base MAC Address: &nbsp;&nbsp;&nbsp;{{ this.mac_address }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sub-column-two">
+                <div class="section-one">
+                  <div class="text-container">
+                    <div class="text">TCP/UDP Service Status</div>
+                  </div>
+                </div>
+                <div class="section-two">
+                  <div class="container">
+                    <div class="column-one">
+                      <div class="text-container">
+                        <div class="text">HTTP Service: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.http_status }}</div>
+                      </div>
+                    </div>
+                    <div class="column-two">
+                      <div class="text-container">
+                        <div class="text">HTTPS Service: &nbsp;&nbsp;&nbsp;&nbsp;{{ this.https_status }}</div>
+                      </div>
+                    </div>
+                    <div class="column-three">
+                      <div class="text-container">
+                        <div class="text">SNMP Service: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.snmp_status }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sub-row-two">
+              <div class="sub-column-one">
+                <div class="section-one">
+                  <div class="text-container">
+                    <div class="text">Software Information</div>
+                  </div>
+                </div>
+                <div class="section-two">
+                  <div class="column-container">
+                    <div class="column-one">
+                      <div class="text-container">
+                        <div class="text">Firmware Version: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.firmware_version }}</div>
+                      </div>
+                    </div>
+                    <div class="column-two">
+                      <div class="text-container">
+                        <div class="text">Firmware MD5 Checksum: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.firmware_md5 }}</div>
+                      </div>
+                    </div>
+                    <div class="column-three">
+                      <div class="text-container">
+                        <div class="text">Boot Version: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.bootloader_version }}</div>
+                      </div>
+                    </div>
+                    <div class="column-four">
+                      <div class="text-container">
+                        <div class="text">Boot MD5 Checksum: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.bootloader_md5 }}</div>
+                      </div>
+                    </div>
+                    <div class="column-five">
+                      <div class="text-container">
+                        <div class="text">Locale: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ this.system_locale }}</div>
+                      </div>
+                    </div>
+                    <div class="column-six">
+                      <div class="text-container">
+                        <div class="text">&nbsp;</div>
+                      </div>
+                    </div>
+                    <div class="column-seven">
+                      <div class="text-container">
+                        <div class="text">&nbsp;</div>
+                      </div>
+                    </div>
+                    <div class="column-eight">
+                      <div class="text-container">
+                        <div class="text">&nbsp;</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="sub-column-two">
+                <div class="section-one">
+                  <div class="text-container">
+                    <div class="text">Power Information on Mater Unit</div>
+                  </div>
+                </div>
+                <div class="section-two">
+                  <div class="container">
+                    <div class="column-one">
+                      <div class="text-container">
+                        <div class="text">Maximun Available Power(W): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100</div>
+                      </div>
+                    </div>
+                    <div class="column-two">
+                      <div class="text-container">
+                        <div class="text">Total Power Consumption(W): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9</div>
+                      </div>
+                    </div>
+                    <div class="column-three">
+                      <div class="text-container">
+                        <div class="text">Power Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Normal</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+          <div class="row-three">
+            <div class="text-container">
+              <div class="text">Serial Number: TNT199367AK5 PID VID: SFX2018AC D02</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-two">
+      <div class="section-one">
+        <div class="container">
+          <div class="row-one">
+            <div class="text">System Heath</div>
+          </div>
+          <div class="row-two">
+            <div class="sub-row-one">
+              <div class="column-one">
+                <div class="text">Temperature</div>
+              </div>
+              <div class="column-two">
+                <div class="container">
+                  <div class="text-container">
+                    <div class="text">{{ this.temperature_celsius }} °c / {{ this.temperature_fahrenheit }} °f</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sub-row-two">
+              <div class="column-one">
+                <div class="text">Humidity</div>
+              </div>
+              <div class="column-two">
+                <div class="container">
+                  <div class="text-container">
+                    <div class="text">{{ this.humidity }}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-two">
+        <div class="container">
+          <div class="row-one">
+            <div class="text">Latest Operation</div>
+          </div>
+          <div class="row-two">
+            <div class="sub-row-one">
+              <div class="sub-column-one">
+                <div class="item-one">
+                  <div class="item-container">
+                    <div class="text">Operation Time</div>
+                  </div>
+                </div>
+                <div class="item-two">
+                  <div class="container">
+                    <div class="text">1 min 42 sec.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="sub-column-two">
+                <div class="item-one">
+                  <div class="item-container">
+                    <div class="text">East Port</div>
+                  </div>
+                </div>
+                <div class="item-two">
+                  <div class="container">
+                    <div class="text">78</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sub-row-two">
+              <div class="sub-column-one">
+                <div class="item-one">
+                  <div class="item-container">
+                    <div class="text">Completion</div>
+                  </div>
+                </div>
+                <div class="item-two">
+                  <div class="container">
+                    <div class="text">100%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="sub-column-two">
+                <div class="item-one">
+                  <div class="item-container">
+                    <div class="text">West Port</div>
+                  </div>
+                </div>
+                <div class="item-two">
+                  <div class="container">
+                    <div class="text">66</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-three">
+        <div class="container">
+          <div class="column-one">
+            <div class="text-container">
+              <div class="text">Alarm History</div>
+            </div>
+          </div>
+          <div class="column-two">
+            <div class="container">
+              <div class="sub-container">
+                <div class="sub-column-one">
+                  <div class="row-one">
+                    <div class="text">Date&Time</div>
+                  </div>
+                  <div class="row-two">
+                    <div class="text">Detail</div>
+                  </div>
+                </div>
+                <div class="sub-column-two">
+                  <div id="table-wrapper">
+                    <div id="table-scroll">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>1, 0</td>
+                            <td>2, 0</td>
+                          </tr>
+                          <tr>
+                            <td>1, 1</td>
+                            <td>2, 1</td>
+                          </tr>
+                          <tr>
+                            <td>1, 2</td>
+                            <td>2, 2</td>
+                          </tr>
+                          <tr>
+                            <td>1, 3</td>
+                            <td>2, 3</td>
+                          </tr>
+                          <tr>
+                            <td>1, 4</td>
+                            <td>2, 4</td>
+                          </tr>
+                          <tr>
+                            <td>1, 5</td>
+                            <td>2, 5</td>
+                          </tr>
+                          <tr>
+                            <td>1, 6</td>
+                            <td>2, 6</td>
+                          </tr>
+                          <tr>
+                            <td>1, 7</td>
+                            <td>2, 7</td>
+                          </tr>
+                          <tr>
+                            <td>1, 8</td>
+                            <td>2, 8</td>
+                          </tr>
+                          <tr>
+                            <td>1, 9</td>
+                            <td>2, 9</td>
+                          </tr>
+                          <tr>
+                            <td>1, 10</td>
+                            <td>2, 10</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

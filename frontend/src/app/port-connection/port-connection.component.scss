@@ -1064,9 +1064,9 @@ td {
 }
 
 .hide {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
 .hide-buttons-container {
-  display: none;
+  display: none !important;
 }

@@ -72,7 +72,7 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   // TIME INTERVAL
   public timerInterval: any; // SET TIMEINTERVAL FOR MAIN FUNCTION
-  public timerInterval_operation_sequence: any; // SET TIMEINTERVAL FOR OPERATION SEQUENCE
+  public timerIntervalOperationSequence: any; // SET TIMEINTERVAL FOR OPERATION SEQUENCE
 
   constructor(
     private _apiService: ApiService,
@@ -83,15 +83,13 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // VERIFY USER
-    this.verify_user();
+    this.verifyUser();
     // DEVICE DETECT
     this.deviceDetect();
     // CHECK USER'S ROLE
     this.checkUserRole();
-    // HIDE CLEAR DATABASE BUTTONS
-    this.hide_clear_database_buttons();
     // FETCH DATA
     this.fetchData();
     // SET COLOR OF PORT CONNECTION
@@ -101,8 +99,8 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
       this.checkStatus();
     }, 5000);
     // CHECK OPERATION SEQUENCE EVERY 1.5 SEC.
-    this.timerInterval_operation_sequence = setInterval(() => {
-      this.get_operation_sequence();
+    this.timerIntervalOperationSequence = setInterval(() => {
+      this.getOperationSequence();
     }, 1500);
 
   }
@@ -123,28 +121,28 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
     // CLEAR INTERVAL
     clearInterval(this.timerInterval);
-    clearInterval(this.timerInterval_operation_sequence);
+    clearInterval(this.timerIntervalOperationSequence);
 
   }
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this._apiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
         this._router.navigateByUrl('/500');
       }
 
       // CHECK TOKEN
-      this.check_token();
+      this.checkToken();
 
     });
 
   }
   // VERIFY USER WITH CURRENT BACKEND
-  verify_user() {
+  verifyUser() {
 
-    this._apiService.verify_user_with_backend().then((data) => {
+    this._apiService.verifyUserWithBackend().then((data) => {
 
       if (data['status'] === 'unverified') {
         this._authenticationService.logout();
@@ -161,7 +159,7 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   }
   // VERIFY THAT USER CARRYING TOKEN
-  check_token() {
+  checkToken() {
 
     this.token = JSON.parse(localStorage.getItem('token'));
 
@@ -234,7 +232,7 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
         this.disabled_continue_mode_all_button = false; // LOCK ALL CONTINUE MODE BUTTONS
-        this.get_lastest_task_time(); // GET AVERAGE LASTEST TASK TIME
+        this.getLatestTaskTime(); // GET AVERAGE LASTEST TASK TIME
         document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
@@ -824,7 +822,7 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
   // CONTINUE ROBOBT OPERATION TASK
   continueRobotOperation() {
 
-    this._apiService.continue_robot_operations().then((data) => {
+    this._apiService.continueRobotOperations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -837,7 +835,7 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
   // RELOAD ROBOT OPERATION TASK
   reloadRobotOperation() {
 
-    this._apiService.reload_robot_operations().then((data) => {
+    this._apiService.reloadRobotOperations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -850,7 +848,7 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
   // RESTART ROBOT OPERATION TASK
   restartRobotOperation() {
 
-    this._apiService.restart_robot_operations().then((data) => {
+    this._apiService.restartRobotOperations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -861,34 +859,21 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   }
   // FORCE DISABLE CONTINUE BUTTON
-  force_disable_continue_button() {
+  disableContinueButtonAfterClick() {
 
     document.getElementById('Continue').setAttribute('disabled', 'disabled');
 
   }
   // FORCE DISABLE CONTINUE_MODE BUTTONS
-  foruce_disable_continue_mode_button() {
+  disableContinueModeButtonAfterClick() {
 
     document.getElementById('Cancel').setAttribute('disabled', 'disabled');
     document.getElementById('Restart').setAttribute('disabled', 'disabled');
     document.getElementById('Reload').setAttribute('disabled', 'disabled');
 
   }
-  // VALIDATION TO ENABLE OR DISABLE BUTTONS
-  validate_continue_mode_all_button() {
-
-    if (this.status === 'alarm') {
-      document.getElementById('Cancel').removeAttribute('disabled');
-      document.getElementById('Restart').removeAttribute('disabled');
-      document.getElementById('Reload').removeAttribute('disabled');
-
-    } else {
-      return;
-    }
-
-  }
   // CHECK STATUS FOR VALIDATION TO ADD CLASS TO ERROR DIALOG
-  check_status_for_hide_dialog() {
+  checkStatusForHideDialog() {
 
     if (this.status === 'alarm' || this.status === 'error') {
       return '';
@@ -899,9 +884,9 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   }
   // GET LASTEST TASK TIME
-  get_lastest_task_time() {
+  getLatestTaskTime() {
 
-    this._apiService.get_operation_task_time().then((data) => {
+    this._apiService.getOperationTaskTime().then((data) => {
 
       // SET VARIABLE OF TIMES
       const created_time: Date = new Date(data['created_time']);
@@ -946,9 +931,9 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   }
   // GET OPERATION SEQUENCE
-  get_operation_sequence() {
+  getOperationSequence() {
 
-    this._apiService.get_operation_sequence().then((data) => {
+    this._apiService.getOperationSequence().then((data) => {
 
       this.operation_task_completed = data['operation_task_completed'] + '%';
 
@@ -956,14 +941,15 @@ export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   }
   // VALIDATE USER'S ROLE TO HIDE BUTTON
-  validate_user_role_hide_button() {
+  validateUserRole_toDeleteElement() {
 
-    return (this.role === 'User') ? 'hide-buttons-container' : '';
+    return (this.role !== 'Admin') ? 'hide-buttons-container' : '';
 
   }
+  // VALIDATE USER'S ROLE TO HIDE
+  validateUserRole_toHideElement() {
 
-  hide_clear_database_buttons() {
-
+    return (this.role !== 'Admin') ? 'hide' : '';
 
   }
 

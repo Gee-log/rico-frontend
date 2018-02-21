@@ -16,8 +16,7 @@ export class LoginComponent implements OnInit {
 
   model: any = {};
   current_user: any = this._userService.getUsers();
-  error: string = '';
-  loading: boolean = false; // <-- Not using right now
+  error_message: string;
 
   constructor(
     private _router: Router,
@@ -28,8 +27,6 @@ export class LoginComponent implements OnInit {
 
     // check current user
     this.checkCurrentUser();
-    // reset login status
-    // this.authenticationService.logout();
 
   }
   // VALIDATE CURRENT USER
@@ -45,8 +42,6 @@ export class LoginComponent implements OnInit {
   }
   // LOGIN
   login() {
-
-    this.loading = true;
 
     this._authenticationService.login(this.model.username, this.model.password)
       .then(result => {
@@ -69,8 +64,7 @@ export class LoginComponent implements OnInit {
         } else {
 
           document.getElementById('error').classList.remove('hide');
-          this.error = 'Username or password is incorrect';
-          this.loading = false;
+          this.error_message = 'Username or password is incorrect';
 
         }
 
@@ -79,19 +73,7 @@ export class LoginComponent implements OnInit {
 
   }
   // VALIDATE INPUT TO ENABLE / DISABLE LOGIN BUTTON
-  validate_login_button() {
-
-    if (this.model.username && this.model.password) {
-      return true;
-
-    } else {
-      document.getElementById('error').classList.add('hide');
-      return false;
-    }
-
-  }
-  // VALIDATE INPUT TO ENABLE / DISABLE LOGIN BUTTON
-  validate_register_button() {
+  validateLoginButton() {
 
     if (this.model.username && this.model.password) {
       return true;
@@ -114,39 +96,6 @@ export class LoginComponent implements OnInit {
       }
 
     }
-
-  }
-  // REGISTER ROUTE
-  registerRoute() {
-
-    this._authenticationService.login(this.model.username, this.model.password)
-      .then(result => {
-
-        if (result === true) {
-
-          this._userService.getUserRoles()
-            .then((data) => {
-
-              if (data['role'] === 'Admin') {
-
-                this._router.navigate(['/register']);
-
-              } else {
-
-                document.getElementById('error').classList.remove('hide');
-                this.error = 'You dont have permission to access';
-                localStorage.clear();
-
-              }
-
-            });
-
-        } else {
-          document.getElementById('error').classList.remove('hide');
-          this.error = 'Username or password is incorrect';
-          this.loading = false;
-        }
-      });
 
   }
 

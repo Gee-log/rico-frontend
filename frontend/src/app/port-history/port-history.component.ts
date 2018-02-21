@@ -50,7 +50,7 @@ export class PortHistoryComponent implements OnInit {
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // CHECK USER'S ROLE
     this.checkUserRole();
     // FETCH DATA
@@ -68,9 +68,9 @@ export class PortHistoryComponent implements OnInit {
   }
 
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this._apiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
         this._router.navigateByUrl('/500');
@@ -135,7 +135,7 @@ export class PortHistoryComponent implements OnInit {
 
   }
   // VALIDATE USER'S ROLE TO HIDE BUTTON
-  validate_user_role_hide_button() {
+  validateUserRole_toHideButton() {
 
     return (this.role === 'User') ? 'hide-buttons' : '';
 

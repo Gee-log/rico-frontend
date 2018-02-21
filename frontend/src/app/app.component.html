@@ -32,13 +32,13 @@
           </button>
           <!-- END NOTIFICATION ICON -->
           <!-- BEGIN CLEAR DATABASE ICON -->
-          <button id="cleardatabase" md-menu-item (click)="clearDatabase()" [ngClass]="validate_user_role_hide_button()">
+          <button id="cleardatabase" md-menu-item (click)="clearDatabase()" [ngClass]="validateUserRole()">
             <md-icon>delete</md-icon>
             <span>Clear database</span>
           </button>
           <!-- END CLEAR DATABASE ICON -->
           <!-- BEGIN CLEAR DATABASE ICON -->
-          <button id="clearoperation" md-menu-item (click)="clear_latest_operation()" [ngClass]="validate_user_role_hide_button()">
+          <button id="clearoperation" md-menu-item (click)="clearLatestOperation()" [ngClass]="validateUserRole()">
             <md-icon>delete</md-icon>
             <span>Clear operation</span>
           </button>
@@ -78,9 +78,9 @@
               <md-icon>arrow_drop_down</md-icon>
             </button>
             <md-menu #menudrop="mdMenu">
-              <button md-menu-item [ngClass]="validate_user_role_hide_button()">
+              <button md-menu-item (click)="registerRoute()" [ngClass]="validateUserRole()">
                 <md-icon>add</md-icon>
-                <span>Add another account...</span>
+                <span>Add another account</span>
               </button>
               <button md-menu-item (click)="logOut()">
                 <md-icon>remove</md-icon>
@@ -113,7 +113,7 @@
             <md-list>
               <!-- IF WANT TO ADD LOGO -->
               <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->
-              <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of links">
+              <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of menulinks">
                 <md-list-item>
                   <md-icon md-list-icon>{{ link.icon }}</md-icon>
                   <h4 md-line>{{ link.name }}</h4>

@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AlarmComponent } from './alarm/alarm.component';
 import { AlarmHistoryComponent } from './alarm-history/alarm-history.component';
 import { CurrentConnectionComponent } from './current-connection/current-connection.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PortConnectionComponent } from './port-connection/port-connection.component';
 import { PortConnectionMobileComponent } from './port-connection-mobile/port-connection-mobile.component';
@@ -22,6 +23,11 @@ import { RegisterGuard } from './_guards/register.guard';
 export const appRoutes: Routes = [
   {
     path: '',
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'port_connection',
     component: PortConnectionComponent,
     canActivate: [AuthGuard]
   },
@@ -58,7 +64,7 @@ export const appRoutes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [RegisterGuard]
+    canActivate: [AuthGuard, RegisterGuard]
   },
   {
     path: 'login',

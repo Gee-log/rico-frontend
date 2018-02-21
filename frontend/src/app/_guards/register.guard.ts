@@ -21,12 +21,13 @@ export class RegisterGuard implements CanActivate {
       this.role = data['role'];
     });
 
+    // have permission so return true
     if (this.role === 'Admin') {
-      // have permission so return true
       return true;
     }
 
     // no permission so redirect to login page
+    this._router.navigate(['/']);
     return false;
   }
 

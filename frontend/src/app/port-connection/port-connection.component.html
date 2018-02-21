@@ -195,7 +195,7 @@
 
 
 <!-- BEGIN FOOTER -->
-<div class="footer-container" [ngClass]="validate_user_role_hide_button()">
+<div class="footer-container">
 
 
   <!-- BEGIN FLEX-CONTAINER-1 -->
@@ -205,7 +205,7 @@
       <!-- BEGIN ITEM-1 -->
       <div class="item-1">
         <!-- BEGIN ERROR-DIALOG -->
-        <div id="error-dialog" [ngClass]="check_status_for_hide_dialog()">
+        <div id="error-dialog" [ngClass]="checkStatusForHideDialog()">
           <md-card class="Blink">
             <p>{{ error_message }}</p>
           </md-card>
@@ -220,7 +220,7 @@
 
 
   <!-- BEGIN FLEX-CONTAINER-2 -->
-  <div class="flex-container-2" [ngClass]="validate_user_role_hide_button()">
+  <div class="flex-container-2">
     <!-- BEGIN FLEX-ITEM-1 -->
     <div class="flex-item-1" align="center">
       <!-- BEGIN ITEM-1 -->
@@ -228,7 +228,7 @@
         <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->
         <div class="item-1-container-shadow">
           <!-- BEGIN BUTTON-CONTAINER -->
-          <div class="button-container fix-width">
+          <div id="" class="button-container fix-width" [ngClass]="validateUserRole_toDeleteElement()">
             <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
             <!-- <div class="button-container-item-1"> -->
               <!-- BEGIN TOOLTIP -->
@@ -246,17 +246,17 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), disableContinueModeButtonAfterClick()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
                 <md-icon>autorenew</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), disableContinueModeButtonAfterClick()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
                 <md-icon>replay</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), disableContinueModeButtonAfterClick()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
                 <md-icon>clear</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
@@ -265,7 +265,7 @@
           </div>
           <!-- END BUTTON-CONTAINER -->
           <!-- BEGIN BUTTON-CONTAINER -->
-          <div class="button-container">
+          <div class="button-container" [ngClass]="validateUserRole_toDeleteElement()">
             <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
             <div class="button-container-item-1">
               <!-- BEGIN TOOLTIP -->
@@ -283,7 +283,7 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CONTINUE BUTTON -->
-              <button md-raised-button id="Continue" class="button-width" (click)="[postDebug(), force_disable_continue_button()]" color="primary" [attr.disabled]="this.status !== 'break' ? 'break' : null"
+              <button md-raised-button id="Continue" class="button-width" (click)="[postDebug(), disableContinueButtonAfterClickn()]" color="primary" [attr.disabled]="this.status !== 'break' ? 'break' : null"
                 disabled>Continue</button>
               <!-- END CONTINUE BUTTON -->
             </div>
@@ -440,7 +440,7 @@
                 <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->
                 <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->
                 <div class="detail-container-pending-item-2">
-                  <p>Pending</p>
+                  <p>Operating</p>
                 </div>
                 <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->
               </div>
@@ -508,7 +508,7 @@
 
 
   <!-- BEGIN FLEX-CONTAINER-3 -->
-  <div class="flex-container-3">
+  <div class="flex-container-3" [ngClass]="validateUserRole_toHideElement()">
     <!-- BEGIN FLEX-ITEM-1 -->
     <div class="flex-item-1" align="center">
       <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->

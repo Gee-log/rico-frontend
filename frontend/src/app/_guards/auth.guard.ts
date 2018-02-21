@@ -1,7 +1,6 @@
 // ANGULAR Module
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -11,8 +10,8 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
 
+    // logged in so return true
     if (localStorage.getItem('currentUser')) {
-      // logged in so return true
       return true;
     }
 

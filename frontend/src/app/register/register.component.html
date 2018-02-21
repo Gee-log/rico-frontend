@@ -15,7 +15,7 @@
     </div>
     <div class="email-input-container">
       <md-form-field>
-        <input mdInput id="email" placeholder="Email" (onclick)="hideErrorbox()" value="email" [(ngModel)]="email" type="text" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
+        <input mdInput id="email" placeholder="Email" (onclick)="hideErrorBox()" value="email" [(ngModel)]="email" type="text" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
         />
       </md-form-field>
     </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="username-input-container">
       <md-form-field>
-        <input mdInput id="username" placeholder="Username" (onclick)="hideErrorbox()" value="username" [(ngModel)]="username" type="text" minlength="8" maxlength="16"
+        <input mdInput id="username" placeholder="Username" (onclick)="hideErrorBox()" value="username" [(ngModel)]="username" type="text" minlength="8" maxlength="16"
           pattern="[a-zA-Z0-9]+" />
       </md-form-field>
     </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="password-input-container">
       <md-form-field>
-        <input mdInput id="password" placeholder="Password" (onclick)="hideErrorbox()" value="password" [(ngModel)]="password" type="password" minlength="8"
+        <input mdInput id="password" placeholder="Password" (onclick)="hideErrorBox()" value="password" [(ngModel)]="password" type="password" minlength="8"
           maxlength="16" pattern="[a-zA-Z0-9]+" />
       </md-form-field>
     </div>
@@ -63,7 +63,7 @@
     </div>
     <div class="password-input-container">
       <md-form-field>
-        <input mdInput id="confirm_password" placeholder="Confrim password" (onclick)="hideErrorbox()" value="confirm_password" [(ngModel)]="confirm_password"
+        <input mdInput id="confirm_password" placeholder="Confrim password" (onclick)="hideErrorBox()" value="confirm_password" [(ngModel)]="confirm_password"
           type="password" minlength="8" maxlength="16" pattern="[a-zA-Z0-9]+" />
       </md-form-field>
     </div>
@@ -73,8 +73,8 @@
 
   <div class="checking-email-container">
     <div>
-      <md-checkbox id="username_checkbox" class="disabled-click" [ngClass]="check_username_length()">username must be at least 8 characters</md-checkbox>
-      <md-checkbox id="password_checkbox" class="disabled-click" [ngClass]="check_password_length()">password must be at least 8 characters</md-checkbox>
+      <md-checkbox id="username_checkbox" class="disabled-click" [ngClass]="checkUsernameLength()">username must be at least 8 characters</md-checkbox>
+      <md-checkbox id="password_checkbox" class="disabled-click" [ngClass]="checkPasswordLength()">password must be at least 8 characters</md-checkbox>
     </div>
   </div>
 
@@ -92,13 +92,13 @@
 
   <div class="signup-container">
     <div>
-      <button md-raised-button color="primary" id="signup-button" (click)="signUp()" [attr.disabled]="signup_button_unlock() == true ? false : null"
+      <button md-raised-button color="primary" id="signup-button" (click)="signUp()" [attr.disabled]="signupButtonUnlock() == true ? false : null"
         disabled>Sign up</button>
       <button md-raised-button color="primary" (click)="routeBack()">Back</button>
     </div>
   </div>
 
-  <div id="error-box" class="error-box-container hide" [ngClass]="hideErrorbox()">
+  <div id="error-box" class="error-box-container hide" [ngClass]="hideErrorBox()">
     <div>
       <md-card>
         <p>{{ this.error_message }}</p>

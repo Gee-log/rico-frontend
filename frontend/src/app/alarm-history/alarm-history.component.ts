@@ -37,7 +37,7 @@ export class AlarmHistoryComponent implements OnInit {
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // FETCH DATA
     this.fetchData();
 
@@ -52,9 +52,9 @@ export class AlarmHistoryComponent implements OnInit {
   }
 
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this._apiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
         this._router.navigateByUrl('/500');
