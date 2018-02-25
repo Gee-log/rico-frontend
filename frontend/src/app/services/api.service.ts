@@ -335,6 +335,63 @@ export class ApiService {
     });
 
   }
+  // GET CURRENT ALARM
+  getCurrentAlarm() {
+
+    // set local authToken, header, options
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
+
+    return this._http.get(this.ROOT_URL + 'alarms/', { headers: headers }).toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
+
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+        console.error('GET ALARM HISTORY ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET ALARM HISTORY ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
+    });
+
+  }
+  // GET LATEST FIVE CONNECTION
+  getLatestFiveConnection() {
+
+    // set local authToken, header, options
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
+    const params: object = { 'action': 'latest_five_connection' };
+
+    return this._http.get(this.ROOT_URL + 'connectionhistorys/', { headers: headers, params: params }).toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
+
+    }).catch((error: any) => {
+      // ERROR FROM SERVER
+      if (error.status && error.status !== 0) {
+        console.error('GET ALARM HISTORY ERROR ' + error.status, Observable.throw(new Error(error.status)));
+        return ({ status: 'error', error: 'ERROR ' + error.status });
+
+        // ERROR FROM CLIENT
+      } else {
+        console.error('GET ALARM HISTORY ERROR 500 Internal Server');
+        return ({ status: 'error', error: 'ERROR 500' });
+      }
+
+    });
+
+  }
   // POST ALARM
   postAlarm(alarm: string, detail: string, severity: number) {
 
@@ -516,7 +573,7 @@ export class ApiService {
       const response_object = JSON.parse(response._body);
 
       if (response.status !== 200) {
-        console.error('status code: ' + response.status + ' status: ' + response_object['status'] +  ' error_code: ' + response.error);
+        console.error('status code: ' + response.status + ' status: ' + response_object['status'] + ' error_code: ' + response.error);
       }
 
       return response_object;
@@ -655,6 +712,24 @@ export class ApiService {
       });
 
   }
+  // GET LATEST CONNECTION
+  getLatestConnection() {
+
+    // set local authToken, header, options
+    const authToken: string = JSON.parse(localStorage.getItem('token')); // Set sample token
+    const headers: any = new Headers({ 'Content-Type': 'application/json', 'Authorization': authToken['token'] });
+    const options: any = new RequestOptions({ headers: headers });
+
+    const params: object = { 'action': 'latest_connection' };
+
+    return this._http.get(this.ROOT_URL + 'connectionhistorys/', { headers: headers, params: params }).toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+
+      return response_object;
+    });
+
+  }
+
   // GET OPERATION TASK TIME
   getOperationTaskTime() {
 

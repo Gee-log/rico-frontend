@@ -10,6 +10,12 @@ import { ApiService } from '../services/api.service';
 })
 export class DashboardComponent implements OnInit {
 
+  // ALARM LOG
+  alarm_data: any = [];
+
+  // CONNECTION LOG
+  connection_data: any = [];
+
   // ROBOT INFORMATION
   available_port: string;
   robot_status: string;
@@ -21,7 +27,13 @@ export class DashboardComponent implements OnInit {
   temperature_fahrenheit: number;
   humidity: number;
 
-  // PROTOCAL SERVICE STATUS
+  // LATEST OPERATION
+  latest_eastport: any;
+  latest_westport: any;
+  operation_tasktime: any;
+  operation_taskcompleted: any;
+
+  // TCP/UDP SERVICE STATUS
   http_status: string;
   https_status: string;
   snmp_status: string;
@@ -36,7 +48,6 @@ export class DashboardComponent implements OnInit {
   // SYSTEM INFORMATION
   current_time: Date;
   current_time_fix: string;
-
   mac_address: string;
   object_id: string;
   system_contact: string;
@@ -49,6 +60,11 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.getSystemUptime();
     this.fetchData();
+    this.getCurrentAlarm();
+    this.getLatestConnection();
+    this.getLatestFiveConnection();
+    this.getLatestTaskTime();
+    this.getOperationSequence();
   }
 
   fetchData() {
@@ -79,6 +95,100 @@ export class DashboardComponent implements OnInit {
       this.humidity = data['system_health']['humidity'];
 
     }));
+
+  }
+  // GET CURRENT ALARM
+  getCurrentAlarm() {
+
+    this._apiService.getCurrentAlarm().then((data) => {
+
+      for (let i = 0; i < data.length; i++) {
+        const timestamp = new Date(data[i]['timestamp']);
+        this.alarm_data.push([{ 'timestamp': timestamp, 'detail': data[i]['detail'] }]);
+      }
+
+    });
+
+  }
+  // GET LATEST CONNECTION
+  getLatestConnection() {
+
+    this._apiService.getLatestConnection().then((data) => {
+      this.latest_eastport = data['east'];
+      this.latest_westport = data['west'];
+    });
+
+  }
+  // GET LATEST FIVE CONNECTION
+  getLatestFiveConnection() {
+
+    this._apiService.getLatestFiveConnection().then((data) => {
+
+      for (let i = 0; i < data.length; i++) {
+        const timestamp = new Date(data[i]['timestamp']);
+        const timestamp_fix = timestamp.toString().substring(0, 25);
+        this.connection_data.push([{ 'timestamp': timestamp_fix, 'pair': data[i]['east'] + ',' + data[i]['west'] }]);
+      }
+
+    });
+
+
+  }
+  // GET LASTEST TASK TIME
+  getLatestTaskTime() {
+
+    this._apiService.getOperationTaskTime().then((data) => {
+
+      // SET VARIABLE OF TIMES
+      const created_time: Date = new Date(data['created_time']);
+      const finished_time: Date = new Date(data['finished_time']);
+      const created_time_hours: number = created_time.getHours();
+      const created_time_minutes: number = created_time.getMinutes();
+      const created_time_seconds: number = created_time.getSeconds();
+      const finished_time_hours: number = finished_time.getHours();
+      const finished_time_minutes: number = finished_time.getMinutes();
+      const finished_time_seconds: number = finished_time.getSeconds();
+
+      // CALCULATION TIME
+      const average_hours: number = finished_time_hours - created_time_hours;
+      let average_minutes: number = finished_time_minutes - created_time_minutes;
+      let average_seconds: number = finished_time_seconds - created_time_seconds;
+
+      if (average_minutes > 0 && average_seconds < 0) {
+        average_minutes = average_minutes - 1;
+        average_seconds = (finished_time_seconds + 60) - created_time_seconds;
+
+      } else if (average_minutes <= 0 && average_seconds < 0) {
+        average_minutes = 0;
+        average_seconds = Math.abs(average_seconds);
+
+      } else if (average_minutes <= 0 && average_seconds < 0) {
+        average_minutes = 0;
+      }
+
+      if (average_minutes === 0 && average_seconds !== 0) {
+        this.operation_tasktime = average_seconds + ' sec';
+
+      } else if ((average_minutes === 0 && average_seconds === 0)
+        || ((average_minutes === undefined && average_seconds === undefined))) {
+
+        this.operation_tasktime = 'empty task';
+
+      } else {
+        this.operation_tasktime = average_minutes + ' min ' + average_seconds + ' sec';
+      }
+
+    });
+
+  }
+  // GET OPERATION SEQUENCE
+  getOperationSequence() {
+
+    this._apiService.getOperationSequence().then((data) => {
+
+      this.operation_taskcompleted = data['operation_task_completed'] + '%';
+
+    });
 
   }
   // GET SYSTEM UPTIME

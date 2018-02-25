@@ -55,16 +55,16 @@ export class AppComponent implements OnInit {
   ];
 
   settinglinks = [
-    {
-      icon: 'settings',
-      name: 'Parameter',
-      path: '#'
-    },
-    {
-      icon: 'build',
-      name: 'Execution table',
-      path: '#'
-    },
+    // {
+    //   icon: 'settings',
+    //   name: 'Parameter',
+    //   path: '#'
+    // },
+    // {
+    //   icon: 'build',
+    //   name: 'Execution table',
+    //   path: '#'
+    // },
     {
       icon: 'settings_applications',
       name: 'Testing mode',
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
   // CLEAR DATABASE DATA
   clearDatabase() {
 
-    this._apiService.clearDatabase('Cleardatabase');
+    this._apiService.clearDatabase('cleardatabase');
 
   }
   // CLEAR LATEST OPERATION

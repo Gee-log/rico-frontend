@@ -338,7 +338,8 @@ hr {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
   .settings-container-height {
-    height: 200px;
+    height: 90px; // when removed settings and execution table
+    // height: 200px; // when not removed settings and execution table
   }
 }
 
