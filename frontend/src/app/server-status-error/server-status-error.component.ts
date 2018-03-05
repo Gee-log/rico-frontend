@@ -10,7 +10,6 @@ export class ServerStatusErrorComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

@@ -1,0 +1,1299 @@
+.warpper {
+    width: 100%;
+    height: 100%;
+    // background: rgb(214, 214, 214);
+    .header-spacer {
+        width: 100%;
+        height: 1%;
+    }
+    .section-one {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 10%;
+        // background: rgb(187, 187, 187);
+        .flex-one {
+            display: block;
+            flex-grow: 2;
+            // background: rgb(153, 153, 153);
+            .row-one {
+                width: 100%;
+                height: 40%;
+                // background: green;
+                .text {
+                    padding-left: 30px;
+                    font-size: 24px;
+                }
+            }
+            .row-two {
+                width: 100%;
+                height: 60%;
+                // background: yellowgreen;
+                .text {
+                    margin-top: 0px;
+                    padding-left: 30px;
+                    font-size: 32px;
+                    color: #00497C;
+                }
+            }
+        }
+        .flex-two {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            // background: rgb(109, 109, 109);
+            .row-one {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                // background: yellow;
+                .column-one {
+                    flex-grow: 1;
+                    // background: purple;
+                    .text {
+                        margin-top: 2px;
+                        font-size: 16px;
+                        color: #00497C;
+                    }
+                }
+                .column-two {
+                    flex-grow: 2;
+                    width: 100%;
+                    height: 100%;
+                    // background: pink;
+                    .banner {
+                        display: flex;
+                        width: 80%;
+                        height: 60%;
+                        margin: 0 auto;
+                        margin-top: 10px;
+                        border-radius: 15px;
+                        background: #015291;
+                        .section-one {
+                            width: 30%;
+                            height: 100%;
+                            background: #015291;
+                            border-top-left-radius: 15px;
+                            border-bottom-left-radius: 15px;                        
+                            .green-status {
+                                border-radius: 50%;
+                                width: 17px;
+                                height: 17px; 
+                                background: #00C853;
+                                margin-left: 15px !important;
+                                transform: translateY(50%);
+                            }
+                        }
+                        .section-two {
+                            width: 70%;
+                            height: 100%;
+                            .text {
+                                margin-top: 8px;
+                                margin-left: 10px;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+            .row-two {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                // background: yellow;
+                .column-one {
+                    flex-grow: 1;
+                    // background: purple;
+                    .text {
+                        margin-top: 2px;
+                        font-size: 16px;
+                        color: #00497C;
+                    }
+                }
+                .column-two {
+                    flex-grow: 2;
+                    width: 100%;
+                    height: 100%;
+                    // background: pink;
+                    .banner {
+                        display: flex;
+                        width: 80%;
+                        height: 60%;
+                        margin: 0 auto;
+                        margin-top: 10px;
+                        border-radius: 15px;
+                        background: #015291;
+                        .section-one {
+                            width: 30%;
+                            height: 100%;
+                            background: #015291;
+                            border-top-left-radius: 15px;
+                            border-bottom-left-radius: 15px;                        
+                            .green-status {
+                                border-radius: 50%;
+                                width: 17px;
+                                height: 17px; 
+                                background: #00C853;
+                                margin-left: 15px !important;
+                                transform: translateY(50%);
+                            }
+                        }
+                        .section-two {
+                            width: 70%;
+                            height: 100%;
+                            .text {
+                                margin-top: 8px;
+                                margin-left: 10px;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .section-two {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 89%;
+        .flex-one {
+            display: flex;
+            flex-direction: column;
+            // flex-grow: 2;
+            width: 60%;
+            height: 100%;
+            margin-left: 15px;
+            .section-one {
+                display: flex;
+                flex-direction: row;
+                // flex-grow: 1;
+                width: 100%;                
+                height: 30%;
+                // background: rgb(110, 110, 110);
+                .column-one {
+                    flex-grow: 1;
+                    .container {
+                        width: 92%;
+                        height: 90%;
+                        margin: 0 auto;
+                        margin-top: 11px;
+                        background: #0061A0;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                        .row-one {
+                            width: 100%;
+                            height: 20%;
+                            background: #00477D;
+                            .text {
+                                width: 100%;
+                                height: 100%;
+                                padding-top: 5px;
+                                padding-left: 20px;
+                                font-size: 22px;
+                                color: white;
+                            }
+                        }
+                        .row-two {
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            height: 80%;
+                            // background: red;                            
+                            .container {
+                                display: flex;
+                                flex-direction: column;
+                                width: 90%;
+                                height: 90%;
+                                margin: 5px auto;
+                                // background: deepskyblue;
+                                .column-one {
+                                    display: flex;
+                                    flex-direction: row;
+                                    width: 100%;
+                                    height: 20%;
+                                    // background: darkgray;
+                                    .row-one {
+                                        width: 60%;
+                                        height: 100%;
+                                        // background: darkgoldenrod;
+                                        .text {
+                                            padding-left: 0;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                    .row-two {
+                                        width: 40%;
+                                        height: 100%;
+                                        background: #00477D;
+                                        .text {
+                                            padding-top: 5px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                    .row-three {
+                                        width: 15%;
+                                        height: 100%;
+                                        background: #00477D;                                        
+                                        .text {
+                                            padding-top: 5px;                                            
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .column-two {
+                                    width: 100%;
+                                    height: 80%;
+                                    background: #015291;
+                                    td {
+                                        padding-left: 42px;
+                                        width: 50%;
+                                    }
+                                    #table-wrapper {
+                                        position:relative;
+                                      }
+                                      #table-scroll {
+                                        margin-top: 8px;
+                                        height:100px;
+                                        overflow:auto;  
+                                      }
+                                      #table-wrapper table {
+                                        width:100%;
+                                          
+                                      }
+                                      #table-wrapper table * {
+                                        // background:yellow;
+                                        text-align: center;
+                                        font-size: 12px;
+                                        color:white;
+                                      }
+                                    //   #table-wrapper table thead th .text {
+                                    //     position:absolute;   
+                                    //     top:-20px;
+                                    //     z-index:2;
+                                    //     height:20px;
+                                    //     width:35%;
+                                    //     border:1px solid red;
+                                    //   }
+                                }
+                            }
+                        }
+                    }
+                }
+                .column-two {
+                    flex-grow: 1;
+                    .container {
+                        width: 85%;
+                        height: 90%;
+                        margin: 0 auto;
+                        margin-top: 11px;
+                        background: #0061A0;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                        .row-one {
+                            width: 100%;
+                            height: 20%;
+                            background: #00477D;
+                            .text {
+                                width: 100%;
+                                height: 100%;
+                                padding-top: 5px;
+                                padding-left: 20px;
+                                font-size: 22px;
+                                color: white;
+                            }
+                        }
+                        .row-two {
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            height: 80%;
+                            .column-one {
+                                width: 100%;
+                                height: 80%;
+                                // background: turquoise;
+                                .container {
+                                    width: 100%;
+                                    height: 100%;
+                                    box-shadow: none;
+                                    .text {
+                                        text-align: center;
+                                        font-size: 100px;
+                                        color: white;
+                                    }
+                                }
+                            }
+                            .column-two {
+                                width: 100%;
+                                height: 20%;
+                                // background: steelblue;
+                                .text {
+                                    padding-top: 10px;
+                                    padding-left: 10px;
+                                    font-size: 12px;
+                                    color: white;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .section-two {
+                // flex-grow: 1;
+                width: 100%;
+                height: 70%;
+                // background: rgb(104, 101, 101);
+                .container {
+                    margin: 0 auto;
+                    width: 95%;
+                    height: 95%;
+                    background: #0061A0;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                    
+                    .row-one {
+                        width: 100%;
+                        height: 10%;
+                        background: #00477D;
+                        .text {
+                            width: 100%;
+                            height: 100%;
+                            padding-top: 10px;
+                            padding-left: 20px;
+                            font-size: 22px;
+                            color: white;
+                        }
+                    }
+                    .row-two {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        height: 80%;
+                        // background: #00C853;
+                        .sub-row-one {
+                            display: flex;
+                            flex-direction: column;
+                            width: 50%;
+                            height: 100%;
+                            // background: yellowgreen;
+                            .sub-column-one {
+                                display: flex;
+                                flex-direction: column;
+                                width: 100%;
+                                height: 70%;
+                                // background: cornsilk;
+                                .section-one {
+                                    width: 100%;
+                                    height: 10%;
+                                    // background: deepskyblue;
+                                    .text-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            margin-top: 10px;
+                                            margin-left: 10px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .section-two {
+                                    width: 100%;
+                                    height: 90%;
+                                    background: #0061A0;
+                                    .column-container {
+                                        display: flex;
+                                        flex-direction: column;
+                                        margin: 5px auto;
+                                        width: 90%;
+                                        height: 95%;
+                                        background: #015293;
+                                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                                                                
+                                        .column-one {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-two {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-three {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-four {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-five {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-six {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-seven {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-eight {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .sub-column-two {
+                                width: 100%;
+                                height: 30%;
+                                // background: cornflowerblue;
+                                .section-one {
+                                    width: 100%;
+                                    height: 20%;
+                                    // background: dimgray;
+                                    .text-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            padding-top: 5px;
+                                            padding-left: 10px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .section-two {
+                                    width: 100%;
+                                    height: 80%;
+                                    // background: darkgoldenrod;
+                                    .container {
+                                        display: flex;
+                                        flex-direction: column;
+                                        margin: 5px auto;
+                                        width: 90%;
+                                        height: 90%;
+                                        background: #015293;
+                                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                        
+                                        .column-one {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-two {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-three {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .sub-row-two {
+                            display: flex;
+                            flex-direction: column;
+                            width: 50%;
+                            height: 100%;
+                            // background: yellowgreen;
+                            .sub-column-one {
+                                display: flex;
+                                flex-direction: column;
+                                width: 100%;
+                                height: 70%;
+                                // background: cornsilk;
+                                .section-one {
+                                    width: 100%;
+                                    height: 10%;
+                                    // background: deepskyblue;
+                                    .text-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            margin-top: 10px;
+                                            margin-left: 10px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .section-two {
+                                    width: 100%;
+                                    height: 90%;
+                                    background: #0061A0;
+                                    .column-container {
+                                        display: flex;
+                                        flex-direction: column;
+                                        margin: 5px auto;
+                                        width: 90%;
+                                        height: 95%;
+                                        background: #015293;
+                                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                                                                
+                                        .column-one {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-two {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-three {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-four {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-five {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-six {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-seven {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-eight {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .sub-column-two {
+                                width: 100%;
+                                height: 30%;
+                                // background: cornflowerblue;
+                                .section-one {
+                                    width: 100%;
+                                    height: 20%;
+                                    // background: dimgray;
+                                    .text-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            padding-top: 5px;
+                                            padding-left: 10px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .section-two {
+                                    width: 100%;
+                                    height: 80%;
+                                    // background: darkgoldenrod;
+                                    .container {
+                                        display: flex;
+                                        flex-direction: column;
+                                        margin: 5px auto;
+                                        width: 90%;
+                                        height: 90%;
+                                        background: #015293;
+                                        .column-one {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-two {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                        .column-three {
+                                            flex-grow: 1;
+                                            .text-container {
+                                                width: 100%;
+                                                height: 100%;
+                                                .text {
+                                                    padding-top: 5px;
+                                                    padding-left: 10px;
+                                                    font-size: 13px;
+                                                    color: white;
+                                                }    
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .row-three {
+                        width: 100%;
+                        height: 10%;
+                        background: #0061A0;
+                        .text-container {
+                            width: auto;
+                            height: auto;
+                            .text {
+                                padding-top: 18px;
+                                padding-left: 15px;
+                                font-size: 12px;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .flex-two {
+            display: flex;
+            flex-direction: column;
+            // flex-grow: 1;
+            width: 40%;
+            height: 100%;
+            .section-one {
+                width: 100%;
+                height: 25%;
+                // background: red;
+                .container {
+                    width: 90%;
+                    height: 70%;
+                    margin: 0 auto;
+                    margin-top: 11px;
+                    border-radius: 10px;
+                    background: #0061A0;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                    
+                    .row-one {
+                        width: 100%;
+                        height: 30%;
+                        background: #00477D;
+                        .text {
+                            width: 100%;
+                            height: 100%;
+                            padding-top: 5px;
+                            padding-left: 20px;
+                            font-size: 22px;
+                            color: white;
+                        }
+                    }
+                    .row-two {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                                                
+                        .sub-row-one {
+                            display: flex;
+                            flex-direction: column;
+                            width: 50%;
+                            height: 100%;
+                            background: #0061A0;
+                            .column-one {
+                                width: 100%;
+                                height: 30%;
+                                // background: red;
+                                .text {
+                                    font-size: 14px;
+                                    padding-top: 15px;
+                                    padding-left: 35px;
+                                    color: white;
+                                }
+                            }
+                            .column-two {
+                                width: 100%;
+                                height: 70%;
+                                // background: blue;
+                                .container {
+                                    width: 82%;
+                                    height: 50%;
+                                    background: #015291;
+                                    .text-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            text-align: center;
+                                            padding-top: 13px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        .sub-row-two {
+                            display: flex;
+                            flex-direction: column;
+                            width: 50%;
+                            height: 100%;
+                            background: #0061A0;
+                            .column-one {
+                                width: 100%;
+                                height: 30%;
+                                // background: red;
+                                .text {
+                                    font-size: 14px;
+                                    padding-top: 15px;
+                                    padding-left: 22px;
+                                    color: white;
+                                }
+                            }
+                            .column-two {
+                                width: 100%;
+                                height: 70%;
+                                // background: blue;
+                                .container {
+                                    width: 82%;
+                                    height: 50%;
+                                    background: #015291;
+                                    .text-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            text-align: center;
+                                            padding-top: 13px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .section-two {
+                width: 100%;
+                height: 35%;
+                // background: orange;
+                .container {
+                    width: 90%;
+                    height: 80%;
+                    margin: 0 auto;
+                    margin-top: 11px;
+                    background: #0061A0;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                    
+                    .row-one {
+                        width: 100%;
+                        height: 19%;
+                        background: #00477D;
+                        .text {
+                            width: 100%;
+                            height: 100%;
+                            padding-top: 5px;
+                            padding-left: 20px;
+                            font-size: 22px;
+                            color: white;
+                        }
+                    }
+                    .row-two {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        height: 100%;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                                                                        
+                        .sub-row-one {
+                            display: flex;
+                            flex-direction: column;
+                            flex-grow: 1;
+                            background: #0061A0;                            
+                            .sub-column-one {
+                                // width: 100%;
+                                // height: 20%;
+                                display: flex;
+                                flex-direction: column;
+                                flex-grow: 1;
+                                width: 100%;
+                                height: 0;
+                                .item-one {
+                                    width: 100%;
+                                    height: 30%;
+                                    // background: whitesmoke;
+                                    .item-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            padding-top: 10px;
+                                            padding-left: 20px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .item-two {
+                                    width: 100%;
+                                    height: 70%;
+                                    // background: midnightblue;
+                                    .container {
+                                        width: 60%;
+                                        height: 60%;
+                                        margin-left: 30px;
+                                        margin-top: 11px;
+                                        border-radius: 10px;
+                                        background: #015291;
+                                        // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                                        .text {
+                                            padding-top: 14px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                            }
+                            .sub-column-two {
+                                // width: 100%;
+                                // height: 20%;
+                                display: flex;
+                                flex-direction: column;
+                                flex-grow: 1;
+                                width: 100%;
+                                height: 0;                                
+                                // background: olive;
+                                .item-one {
+                                    width: 100%;
+                                    height: 30%;
+                                    // background: whitesmoke;
+                                    .item-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            padding-top: 10px;
+                                            padding-left: 20px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .item-two {
+                                    width: 100%;
+                                    height: 70%;
+                                    // background: midnightblue;
+                                    .container {
+                                        width: 60%;
+                                        height: 60%;
+                                        margin-left: 30px;
+                                        margin-top: 11px;
+                                        border-radius: 10px;
+                                        background: #015291; 
+                                        .text {
+                                            padding-top: 14px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .sub-row-two {
+                            display: flex;
+                            flex-direction: column;
+                            flex-grow: 1;
+                            background: #0061A0;                            
+                            .sub-column-one {
+                                // width: 100%;
+                                // height: 20%;
+                                display: flex;
+                                flex-direction: column;
+                                flex-grow: 1;
+                                width: 100%;
+                                height: 0;
+                                .item-one {
+                                    width: 100%;
+                                    height: 30%;
+                                    // background: whitesmoke;
+                                    .item-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            padding-top: 10px;
+                                            padding-left: 20px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .item-two {
+                                    width: 100%;
+                                    height: 70%;
+                                    // background: midnightblue;
+                                    .container {
+                                        width: 60%;
+                                        height: 60%;
+                                        margin-left: 30px;
+                                        margin-top: 11px;
+                                        border-radius: 10px;
+                                        background: #015291;
+                                        .text {
+                                            padding-top: 14px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                            }
+                            .sub-column-two {
+                                // width: 100%;
+                                // height: 20%;
+                                display: flex;
+                                flex-direction: column;
+                                flex-grow: 1;
+                                width: 100%;
+                                height: 0;                                
+                                // background: darkcyan;
+                                .item-one {
+                                    width: 100%;
+                                    height: 30%;
+                                    // background: whitesmoke;
+                                    .item-container {
+                                        width: 100%;
+                                        height: 100%;
+                                        .text {
+                                            padding-top: 10px;
+                                            padding-left: 20px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .item-two {
+                                    width: 100%;
+                                    height: 70%;
+                                    // background: midnightblue;
+                                    .container {
+                                        width: 60%;
+                                        height: 60%;
+                                        margin-left: 30px;
+                                        margin-top: 11px;
+                                        border-radius: 10px;
+                                        background: #015291;
+                                        .text {
+                                            padding-top: 14px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .section-three {
+                width: 100%;
+                height: 40%;
+                // background: tomato;
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    width: 90%;
+                    height: 85%;
+                    margin: 15px auto;
+                    // background: #FEA1A9;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                                                                                            
+                    .column-one {
+                        width: 100%;
+                        height: 15%;
+                        background: #00477D;
+                        .text-container {
+                            width: 100%;
+                            height: 100%;
+                            .text {
+                                padding-top: 5px;
+                                padding-left: 20px;
+                                font-size: 22px;
+                                color: white;
+                            }
+                        }
+                    }
+                    .column-two {
+                        width: 100%;
+                        height: 86%;
+                        background: #0061A0;
+                        .container {
+                            width: 90%;
+                            height: 80%;
+                            margin: 20px auto;
+                            background: #015293;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);                                                                                                
+                            .sub-container {
+                                display: flex;
+                                flex-direction: column;
+                                width: 100%;
+                                height: 90%;
+                                margin: 0 auto;
+                                // background: lightcoral;
+                                .sub-column-one {
+                                    display: flex;
+                                    flex-direction: row;
+                                    width: 100%;
+                                    height: 20%;
+                                    background: #00477D;
+                                    .row-one {
+                                        flex-grow: 1;
+                                        // background: darkcyan;
+                                        .text {
+                                            text-align: center;
+                                            padding-top: 5px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                    .row-two {
+                                        flex-grow: 1;
+                                        // background: lightgreen;
+                                        .text {
+                                            text-align: center;
+                                            padding-top: 5px;
+                                            font-size: 14px;
+                                            color: white;
+                                        }
+                                    }
+                                }
+                                .sub-column-two {
+                                    display: flex;
+                                    flex-direction: column;
+                                    width: 100%;
+                                    height: 80%;
+                                    // background: lightblue;
+                                    td {
+                                        padding-left: 15px;
+                                        width: 50%;
+                                    }
+                                    #table-wrapper {
+                                        position:relative;
+                                      }
+                                      #table-scroll {
+                                        margin-top: 8px;
+                                        height:120px;
+                                        overflow:auto;  
+                                      }
+                                      #table-wrapper table {
+                                        width:100%;
+                                          
+                                      }
+                                      #table-wrapper table * {
+                                        // background:yellow;
+                                        text-align: center;
+                                        font-size: 10px;
+                                        color:white;
+                                      }
+                                    //   #table-wrapper table thead th .text {
+                                    //     position:absolute;   
+                                    //     top:-20px;
+                                    //     z-index:2;
+                                    //     height:20px;
+                                    //     width:35%;
+                                    //     border:1px solid red;
+                                    //   }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// GLOBAL CLASS
+
+// BLINK EFFECT
+.blink {
+    animation: blinker 1.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;  
+  }
+  
+  @keyframes blinker {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+

@@ -1,9 +1,11 @@
 // ANGULAR MODULE
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, DoCheck, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Api Service
 import { ApiService } from '../services/api.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { UserService } from '../services/user.service';
 
 // Third-party
 import { ChartsModule } from 'ng2-charts';
@@ -17,37 +19,42 @@ import 'rxjs/Rx';
   styleUrls: ['./port-connection.component.scss'],
   providers: []
 })
-export class PortConnectionComponent implements OnInit, OnDestroy {
+export class PortConnectionComponent implements OnInit, DoCheck, OnDestroy {
 
   // PORTS DATA
-  eports: Object = []; // 144 EAST PORTS
-  wports: Object = []; // 144 WEST PORTS
-  eportschunk: Object = []; // 144 to [12,12,...]
-  wportschunk: Object = []; // 144 to [12,12,...]
-  portID: Object = []; // PORT ID
-  eportNote: Object = []; // EAST PORT NOTE
-  wportNote: Object = []; // WEST PORT NOTE
+  portID: object = []; // PORT ID
+  eports: object = []; // 144 EAST PORTS
+  wports: object = []; // 144 WEST PORTS
+  eportschunk: object = []; // 144 to [12,12,...]
+  wportschunk: object = []; // 144 to [12,12,...]
+  eportNote: object = []; // EAST PORT NOTE
+  wportNote: object = []; // WEST PORT NOTE
 
   // CONNECTION DATA
-  pair: Object = []; // PAIR OF CONNECTED PORT {[east, west]}
+  pair: object = []; // PAIR OF CONNECTED PORT {[east, west]}
 
-  // LOCAL & USER EVENT DATA
-  selectedEastPortID: string = ''; // CURRENT SELECTED EAST PORT
-  selectedWestPortID: string = ''; // CURRENT SELECTED WEST PORT
-  stops = JSON.parse(localStorage.getItem('stops')); // CURRENT STOPS POINT ROBOT IN DEBUG MODE
+  // LOCAL VARIABLE & USER EVENT DATA
+  user_data: object; // USER'S DATA {USERNAME, EMAIL, ROLE}
+  token: object;
+  role: string; // USER'S ROLE
+  stops: string = JSON.parse(localStorage.getItem('stops')); // CURRENT STOPS POINT ROBOT IN DEBUG MODE
+  selectedEastPortID: string; // CURRENT SELECTED EAST PORT
+  selectedWestPortID: string; // CURRENT SELECTED WEST PORT
   eValue: number = 1; // VALUE OF EPORT
   wValue: number = 1; // VALUE OF WPORT
   debugMode: boolean = false; // DEBUG MODE
 
   // DATA FROM CELERY
-  sequence: string; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
+  sequence: number; // CURRENT SEQUENCE ROBOT IN DEBUG MODE
   status: string; // CURRENT STATUS TASK OF ROBOT
   action: string; // CURRENT ACTION IN DEBUG MODE
-  error_message: string = undefined; // ERROR MESSAGE
-  operation_task_time: string;
+  error_message: string; // ERROR MESSAGE
+  operation_task_time: string; // OPERATION TASK TIME
+  operation_task_completed: string; // OPERATION TASK COMPLETED
 
   // DISABLE ULITIES
-  unselectable_table: boolean = false; // DISABLED TABLE
+  availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
+  availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
   disable_stops_input: boolean = false; // DISABLED STOPS INPUT
   disable_sequence_input: boolean = false; // DISABLED SEQUENCE INPUT
   disabled_connect_button: boolean = false; // DISABLED CONNECT BUTTON
@@ -55,27 +62,34 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   disabled_continue_button: boolean = false; // DISABLED CONTINUE BUTTON
   disabled_cancel_button: boolean = false; // DISABLED CANCEL BUTTON
   disabled_continue_mode_all_button: boolean = false;
-  availableEastPort: boolean = false; // SET DEFAULT CURRENT SELECTED EAST PORT TO FALSE
-  availableWestPort: boolean = false; // SET DEFAULT CURRENT SELECTED WEST PORT TO FALSE
-  disableEastPortArray = []; // SET UNVAILABLE EAST PORT ARRAY
-  disableWestPortArray = []; // SET UNVAILABLE WEST PORT ARRAY
+  disableEastPortArray: Array<string> = []; // SET UNVAILABLE EAST PORT ARRAY
+  disableWestPortArray: Array<string> = []; // SET UNVAILABLE WEST PORT ARRAY
+  unselectable_table: boolean = false; // DISABLED TABLE
 
   // DATA FROM DOM
-  all_east: Object = document.getElementsByClassName('East');
-  all_west: Object = document.getElementsByClassName('West');
+  all_east: object = document.getElementsByClassName('East');
+  all_west: object = document.getElementsByClassName('West');
 
-  // FOR ngOnDestroy
-  public timerInterval: any; // set public variable type any
+  // TIME INTERVAL
+  public timerInterval: any; // SET TIMEINTERVAL FOR MAIN FUNCTION
+  public timerIntervalOperationSequence: any; // SET TIMEINTERVAL FOR OPERATION SEQUENCE
 
-  constructor(private ApiService: ApiService, private router: Router) { }
+  constructor(
+    private _apiService: ApiService,
+    private _authenticationService: AuthenticationService,
+    private _userService: UserService,
+    private _router: Router) { }
 
   ngOnInit() {
+
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // VERIFY USER
-    this.verify_user();
+    this.verifyUser();
     // DEVICE DETECT
     this.deviceDetect();
+    // CHECK USER'S ROLE
+    this.checkUserRole();
     // FETCH DATA
     this.fetchData();
     // SET COLOR OF PORT CONNECTION
@@ -84,49 +98,73 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     this.timerInterval = setInterval(() => {
       this.checkStatus();
     }, 5000);
+    // CHECK OPERATION SEQUENCE EVERY 1.5 SEC.
+    this.timerIntervalOperationSequence = setInterval(() => {
+      this.getOperationSequence();
+    }, 1500);
+
+  }
+
+  ngDoCheck() {
+
+    if (this.role === null) {
+      this._authenticationService.logout();
+    }
+
+    if (localStorage.getItem('token') === null) {
+      this._authenticationService.logout();
+    }
 
   }
 
   ngOnDestroy() {
 
-    clearInterval(this.timerInterval); // <-- CLEAR INTERVAL
+    // CLEAR INTERVAL
+    clearInterval(this.timerInterval);
+    clearInterval(this.timerIntervalOperationSequence);
 
   }
-
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this.ApiService.check_server_status().then((status) => {
-
-      // CHECK TOKEN
-      this.check_token();
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
+
+      // CHECK TOKEN
+      this.checkToken();
+
     });
 
   }
   // VERIFY USER WITH CURRENT BACKEND
-  verify_user() {
+  verifyUser() {
 
-    this.ApiService.verify_user_with_backend().then((data) => {
+    this._apiService.verifyUserWithBackend().then((data) => {
 
       if (data['status'] === 'unverified') {
-        localStorage.setItem('currentUser', null);
-        this.router.navigateByUrl('/login');
+        this._authenticationService.logout();
       }
 
     });
 
   }
+  // CHECK USER'S ROLE
+  checkUserRole() {
+
+    this.user_data = JSON.parse(localStorage.getItem('User_data'));
+    this.role = this.user_data['role'];
+
+  }
   // VERIFY THAT USER CARRYING TOKEN
-  check_token() {
+  checkToken() {
 
-    const token = JSON.parse(localStorage.getItem('token')); // Set sample token
+    this.token = JSON.parse(localStorage.getItem('token'));
 
-    if (token === null) {
-      this.router.navigateByUrl('/login');
+    if (this.token === null) {
+      this._router.navigateByUrl('/login');
     }
 
   }
@@ -134,17 +172,17 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   deviceDetect() {
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      this.router.navigateByUrl('/port_connection_mobile');
+      this._router.navigateByUrl('/port_connection_mobile');
     }
 
   }
   // FETCH DATA
   fetchData() {
 
-    this.ApiService.getAllPort().then((data) => {
+    this._apiService.getAllPort().then((data) => {
       this.eports = data.eports;
-      this.eportschunk = data.eportschunk;
       this.wports = data.wports;
+      this.eportschunk = data.eportschunk;
       this.wportschunk = data.wportschunk;
       this.eportNote = data.eportNote;
       this.wportNote = data.wportNote;
@@ -152,40 +190,40 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     });
 
   }
-  // PUSH EAST PORT NOTE
-  pushEastNote(id) {
+  // PUSH EAST PORT'S NOTE
+  pushEastNote(id: string) {
 
-    const i = id.substring(1);
-    const index = parseInt(i, 10) - 1;
+    const i: string = id.substring(1);
+    const index: number = parseInt(i, 10) - 1;
 
     if (id === 'E' + id.substring(1)) {
       return this.eportNote[index];
     }
 
   }
-  // PUSH WEST PORT NOTE
-  pushWestNote(id) {
+  // PUSH WEST PORT'S NOTE
+  pushWestNote(id: string) {
 
-    const i = id.substring(1);
-    const index = parseInt(i, 10) - 1;
+    const i: string = id.substring(1);
+    const index: number = parseInt(i, 10) - 1;
 
     if (id === 'W' + id.substring(1)) {
       return this.wportNote[index];
     }
 
   }
-  // CHECK CURRENT ROBOT STATUS
+  // CHECK CURRENT ROBOT'S STATUS
   checkStatus() {
 
-    this.ApiService.checkStatus().then((data) => {
+    this._apiService.checkStatus().then((data) => {
 
       this.sequence = data.sequence;
       this.status = data.status;
       this.action = data.action;
       localStorage.setItem('action', JSON.stringify({ action: this.action }));
-      console.log('Cuurent sequence :', this.sequence, 'Current status :', this.status, 'Current action :', this.action);
       this.setConnectedPort(); // SET PORT COLOR BY STATUS
       this.unlockButton(this.eValue, this.wValue, this.status); // UNLOCK OR LOCK BUTTON BY CURRENT STATUS
+      console.log('Cuurent sequence :', this.sequence, 'Current status :', this.status, 'Current action :', this.action);
 
       // CHECK CURRENT STATUS OF TASK
       // WHEN CURRENT STATUS IS SUCCESS
@@ -193,9 +231,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         this.unselectable_table = false; // UNLOCK TABLE WHEN CURRENT STATUS IS SUCCESS
         this.disable_stops_input = false; // UNLOCK STOPS INPUT WHEN CURRENT STATUS IS SUCCESS
         this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
-        document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
         this.disabled_continue_mode_all_button = false; // LOCK ALL CONTINUE MODE BUTTONS
-        this.get_lastest_task_time(); // GET AVERAGE LASTEST TASK TIME
+        this.getLatestTaskTime(); // GET AVERAGE LASTEST TASK TIME
+        document.getElementById('error-dialog').classList.add('hide');  // <-- remove class hide
 
         // WHEN CURRENT STATUS IS BREAK, PENDING, STARTED
       } else if (this.status === 'break' || this.status === 'pending' || this.status === 'started') {
@@ -244,14 +282,14 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
     });
 
   }
-  // CHECK CURRENT SELECTED FOR ADD RED BORDER
+  // CHECK CURRENT SELECTED PORT FOR ADD RED BORDER
   checkCurrentSelected() {
 
-    const east = this.selectedEastPortID;
-    const west = this.selectedWestPortID;
+    const east: string = this.selectedEastPortID;
+    const west: string = this.selectedWestPortID;
 
 
-    if (((east && west) !== '') && (!document.getElementById(east).classList.contains('selected')
+    if (((east && west)) && (!document.getElementById(east).classList.contains('selected')
       || (!document.getElementById(west).classList.contains('selected')))) {
 
       for (let i = 0; i < 144; i++) {
@@ -266,7 +304,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // GET EASTPORT ID ON CLICK
-  setEastID(eastID) {
+  setEastID(eastID: string) {
 
     this.selectedEastPortID = eastID; // SET EASTPORT ID
     this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED EAST PORT
@@ -306,7 +344,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // GET WESTPORT ID ON CLICK
-  setWestID(westID) {
+  setWestID(westID: string) {
 
     this.selectedWestPortID = westID; // SET WESTPORT ID
     this.checkCurrentSelected(); // SET BORDER COLOR TO CURRENT SELECTED WEST PORT
@@ -346,7 +384,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // UNLOCK CONNECT BUTTON
-  unlockConnection(availableEastPort, availableWestPort) {
+  unlockConnection(availableEastPort: boolean, availableWestPort: boolean) {
 
     // IF TWO AVAILABLE PORTS ARE SELECTED
     if ((availableEastPort && availableWestPort) === true) {
@@ -363,9 +401,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // SHOW HIS PAIR WHEN CLICK EAST PORT
   eastPair() {
 
-    _.each(this.pair, (obj) => {
-      const east = 'E' + obj.east;
-      const west = 'W' + obj.west;
+    _.each(this.pair, (port) => {
+      const east = 'E' + port.east;
+      const west = 'W' + port.west;
 
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         document.getElementById(east).classList.add('selected-pair');
@@ -383,9 +421,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // SHOW HIS PAIR WHEN CLICK WEST PORT
   westPair() {
 
-    _.each(this.pair, (obj) => {
-      const east = 'E' + obj.east;
-      const west = 'W' + obj.west;
+    _.each(this.pair, (port) => {
+      const east = 'E' + port.east;
+      const west = 'W' + port.west;
 
       if (this.selectedEastPortID === east && this.selectedWestPortID === west) {
         document.getElementById(east).classList.add('selected-pair');
@@ -401,10 +439,9 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // LOCK AND UNLOCK BUTTONS BY CHECKING CURRENT STATUS
-  unlockButton(eValue, wValue, status) {
+  unlockButton(eValue: number, wValue: number, status: string) {
 
-    let sumValue; // SUM OF wValue & eValue
-    sumValue = eValue + wValue;
+    const sumValue: number = eValue + wValue; // SUM OF wValue & eValue
 
     /* SUM = 0, STATUS = SUCCESS OR SUM = 0, STATUS = 0 OR SUM = 0, STATUS = UNDEFINED
      UNLOCK CONNECT BUTTON
@@ -438,13 +475,13 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // SELECTED EAST PORT AND CHANGE COLOR WHEN CLICK
-  isSelectEast(Eport) {
+  isSelectEast(Eport: string) {
 
     return (this.selectedEastPortID === Eport) ? 'selected' : '';
 
   }
   // SELECTED WEST PORT AND CHANGE COLOR WHEN CLICK
-  isSelectWest(Wport) {
+  isSelectWest(Wport: string) {
 
     return (this.selectedWestPortID === Wport) ? 'selected' : '';
 
@@ -462,7 +499,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect', this.stops)
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -478,7 +515,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         });
       // PAYLOAD { east, west, action }
     } else {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'connect')
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -515,7 +552,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // SET LOCALSTORAGE VALUE OF stops
       localStorage.setItem('stops', JSON.stringify(this.stops));
       // POST DATA
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect', this.stops)
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -531,7 +568,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
         });
       // PAYLOAD { east, west, action }
     } else {
-      this.ApiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
+      this._apiService.connectPort(this.selectedEastPortID.substring(1), this.selectedWestPortID.substring(1), 'disconnect')
         .then((data) => {
 
           // IF CELERY'S CURRENT STATUS IS ERROR
@@ -573,7 +610,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
       // GET LOCALSTORAGE VALUE OF selectedWestPortID
       const selectedWestPortID = localStorage.getItem('selectedWestPortID');
       // POST DATA
-      this.ApiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
+      this._apiService.connectPort(JSON.parse(selectedEastPortID).substring(1), JSON.parse(selectedWestPortID).substring(1),
         this.action, JSON.parse(stops), this.sequence)
         .then((data) => {
 
@@ -605,7 +642,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
     this.disable_sequence_input = true; // LOCK SEQUENCE INPUT
 
-    this.ApiService.getConnectedPort().then((data) => {
+    this._apiService.getConnectedPort().then((data) => {
 
       console.log('ALL PORT CONNECTION :', data);
 
@@ -676,7 +713,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // CLEAR LOCAL STORAGE STOPS VALUE
-  clearValue(stops) {
+  clearValue(stops: string) {
 
     // CLEAR STOPS LOCALSTORAGE VALUE
     if (stops === undefined || stops === null || stops === '') {
@@ -690,7 +727,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // PUSH CONNECTED PORT OF EAST TO EAST TOOLTIP
-  tooltipEast(EastID) {
+  tooltipEast(EastID: string) {
 
     for (const i of Object.keys(this.pair)) {
       const east = 'E' + this.pair[i].east;
@@ -703,7 +740,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // PUSH CONNECTED PORT OF WEST TO WEST TOOLTIP
-  tooltipWest(WestID) {
+  tooltipWest(WestID: string) {
 
     for (const i of Object.keys(this.pair)) {
       const east = 'E' + this.pair[i].east;
@@ -716,7 +753,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // CHANGE POSITION OF SECOND TOOLTIP
-  etooltipPostion(EastID) {
+  etooltipPostion(EastID: string) {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = RIGHT
     for (const i of Object.keys(this.pair)) {
@@ -731,7 +768,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // CHANGE POSITION OF SECOND TOOLTIP
-  wtooltipPostion(WestID) {
+  wtooltipPostion(WestID: string) {
 
     // IF CONNECTED PORT RETURN TOOLTIP POSTION = LEFT
     for (const i of Object.keys(this.pair)) {
@@ -754,13 +791,13 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // DISABLE NOT AVAILABLE EAST PORT
-  disabledEastPort(id) {
+  disabledEastPort(id: string) {
 
     return (this.disableEastPortArray.includes(id)) ? 'port-unselectable' : '';
 
   }
   // DISABLE NOT AVAILABLE WEST PORT
-  disabledWestPort(id) {
+  disabledWestPort(id: string) {
 
     return (this.disableWestPortArray.includes(id)) ? 'port-unselectable' : '';
 
@@ -768,16 +805,16 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // CHECK MESSAGE LENGTH FOR ADJUST DIALOG BOX HEIGHT
   checkMessageLength() {
 
-    const message_length = this.error_message.length; // <-- set message length
+    const message_length: number = this.error_message.length; // <-- set message length
 
     // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
     if (message_length <= 30) {
-      const card = document.getElementsByTagName('md-card');
+      const card: any = document.getElementsByTagName('md-card');
       card[0].setAttribute('style', 'height: 20px');  // <-- set height 20px
 
       // CHECK MESSAGE LENGTH FOR ADJUST DIALOG HEIGHT
     } else {
-      const card = document.getElementsByTagName('md-card');
+      const card: any = document.getElementsByTagName('md-card');
       card[0].setAttribute('style', 'height: 80px');  // <-- set height 80px
     }
 
@@ -785,7 +822,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // CONTINUE ROBOBT OPERATION TASK
   continueRobotOperation() {
 
-    this.ApiService.continue_robot_operations().then((data) => {
+    this._apiService.continueRobotOperations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -798,7 +835,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // RELOAD ROBOT OPERATION TASK
   reloadRobotOperation() {
 
-    this.ApiService.reload_robot_operations().then((data) => {
+    this._apiService.reloadRobotOperations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -811,7 +848,7 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
   // RESTART ROBOT OPERATION TASK
   restartRobotOperation() {
 
-    this.ApiService.restart_robot_operations().then((data) => {
+    this._apiService.restartRobotOperations().then((data) => {
 
       if (data.status !== 'success') {
         this.error_message = data.status + ' ' + data.error;
@@ -822,37 +859,24 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // FORCE DISABLE CONTINUE BUTTON
-  force_disable_continue_button() {
+  disableContinueButtonAfterClick() {
 
     document.getElementById('Continue').setAttribute('disabled', 'disabled');
 
   }
   // FORCE DISABLE CONTINUE_MODE BUTTONS
-  foruce_disable_continue_mode_button() {
+  disableContinueModeButtonAfterClick() {
 
     document.getElementById('Cancel').setAttribute('disabled', 'disabled');
     document.getElementById('Restart').setAttribute('disabled', 'disabled');
     document.getElementById('Reload').setAttribute('disabled', 'disabled');
 
   }
-  // VALIDATION TO ENABLE OR DISABLE BUTTONS
-  validate_continue_mode_all_button() {
-
-    if (this.status === 'alarm') {
-      document.getElementById('Cancel').removeAttribute('disabled');
-      document.getElementById('Restart').removeAttribute('disabled');
-      document.getElementById('Reload').removeAttribute('disabled');
-
-    } else {
-      return;
-    }
-
-  }
   // CHECK STATUS FOR VALIDATION TO ADD CLASS TO ERROR DIALOG
-  check_status_for_hide_dialog() {
+  checkStatusForHideDialog() {
 
     if (this.status === 'alarm' || this.status === 'error') {
-      return null;
+      return '';
 
     } else {
       return 'hide';
@@ -860,23 +884,72 @@ export class PortConnectionComponent implements OnInit, OnDestroy {
 
   }
   // GET LASTEST TASK TIME
-  get_lastest_task_time() {
+  getLatestTaskTime() {
 
-    this.ApiService.get_operation_task_time().then((data) => {
+    this._apiService.getOperationTaskTime().then((data) => {
 
-      if (data['average_minute'] === 0 && data['average_second'] !== 0) {
-        this.operation_task_time = data['average_second'] + 'sec';
+      // SET VARIABLE OF TIMES
+      const created_time: Date = new Date(data['created_time']);
+      const finished_time: Date = new Date(data['finished_time']);
+      const created_time_hours: number = created_time.getHours();
+      const created_time_minutes: number = created_time.getMinutes();
+      const created_time_seconds: number = created_time.getSeconds();
+      const finished_time_hours: number = finished_time.getHours();
+      const finished_time_minutes: number = finished_time.getMinutes();
+      const finished_time_seconds: number = finished_time.getSeconds();
 
-      } else if ((data['average_minute'] === 0 && data['average_second'] === 0)
-        || ((data['average_minute'] === undefined && data['average_second'] === undefined))) {
+      // CALCULATION TIME
+      const average_hours: number = finished_time_hours - created_time_hours;
+      let average_minutes: number = finished_time_minutes - created_time_minutes;
+      let average_seconds: number = finished_time_seconds - created_time_seconds;
 
-          this.operation_task_time = 'empty task';
+      if (average_minutes > 0 && average_seconds < 0) {
+        average_minutes = average_minutes - 1;
+        average_seconds = (finished_time_seconds + 60) - created_time_seconds;
+
+      } else if (average_minutes <= 0 && average_seconds < 0) {
+        average_minutes = 0;
+        average_seconds = Math.abs(average_seconds);
+
+      } else if (average_minutes <= 0 && average_seconds < 0) {
+        average_minutes = 0;
+      }
+
+      if (average_minutes === 0 && average_seconds !== 0) {
+        this.operation_task_time = average_seconds + 'sec';
+
+      } else if ((average_minutes === 0 && average_seconds === 0)
+        || ((average_minutes === undefined && average_seconds === undefined))) {
+
+        this.operation_task_time = 'empty task';
 
       } else {
-        this.operation_task_time = data['average_minute'] + 'min ' + data['average_second'] + 'sec';
+        this.operation_task_time = average_minutes + 'min ' + average_seconds + 'sec';
       }
 
     });
+
+  }
+  // GET OPERATION SEQUENCE
+  getOperationSequence() {
+
+    this._apiService.getOperationSequence().then((data) => {
+
+      this.operation_task_completed = data['operation_task_completed'] + '%';
+
+    });
+
+  }
+  // VALIDATE USER'S ROLE TO HIDE BUTTON
+  validateUserRole_toDeleteElement() {
+
+    return (this.role !== 'Admin') ? 'hide-buttons-container' : '';
+
+  }
+  // VALIDATE USER'S ROLE TO HIDE
+  validateUserRole_toHideElement() {
+
+    return (this.role !== 'Admin') ? 'hide' : '';
 
   }
 

@@ -9,15 +9,14 @@ import { Router } from '@angular/router';
 })
 export class PageNotFoundComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private _router: Router) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   // GO HOME
   goHome() {
 
-    this.router.navigateByUrl('/');
+    this._router.navigateByUrl('/');
 
   }
 

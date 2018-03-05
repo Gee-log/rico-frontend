@@ -1,6 +1,5 @@
 // ANGULAR Module
-import { Component } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Third-party
@@ -16,17 +15,22 @@ import { UserService } from './services/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  // USER DATA
-  private user_data: object;
-  private username: string;
+  // USER'S VARIABLE
+  private user_data: object; // PARAMETERS  {USERNAME, EMAIL, ROLE}
+  private username: string; // USERNAME
 
-  links = [
+  menulinks = [
+    {
+      icon: 'dashboard',
+      name: 'Dashboard',
+      path: '/'
+    },
     {
       icon: 'settings_input_component',
       name: 'Port Connection',
-      path: '/'
+      path: '/port_connection'
     },
     {
       icon: 'settings_input_component',
@@ -35,32 +39,32 @@ export class AppComponent {
     },
     {
       icon: 'history',
-      name: 'Port History',
+      name: 'Connection Log',
       path: '/port_history'
     },
     {
       icon: 'error_outline',
-      name: 'Alarm',
+      name: 'Current Alarm',
       path: '/alarm'
     },
     {
       icon: 'history',
-      name: 'Alarm History',
+      name: 'Alarm Log',
       path: '/alarm_history'
     }
   ];
 
   settinglinks = [
-    {
-      icon: 'settings',
-      name: 'Parameter',
-      path: '#'
-    },
-    {
-      icon: 'build',
-      name: 'Execution table',
-      path: '#'
-    },
+    // {
+    //   icon: 'settings',
+    //   name: 'Parameter',
+    //   path: '#'
+    // },
+    // {
+    //   icon: 'build',
+    //   name: 'Execution table',
+    //   path: '#'
+    // },
     {
       icon: 'settings_applications',
       name: 'Testing mode',
@@ -69,12 +73,57 @@ export class AppComponent {
   ];
 
   constructor(
-    private http: Http,
-    private ApiService: ApiService,
-    private AuthenticationService: AuthenticationService,
-    private UserService: UserService,
-    private router: Router) { }
+    private _apiService: ApiService,
+    private _authenticationService: AuthenticationService,
+    private _userService: UserService,
+    private _router: Router) { }
 
+  ngOnInit() {
+
+    // set mockup User_data variable
+    localStorage.setItem('User_data', JSON.stringify({ 'username': 'Admin', 'email': 'admin@email.com', 'role': 'Admin' }));
+
+  }
+
+  // CLEAR DATABASE DATA
+  clearDatabase() {
+
+    this._apiService.clearDatabase('cleardatabase');
+
+  }
+  // CLEAR LATEST OPERATION
+  clearLatestOperation() {
+
+    this._apiService.clearLatestOperation('clear_latest_operation');
+
+  }
+  // GET USERNAME
+  getUsername() {
+
+    const user_data: object = this._userService.getUsers();
+    this.username = user_data['username'];
+
+  }
+  // LOGOUT
+  logOut() {
+
+    this._authenticationService.logout();
+    this._router.navigateByUrl('/login');
+    document.getElementById('menu-icon').click();
+
+  }
+  // REGISTER ROUTE
+  registerRoute() {
+
+    this._router.navigateByUrl('/register');
+
+  }
+  // VALIDATE URL TO DISPLAY NAVBAR OR HIDE NAVBAR
+  showNavbar() {
+
+    return (this._router.url === '/login' || this._router.url === '/login-dev') ? false : true;
+
+  }
   // TOGGLE SETTINGS MENU
   toggleSettings() {
 
@@ -93,40 +142,13 @@ export class AppComponent {
     $('#documents-drop-down, #documents-drop-up').toggle();
 
   }
-  // CLEAR DATABASE DATA
-  clearDatabase() {
+  // VALIDATE USER'S ROLE TO HIDE BUTTON
+  validateUserRole() {
 
-    this.ApiService.clearDatabase('cleardatabase');
+    const user_data: object = JSON.parse(localStorage.getItem('User_data'));
+    const user_role: string = user_data['role'];
 
-  }
-  // SHOW NAVBAR
-  showNavbar() {
-
-    if (this.router.url === '/login' || this.router.url === '/register') {
-      return false;
-
-    } else {
-      return true;
-    }
-
-  }
-  // LOGOUT
-  logOut() {
-
-    // CALL LOGOUT FUNCTION
-    this.AuthenticationService.logout();
-    // RE ROUTE TO LOGIN
-    this.router.navigateByUrl('/login');
-    // MAKE CLICK EVENT TO CLOSE SIDEBAR
-    document.getElementById('menu-icon').click();
-
-  }
-  // GET USERNAME
-  getUserName() {
-
-    // SET VARIABLE
-    this.user_data = this.UserService.getUsers();
-    this.username = this.user_data['username'];
+    return (user_data['role'] !== 'Admin') ? 'hide-element' : '';
 
   }
 

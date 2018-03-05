@@ -4,6 +4,7 @@ import ast
 import requests
 
 from django.http import JsonResponse
+from rest_framework.views import status as drf_status
 
 from webapp.models import Operation
 from webapp.views import CELERY_APP
@@ -59,7 +60,8 @@ class ValidateError(object):
             resp = requests.get(CELERY_APP + '/result?id=' + uuid)
             data = str(resp.json())
             data_dict = ast.literal_eval(data)
-            error = data_dict['error']
+            if 'error' in data_dict:
+                error = data_dict['error']
             status = data_dict['status']
 
-        return JsonResponse({'status': status, 'error': error})
+        return JsonResponse({'status': status, 'error': error}, status=drf_status.HTTP_200_OK)

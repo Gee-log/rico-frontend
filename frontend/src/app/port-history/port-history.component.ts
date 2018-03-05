@@ -8,6 +8,7 @@ import { MdPaginator } from '@angular/material';
 
 // Api Service
 import { ApiService } from '../services/api.service';
+import { UserService } from '../services/user.service';
 
 // ReactiveX
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -16,21 +17,22 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
 import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { List } from 'lodash';
 
 @Component({
   selector: 'app-port-history',
   templateUrl: './port-history.component.html',
   styleUrls: ['./port-history.component.scss']
 })
-
 export class PortHistoryComponent implements OnInit {
 
-  rows = [];
-  temp = [];
+  // TABLE'S VARIABLES
+  rows: any = [];
+  temp: any = [];
   selected: any[] = [];
 
   // COLUMNS VARIABLES
-  columns = [
+  columns: Array<any> = [
     { name: 'Date' },
     { name: 'Time' },
     { name: 'User' },
@@ -40,31 +42,49 @@ export class PortHistoryComponent implements OnInit {
     { name: 'RobotStatus' }
   ];
 
+  // USER'S VARIABLE
+  role: string;
+
   @ViewChild('table') table: DatatableComponent;
 
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
+    // CHECK USER'S ROLE
+    this.checkUserRole();
     // FETCH DATA
     this.fetchData();
 
   }
 
-  constructor(private ApiService: ApiService, private router: Router) {
+  constructor(
+    private _apiService: ApiService,
+    private _userService: UserService,
+    private _router: Router) {
 
     this.temp = this.rows;
 
   }
 
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
+
+    });
+
+  }
+  // CHECK USER'S ROLE
+  checkUserRole() {
+
+    this._userService.getUserRoles().then((data) => {
+
+      this.role = data['role'];
 
     });
 
@@ -72,14 +92,14 @@ export class PortHistoryComponent implements OnInit {
   // SET DATA TABLE
   fetchData() {
 
-    this.ApiService.getConnectionHistory().then((data) => {
+    this._apiService.getConnectionHistory().then((data) => {
       _.each(data, (obj) => {
 
         console.log(obj);
-        const date = new Date(obj['timestamp']);
-        const day = date.toString().substring(0, 15);
-        const time = date.toString().substring(15);
-        const status = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
+        const date: Date = new Date(obj['timestamp']);
+        const day: string = date.toString().substring(0, 15);
+        const time: string = date.toString().substring(15);
+        const status: string = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
 
         // IF SWITCHTING_TYPE IS CONNECT
         if (obj['switching_type'] === 'C') {
@@ -103,15 +123,21 @@ export class PortHistoryComponent implements OnInit {
 
   }
   // CANCEL TASK
-  cancelTask(id) {
+  cancelTask(id: string) {
 
-    this.ApiService.cancelTask(id, 'canceled').then((data) => {
+    this._apiService.cancelTask(id, 'canceled').then((data) => {
 
       if (data['status'] !== 'error' && data['historyid'] !== null) {
         location.reload();
       }
 
     });
+
+  }
+  // VALIDATE USER'S ROLE TO HIDE BUTTON
+  validateUserRole_toHideButton() {
+
+    return (this.role === 'User') ? 'hide-buttons' : '';
 
   }
   // SAVE DATA
@@ -121,7 +147,7 @@ export class PortHistoryComponent implements OnInit {
     // window.location.href = 'http://localhost:8000/connectionhistorys?type=connectionhistory';
 
     // USING API SERVICE TO DOWNLOAD
-    this.ApiService.downloadFile();
+    this._apiService.downloadFile();
 
     // USING ANGULAR2CSV PACKAGE TO DOWNLOAD
     // this.ApiService.getConnectionHistory().then((data) => {

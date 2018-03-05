@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role, Taskcancelation
+from webapp.models import Alarm, Connection, ConnectionHistory, Operation, OperationHistory, OperationSequence, Port, Taskcancelation, Robot, Role
 
 
 class PortSerializer(serializers.ModelSerializer):
@@ -43,6 +42,13 @@ class OperationHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = OperationHistory
         fields = ('uuid', 'robotnumber', 'created_time', 'finished_time', 'status', 'request', 'response')
+
+
+class OperationSequenceSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = OperationSequence
+        fields = ('sequence_number', 'total_sequence')
 
 
 class RoleSerializer(serializers.ModelSerializer):

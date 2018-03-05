@@ -4,11 +4,11 @@
   <md-sidenav-container class="sidenav-fab-container">
     <!-- BEGIN NAV BAR -->
     <md-toolbar class="toolbar-container" color="primary" *ngIf="showNavbar()">
-    <!-- attr.disabled]="this.disable_stops_input == true ? false : null" -->
+      <!-- attr.disabled]="this.disable_stops_input == true ? false : null" -->
       <!-- BEGIN MENU ICON -->
       <div>
-        <button id="menu-icon" type="button" md-button class="div-icon-menu" (click)="sidenav.toggle(); getUserName();">
-           <md-icon >menu</md-icon>
+        <button id="menu-icon" type="button" md-button class="div-icon-menu" (click)="sidenav.toggle(); getUsername();">
+          <md-icon>menu</md-icon>
         </button>
       </div>
       <!-- END MENU ICON -->
@@ -21,8 +21,8 @@
           <md-icon>notifications</md-icon>
         </button>
         <button md-icon-button [mdMenuTriggerFor]="menu">
-          <md-icon >more_vert</md-icon>
-       </button>
+          <md-icon>more_vert</md-icon>
+        </button>
         <!-- BEGIN MENU-LIST -->
         <md-menu #menu="mdMenu">
           <!-- BEGIN NOTIFICATION ICON -->
@@ -32,9 +32,15 @@
           </button>
           <!-- END NOTIFICATION ICON -->
           <!-- BEGIN CLEAR DATABASE ICON -->
-          <button md-menu-item (click)="clearDatabase()">
+          <button id="cleardatabase" md-menu-item (click)="clearDatabase()" [ngClass]="validateUserRole()">
             <md-icon>delete</md-icon>
             <span>Clear database</span>
+          </button>
+          <!-- END CLEAR DATABASE ICON -->
+          <!-- BEGIN CLEAR DATABASE ICON -->
+          <button id="clearoperation" md-menu-item (click)="clearLatestOperation()" [ngClass]="validateUserRole()">
+            <md-icon>delete</md-icon>
+            <span>Clear operation</span>
           </button>
           <!-- END CLEAR DATABASE ICON -->
         </md-menu>
@@ -69,12 +75,12 @@
             <span>{{ this.username }}@xenoptics.com</span>
             <div class="mdl-layout-spacer"></div>
             <button md-button class="div-icon" [mdMenuTriggerFor]="menudrop">
-              <md-icon >arrow_drop_down</md-icon>
-           </button>
+              <md-icon>arrow_drop_down</md-icon>
+            </button>
             <md-menu #menudrop="mdMenu">
-              <button md-menu-item>
+              <button md-menu-item (click)="registerRoute()" [ngClass]="validateUserRole()">
                 <md-icon>add</md-icon>
-                <span>Add another account...</span>
+                <span>Add another account</span>
               </button>
               <button md-menu-item (click)="logOut()">
                 <md-icon>remove</md-icon>
@@ -89,21 +95,25 @@
         <div class="menu-list-container">
           <div id="menu-open" class="menu">
             <div id="menu-drop-down" (click)="toggleMenu();" hidden>
-              <a>Menu  
-            <button md-button class="div-icon"><md-icon >arrow_drop_down</md-icon></button>
-            </a>
+              <a>Menu
+                <button md-button class="div-icon">
+                  <md-icon>arrow_drop_down</md-icon>
+                </button>
+              </a>
             </div>
             <div id="menu-drop-up" (click)="toggleMenu();">
-              <a>Menu  
-            <button md-button class="div-icon"><md-icon>arrow_drop_up</md-icon></button>
-          </a>
+              <a>Menu
+                <button md-button class="div-icon">
+                  <md-icon>arrow_drop_up</md-icon>
+                </button>
+              </a>
             </div>
           </div>
           <div id="menu-list" class="menu-container-height">
             <md-list>
               <!-- IF WANT TO ADD LOGO -->
               <!-- <h3 md-subheader><md-icon>home</md-icon> XENO</h3> -->
-              <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of links">
+              <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of menulinks">
                 <md-list-item>
                   <md-icon md-list-icon>{{ link.icon }}</md-icon>
                   <h4 md-line>{{ link.name }}</h4>
@@ -117,14 +127,18 @@
         <div class="menu-list-container">
           <div id="settings-open" class="settings">
             <div id="settings-drop-down" (click)="toggleSettings();">
-              <a>Settings  
-              <button md-button class="div-icon"><md-icon >arrow_drop_down</md-icon></button>
+              <a>Settings
+                <button md-button class="div-icon">
+                  <md-icon>arrow_drop_down</md-icon>
+                </button>
               </a>
             </div>
             <div id="settings-drop-up" (click)="toggleSettings();" hidden>
-              <a>Settings  
-              <button md-button class="div-icon"><md-icon>arrow_drop_up</md-icon></button>
-            </a>
+              <a>Settings
+                <button md-button class="div-icon">
+                  <md-icon>arrow_drop_up</md-icon>
+                </button>
+              </a>
             </div>
           </div>
           <div id="settings-list" class="settings-container-height" hidden>
@@ -143,13 +157,17 @@
         <div class="menu-list-container">
           <div id="documents-open" class="document">
             <div id="documents-drop-down" (click)="toggleDocument();">
-              <a>Document  
-                <button md-button class="div-icon"><md-icon >arrow_drop_down</md-icon></button>
-                </a>
+              <a>Document
+                <button md-button class="div-icon">
+                  <md-icon>arrow_drop_down</md-icon>
+                </button>
+              </a>
             </div>
             <div id="documents-drop-up" (click)="toggleDocument();" hidden>
-              <a>Document  
-                <button md-button class="div-icon"><md-icon>arrow_drop_up</md-icon></button>
+              <a>Document
+                <button md-button class="div-icon">
+                  <md-icon>arrow_drop_up</md-icon>
+                </button>
               </a>
             </div>
           </div>
@@ -157,8 +175,8 @@
         <!-- END DOCUMENT LABEL -->
         <!-- BEGIN FOOTER-CONTAINER -->
         <!-- <div class="footer-container"> -->
-          <!-- <hr> -->
-          <!-- <div class="text-center">
+        <!-- <hr> -->
+        <!-- <div class="text-center">
             <span>Help & Feedback</span>
           </div>
         </div> -->

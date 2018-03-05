@@ -14,25 +14,27 @@ import { ApiService } from '../services/api.service';
 
 export class TestingModeComponent implements OnInit {
 
-  east_port_number; // EAST PORT NUMBER
-  west_port_number; // WEST PORT NUMBER
-  stops; // STOP NUMBER
-  sequence; // CURRENT SEQUENCE NUM
-  robot_number; // ROBOT NUMBER
-  continue_mode; // CONTINUE MODE
+  east_port_number: any; // EAST PORT NUMBER
+  west_port_number: any; // WEST PORT NUMBER
+  stops: any; // STOP NUMBER
+  sequence: any; // CURRENT SEQUENCE NUM
+  continue_mode: string; // CONTINUE MODE
+  smu_no: number; // SMU NUMBER
+  connect: boolean = false; // SELF CONNECTION ACTION CONNECT
+  disconnect: boolean = false; // SELF CONNECTION ACTION DISCONNECT
 
   // LOCK BUTTON UTILITIES
-  debug_button;
+  debug_button: boolean; // DEBUG BUTTON
 
-  errorRobot: string = '';
-
-  constructor(private ApiService: ApiService, private router: Router) { }
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router) { }
 
   ngOnInit() {
 
     // CHECK SERVER STATUS
     this.check_server_status();
-    // SET debug_button = true
+    // SET debug_button is true
     this.debug_button = true;
 
   }
@@ -40,9 +42,10 @@ export class TestingModeComponent implements OnInit {
   // CHECK SERVER STATUS
   check_server_status() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
+
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
     });
 
@@ -50,14 +53,18 @@ export class TestingModeComponent implements OnInit {
   // CREATE CONNECTION
   create_connection() {
 
+    const action: string = 'create_connection';
+
     if (this.east_port_number && this.west_port_number) {
-      this.ApiService.create_connection_in_database(this.east_port_number, this.west_port_number, 'test_connect').then((data) => {
+      this._apiService.createDummyConnection(this.east_port_number, this.west_port_number, action).then((data) => {
         console.log(data);
       });
+
     } else {
       alert('error input !');
       console.error('error input !');
     }
+
   }
   // VALIDATE CONNECT BUTTON
   validate_connect_button() {
@@ -72,12 +79,6 @@ export class TestingModeComponent implements OnInit {
     } else {
       return false;
     }
-
-  }
-  // CREATE CONNECTION DEBUG MODE
-  create_connection_debug_mode() {
-
-    // TODO
 
   }
   // VALIDATE DEBUG BUTTON
@@ -96,24 +97,79 @@ export class TestingModeComponent implements OnInit {
     }
 
   }
+  // VALIDATE ROLLBACK BUTTON
+  validate_rollback_button() {
 
+    if ((this.smu_no <= 144) && (!document.getElementById('smu_no').classList.contains('ng-invalid')) && this.smu_no) {
+
+      return true;
+
+    } else {
+      return false;
+    }
+
+  }
+  // VALIDATE SELF CONNECTION BUTTON
+  validate_self_connection_button() {
+
+    if ((this.connect === true || this.disconnect === true) && this.smu_no && this.smu_no <= 144
+      && (!document.getElementById('smu_no').classList.contains('ng-invalid'))) {
+
+      return true;
+
+    } else {
+      return false;
+    }
+
+  }
+  // HOMING MOTOR
   home_motor() {
-    this.ApiService.home_robot_axes().then((data) => {
+
+    this._apiService.homeRobotAxes().then((data) => {
       if (data['status'] === 'success') {
         console.log(data);
+
       } else {
         console.error(data);
-        this.errorRobot = data['status'];
       }
     });
+
   }
+  // ROLLBACK SMU POSITION
+  rollback() {
 
-  changeRobotParameter() {
+    this._apiService.rollBack(this.smu_no).then((data) => {
+      if (data['uuid']) {
+        this.smu_no = null;
+        alert('Command send successful, start rollback...');
 
-    localStorage.setItem('robot', this.robot_number);
-    localStorage.setItem('continue_mode', this.continue_mode);
+      } else {
+        this.smu_no = null;
+        alert('Error rollback.');
+      }
+    });
 
-    alert('Change robot parameter success !');
+  }
+  // SELF CONNECTION SMU
+  self_connection() {
+
+    if (this.validate_self_connection_button() === true) {
+      this._apiService.selfConnection(this.smu_no, this.connect, this.disconnect).then((data) => {
+
+        if (data['uuid']) {
+          this.smu_no = null;
+          this.connect = false;
+          this.disconnect = false;
+          console.log(data);
+          alert('Command send successful, start self connection...');
+
+        } else {
+          this.smu_no = null;
+          console.error(data);
+          alert('Error invalid input in backend.');
+        }
+      });
+    }
 
   }
 

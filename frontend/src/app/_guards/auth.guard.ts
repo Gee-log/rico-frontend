@@ -1,22 +1,22 @@
 // ANGULAR Module
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) { }
+  constructor(
+    private _router: Router) { }
 
   canActivate() {
 
+    // logged in so return true
     if (localStorage.getItem('currentUser')) {
-      // logged in so return true
       return true;
     }
 
     // not logged in so redirect to login page
-    this.router.navigate(['/login']);
+    this._router.navigate(['/login']);
     return false;
   }
 

@@ -1,24 +1,16 @@
 """For dummy robot use whitewalker
 """
-
 import logging.handlers
+
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import status
 
-from webapp.libs import connectionlist_connection, connectionlist_disconnect, connectionlist_debug_mode, \
-    validation_error
+from webapp.libs.connectionlist_connection import CreateConnection
+from webapp.libs.connectionlist_disconnect import CreateDisconnect
+from webapp.libs.connectionlist_debug_mode import CreateDebugMode
+from webapp.libs.connectionlist_utilities import ConnectionUtilities
 
-# set connectionlist_action_connection
-connectionlist_action_connection = connectionlist_connection.CreateConnection
-
-# set connectionlist_action_disconnection
-connectionlist_action_disconnection = connectionlist_disconnect.CreateDisconnect
-
-# set connectionlist_action_debug_mode
-connectionlist_action_debug_mode = connectionlist_debug_mode.CreateDebugMode
-
-# set validation_errors
-validation_errors = validation_error.ValidateError
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -57,37 +49,38 @@ class ForWhitewalker(object):
         """
 
         # Validate errors inputs
-        if 'action' not in request.data:
-            error_detail = {'error': 'No action'}
-            logger.error('for_whitewalker: error:{} request:{}'.format(error_detail, request))
-            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        request_data = JSONParser().parse(request)
 
-        if 'east' not in request.data:
-            error_detail = {'error': 'No east'}
-            logger.error('for_whitewalker: error:{} request:{}'.format(error_detail, request))
-            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        if 'action' not in request_data:
+            return_data = {'error': 'No action'}
+            logger.error('for_whitewalker: error:{} request:{}'.format(return_data, request_data))
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
-        if 'west' not in request.data:
-            error_detail = {'error': 'No west'}
-            logger.error('for_whitewalker: error:{} request:{}'.format(error_detail, request))
-            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        if 'east' not in request_data:
+            return_data = {'error': 'No east'}
+            logger.error('for_whitewalker: error:{} request:{}'.format(return_data, request_data))
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
+
+        if 'west' not in request_data:
+            return_data = {'error': 'No west'}
+            logger.error('for_whitewalker: error:{} request:{}'.format(return_data, request_data))
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
 
         # Debug mode checking condition
-        if 'number' in request.data and 'stops' in request.data:
-            return connectionlist_action_debug_mode.validate_input_to_create_debug_mode(request)
+        if 'number' in request_data and 'stops' in request_data:
+            return CreateDebugMode.validate_input_to_create_debug_mode(request_data)
 
         # Validate action
-        if request.data['action'] == 'disconnect':
-            return connectionlist_action_disconnection.validate_input_to_create_disconnection(request)
+        if request_data['action'] == 'disconnect':
+            return CreateDisconnect.validate_input_to_create_disconnection(request_data)
 
-        elif request.data['action'] == 'test_connect':
-            # return self.test_connect(request)
-            return None
+        elif request_data['action'] == 'create_connection':
+            return ConnectionUtilities.create_dummy_connection(request_data)
 
-        elif request.data['action'] == 'connect':
-            return connectionlist_action_connection.validate_input_to_create_connection(request)
+        elif request_data['action'] == 'connect':
+            return CreateConnection.validate_input_to_create_connection(request_data)
 
         else:
-            error_detail = {'error': 'Invalid action'}
-            logger.error('for_whitewalker: error:{} request:{}'.format(error_detail, request))
-            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+            return_data = {'error': 'Invalid action'}
+            logger.error('for_whitewalker: error:{} request:{}'.format(return_data, request_data))
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)

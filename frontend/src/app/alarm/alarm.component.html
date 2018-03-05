@@ -8,6 +8,8 @@
         (keyup)='updateFilter($event)' />
       <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
         [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        
+        
         <!-- BEGIN ALARM COLUMN  -->
         <ngx-datatable-column name="Alarm">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -18,6 +20,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END ALARM COLUMN -->
+        
+        
         <!-- BEGIN DETAIL COLUMN  -->
         <ngx-datatable-column name="Detail">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -28,6 +32,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END DETAIL COLUMN -->
+        
+        
         <!-- BEGIN TIME COLUMN -->
         <ngx-datatable-column name="Time">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -38,6 +44,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END TIME COLUMN -->
+        
+        
         <!-- BEGIN SEVERITY COLUMN -->
         <ngx-datatable-column name="Severity">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
@@ -48,6 +56,8 @@
           </ng-template>
         </ngx-datatable-column>
         <!-- END SEVERITY COLUMN -->
+      
+      
       </ngx-datatable>
       <!-- END TABLE -->
     </div>
@@ -56,6 +66,8 @@
   <!-- END FLEX-ITEM -->
 </div>
 <!-- END FLEX-CONTAINER -->
+
+
 <!-- BEGIN FLEX-CONTAINER -->
 <div class="flex-container">
   <!-- BEGIN FLEX-FOOTER -->

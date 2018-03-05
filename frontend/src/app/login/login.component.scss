@@ -1,84 +1,206 @@
-/*****Container*****/
-.container {
-    display: flex;
-    flex-direction: column;
-    margin: 2rem auto;
-
-    // Labtop screen
-    @media only screen and (min-device-width : 640px) {
-        width: 400px;
-        height: 280px;
-    }
-    // Mobile screen
-    @media only screen and (max-device-width : 640px) {
-        width: 80vw;
-        height: 280px;
-    }
-    /*****Flex-1*****/
-    .flex-1 {
-        div {
-            width: 100%;
-            height: 60px;
-            background: rgb(63,81,181);
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
-            p {
-                margin: 0 auto;
-                padding: 20px 0 0 20px;
-                font-size: 20px;
-                color: white;
-                cursor: default;
+    .warpper {
+        width: 100vw;
+        height: 100vh;
+        /*this to solve "the content will not be cut when the window is smaller than the content": */
+        max-width: 100%;
+        max-height: 100%;
+        overflow: auto;
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+            overflow: hidden; // Labtop screen
+            @media only screen and (min-device-width: 640px) {
+                width: 670px;
+                height: 500px;
+            } // Mobile screen
+            @media only screen and (max-device-width: 640px) {
+                width: 80vw;
+                height: 400px;
             }
-        }
-    }
-    /*****Flex-2*****/
-    .flex-2 {
-        div {
-            width: 100%;
-            height: 70px;
-            md-form-field { padding-top: 20px; width: 100%; }
-        }
-    }
-    /*****Flex-3*****/    
-    .flex-3 {
-        div {
-            width: 100%;
-            height: 70px;
-            md-form-field { padding-top: 20px; width: 100%; }
-        }
-    }
-    /*****Flex-4*****/
-    .flex-4 {
-        display: inline-flex;        
-        padding-top: 2rem;
-        .item-1 {
-            margin-right: 5px;
-        }
-        .item-2 {
-            margin-left: 5px;
-        }
-        .item-3 {
-            margin-left: 5px;
-            md-card {
-                background: #ec407a;                
-            }
-            p {
-                color: white;
-                cursor: default;
-                // Labtop screen
-                @media only screen and (min-device-width : 640px) {
-                    font-size: 10px;
+            .flex-one {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 35%;
+                background-image: url('../../assets/Network-banner.jpg');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+                .company-name {
+                    cursor: default;
+                    color: white; // Labtop screen
+                    @media only screen and (min-device-width: 640px) {
+                        font-size: 46px;
+                    } // Mobile screen
+                    @media only screen and (max-device-width: 640px) {
+                        font-size: 22px;
+                    }
                 }
-                // Mobile screen
-                @media only screen and (max-device-width : 640px) {
+            }
+            .flex-two {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 75%;
+                width: 100%;
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    width: 90%;
+                    height: 70%;
+                    .column-one {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        height: 25%;
+                        .row-one {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 25%;
+                            height: 100%;
+                            .text {
+                                cursor: default;
+                                color: #808080;
+                                font-size: 16px; // Mobile screen
+                                @media only screen and (max-device-width: 640px) {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                        .row-two {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 75%;
+                            height: 100%;
+                        }
+                    }
+                    .column-two {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        height: 25%;
+                        .row-one {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 25%;
+                            height: 100%;
+                            .text {
+                                cursor: default;
+                                color: #808080;
+                                font-size: 16px;
+                                @media only screen and (max-device-width: 640px) {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                        .row-two {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 75%;
+                            height: 100%;
+                        }
+                    }
+                    .column-three {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        height: 15%;
+                        .row-one {
+                            width: 25%;
+                            height: 100%;
+                        }
+                        .row-two {
+                            width: 75%;
+                            height: 100%;
+                        }
+                    }
+                    .column-four {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        height: 35%;
+                        .row-one {
+                            width: 25%;
+                            height: 100%;
+                        }
+                        .row-two {
+                            display: flex;
+                            flex-direction: row;
+                            width: 75%;
+                            height: 100%;
+                            .login-button-container {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 50%;
+                                height: 100%;
+                                #login-button:disabled {
+                                    background-color: rgba(0, 0, 0, .13);
+                                }
+                                #login-button:not(disabled) {
+                                    background-color: #0061A0;
+                                }
+                                .button-style {
+                                    width: 180px;
+                                    height: 60px;
+                                    border-radius: 30px;
+                                }
+                            }
+                            .error-dialog-container {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 50%;
+                                height: 100%;
+                                .hide {
+                                    visibility: hidden;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+     :host /deep/ {
+        // Labtop screen
+        @media only screen and (min-device-width: 640px) {
+            md-form-field.mat-form-field {
+                width: 420px;
+            }
+        } // Mobile screen
+        @media only screen and (max-device-width: 640px) {
+            md-form-field.mat-form-field {
+                width: 170px;
+                font-size: 12px;
+            }
+        }
+        md-card {
+            border-radius: 10px;
+            background: #ec407a;
+            p {
+                color: white;
+                cursor: default; // Labtop screen
+                @media only screen and (min-device-width: 640px) {
+                    font-size: 10px;
+                } // Mobile screen
+                @media only screen and (max-device-width: 640px) {
                     font-size: 8px;
                 }
             }
         }
     }
-}
-
-
-/*-----------Global Class*-----------/
-
-/*****Hide*****/
-.hide { visibility: hidden; }

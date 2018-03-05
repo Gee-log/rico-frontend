@@ -1,60 +1,59 @@
 // Angular Module
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
-// ReactiveX
-import { Observable } from 'rxjs/Observable'; // <-- Not using right now
-import 'rxjs/add/operator/map'; // <-- Not using right now
-
-// Service
-import { AuthenticationService } from './authentication.service';
-
-// Model
-import { User } from '../_models/user'; // <-- Not using right now
+// Third-Party
+import * as _ from 'lodash';
 
 @Injectable()
 export class UserService {
 
-  public username;
+  private username: string;
+  private headers: any = new Headers({ 'Content-Type': 'application/json' });
+  private options: any = new RequestOptions({ headers: this.headers });
+  // private ROOT_URL: string = `http://192.168.60.73:80/`;
+  private ROOT_URL: string = `http://localhost:8000/`;
 
-  // private ROOT_URL = `http://192.168.60.103:80/`;
-  private ROOT_URL = `http://localhost:8000/`;
-  private headers = new Headers({ 'Content-Type': 'application/json' });
-  private options = new RequestOptions({ headers: this.headers });
-
-  constructor(private http: Http, private authenticationService: AuthenticationService) { }
-
-  // getUsers(): Observable<User[]> {
-  //   // add authorization header with jwt token
-  //   const headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token });
-  //   const options = new RequestOptions({ headers: headers });
-
-  //   // get users from api
-  //   return this.http.get(this.ROOT_URL + 'get_auth_token/', options)
-  //     .map((response: Response) => response.json());
-  // }
+  constructor(
+    private _http: Http) { }
 
   // GET CONNECTION HISTORYS
   getUsers() {
-
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser: object = JSON.parse(localStorage.getItem('currentUser'));
 
     // IF currentUser no data
     if (currentUser === null) {
-
-      return { 'username': null };
+      return ({ 'username': null });
 
       //  IF currentUser have data
     } else {
-
-      const username = currentUser['username'];
-      const token = currentUser['token'];
-
+      const username: string = currentUser['username'];
+      const token: string = currentUser['token'];
       this.username = username;
 
-      return { 'username': username };
-
+      return ({ 'username': username });
     }
+
+  }
+  // GET USER'S ROLE
+  getUserRoles() {
+    const currentUser: object = JSON.parse(localStorage.getItem('currentUser'));
+    const params: object = { 'username': currentUser['username'] };
+    let username: string;
+    let role: string;
+    let email: string;
+
+    return this._http.get(this.ROOT_URL + 'users/', { params: params }).toPromise().then((response: any) => {
+      const response_object = JSON.parse(response._body);
+      _.each(response_object, (obj) => {
+        username = obj['username'];
+        role = obj['role'];
+        email = obj['email'];
+      });
+
+      return ({ 'username': username, 'role': role, 'email': email });
+
+    });
 
   }
 

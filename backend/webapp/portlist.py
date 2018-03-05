@@ -2,15 +2,13 @@
 """
 import logging.handlers
 
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
-from webapp.libs import authorization
+from webapp.libs.authorization import ValidationUser, ValidateUserRole
 from webapp.models import Port
 from webapp.serializers import PortSerializer
-
-# set validate_user
-validate_user = authorization.ValidationUser
 
 # set logger
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +45,7 @@ class PortList(APIView):
 
         ports = Port.objects.all()
         serializer = PortSerializer(ports, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """POST PortList API
@@ -63,16 +61,15 @@ class PortList(APIView):
                 id (integer): id of object
         """
 
-        if validate_user.validate_http_authorization(request) is True:
+        if ValidationUser.validate_http_authorization(request) is True:
                 serializer = PortSerializer(data=request.data)
                 
                 if serializer.is_valid():
 
                     if Port.objects.filter(direction=request.data['direction'], number=request.data['number']):
-                        error_detail = {'error': 'This port already exist in database.'}
-                        logger.error('post method: error:{} request:{}'.format(error_detail, request.data))
-                        return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
-                    
+                        return_data = {'error': 'This port already exist in database.'}
+                        logger.error('post method: error:{} request:{}'.format(return_data, request.data))
+                        return Response(return_data, status=status.HTTP_400_BAD_REQUEST)  
                     else: 
                         serializer.save()
                         logger.info('post method: saved request:{}'.format(request.data))
@@ -81,10 +78,10 @@ class PortList(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         else:
-            error_detail = {'detail': 'Permission denied'}
+            return_data = {'detail': 'Permission denied'}
             logger.error('validate_user.validate_http_authorization method: error:{} request:{}'.format(
-                error_detail, request.META.get('HTTP_AUTHORIZATION')))
-            return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)   
+                return_data, request.META.get('HTTP_AUTHORIZATION')))
+            return Response(return_data, status=status.HTTP_401_UNAUTHORIZED)   
 
     def put(self, request):
         """PUT PortList API
@@ -97,8 +94,8 @@ class PortList(APIView):
             status (string): HTTP status
         """
 
-        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def delete(self, request):
         """DELETE PortList API
@@ -111,5 +108,5 @@ class PortList(APIView):
             status (string): HTTP status
         """
         
-        error_detail = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
-        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return_data = {'error': 'HTTP_405_METHOD_NOT_ALLOWED'}
+        return Response(return_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -2,6 +2,8 @@
 <div class="header-container" align="center">
   <!-- BEGIN CONTAINER-CONTENT -->
   <div class="container-content" align="center">
+ 
+
     <!-- BEGIN SUB-CONTAINER-CONTENT -->
     <div class="sub-container-content">
       <!-- BEGIN FLEX-ITEM-CONTAINER -->
@@ -34,6 +36,8 @@
       <!-- END FLEX-ITEM-CONTAINER -->
     </div>
     <!-- END SUB-CONTAINER-CONTENT -->
+
+
     <!-- BEGIN SUB-CONTAINER-CONTENT -->
     <div class="sub-container-content">
       <!-- BEGIN FLEX-ITEM-CONTAINER -->
@@ -65,6 +69,8 @@
       <!-- END FLEX-ITEM-CONTAINER -->
     </div>
     <!-- END SUB-CONTAINER-CONTENT -->
+
+
     <!-- BEGIN SUB-CONTAINER-CONTENT -->
     <div class="sub-container-content">
       <!-- BEGIN FLEX-ITEM-CONTAINER -->
@@ -75,7 +81,7 @@
           <div class="flex-item-1">
             <!-- BEGIN-CONTENT-1 -->
             <div class="content-1">
-              <span>65%</span>
+              <span>{{ this.operation_task_completed }}</span>
             </div>
             <!-- END CONTENT-1 -->
             <!-- BEGIN-CONTENT-2 -->
@@ -96,6 +102,8 @@
       <!-- END FLEX-ITEM-CONTAINER -->
     </div>
     <!-- END SUB-CONTAINER-CONTENT -->
+
+
     <!-- BEGIN SUB-CONTAINER-CONTENT -->
     <div class="sub-container-content">
       <!-- BEGIN FLEX-ITEM-CONTAINER -->
@@ -127,14 +135,18 @@
       <!-- END FLEX-ITEM-CONTAINER -->
     </div>
     <!-- END SUB-CONTAINER-CONTENT -->
+
+
   </div>
   <!-- END CONTAINER-CONTENT -->
 </div>
 <!-- END HEADER-CONTAINER -->
 
+
 <!-- BEGIN TABLE -->
 <!-- BEGIN SECTION GROUP -->
 <div class="section group">
+
   <!-- BEGIN COL SPAN_1_OF_2 -->
   <div class="col span_1_of_2">
     <!-- EAST TABLE -->
@@ -154,6 +166,8 @@
     <!-- END TABLE-CONTAINER-1 -->
   </div>
   <!-- END COL SPAN_1_OF_2 -->
+
+
   <!-- BEGIN COL SPAN_1_OF_2 -->
   <div class="col span_1_of_2">
     <!-- WEST TABLE -->
@@ -173,20 +187,25 @@
     <!-- BEGIN TABLE-CONTAINER-2 -->
   </div>
   <!-- END COL SPAN_1_OF_2 -->
+
+
 </div>
 <!-- END SECTION GROUP -->
 <!-- END TABLE -->
 
+
 <!-- BEGIN FOOTER -->
 <div class="footer-container">
+
+
   <!-- BEGIN FLEX-CONTAINER-1 -->
-  <div class="flex-container-1">
+  <div class="flex-container-1"> 
     <!-- BEGIN FLEX-ITEM-1 -->
     <div class="flex-item-1" align="center">
       <!-- BEGIN ITEM-1 -->
       <div class="item-1">
         <!-- BEGIN ERROR-DIALOG -->
-        <div id="error-dialog" [ngClass]="check_status_for_hide_dialog()">
+        <div id="error-dialog" [ngClass]="checkStatusForHideDialog()">
           <md-card class="Blink">
             <p>{{ error_message }}</p>
           </md-card>
@@ -198,6 +217,8 @@
     <!-- END FLEX-ITEM-1 -->
   </div>
   <!-- END FLEX-CONTAINER-1 -->
+
+
   <!-- BEGIN FLEX-CONTAINER-2 -->
   <div class="flex-container-2">
     <!-- BEGIN FLEX-ITEM-1 -->
@@ -207,7 +228,7 @@
         <!-- BEGIN ITEM-1-CONTAINER-SHADOW -->
         <div class="item-1-container-shadow">
           <!-- BEGIN BUTTON-CONTAINER -->
-          <div class="button-container fix-width">
+          <div id="" class="button-container fix-width" [ngClass]="validateUserRole_toDeleteElement()">
             <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
             <!-- <div class="button-container-item-1"> -->
               <!-- BEGIN TOOLTIP -->
@@ -225,17 +246,17 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Cancel" class="cancel-button-width" (click)="[continueRobotOperation(), disableContinueModeButtonAfterClick()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
                 <md-icon>autorenew</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Restart" class="cancel-button-width" (click)="[restartRobotOperation(), disableContinueModeButtonAfterClick()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
                 <md-icon>replay</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
               <!-- BEGIN CANCEL BUTTON -->
-              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), foruce_disable_continue_mode_button()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
+              <button md-raised-button id="Reload" class="cancel-button-width" (click)="[reloadRobotOperation(), disableContinueModeButtonAfterClick()]" color="primary" [attr.disabled]="this.disabled_continue_mode_all_button === false ? true : null" disabled>
                 <md-icon>clear</md-icon>
               </button>
               <!-- END CANCEL BUTTON -->
@@ -244,7 +265,7 @@
           </div>
           <!-- END BUTTON-CONTAINER -->
           <!-- BEGIN BUTTON-CONTAINER -->
-          <div class="button-container">
+          <div class="button-container" [ngClass]="validateUserRole_toDeleteElement()">
             <!-- BEGIN BUTTON-CONTAINER-ITEM-1 -->
             <div class="button-container-item-1">
               <!-- BEGIN TOOLTIP -->
@@ -262,7 +283,7 @@
             <!-- BEGIN BUTTON-CONTAINER-ITEM-2 -->
             <div class="button-container-item-2">
               <!-- BEGIN CONTINUE BUTTON -->
-              <button md-raised-button id="Continue" class="button-width" (click)="[postDebug(), force_disable_continue_button()]" color="primary" [attr.disabled]="this.status !== 'break' ? 'break' : null"
+              <button md-raised-button id="Continue" class="button-width" (click)="[postDebug(), disableContinueButtonAfterClick()]" color="primary" [attr.disabled]="this.status !== 'break' ? 'break' : null"
                 disabled>Continue</button>
               <!-- END CONTINUE BUTTON -->
             </div>
@@ -419,7 +440,7 @@
                 <!-- END DETAIL-CONTAINER-PENDING-ITEM-1 -->
                 <!-- BEGIN DETAIL-CONTAINER-PENDING-ITEM-2 -->
                 <div class="detail-container-pending-item-2">
-                  <p>Pending</p>
+                  <p>Operating</p>
                 </div>
                 <!-- END DETAIL-CONTAINER-PENDING-ITEM-2 -->
               </div>
@@ -484,8 +505,10 @@
     <!-- END FLEX-ITEM-2 -->
   </div>
   <!-- END FLEX-CONTAINER-2 -->
+
+
   <!-- BEGIN FLEX-CONTAINER-3 -->
-  <div class="flex-container-3">
+  <div class="flex-container-3" [ngClass]="validateUserRole_toHideElement()">
     <!-- BEGIN FLEX-ITEM-1 -->
     <div class="flex-item-1" align="center">
       <!-- BEGIN FLEX-ITEM-1-CONTAINER-SHADOW -->
@@ -499,5 +522,7 @@
     <!-- END FLEX-ITEM-1 -->
   </div>
   <!-- END FLEX-CONTAINER-3 -->
+
+
 </div>
 <!-- END FOOTER -->

@@ -40,9 +40,7 @@ export class AlarmComponent implements OnInit {
   ];
 
   temp = [];
-
   rows = [];
-  // { name: obj.alarm, gender: 'Male', company: 'Swimlane' },
 
   columns = [
     { prop: 'Alarm' },
@@ -56,25 +54,27 @@ export class AlarmComponent implements OnInit {
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // FEETCH DATA
     this.fetchData();
     // setInterval(this.randomAlert(), this.randomTime());
 
   }
 
-  constructor(private ApiService: ApiService, private router: Router) {
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router) {
 
     this.temp = this.rows;
 
   }
 
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
     });
 
@@ -82,24 +82,12 @@ export class AlarmComponent implements OnInit {
   // SET ALARM HISTORY DATA
   fetchData() {
 
-    // this.currentAlarmTime.setMinutes(this.currentAlarmTime.getMinutes() - 1);
-
-    // setInterval(function () {
-
-    // console.log('polling', new Date())
-
-    // let since = this.currentAlarmTime.getTime() / 1000
-
-    this.ApiService.getAlarmHistory().then((data) => {
+    this._apiService.getAlarmHistory().then((data) => {
       _.each(data, (obj) => {
         console.log(obj);
         this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
       });
     });
-    // }, 4000)
-
-    // this.updateSaveUrl(this.currentAlarmTime.getTime())
-    // this.randomAlert()
 
   }
   // SAVE TIME IN .crf FILE
@@ -138,19 +126,13 @@ export class AlarmComponent implements OnInit {
       const p = this.randomPattern();
       this.ApiService.connectPort(p[0], p[1], p[2]).then((data) => {
         console.log('randomAlert Success', data);
-        // createTable(data)
       });
       console.log('randomAlert', new Date(), p);
       this.randomAlert();
     }, this.randomTime());
 
   }
-  // TEST FUNCTION
-  clickme(row) {
-
-    console.log(row);
-
-  }
+  // SEARCH FILTER
   updateFilter(event) {
 
     const val = event.target.value.toLowerCase();

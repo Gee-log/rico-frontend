@@ -1,4 +1,5 @@
 import uuid
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -146,8 +147,14 @@ class Role(models.Model):
         ('User', 'User'),
     )
 
+    USER_STATUS = (
+        ('Offline', 'Offline'),
+        ('Online', 'Online'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=7, choices=USER_ROLE, default='Admin')
+    role = models.CharField(max_length=7, choices=USER_ROLE, default='Staff')
+    status = models.CharField(max_length=7, choices=USER_STATUS, default='Offline')
 
     def __str__(self):
         return str(self.user) + ' (' + str(self.role) + ')'
@@ -171,14 +178,28 @@ class Taskcancelation(models.Model):
 
     @classmethod
     def create(cls, uuid, mode, robot, continue_mode, response):
-        tasktranslation = cls(uuid=uuid, mode=mode, robot=robot, continue_mode=continue_mode, response=response)
-        return tasktranslation
+        taskcancelation = cls(uuid=uuid, mode=mode, robot=robot, continue_mode=continue_mode, response=response)
+        return taskcancelation
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
 
     class Meta:
         ordering = ['-id']
+
+
+class OperationSequence(models.Model):
+    
+    sequence_number = models.CharField(max_length=64, default=None, blank=True, null=True)
+    total_sequence = models.CharField(max_length=64, default=None, blank=True, null=True)
+
+    @classmethod
+    def create(cls, sequence_number, total_sequence):
+        operationsequence = cls(sequence_number=sequence_number, total_sequence=total_sequence)
+        return operationsequence
+
+    def __str__(self):
+        return self.sequence_number
 
 # This code is triggered whenever a new user has been created and saved to the database
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

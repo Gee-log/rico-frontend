@@ -22,11 +22,8 @@ import * as _ from 'lodash';
 })
 export class AlarmHistoryComponent implements OnInit {
 
-  rows = [
-    // { name: obj.alarm, gender: 'Male', company: 'Swimlane' },
-  ];
-
-  temp = [];
+  rows: any = [];
+  temp: any = [];
 
   columns = [
     { prop: 'Alarm' },
@@ -40,25 +37,27 @@ export class AlarmHistoryComponent implements OnInit {
   ngOnInit() {
 
     // CHECK SERVER STATUS
-    this.check_server_status();
+    this.checkServerStatus();
     // FETCH DATA
     this.fetchData();
 
   }
 
-  constructor(private ApiService: ApiService, private router: Router) {
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router) {
 
     this.temp = this.rows;
 
   }
 
   // CHECK SERVER STATUS
-  check_server_status() {
+  checkServerStatus() {
 
-    this.ApiService.check_server_status().then((status) => {
+    this._apiService.checkServerStatus().then((status) => {
 
       if (status === 500) {
-        this.router.navigateByUrl('/500');
+        this._router.navigateByUrl('/500');
       }
 
     });
@@ -67,7 +66,7 @@ export class AlarmHistoryComponent implements OnInit {
   // FETCH DATA
   fetchData() {
 
-    this.ApiService.getAlarmHistory().then((data) => {
+    this._apiService.getAlarmHistory().then((data) => {
       _.each(data, (obj) => {
 
         console.log(obj);
@@ -75,12 +74,6 @@ export class AlarmHistoryComponent implements OnInit {
 
       });
     });
-
-  }
-  // TEST FUNCTION
-  clickme(row) {
-
-    console.log(row);
 
   }
   // FILTER <-- Need to fix bug
