@@ -1,14 +1,18 @@
+// ANGULAR MODULE
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataSource } from '@angular/cdk';
+import { Router } from '@angular/router';
+
+// MATERIAL MODULE
+import { DataSource } from '@angular/cdk/table';
 import { MdPaginator } from '@angular/material';
+
+// Api Service
+import { ApiService } from '../services/api.service';
+
+// Third-party
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers, Response } from '@angular/http';
-import { ApiService } from '../services/api.service';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 
@@ -35,16 +39,10 @@ export class AlarmComponent implements OnInit {
     ['H', 'Missing connector', '4'],
   ];
 
-  ngOnInit() {
-    this.fetchData();
-    //setInterval(this.randomAlert(), this.randomTime());
-  }
-
-  rows = [
-    // { name: obj.alarm, gender: 'Male', company: 'Swimlane' }, 
-  ];
-
   temp = [];
+
+  rows = [];
+  // { name: obj.alarm, gender: 'Male', company: 'Swimlane' },
 
   columns = [
     { prop: 'Alarm' },
@@ -55,9 +53,30 @@ export class AlarmComponent implements OnInit {
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
-  constructor(private http: Http, private ApiService: ApiService) {
+  ngOnInit() {
+
+    // CHECK SERVER STATUS
+    this.check_server_status();
+    // FEETCH DATA
+    this.fetchData();
+    // setInterval(this.randomAlert(), this.randomTime());
+
+  }
+
+  constructor(private ApiService: ApiService, private router: Router) {
 
     this.temp = this.rows;
+
+  }
+
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+    });
 
   }
   // SET ALARM HISTORY DATA
@@ -74,9 +93,9 @@ export class AlarmComponent implements OnInit {
     this.ApiService.getAlarmHistory().then((data) => {
       _.each(data, (obj) => {
         console.log(obj);
-        this.rows.push({ alarm: obj.alarm, detail: obj.detail, time: obj.timestamp, severity: obj.severity })
-      })
-    })
+        this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
+      });
+    });
     // }, 4000)
 
     // this.updateSaveUrl(this.currentAlarmTime.getTime())
@@ -87,43 +106,53 @@ export class AlarmComponent implements OnInit {
   updateSaveUrl(time) {
 
     console.log('updateSaveUrl', time);
-    $("#save").prop("href", "/2/" + time);
+    $('#save').prop('href', '/2/' + time);
 
   }
   // CLEAR TABLE
   clear() {
+
     $('#alarm').empty();
     this.currentAlarmTime = new Date();
     this.updateSaveUrl(this.currentAlarmTime.getTime());
+
   }
   // RANDOM MOCKUP DATA
   randomPattern() {
-    let i = Math.floor(Math.random() * this.patterns.length);
-    return this.patterns[i]
+
+    const i = Math.floor(Math.random() * this.patterns.length);
+    return this.patterns[i];
+
   }
   // RANDOM TIME
   randomTime() {
+
     /*return Math.floor((Math.random() * 5000) + 2000);*/
     return Math.floor((Math.random() * 10000) + 10000);
+
   }
   // RANDOM POST DATA
   randomAlert() {
+
     setTimeout(function () {
-      let p = this.randomPattern();
+      const p = this.randomPattern();
       this.ApiService.connectPort(p[0], p[1], p[2]).then((data) => {
-        console.log('randomAlert Success', data)
+        console.log('randomAlert Success', data);
         // createTable(data)
-      })
-      console.log('randomAlert', new Date(), p)
-      this.randomAlert()
-    }, this.randomTime())
+      });
+      console.log('randomAlert', new Date(), p);
+      this.randomAlert();
+    }, this.randomTime());
 
   }
   // TEST FUNCTION
   clickme(row) {
+
     console.log(row);
+
   }
   updateFilter(event) {
+
     const val = event.target.value.toLowerCase();
     // filter our data
     const temp = this.temp.filter(function (d) {

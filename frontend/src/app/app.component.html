@@ -3,23 +3,24 @@
   <!-- BEGIN SIDENAV-FAB-CONTAINER -->
   <md-sidenav-container class="sidenav-fab-container">
     <!-- BEGIN NAV BAR -->
-    <md-toolbar class="toolbar-container" color="primary">
+    <md-toolbar class="toolbar-container" color="primary" *ngIf="showNavbar()">
+    <!-- attr.disabled]="this.disable_stops_input == true ? false : null" -->
       <!-- BEGIN MENU ICON -->
       <div>
-        <button type="button" md-button class="div-icon-menu" (click)="sidenav.toggle()">
+        <button id="menu-icon" type="button" md-button class="div-icon-menu" (click)="sidenav.toggle(); getUserName();">
            <md-icon >menu</md-icon>
         </button>
       </div>
       <!-- END MENU ICON -->
       <!-- BEGIN MORE-VERT ICON -->
       <div class="warpper-right">
-        <button md-button class="div-icon-mail">
-              <md-icon >mail</md-icon>
+        <button md-icon-button>
+          <md-icon>mail</md-icon>
         </button>
-        <button md-button class="div-icon-notification">
-              <md-icon >notifications</md-icon>
+        <button md-icon-button>
+          <md-icon>notifications</md-icon>
         </button>
-        <button md-button class="div-icon" [mdMenuTriggerFor]="menu">
+        <button md-icon-button [mdMenuTriggerFor]="menu">
           <md-icon >more_vert</md-icon>
        </button>
         <!-- BEGIN MENU-LIST -->
@@ -60,12 +61,12 @@
           <!-- END AVATAR -->
           <!-- BEGIN NAME-AVATAR-CONTAINER -->
           <div class="name-avatar-container">
-            <p>Aya Stark</p>
+            <p>{{ this.username }}</p>
           </div>
           <!-- END NAME-AVATAR-CONTAINER -->
           <!-- BEGIN USER-DROPDOWN-MENU -->
           <div class="user-dropdown-menu">
-            <span>aya.stark@xenoptics.com</span>
+            <span>{{ this.username }}@xenoptics.com</span>
             <div class="mdl-layout-spacer"></div>
             <button md-button class="div-icon" [mdMenuTriggerFor]="menudrop">
               <md-icon >arrow_drop_down</md-icon>
@@ -75,7 +76,7 @@
                 <md-icon>add</md-icon>
                 <span>Add another account...</span>
               </button>
-              <button md-menu-item>
+              <button md-menu-item (click)="logOut()">
                 <md-icon>remove</md-icon>
                 <span>Logout</span>
               </button>
@@ -126,7 +127,7 @@
             </a>
             </div>
           </div>
-          <div id="settings-list" hidden>
+          <div id="settings-list" class="settings-container-height" hidden>
             <md-list>
               <a [routerLink]="[link.path]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *ngFor="let link of settinglinks">
                 <md-list-item>
@@ -154,17 +155,13 @@
           </div>
         </div>
         <!-- END DOCUMENT LABEL -->
-        <!-- BEGIN BLANK-CONTAINER -->
-        <div class="blank-container">
-        </div>
-        <!-- END BLANK-CONTAINER -->
         <!-- BEGIN FOOTER-CONTAINER -->
-        <div class="footer-container">
+        <!-- <div class="footer-container"> -->
           <!-- <hr> -->
-          <div class="text-center">
+          <!-- <div class="text-center">
             <span>Help & Feedback</span>
           </div>
-        </div>
+        </div> -->
         <!-- END FOOTER-CONTAINER -->
       </div>
       <!-- END SCROLLING-CONTENT -->

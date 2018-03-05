@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'webapp.apps.WebappConfig',
     # third-party
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 ]
 
@@ -86,7 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'webapp_rico',
-        'HOST': '127.0.0.1',
+        'HOST': 'mysql',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'root',
@@ -115,8 +116,12 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication'
-    )
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # )
 }
 
 # Internationalization

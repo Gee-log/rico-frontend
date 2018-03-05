@@ -29,7 +29,7 @@
         </ngx-datatable-column>
         <!-- END TIME COLUMN -->
         <!-- BEGIN TYPE COLUMN -->
-        <ngx-datatable-column name="Type">
+        <ngx-datatable-column name="User">
           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
             <span (click)="sort()" class="orange"> {{column.name}}</span>
           </ng-template>
@@ -74,12 +74,17 @@
             <span (click)="sort()" class="green"> {{column.name}}</span>
           </ng-template>
           <ng-template let-value="value" ngx-datatable-cell-template>
-            <div *ngIf="value.status !== 'Pending'">{{value.status}}</div>
-            <div class="flex-container">
-              <!-- REMOVE PENDING BUTTON -->
+            <!-- OLD VERSION -->
+            <!-- <div *ngIf="value.status !== 'Pending'"> -->
+            <!-- NEW VERSION -->
+            <div *ngIf="value.status">{{value.status}}&nbsp;&nbsp;
+              <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status == 'Pending' || value.status == 'Break' || value.status == 'Started'"
+                (click)="cancelTask(value.id)">Cancel</button>
+            </div>
+            <!-- <div class="flex-container"> -->
+            <!-- REMOVE PENDING BUTTON -->
             <!-- <button md-raised-button id="Continue" class="button-width button-red" color="primary" *ngIf="value.status == 'Pending'" (click)="pending(value.id)">Continue</button> -->
-            <button md-raised-button id="Continue" class="button-width" color="primary" *ngIf="value.status == 'Pending'" (click)="cancelTask(value.id)">Cancel</button>
-          </div>
+            <!-- </div> -->
           </ng-template>
         </ngx-datatable-column>
         <!-- END SEVERITY COLUMN -->

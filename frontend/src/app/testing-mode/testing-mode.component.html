@@ -1,0 +1,120 @@
+<!-- BEGIN MAIN-CONTAINER -->
+<div class="main-container">
+  <!-- BEGIN TAB-GROUP -->
+  <md-tab-group>
+    <!-- BEGIN ROBOT-TAB -->
+    <md-tab label="Robot Handler">
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title> Home </md-panel-title>
+          <md-panel-description> Home all axes </md-panel-description>
+        </md-expansion-panel-header>
+
+        <button md-button color="primary" (click)="home_motor()">Home</button>
+      </md-expansion-panel>
+
+      <md-action-row>
+        <!--<md-error [(ngModel)]="errorRobot">error message</md-error>-->
+        <md-error>{{errorRobot}}</md-error>
+      </md-action-row>
+      <!--<div>-->
+      <!--<br />-->
+      <!--</div>-->
+
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title>
+            Change Robot
+          </md-panel-title>
+          <md-panel-description>
+            Change robot parameter
+          </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input mdInput id="robot_number" placeholder="Robot number" value="robot_number" [(ngModel)]="robot_number">
+        </md-form-field>
+
+        <md-form-field>
+          <input mdInput id="continue_mode" placeholder="Continue mode" value="continue_mode" [(ngModel)]="continue_mode">
+        </md-form-field>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="changeRobotParameter()">Change Parameter</button>
+        </md-action-row>
+
+      </md-expansion-panel>
+
+
+    </md-tab>
+    <!-- END ROBOT-TAB -->
+    <!-- BEGIN CONNECTION-TAB -->
+    <md-tab label="Connection">
+      <!-- BEGIN CREATE CONNECTION -->
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title>
+            Create connection in database
+          </md-panel-title>
+          <md-panel-description>
+            Type east port and west port
+          </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input mdInput id="east_port_input" placeholder="East port" value="east_port_number" [(ngModel)]="east_port_number" minlength="1"
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
+        </md-form-field>
+
+        <md-form-field>
+          <input mdInput id="west_port_input" placeholder="West port" value="west_port_number" [(ngModel)]="west_port_number" minlength="1"
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
+        </md-form-field>
+
+        <md-action-row>
+          <button md-button color="primary" (click)="create_connection()" [attr.disabled]="validate_connect_button() === false ? true : null"
+            disabled>Send Data</button>
+        </md-action-row>
+      </md-expansion-panel>
+      <!-- END CREATE CONNECTION -->
+      <!-- BEGIN CREATE CONNECTION DEBUG MODE -->
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title>
+            Create connection in debug mode
+          </md-panel-title>
+          <md-panel-description>
+            Type east port and west port and stops
+          </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input mdInput id="east_port_input" placeholder="East port" value="east_port_number" [(ngModel)]="east_port_number" minlength="1"
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
+        </md-form-field>
+
+        <md-form-field>
+          <input mdInput id="west_port_input" placeholder="West port" value="west_port_number" [(ngModel)]="west_port_number" minlength="1"
+            maxlength="3" pattern="^[1-9][0-9]{0,3}">
+        </md-form-field>
+
+        <md-form-field>
+          <input mdInput id="stops" placeholder="Stops" value="stops" [(ngModel)]="stops" minlength="1" maxlength="20" pattern="^[1-9][0-9,]{1,20}">
+        </md-form-field>
+
+        <md-form-field class="event-prevent">
+          <input mdInput id="sequence" placeholder="Sequence" value="sequence" [(ngModel)]="sequence" disabled>
+        </md-form-field>
+
+        <md-action-row>
+          <button md-button id="debug_button" color="primary" (click)="create_connection_debug_mode()" [attr.disabled]="validate_debug_button() === false ? true : null"
+            disabled>Send Data</button>
+        </md-action-row>
+      </md-expansion-panel>
+      <!-- END CREATE CONNECTION DEBUG MODE -->
+    </md-tab>
+    <!-- END CONNECTION-TAB -->
+  </md-tab-group>
+  <!-- END TAB-GROUP -->
+</div>
+<!-- END MAIN-CONTAINER -->

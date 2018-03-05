@@ -1,15 +1,21 @@
+// ANGULAR MODULE
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataSource } from '@angular/cdk';
+import { Router } from '@angular/router';
+
+// MATERIAL MODULE
+import { DataSource } from '@angular/cdk/table';
 import { MdPaginator } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Http, Headers, Response } from '@angular/http';
+
+// Api Service
 import { ApiService } from '../services/api.service';
+
+// ReactiveX
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+// Third-party
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-port-history',
@@ -22,12 +28,13 @@ export class PortHistoryComponent implements OnInit {
   rows = [];
   temp = [];
   selected: any[] = [];
+
   // COLUMNS VARIABLES
   columns = [
     { name: 'Date' },
     { name: 'Time' },
-    { name: 'Type' },
-    { prop: 'East' },
+    { name: 'User' },
+    { name: 'East' },
     { name: 'West' },
     { name: 'Status' },
     { name: 'RobotStatus' }
@@ -36,12 +43,30 @@ export class PortHistoryComponent implements OnInit {
   @ViewChild('table') table: DatatableComponent;
 
   ngOnInit() {
+
+    // CHECK SERVER STATUS
+    this.check_server_status();
+    // FETCH DATA
     this.fetchData();
+
   }
 
-  constructor(private http: Http, private ApiService: ApiService) {
+  constructor(private ApiService: ApiService, private router: Router) {
 
     this.temp = this.rows;
+
+  }
+
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+
+    });
 
   }
   // SET DATA TABLE
@@ -49,37 +74,59 @@ export class PortHistoryComponent implements OnInit {
 
     this.ApiService.getConnectionHistory().then((data) => {
       _.each(data, (obj) => {
+
         console.log(obj);
-        const date = new Date(obj.timestamp);
+        const date = new Date(obj['timestamp']);
         const day = date.toString().substring(0, 15);
         const time = date.toString().substring(15);
-        const status = obj.status.charAt(0).toUpperCase() + obj.status.slice(1);
+        const status = obj['status'].charAt(0).toUpperCase() + obj['status'].slice(1);
+
         // IF SWITCHTING_TYPE IS CONNECT
-        if (obj.switching_type === 'C') {
+        if (obj['switching_type'] === 'C') {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Connected', robotStatus: { 'status': status, 'id': obj.id }
+            date: day, time: time, user: obj['username'].charAt(0).toUpperCase() + obj['username'].slice(1)
+            , east: 'E' + obj['east'], west: 'W' + obj['west'],
+            status: 'Connected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
+
           // IF SWITCHING_TYPE IS DISCONNECT
         } else {
           this.rows.push({
-            date: day, time: time, east: 'E' + obj.east, west: 'W' + obj.west, status: 'Disconnected', robotStatus: { 'status': status, 'id': obj.id }
+            date: day, time: time, user: obj['username'].charAt(0).toUpperCase() + obj['username'].slice(1)
+            , east: 'E' + obj['east'], west: 'W' + obj['west'],
+            status: 'Disconnected', robotStatus: { 'status': status, 'id': obj['id'] }
           });
         }
-      })
+
+      });
     });
 
   }
   // CANCEL TASK
   cancelTask(id) {
 
-    this.ApiService.cancelTask(id, 'canceled');
-    window.location.reload();
+    this.ApiService.cancelTask(id, 'canceled').then((data) => {
+
+      if (data['status'] !== 'error' && data['historyid'] !== null) {
+        location.reload();
+      }
+
+    });
 
   }
   // SAVE DATA
   saveData() {
 
-    this.ApiService.saveData_Connectionhistory('connectionhistory');
+    // USING HTTP TO DOWLOAD
+    // window.location.href = 'http://localhost:8000/connectionhistorys?type=connectionhistory';
+
+    // USING API SERVICE TO DOWNLOAD
+    this.ApiService.downloadFile();
+
+    // USING ANGULAR2CSV PACKAGE TO DOWNLOAD
+    // this.ApiService.getConnectionHistory().then((data) => {
+    //    const x = new Angular2Csv(data, 'connect_log');
+    // });
 
   }
   // FILTER SEARCH

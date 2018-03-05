@@ -1,8 +1,20 @@
 from django.contrib import admin
-from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory
+from webapp.models import Port, Connection, Alarm, ConnectionHistory, Operation, OperationHistory, Role, Taskcancelation, Robot
 
-admin.site.register(Port)
 
+class PortModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "direction", "number", "note", "connection_counter"]
+    class Meta:
+        model = Port
+
+admin.site.register(Port, PortModelAdmin)
+
+class RoleModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "user", "role"]
+    class Meta:
+        model = Role
+
+admin.site.register(Role, RoleModelAdmin)
 
 class ConnectionModelAdmin(admin.ModelAdmin):
     list_display = ["__str__", "east" , "west" , "connected_date", "disconnected_date", "status"]
@@ -12,7 +24,7 @@ class ConnectionModelAdmin(admin.ModelAdmin):
 admin.site.register(Connection, ConnectionModelAdmin)
 
 class ConnectionHistoryModelAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "id", "east", "west", "switching_type", "timestamp", "status"]
+    list_display = ["__str__", "id", "east", "west", "switching_type", "timestamp", "status", "username"]
     class Meta:
         model = ConnectionHistory
 
@@ -39,3 +51,16 @@ class OperationHistoryModelAdmin(admin.ModelAdmin):
 
 admin.site.register(OperationHistory, OperationHistoryModelAdmin)
 
+class TaskcancelationModelAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "uuid", "mode", "robot", "continue_mode", "response"]
+    class Meta:
+        model = Taskcancelation
+
+admin.site.register(Taskcancelation, TaskcancelationModelAdmin)
+
+class RobotModelAdmin(admin.ModelAdmin):
+    list_display = ["robot_number"]
+    class Meta:
+        model = Robot
+
+admin.site.register(Robot, RobotModelAdmin)

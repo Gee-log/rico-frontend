@@ -21,6 +21,13 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+// GLOBAL
+.hide {
+  visibility: hidden !important;
+}
+
+
+
 // MAIN-CONTAINER
 .main-container {
   padding: 0;
@@ -205,7 +212,7 @@ hr {
         }
       }
       .menu-container-height {
-        height: 300px;
+        height: 320px;
       } 
       // SETTINGS MENU
       .settings {
@@ -326,8 +333,8 @@ hr {
   &:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
-  .menu-container-height {
-    height: 300px;
+  .settings-container-height {
+    height: 200px;
   }
 }
 
@@ -381,7 +388,7 @@ hr {
 // FIXED SIDENAV HEIGHT
 .mat-sidenav {
   height: 100vh;
-  width: 26.9vw; // CHANGE px to vw
+  // width: 26.9vw; // CHANGE px to vw
   width: 300px;
 }
 

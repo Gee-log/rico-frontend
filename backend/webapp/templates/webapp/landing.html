@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <!-- Basic Page Needs -->
+  {% load static %}
+  <meta charset="utf-8">
+  <title>Landing page</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT -->
+  <link href="{% static 'webapp/font/raleway.css' %}" rel='stylesheet' type='text/css'>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'webapp/css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'webapp/css/skeleton.css' %}">
+  <link rel="stylesheet" href="{% static 'webapp/css/custom.css' %}">
+
+  <!-- Scripts -->
+  <script src="{% static 'webapp/js/jquery-3.2.1.min.js' %}"></script>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{%  static 'webapp/XENO.ico' %}">
+</head>
+
+<body>
+
+  <div class="section first-section">
+    <div class="container">
+      <div class="row">
+        <div class="one">
+          <h1>Landing Page</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section second-section">
+    <div class="container">
+      <div class="row">
+        <div class="one-half column">
+          <button>Frontend</button>
+          <ul>
+            <li><a href="/frontend">Index</a></li>
+          </ul>
+        </div>
+        <div class="one-half column">
+          <button>Backend</button>
+          <ul>
+            <li><a href="/ports">Port api</a></li>
+            <li><a href="/alarms">Alarm api</a></li>
+            <li><a href="/connections">Connection api</a></li>
+            <li><a href="/connectionhistorys">Connectionhistory api</a></li>
+            <li><a href="/operations">Operation api</a></li>
+            <li><a href="/operationhistorys">Operationhistory api</a></li>
+            <li><a href="/users">Users api</a></li> 
+            <li><a href="/taskcancelations">Taskcancelation api</a></li>           
+            <li><a href="/admin">Admin site</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+</body>
+
+</html>

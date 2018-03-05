@@ -1,17 +1,44 @@
-from rest_framework.views import APIView
+"""connectionlist api
+"""
+
+import logging.handlers
+from django.http import JsonResponse
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from webapp.models import Connection, Port, ConnectionHistory, Operation, OperationHistory
+from rest_framework.views import APIView, status
+
+from webapp.libs import connectionlist_connection, connectionlist_disconnect, connectionlist_debug_mode, \
+    validation_error, for_whitewalker, for_embest
+from webapp.models import Connection, Operation
 from webapp.serializers import ConnectionSerializer
-from webapp.views import walk, CELERY_APP
-import logging
-import requests
+from webapp.views import walk
 
 
+# set connectionlist_action_connection
+connectionlist_action_connection = connectionlist_connection.CreateConnection
+
+# set connectionlist_action_disconnection
+connectionlist_action_disconnection = connectionlist_disconnect.CreateDisconnect
+
+# set connectionlist_action_debug_mode
+connectionlist_action_debug_mode = connectionlist_debug_mode.CreateDebugMode
+
+# set validation_errors
+validation_errors = validation_error.ValidateError
+
+# set for_whitewalker
+is_whitewalker = for_whitewalker.ForWhitewalker
+
+# set for_embest
+is_embest = for_embest.ForEmbest
+
+# set logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('connectionlist')
 
 # create a file handler
-handler = logging.FileHandler('connectionlist.log')
+handler = logging.handlers.RotatingFileHandler('connectionlist.log', maxBytes=10485760,
+                                               backupCount=10, encoding='utf-8')
 handler.setLevel(logging.INFO)
 
 # create a logging format
@@ -25,205 +52,156 @@ logger.addHandler(handler)
 class ConnectionList(APIView):
 
     def get(self, request):
+        """GET ConnectionList API
 
-        # logger.info('ConnectionList get %s', request.GET)
+        Args:
+            request: request data
+
+        Returns:
+            json:
+                If action == 'connected':
+                    east (integer): east port number
+                    west (integer): west port number
+                    status (string): status code
+                Else:
+                    east (integer): east port object number
+                    west (integer): west port object number
+                    connected_date (datetime): connected time
+                    disconnected_date (datetime): disconnected time
+                    status (string): status code
+        """
+
+        # Get connected port data
         if 'action' in request.GET and request.GET['action'] == 'connected':
-            operations = Operation.objects.filter(robotnumber='1')
+            operations = Operation.objects.all()
             conns = Connection.objects.all().filter(disconnected_date=None)
             data = []
+
             for c in conns:
-                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status}
+                obj = {'east': c.east.number, 'west': c.west.number, 'status': c.status, 'connected_date':
+                       c.connected_date}
                 data.append(obj)
-            if len(operations) > 0:
-                logger.info('operation: %s conn: %s', operations[0], data)
+
+            if len(operations) == 1:
+                logger.info('operation: %s conn: %s', operations, data)
+
             else:
                 logger.info('conn: %s', data)
 
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
 
+        # Get all port data
         else:
-
             conns = Connection.objects.all().filter(disconnected_date=None)
             serializer = ConnectionSerializer(conns, many=True)
-
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
+        """POST ConnectionList API
 
-        # Angular2 cannot access database if request superuser
-        # if request.user.is_superuser or request.user.is_staff:
-        logger.info(request.data)
-        # validate inputs
-        if 'action' not in request.data:
-            return Response('No action', content_type="text/plain")
+        Args:
+            request: request data
 
-        if 'east' not in request.data:
-            return Response('No east', content_type="text/plain")
+        Returns:
+            json:
+                east (string): east port number
+                west (string): west port number
+                status (string): status code
+                number (string): number of sequence
+                stops (string): current sequence
+                action (string): action type
+        """
 
-        if 'west' not in request.data:
-            return Response('No west', content_type="text/plain")
+        # Validate authorization
+        if request.META.get('HTTP_AUTHORIZATION'):
 
-        if 'number' in request.data and 'stops' in request.data:
-            return self.debug(request)
-        elif request.data['action'] == 'disconnect':
-            return self.disconnect(request)
-        else:
-            return self.connection(request)
+            # Set token
+            token = request.META.get('HTTP_AUTHORIZATION')
 
-    def debug(self, request):
+            # Check token is exist in database or not
+            if Token.objects.all().filter(key=token):
 
-        east, west = self.get_available_ports(request)
-        logger.info('debug %s - %s', east, west)
-        if east is None:
-            return Response('No east port number ' + str(east), content_type="text/plain")
-        if west is None:
-            return Response('No west port number ' + str(west), content_type="text/plain")
-
-        logger.info('connection_history %s - %s', east, west)
-        self.create_debug(request, east, west)
-
-        return Response(request.data)
-
-    def create_debug(self, request, east, west):
-
-        if 'number' in request.data and 'stops' in request.data:
-            number = request.data['number']
-            stops = request.data['stops']
-            action = request.data['action']
-        else:
-            number = None
-            stops = None
-            action = None
-        if stops and number:
-            payload = {'east': east.number, 'west': west.number, 'action': str(action), 'stops': str(stops),
-                       'no': str(number)}
-        else:
-            return False
-        if walk.is_dummy():
-            resp = walk.debug(payload)
-        else:
-            resp = requests.post(CELERY_APP + '/debug', data=payload)
-        uuid = resp.text
-        logger.info('%s %s E%s W%s stops:%s no:%s', uuid, action, east.number, west.number, stops, number)
-
-        operations = Operation.objects.filter(robotnumber='1')
-        if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
-        else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-
-    def connection(self, request):
-
-        # Angular2 cannot access database if request is superuser
-        # if request.user.is_superuser or request.user.is_staff:
-        east, west = self.get_available_ports(request)
-        logger.info('connection %s - %s', east, west)
-        if east is None:
-            return Response('No east port number ' + str(east), content_type="text/plain")
-        if west is None:
-            return Response('No west port number ' + str(west), content_type="text/plain")
-
-        # create connection
-        self.create_connect(request, east, west)
-
-        return Response(request.data)
-
-    def create_connect(self, request, east, west):
-
-        Connection.objects.create(east=east, west=west, status='pending')
-        ConnectionHistory.objects.create(east=east, west=west, switching_type='C', status='pending')
-        if 'stops' in request.data:
-            stops = request.data['stops']
-        else:
-            stops = None
-        if stops:
-            payload = {'east': east.number, 'west': west.number, 'action': "connect", 'stops': stops}
-        else:
-            payload = {'east': east.number, 'west': west.number, 'action': "connect"}
-
-        if walk.is_dummy():
-            resp = walk.connect(payload)
-        else:
-            resp = requests.post(CELERY_APP + '/connect', data=payload)
-
-        uuid = resp.text
-
-        operations = Operation.objects.filter(robotnumber='1')
-        if len(operations) == 1:
-            operations.update(uuid=uuid, status='pending', request=str(payload))
-        else:
-            Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-        OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-
-        logger.info('%s connect E%s W%s stops:%s', uuid, east.number, west.number, stops)
-
-    def disconnect(self, request):
-
-        # Angular2 cannot access database if request is superuser
-        # if request.user.is_superuser or request.user.is_staff:
-        east, west = self.get_available_ports(request)
-        logger.info('disconnection %s - %s', east, west)
-        if east is None:
-            return Response('No east port number ' + str(east), content_type="text/plain")
-        if west is None:
-            return Response('No west port number ' + str(west), content_type="text/plain")
-
-        # create disconnection
-        self.create_disconnect(request, east, west)
-
-        return Response(request.data)
-
-    def create_disconnect(self, request, east, west):
-
-        conns = Connection.objects.all().filter(disconnected_date=None)
-        for c in conns:
-            if c.east == east and c.west == west:
-                Connection.objects.filter(east=east, west=west, disconnected_date=None, status='success').update(
-                    status='pending')
-                ConnectionHistory.objects.create(east=east, west=west, switching_type='D', status='pending')
-                logger.info('connection_history %s - %s', east, west)
-                if 'stops' in request.data:
-                    stops = request.data['stops']
-                else:
-                    stops = None
-                if stops:
-                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect", 'stops': stops}
-                else:
-                    payload = {'east': east.number, 'west': west.number, 'action': "disconnect"}
-
+                # If using white walker dummy
                 if walk.is_dummy():
-                    resp = walk.disconnect(payload)
+                    return is_whitewalker.validate_input(request)
+
+                # If not using white walker dummy
                 else:
-                    resp = requests.post(CELERY_APP + '/disconnect', data=payload)
+                    # Check if current status is not error then call for_embest()
+                    if validation_errors.check_current_status() not in ['error', 'alarm']:
+                        return is_embest.validate_input(request)
+                    
+                    # Check if current status is error then return error message
+                    else:
+                        return validation_errors.query_status_error()
+            
+            else:
+                error_detail = {'detail': 'Permission denied'}
+                logger.error('post: error:{} request:{}'.format(error_detail, request))
+                return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
+                
+        else:
+            error_detail = {'detail': 'Permission denied'}
+            logger.error('post: error:{} request:{}'.format(error_detail, request))
+            return Response(error_detail, status=status.HTTP_401_UNAUTHORIZED)
 
-                uuid = resp.text
+    def put(self, request):
+        """PUT ConnectionList API
 
-                operations = Operation.objects.filter(robotnumber='1')
-                if len(operations) == 1:
-                    operations.update(uuid=uuid, status='pending', request=str(payload))
-                else:
-                    Operation.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
-                OperationHistory.objects.create(robotnumber='1', uuid=uuid, status='pending', request=str(payload))
+        Args:
+            request: request data
 
-                logger.info('%s disconnection E%s W%s stops:%s', uuid, east.number, west.number, stops)
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
 
-    def get_available_ports(self, request):
+        error_detail = {'detail': 'Method "PUT" not allowed.'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-        east, west = None, None
+    def delete(self, request):
+        """DELETE ConnectionList API
 
-        e = int(request.data['east'])
-        w = int(request.data['west'])
+        Args:
+            request: request data
 
-        # find available ports
-        ports = Port.objects.all()
-        for p in ports:
-            if p.direction == 'E' and p.number == e:
-                east = p
-                logger.info('east %s', east)
-            if p.direction == 'W' and p.number == w:
-                west = p
-                logger.info('west %s', west)
+        Returns:
+            content (string): error detail
+            status (string): HTTP status
+        """
+        
+        error_detail = {'detail': 'Method "DELETE" not allowed.'}
+        return Response(error_detail, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-        return east, west
+    def test_connect(self, request):
+        """Create a connection in connection table
 
+        Args:
+            request: request data
+
+        Returns:
+            Json = ({'status': 'success', 'east': str(east), 'west': str(west)})
+        """
+
+        connected_east, connected_west = [], []
+        east, west = self.get_available_ports(request)
+
+        conns = Connection.objects.filter(disconnected_date=None)
+        if conns is not None:
+
+            for i in conns:
+                obj_east = i.east
+                obj_west = i.west
+                connected_east.append(obj_east)
+                connected_west.append(obj_west)
+
+            if east not in connected_east and west not in connected_west:
+                Connection.objects.create(east=east, west=west, status='success')
+                return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})
+            
+            else:
+                return JsonResponse({'status': 'error', 'error': 'one or two of these ports is connected'})
+
+        else:
+            Connection.objects.create(east=east, west=west, status='success')
+            return JsonResponse({'status': 'success', 'east': str(east), 'west': str(west)})

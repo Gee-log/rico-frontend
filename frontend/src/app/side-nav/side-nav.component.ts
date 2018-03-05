@@ -28,7 +28,7 @@ export class SideNavComponent implements OnInit {
       name: 'Alarm History',
       path: '/alarmhistory'
     }
-  ]
+  ];
 
   constructor() { }
 

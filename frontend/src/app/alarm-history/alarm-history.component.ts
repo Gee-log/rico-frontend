@@ -1,14 +1,18 @@
+// ANGULAR MODULE
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataSource } from '@angular/cdk';
+import { Router } from '@angular/router';
+
+// MATERIAL MODULE
+import { DataSource } from '@angular/cdk/table';
 import { MdPaginator } from '@angular/material';
+
+// Api Service
+import { ApiService } from '../services/api.service';
+
+// Third-party
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers, Response } from '@angular/http';
-import { ApiService } from '../services/api.service';
 import { DatatableComponent } from '../../../node_modules/@swimlane/ngx-datatable/src/components/datatable.component';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 
 @Component({
@@ -18,14 +22,8 @@ import * as _ from 'lodash';
 })
 export class AlarmHistoryComponent implements OnInit {
 
-
-  ngOnInit() {
-    this.fetchData();
-  }
-
-
   rows = [
-    // { name: obj.alarm, gender: 'Male', company: 'Swimlane' }, 
+    // { name: obj.alarm, gender: 'Male', company: 'Swimlane' },
   ];
 
   temp = [];
@@ -39,27 +37,55 @@ export class AlarmHistoryComponent implements OnInit {
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
-  constructor(private http: Http, private ApiService: ApiService) {
+  ngOnInit() {
+
+    // CHECK SERVER STATUS
+    this.check_server_status();
+    // FETCH DATA
+    this.fetchData();
+
+  }
+
+  constructor(private ApiService: ApiService, private router: Router) {
 
     this.temp = this.rows;
 
   }
 
+  // CHECK SERVER STATUS
+  check_server_status() {
+
+    this.ApiService.check_server_status().then((status) => {
+
+      if (status === 500) {
+        this.router.navigateByUrl('/500');
+      }
+
+    });
+
+  }
+  // FETCH DATA
   fetchData() {
 
     this.ApiService.getAlarmHistory().then((data) => {
       _.each(data, (obj) => {
+
         console.log(obj);
-        this.rows.push({ alarm: obj.alarm, detail: obj.detail, time: obj.timestamp, severity: obj.severity })
+        this.rows.push({ alarm: obj['alarm'], detail: obj['detail'], time: obj['timestamp'], severity: obj['severity'] });
+
       });
     });
 
   }
-
+  // TEST FUNCTION
   clickme(row) {
+
     console.log(row);
+
   }
+  // FILTER <-- Need to fix bug
   updateFilter(event) {
+
     const val = event.target.value.toLowerCase();
     // filter our data
     const temp = this.temp.filter(function (d) {
@@ -71,4 +97,5 @@ export class AlarmHistoryComponent implements OnInit {
     // Whenever the filter changes, always go back to the first page
     // this.table.offset = 0;
   }
+
 }

@@ -1,0 +1,54 @@
+<!-- BEGIN CONTAINER -->
+<md-card class="container">
+  <!-- BEGIN FLEX-1 -->
+  <div class="flex-1">
+    <div>
+      <p>XENOPTICS</p>
+    </div>
+  </div>
+  <!-- END FLEX-1 -->
+
+  <!-- BEGIN FLEX-2 -->
+  <div class="flex-2">
+    <div>
+
+      <md-form-field>
+        <input mdInput placeholder="Username" type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel"
+        />
+      </md-form-field>
+
+    </div>
+  </div>
+  <!-- END FLEX-2 -->
+
+  <!-- BEGIN FLEX-3 -->
+  <div class="flex-3">
+    <div>
+
+      <md-form-field>
+        <input mdInput placeholder="Password" type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel"
+          (keyup)="catchEnter($event)" />
+      </md-form-field>
+
+    </div>
+  </div>
+  <!-- END FLEX-3 -->
+
+  <!-- BEGIN FLEX-4 -->
+  <div class="flex-4">
+    <div class="item-1">
+      <button md-raised-button color="primary" (click)="login()" [attr.disabled]="validate_login_button() === false ? true : null"
+        disabled>Log In</button>
+    </div>
+    <div class="item-2">
+      <button md-raised-button color="primary" (click)="registerRoute()">Register</button>
+    </div>
+    <div class="item-3">
+      <md-card id="error" class="hide">
+        <p>{{ this.error }}</p>
+      </md-card>
+    </div>
+  </div>
+  <!-- END FLEX-4 -->
+</md-card>
+<!-- END CONTAINER -->

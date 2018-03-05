@@ -1,6 +1,11 @@
 import uuid
-from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 class Port(models.Model):
@@ -11,7 +16,8 @@ class Port(models.Model):
 
     direction = models.CharField(max_length=1, choices=DIRECTION_TYPE)
     number = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(144)])
-    note = models.CharField(max_length=64, null=True)
+    note = models.CharField(max_length=64, default=None, blank=True, null=True)
+    connection_counter = models.IntegerField(default=0)
 
     def __str__(self):
         return self.direction + str(self.number)
@@ -22,8 +28,8 @@ class Connection(models.Model):
     east = models.ForeignKey(Port, related_name='east')
     west = models.ForeignKey(Port, related_name='west')
     connected_date = models.DateTimeField(auto_now_add=True)
-    disconnected_date = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=64, null=True)
+    disconnected_date = models.DateTimeField(default=None, blank=True, null=True)
+    status = models.CharField(max_length=64, default=None, blank=True, null=True)
 
     @classmethod
     def create(cls, east, west, status):
@@ -47,11 +53,12 @@ class ConnectionHistory(models.Model):
     west = models.ForeignKey(Port, related_name='westH')
     switching_type = models.CharField(max_length=1, choices=SWITCHING_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=256, null=True)
+    status = models.CharField(max_length=256, default=None, blank=True, null=True)
+    username = models.CharField(max_length=256, default=None, blank=True, null=True)
 
     @classmethod
-    def create(cls, east, west, switching_type, status):
-        connecthistory = cls(east=east, west=west, switching_type=switching_type, status=status)
+    def create(cls, east, west, switching_type, status, username):
+        connecthistory = cls(east=east, west=west, switching_type=switching_type, status=status, username=username)
         return connecthistory
 
     def __str__(self):
@@ -100,7 +107,7 @@ class Operation(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
     status = models.CharField(max_length=64)
     request = models.CharField(max_length=256)
-    response = models.CharField(max_length=256, null=True)
+    response = models.CharField(max_length=256, default=None, blank=True, null=True)
 
     @classmethod
     def create(cls, robotnumber, uuid, status, request, response):
@@ -116,10 +123,10 @@ class OperationHistory(models.Model):
     uuid = models.UUIDField(primary_key=True, editable=False)
     robotnumber = models.CharField(max_length=1)
     created_time = models.DateTimeField(auto_now_add=True)
-    finished_time = models.DateTimeField(null=True, blank=True)
+    finished_time = models.DateTimeField(default=None, blank=True, null=True)
     status = models.CharField(max_length=64)
     request = models.CharField(max_length=256)
-    response = models.CharField(max_length=256, null=True)
+    response = models.CharField(max_length=256, default=None, blank=True, null=True)
 
     def __str__(self):
         return str(self.uuid)
@@ -129,3 +136,52 @@ class OperationHistory(models.Model):
 
     class Meta:
         ordering = ['-created_time']
+
+
+class Role(models.Model):
+    USER_ROLE = (
+        ('Admin', 'Admin'),
+        ('Manager', 'Manager'),
+        ('Staff', 'Staff'),
+        ('User', 'User'),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=7, choices=USER_ROLE, default='Admin')
+
+    def __str__(self):
+        return str(self.user) + ' (' + str(self.role) + ')'
+
+
+class Robot(models.Model):
+    
+    robot_number = models.IntegerField(unique=True)
+
+    def __str__(self):
+        return 'Robot number: ' + str(self.robot_number)
+
+
+class Taskcancelation(models.Model):
+    
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    mode = models.CharField(max_length=64)
+    robot = models.CharField(max_length=64)
+    continue_mode = models.CharField(max_length=64)
+    response = models.CharField(max_length=256)
+
+    @classmethod
+    def create(cls, uuid, mode, robot, continue_mode, response):
+        tasktranslation = cls(uuid=uuid, mode=mode, robot=robot, continue_mode=continue_mode, response=response)
+        return tasktranslation
+
+    def __str__(self):
+        return self.uuid
+
+    class Meta:
+        ordering = ['-id']
+
+# This code is triggered whenever a new user has been created and saved to the database
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

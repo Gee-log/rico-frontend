@@ -1,0 +1,57 @@
+<!-- BEGIN FLEX-CONTAINER -->
+<div class="flex-container">
+  <!-- BEGIN FLEX-ITEM -->
+  <div class="flex-item">
+    <!-- BEGIN TABLE-CONTAINER  -->
+    <div class="table-container">
+      <input class="fliter" type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Type to filter the name column...'
+        (keyup)='updateFilter($event)' />
+      <ngx-datatable #table class="material shadow" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        <!-- BEGIN EAST PORT COLUMN -->
+        <ngx-datatable-column name="East">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="blue"> {{column.name}}</span>
+          </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END EAST PORT COLUMN -->
+        <!-- BEGIN WEST PORT COLUMN -->
+        <ngx-datatable-column name="West">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="blue"> {{column.name}}</span>
+          </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END WEST PORT COLUMN -->
+        <!-- BEGIN DATE COLUMN  -->
+        <ngx-datatable-column name="Date">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span (click)="sort()" class="red"> {{column.name}}</span>
+          </ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <div>{{value}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- END DATE COLUMN -->
+      </ngx-datatable>
+      <!-- END TABLE -->
+    </div>
+    <!-- END SEARCH FILTER -->
+  </div>
+  <!-- END FLEX-ITEM -->
+</div>
+<!-- END FLEX-CONTAINER -->
+<!-- BEGIN FLEX-CONTAINER -->
+<div class="flex-container">
+  <!-- BEGIN FLEX-FOOTER -->
+  <div class="flex-fix-padding" align="center">
+    <button md-raised-button id="save" class="button-width" color="primary" (click)="saveData()" type="button">Save</button>
+  </div>
+  <!-- END FLEX-FOOTER -->
+</div>
+<!-- END FLEX-CONTAINER -->
